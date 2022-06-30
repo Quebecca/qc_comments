@@ -21,19 +21,19 @@ Otherwise your changes will be overwritten the next time you save the extension 
 </f:section>
 
 <f:section name="content">
+    <div class="statistic_sections">
+        <f:flashMessages/>
+        <f:render partial="Filters" arguments="{action: 'stats', filter: filter, csvButton:csvButton, resetButton:resetButton}"/>
 
-    <f:flashMessages/>
-    <f:render partial="Filters" arguments="{action: 'stats', filter: filter, csvButton:csvButton, resetButton:resetButton}"/>
-
-    <f:if condition="{rows -> f:count()} == 0">
-        <f:then>
-            <div class="no-page">{f:translate(key:'no-result')}</div>
-        </f:then>
-        <f:else>
-            <f:render section="rows" arguments="{_all}"/>
-        </f:else>
-    </f:if>
-
+        <f:if condition="{rows -> f:count()} == 0">
+            <f:then>
+                <div class="no-page">{f:translate(key:'no-result')}</div>
+            </f:then>
+            <f:else>
+                <f:render section="rows" arguments="{_all}"/>
+            </f:else>
+        </f:if>
+    </div>
 </f:section>
 
 <f:section name="rows">

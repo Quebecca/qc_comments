@@ -1,0 +1,34 @@
+.comments-sections, .statistic_sections {
+  zoom : 120%;
+}
+.form-row {
+  border-bottom: 1px solid #ccc
+}
+
+.checkbox-input {
+  margin-top  : 2.1rem;
+}
+.form-check-label {
+  margin-top : 0.4rem;
+  padding-left : 2rem;
+}
+.no-page .no-comment  {
+  padding : 6px;
+}
+
+.commentaire span {
+  //white-space: normal!important
+  display: block;
+  max-width: 500px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  height: 110%;
+  transition: max-height 1s;
+
+  &:hover {
+    white-space: normal;
+    height: 100%;
+  }
+}
+
+

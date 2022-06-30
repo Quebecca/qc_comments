@@ -1,21 +1,23 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
 <f:form action="{action}" object="{filter}" objectName="filter">
 
-    <div class="form-row">
-        <div>
+    <div class="d-flex flex-row form-row">
+        <div class="p-2">
             <label>{f:translate(key: 'filter.lang')}</label>
             <f:form.select property="lang"
                            options="{filter.langOptions}"
                            optionLabelField="title"
                            class="form-control"/>
         </div>
-        <div>
+        <div class="p-2">
             <label>{f:translate(key: 'filter.depth')}</label>
             <f:form.select property="depth"
                            options="{filter.depthOptions}"
                            optionLabelField="title"
                            class="form-control"/>
         </div>
-        <div>
+        <div class="p-2">
             <label>{f:translate(key: 'filter.dateRange')}</label>
             <f:form.select property="dateRange"
                            options="{filter.dateRangeOptions}"
@@ -25,63 +27,66 @@
                            id="selectDateRange"
             />
         </div>
-        <f:if condition="{filter.dateRange} == 'userDefined'">
-            <div class="datepicker">
-                <label for="startDate">{f:translate(key:'filter.userDefined.from')}</label>
-                <div class="input-group ">
-                    <f:form.textfield
-                            property="startDate"
-                            id="startDate"
-                            class="form-control  t3js-datetimepicker t3js-clearable"
-                            data="{date-type: 'date'}"
-                    />
-                    <span class="input-group-btn">
+        <div class="p-2">
+            <f:if condition="{filter.dateRange} == 'userDefined'">
+                <div class="datepicker">
+                    <label for="startDate">{f:translate(key:'filter.userDefined.from')}</label>
+                    <div class="input-group ">
+                        <f:form.textfield
+                                property="startDate"
+                                id="startDate"
+                                class="form-control  t3js-datetimepicker t3js-clearable"
+                                data="{date-type: 'date'}"
+                        />
+                        <span class="input-group-btn">
                                 <label class="btn btn-default" for="startDate">
                                     <span class="fa fa-calendar"></span>
                                 </label>
                             </span>
+                    </div>
                 </div>
-            </div>
-            <div class="datepicker">
-                <label for="endDate">{f:translate(key:'filter.userDefined.to')}</label>
-                <div class="input-group">
-                    <f:form.textfield
-                            property="endDate"
-                            id="endDate"
-                            class="form-control  t3js-datetimepicker t3js-clearable"
-                            data="{date-type: 'date'}"
-                    />
-                    <span class="input-group-btn">
+                <div class="datepicker">
+                    <label for="endDate">{f:translate(key:'filter.userDefined.to')}</label>
+                    <div class="input-group">
+                        <f:form.textfield
+                                property="endDate"
+                                id="endDate"
+                                class="form-control  t3js-datetimepicker t3js-clearable"
+                                data="{date-type: 'date'}"
+                        />
+                        <span class="input-group-btn">
                                 <label class="btn btn-default" for="endDate">
                                     <span class="fa fa-calendar"></span>
                                 </label>
                             </span>
+                    </div>
                 </div>
-            </div>
 
-        </f:if>
-        <div class="form-check">
+            </f:if>
+        </div>
+        <div class="p-2 checkbox-input">
             <f:form.checkbox property="includeEmptyPages"
                              value="1"
+                             id="emptyPage"
                              class="form-check-input"
             />
-            <label class="form-check-label">{f:translate(key: 'filter.includeEmptyPages')}</label>
+            <label class="form-check-label" for="emptyPage">{f:translate(key: 'filter.includeEmptyPages')}</label>
         </div>
-        <f:render section="buttons" arguments="{_all}"/>
+        <div class="p-4">
+            <f:render section="buttons" arguments="{_all}"/>
+        </div>
     </div>
 </f:form>
 
 <f:section name="buttons">
-    <div class="buttons">
-        <div>
-
+    <div class="d-flex flex-row">
+        <div class="p-2">
             <f:form.submit value="{f:translate(key: 'filter.submit')}" class="btn btn-default"/>
         </div>
-        <div>
+        <div class="p-2">
             <a href="{resetButton.href}"  class="btn btn-default" >{f:translate(key:'filter.reset')}</a>
         </div>
-
-        <div>
+        <div class="p-2">
             <a href="{csvButton.href}" class="btn btn-default">{csvButton.icon -> f:format.raw()}
                 {f:translate(key:'links.exportCsv')}
             </a>

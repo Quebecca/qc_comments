@@ -7,6 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Traits\InjectPDO;
 use Qc\QcComments\Traits\InjectTranslation;
+use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -15,6 +16,8 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
+use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -45,6 +48,7 @@ class AdministrationController extends QcBackendModuleActionController
      *
      * @param ViewInterface $view
      * @return void
+     * @throws RouteNotFoundException
      */
     protected function initializeView(ViewInterface $view)
     {
@@ -64,6 +68,7 @@ class AdministrationController extends QcBackendModuleActionController
      * Function will be called before every other action
      *
      * @return void
+     * @throws StopActionException
      */
     public function initializeAction()
     {
@@ -77,6 +82,9 @@ class AdministrationController extends QcBackendModuleActionController
         $this->sharedPreChecks();
     }
 
+    /**
+     * @throws NoSuchArgumentException
+     */
     public function initializeListAction()
     {
         if (!isset($this->settings['dateFormat'])) {
@@ -128,6 +136,7 @@ class AdministrationController extends QcBackendModuleActionController
      */
     public function listAction($filter = null)
     {
+/*
 
         $filter = $this->processFilter($filter);
         $csvButton = [
@@ -167,6 +176,7 @@ class AdministrationController extends QcBackendModuleActionController
                 'stats',
                 'comments'
             ));
+*/
     }
 
 

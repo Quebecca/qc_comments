@@ -11,20 +11,19 @@
 </f:section>
 
 <f:section name="content">
+    <div class="comments-sections">
+        <f:flashMessages/>
+        <f:render partial="Filters" arguments="{action: 'list', filter: filter, csvButton:csvButton, resetButton:resetButton}"/>
+        <f:if condition="{stats -> f:count()} == 0">
+            <f:then>
+                <div class="no-page">{f:translate(key:'no-result')}</div>
+            </f:then>
+            <f:else>
+                <f:render section="stats" arguments="{_all}"/>
+            </f:else>
+        </f:if>
 
-
-    <f:flashMessages/>
-    <f:render partial="Filters" arguments="{action: 'list', filter: filter, csvButton:csvButton, resetButton:resetButton}"/>
-    <f:if condition="{stats -> f:count()} == 0">
-        <f:then>
-            <div class="no-page">{f:translate(key:'no-result')}</div>
-        </f:then>
-        <f:else>
-            <f:render section="stats" arguments="{_all}"/>
-        </f:else>
-    </f:if>
-
-
+    </div>
 
 </f:section>
 
@@ -35,7 +34,6 @@
             <div class="panel-heading">
                 {stat.page_uid} - {stat.page_title} ({stat.avg * 100} %)
             </div>
-            <!--            <f:render partial="StatsTable" arguments="{rows: {0: stat}, headers:statsHeaders}"/>-->
             <f:render partial="CommentsTable" arguments="{rows:'{comments.{stat.page_uid}}', headers:commentHeaders}"/>
         </div>
     </f:for>

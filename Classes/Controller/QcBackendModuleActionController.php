@@ -94,9 +94,8 @@ class QcBackendModuleActionController extends BackendModuleActionController
      * @param $action
      * @param array $arguments
      * @param null $controller
-     * @return string
      */
-    protected function getUrl($action, $arguments = [], $controller = null): string
+    protected function getUrl($action, $arguments = [], $controller = null)
     {
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = $this->objectManager->get(UriBuilder::class);
