@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-11-15T23:55:33Z"
+		  product-name="qc_comments">
+		<header/>
+		<body>
+			<trans-unit id="comments">
+				<source>Comments</source>
+			</trans-unit>
+			<trans-unit id="stats">
+				<source>Statistics</source>
+			</trans-unit>
+			<trans-unit id="menu.stats">
+				<source>Statistics</source>
+			</trans-unit>
+			<trans-unit id="menu.list">
+				<source>Comments</source>
+			</trans-unit>
+			<trans-unit id="filter.includeEmptyPages">
+				<source>Include pages without comment</source>
+			</trans-unit>
+			<trans-unit id="filter.lang">
+				<source>Language</source>
+			</trans-unit>
+			<trans-unit id="filter.lang.all">
+				<source>All languages</source>
+			</trans-unit>
+			<trans-unit id="filter.lang.french">
+				<source>French</source>
+			</trans-unit>
+			<trans-unit id="filter.lang.english">
+				<source>English</source>
+			</trans-unit>
+			<trans-unit id="filter.depth">
+				<source>Depth</source>
+			</trans-unit>
+			<trans-unit id="filter.depth.limitless">
+				<source>Limitless</source>
+			</trans-unit>
+			<trans-unit id="filter.depth.level">
+				<source>level</source>
+			</trans-unit>
+			<trans-unit id="filter.depth.levels">
+				<source>levels</source>
+			</trans-unit>
+			<trans-unit id="filter.depth.thisPage">
+				<source>This page</source>
+			</trans-unit>
+			<trans-unit id="filter.dateRange">
+				<source>Since</source>
+			</trans-unit>
+			<trans-unit id="filter.dateRange.day">
+				<source>day</source>
+			</trans-unit>
+			<trans-unit id="filter.dateRange.days">
+				<source>days</source>
+			</trans-unit>
+			<trans-unit id="filter.dateRange.week">
+				<source>week</source>
+			</trans-unit>
+			<trans-unit id="filter.dateRange.weeks">
+				<source>weeks</source>
+			</trans-unit>
+			<trans-unit id="filter.dateRange.month">
+				<source>month</source>
+			</trans-unit>
+			<trans-unit id="filter.dateRange.months">
+				<source>months</source>
+			</trans-unit>
+			<trans-unit id="filter.dateRange.year">
+				<source>year</source>
+			</trans-unit>
+			<trans-unit id="filter.userDefined.from">
+				<source>From</source>
+			</trans-unit>
+			<trans-unit id="filter.userDefined.to">
+				<source>To</source>
+			</trans-unit>
+			<trans-unit id="filter.submit">
+				<source>Filter</source>
+			</trans-unit>
+			<trans-unit id="filter.reset">
+				<source>Reset</source>
+			</trans-unit>
+			<trans-unit id="links.exportCsv">
+				<source>Export to CSV</source>
+			</trans-unit>
+			<trans-unit id="stats.h.page_uid">
+				<source>Page id</source>
+			</trans-unit>
+			<trans-unit id="stats.h.page_title">
+				<source>Page title</source>
+			</trans-unit>
+			<trans-unit id="stats.h.total_pos">
+				<source>Total positive</source>
+			</trans-unit>
+			<trans-unit id="stats.h.total_neg">
+				<source>Total negative</source>
+			</trans-unit>
+			<trans-unit id="stats.h.total">
+				<source>Total</source>
+			</trans-unit>
+			<trans-unit id="stats.h.avg">
+				<source>Average</source>
+			</trans-unit>
+
+			<trans-unit id="comments.h.comment_uid">
+				<source>Uid</source>
+			</trans-unit>
+			<trans-unit id="comments.h.date_heure">
+				<source>Date/Time</source>
+			</trans-unit>
+			<trans-unit id="comments.h.commentaire">
+				<source>Comment</source>
+			</trans-unit>
+			<trans-unit id="comments.h.appreciation">
+				<source>Useful</source>
+			</trans-unit>
+			<trans-unit id="positive">
+				<source>Yes</source>
+			</trans-unit>
+			<trans-unit id="negative">
+				<source>No</source>
+			</trans-unit>
+			<trans-unit id="csv.h.page_uid">
+				<source>Page id</source>
+			</trans-unit>
+			<trans-unit id="csv.h.comment_uid">
+				<source>Comment id</source>
+			</trans-unit>
+			<trans-unit id="no-result">
+				<source>No result</source>
+			</trans-unit>
+			<trans-unit id="tooMuchPages">
+				<source>Too much results: only the first %s rows are displayed. Please choose csv export, or change your filters.</source>
+			</trans-unit>
+			<trans-unit id="tooMuchResults">
+				<source>Too much result. Display has been limited to %s pages and %s comments. Please choose csv export, or change your filters.</source>
+			</trans-unit>
+			<trans-unit id="userDefined">
+                <source>User defined</source>
+            </trans-unit>
+		</body>
+	</file>
+</xliff>

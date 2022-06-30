@@ -1,0 +1,23 @@
+{
+  "name": "qc/qc-comments",
+  "type": "typo3-cms-extension",
+  "description": "Qc comments",
+  "authors": [],
+  "require": {
+    "typo3/cms-core": "^10.4.30"
+  },
+  "autoload": {
+    "psr-4": {
+      "Qc\\QcComments\\": "Classes"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Qc\\QcComments\\Tests\\": "Tests"
+    }
+  },
+  "replace": {
+    "qc_comments": "self.version",
+    "typo3-ter/qc_comments": "self.version"
+  }
+}

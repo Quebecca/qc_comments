@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file target-language="en" datatype="plaintext" original="messages" date="2016-11-15T23:55:33Z"
+          product-name="qc_comments">
+        <header/>
+        <body>
+            <trans-unit id="comments">
+                <target>Commentaires</target>
+            </trans-unit>
+            <trans-unit id="stats">
+                <target>Statistiques</target>
+            </trans-unit>
+            <trans-unit id="menu.stats">
+                <target>Statistiques</target>
+            </trans-unit>
+            <trans-unit id="menu.list">
+                <target>Commentaires</target>
+            </trans-unit>
+            <trans-unit id="filter.lang">
+                <target>Langue</target>
+            </trans-unit>
+            <trans-unit id="filter.includeEmptyPages">
+                <target>Inclure les pages sans commentaire</target>
+            </trans-unit>
+            <trans-unit id="filter.lang.all">
+                <target>Toutes langues</target>
+            </trans-unit>
+            <trans-unit id="filter.lang.french">
+                <target>Français</target>
+            </trans-unit>
+            <trans-unit id="filter.lang.english">
+                <target>Anglais</target>
+            </trans-unit>
+            <trans-unit id="filter.depth">
+                <target>Profondeur</target>
+            </trans-unit>
+            <trans-unit id="filter.depth.limitless">
+                <target>Infinie</target>
+            </trans-unit>
+            <trans-unit id="filter.depth.level">
+                <target>niveau</target>
+            </trans-unit>
+            <trans-unit id="filter.depth.levels">
+                <target>niveaux</target>
+            </trans-unit>
+            <trans-unit id="filter.depth.thisPage">
+                <target>Cette page</target>
+            </trans-unit>
+
+            <trans-unit id="filter.dateRange">
+                <target>Période</target>
+            </trans-unit>
+            <trans-unit id="filter.dateRange.day">
+                <target>jour</target>
+            </trans-unit>
+            <trans-unit id="filter.dateRange.days">
+                <target>jours</target>
+            </trans-unit>
+            <trans-unit id="filter.dateRange.week">
+                <target>semaine</target>
+            </trans-unit>
+            <trans-unit id="filter.dateRange.weeks">
+                <target>semaines</target>
+            </trans-unit>
+            <trans-unit id="filter.dateRange.month">
+                <target>mois</target>
+            </trans-unit>
+            <trans-unit id="filter.dateRange.months">
+                <target>mois</target>
+            </trans-unit>
+            <trans-unit id="filter.dateRange.year">
+                <target>an</target>
+            </trans-unit>
+            <trans-unit id="filter.userDefined.from">
+                <target>Du</target>
+            </trans-unit>
+            <trans-unit id="filter.userDefined.to">
+                <target>Au</target>
+            </trans-unit>
+            <trans-unit id="filter.submit">
+                <target>Filtrer</target>
+            </trans-unit>
+            <trans-unit id="filter.reset">
+                <target>Réinitialiser</target>
+            </trans-unit>
+            <trans-unit id="links.exportCsv">
+                <target>Exporter en CSV</target>
+            </trans-unit>
+            <trans-unit id="stats.h.page_uid">
+                <target>Id</target>
+            </trans-unit>
+            <trans-unit id="csv.h.page_uid">
+                <target>Id de la page</target>
+            </trans-unit>
+            <trans-unit id="stats.h.page_title">
+                <target>Titre de la page</target>
+            </trans-unit>
+            <trans-unit id="stats.h.total_pos">
+                <target>Total positif</target>
+            </trans-unit>
+            <trans-unit id="stats.h.total_neg">
+                <target>Total négatif</target>
+            </trans-unit>
+            <trans-unit id="stats.h.total">
+                <target>Total</target>
+            </trans-unit>
+            <trans-unit id="stats.h.avg">
+                <target>Moyenne</target>
+            </trans-unit>
+            <trans-unit id="comments.h.comment_uid">
+                <target>Id</target>
+            </trans-unit>
+            <trans-unit id="csv.h.comment_uid">
+                <target>Id du commentaire</target>
+            </trans-unit>
+            <trans-unit id="comments.h.date_heure">
+                <target>Date et heure</target>
+            </trans-unit>
+            <trans-unit id="comments.h.commentaire">
+                <target>Commentaire</target>
+            </trans-unit>
+            <trans-unit id="comments.h.appreciation">
+                <target>Utile</target>
+            </trans-unit>
+            <trans-unit id="positive">
+                <target>Oui</target>
+            </trans-unit>
+            <trans-unit id="negative">
+                <target>Non</target>
+            </trans-unit>
+            <trans-unit id="no-result">
+                <target>Aucun résultat</target>
+            </trans-unit>
+            <trans-unit id="tooMuchPages">
+                <target>Il y a trop de résultats, seules les %s premières lignes sont affichées. Choisissez plutôt l'export CSV ou modifiez vos filtres.</target>
+            </trans-unit>
+            <trans-unit id="tooMuchResults">
+                <target>Il y a trop de résultats: l'affichage a été limité à %s pages et %s commentaires. Choisissez plutôt l'export CSV ou modifiez vos filtres.</target>
+            </trans-unit>
+            <trans-unit id="userDefined">
+                <source>User defined</source>
+                <target>Défini par l'utilisateur</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

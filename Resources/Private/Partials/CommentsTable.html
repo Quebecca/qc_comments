@@ -1,0 +1,32 @@
+<f:if condition="{rows -> f:count()} == 1 and !{rows.0.date_heure} ">
+    <f:then>
+        <div class="no-comment">{f:translate(key:'no-result')}</div>
+    </f:then>
+    <f:else>
+        <f:render section="table" arguments="{_all}"/>
+    </f:else>
+</f:if>
+
+<f:section name="table">
+    <div class="table-fit">
+
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <f:for as="header" key="col" each="{headers}" iteration="iterator">
+                    <th>{header}</th>
+                </f:for>
+            </tr>
+            </thead>
+            <tbody>
+            <f:for as="row" each="{rows}" iteration="iterator">
+                <tr class="t3js-entity{f:if(condition:iterator.isFirst, then:' firstcol', else:'')}">
+                    <f:for as="header" each="{headers}" key="col" iteration="iterator">
+                        <td class="{col}"><span>{row.{col}}</span></td>
+                    </f:for>
+                </tr>
+            </f:for>
+            </tbody>
+        </table>
+    </div>
+</f:section>

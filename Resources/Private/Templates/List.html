@@ -1,0 +1,43 @@
+{namespace bm=CHF\BackendModule\ViewHelpers}
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+
+<f:layout name="Default"/>
+
+
+<f:section name="headline">
+    <h1>
+        {f:translate(key: 'comments')}
+    </h1>
+</f:section>
+
+<f:section name="content">
+
+
+    <f:flashMessages/>
+    <f:render partial="Filters" arguments="{action: 'list', filter: filter, csvButton:csvButton, resetButton:resetButton}"/>
+    <f:if condition="{stats -> f:count()} == 0">
+        <f:then>
+            <div class="no-page">{f:translate(key:'no-result')}</div>
+        </f:then>
+        <f:else>
+            <f:render section="stats" arguments="{_all}"/>
+        </f:else>
+    </f:if>
+
+
+
+</f:section>
+
+<f:section name="stats">
+    <f:for as="stat" each="{stats}" iteration="iterator">
+
+        <div class="panel panel-space panel-default recordlist">
+            <div class="panel-heading">
+                {stat.page_uid} - {stat.page_title} ({stat.avg * 100} %)
+            </div>
+            <!--            <f:render partial="StatsTable" arguments="{rows: {0: stat}, headers:statsHeaders}"/>-->
+            <f:render partial="CommentsTable" arguments="{rows:'{comments.{stat.page_uid}}', headers:commentHeaders}"/>
+        </div>
+    </f:for>
+</f:section>
+

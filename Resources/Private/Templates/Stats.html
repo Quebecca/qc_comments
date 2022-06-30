@@ -1,0 +1,47 @@
+{namespace bm=CHF\BackendModule\ViewHelpers}
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+
+<f:layout name="Default"/>
+
+This Template is responsible for creating a table of domain objects.
+
+If you modify this template, do not forget to change the overwrite settings
+in /Configuration/ExtensionBuilder/settings.yaml:
+Resources:
+Private:
+Templates:
+List.html: keep
+
+Otherwise your changes will be overwritten the next time you save the extension in the extension builder
+
+<f:section name="headline">
+    <h1>
+        {f:translate(key: 'menu.stats')}
+    </h1>
+</f:section>
+
+<f:section name="content">
+
+    <f:flashMessages/>
+    <f:render partial="Filters" arguments="{action: 'stats', filter: filter, csvButton:csvButton, resetButton:resetButton}"/>
+
+    <f:if condition="{rows -> f:count()} == 0">
+        <f:then>
+            <div class="no-page">{f:translate(key:'no-result')}</div>
+        </f:then>
+        <f:else>
+            <f:render section="rows" arguments="{_all}"/>
+        </f:else>
+    </f:if>
+
+</f:section>
+
+<f:section name="rows">
+    <div class="panel panel-space panel-default recordlist">
+        <div class="panel-heading">
+            Commentaires
+        </div>
+
+        <f:render partial="StatsTable" arguments="{rows:rows, headers:headers, settings:settings}"/>
+    </div>
+</f:section>

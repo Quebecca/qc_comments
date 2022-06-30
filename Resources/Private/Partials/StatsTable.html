@@ -1,0 +1,38 @@
+{namespace p=Qc\QcComments\ViewHelpers}
+<div class="table-fit">
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <f:for as="header" each="{headers}" iteration="iterator">
+                <th>{header}</th>
+            </f:for>
+        </tr>
+        </thead>
+        <tbody>
+        <f:for as="row" each="{rows}" iteration="iterator">
+            <tr class="t3js-entity{f:if(condition:iterator.isFirst, then:' firstcol', else:'')}"
+                data-table="{tableName}" data-uid="{fiche.uid}">
+                <td >
+                    {row.page_uid}
+                </td>
+                <td>
+                    {row.page_title -> p:middleCrop(maxLength:settings.cropMaxLength)}
+                </td>
+                <td>
+                    {row.total_pos}
+                </td>
+                <td>
+                    {row.total_neg}
+                </td>
+                <td>
+                    {row.total}  {row.foo}
+                </td>
+                <td>
+                    {row.avg * 100} %
+                </td>
+
+            </tr>
+        </f:for>
+        </tbody>
+    </table>
+</div>
