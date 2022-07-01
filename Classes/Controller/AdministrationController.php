@@ -162,7 +162,7 @@ class AdministrationController extends QcBackendModuleActionController
             $message = $this->translate('tooMuchResults', [$this->settings['maxStats'], $this->settings['maxComments']]);
             $this->addFlashMessage($message, null, AbstractMessage::WARNING);
         }
-        //$comments = $this->getListData($filter, \PDO::FETCH_GROUP | \PDO::FETCH_ASSOC, true, $pages_ids);
+        $comments = $this->getListData($filter, \PDO::FETCH_GROUP | \PDO::FETCH_ASSOC, true, $pages_ids);
         $statsHeaders = $this->getStatsHeaders();
         $commentHeaders = $this->getCommentHeaders();
         $this
@@ -173,7 +173,7 @@ class AdministrationController extends QcBackendModuleActionController
                 'statsHeaders',
                 'commentHeaders',
                 'stats',
-              // 'comments'
+                'comments'
             ));
 
     }

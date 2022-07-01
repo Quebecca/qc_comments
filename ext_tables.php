@@ -6,7 +6,7 @@ call_user_func(
 
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
             'QcComments',
-            'QcComments',
+            'Qccomments',
             'Add comments section in page'
         );
 
@@ -24,15 +24,12 @@ call_user_func(
                     'access' => 'user,group',
                     'icon' => 'EXT:qc_comments/Resources/Public/Icons/qc_comments.svg',
                   //  'labels' => 'LLL:EXT:qc_comments/Resources/Private/Language/locallang_qcComments.xlf',
-                    'labels' => 'AAAAAA',
+                    'labels' => 'Qc Comments',
 //                    'navigationComponentId' => '',
                 ]
             );
 
         }
-
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('qc_comments', 'Configuration/TypoScript', 'Module be gestion des commentaires');
-
-
     }
 );

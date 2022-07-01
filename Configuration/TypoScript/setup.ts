@@ -1,16 +1,16 @@
 # Module configuration
-module.tx_qcComments {
+module.tx_qccomments {
     persistence {
         storagePid =
     }
 
     view {
-        templateRootPaths.0 = EXT:qc_comments//Resources/Private/Templates/
-        templateRootPaths.1 = {$module.tx_qcComments.view.templateRootPath}
+        templateRootPaths.0 = EXT:qc_comments/Resources/Private/Templates/
+        templateRootPaths.1 = {$module.tx_qccomments.view.templateRootPath}
         partialRootPaths.0 = EXT:qc_comments/Resources/Private/Partials/
-        partialRootPaths.1 = {$module.tx_qcComments.view.partialRootPath}
+        partialRootPaths.1 = {$module.tx_qccomments.view.partialRootPath}
         layoutRootPaths.0 = EXT:qc_comments/Resources/Private/Layouts/
-        layoutRootPaths.1 = {$module.tx_qcComments.view.layoutRootPath}
+        layoutRootPaths.1 = {$module.tx_qccomments.view.layoutRootPath}
     }
 
     settings {
