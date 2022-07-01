@@ -25,7 +25,8 @@ trait InjectTranslation
         $extKey = $extKey
                     ?? $this->extKey
                     ?? ($this instanceof ActionController ? $this->request->getControllerExtensionKey() : false);
-        return LocalizationUtilityExtbase::translate($key, $extKey, (array) $arguments).self::addTrKey($key);
+
+        return $extKey != '' ? LocalizationUtilityExtbase::translate($key, $extKey, (array) $arguments).self::addTrKey($key) : '';
     }
 
 }

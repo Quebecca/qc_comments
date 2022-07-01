@@ -27,6 +27,8 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 class AdministrationController extends QcBackendModuleActionController
 {
+    // @todo : repalce root_id  - $context->getPropertyFromAspect('language', 'id');
+
     use InjectTranslation;
 
     protected $tableName = 'tx_gabarit_pgu_form_comments_problems';
@@ -47,6 +49,10 @@ class AdministrationController extends QcBackendModuleActionController
 
     protected CommentsRepository $commentsRepository;
 
+    // should place the DI before any methods
+    public function injectCommentRepository(CommentsRepository $commentsRepository){
+        $this->commentsRepository = $commentsRepository;
+    }
 
     /**
      * Set up the doc header properly here
@@ -68,6 +74,9 @@ class AdministrationController extends QcBackendModuleActionController
             $this->pageRenderer->addCssFile('EXT:qc_comments/Resources/Public/Css/qc_comments.css');
         }
     }
+
+
+
 
     /**
      * Function will be called before every other action
@@ -105,9 +114,6 @@ class AdministrationController extends QcBackendModuleActionController
         $this->sharedPreChecks();
     }
 
-    public function injectCommentRepository(CommentsRepository $commentsRepository){
-        $this->commentsRepository = $commentsRepository;
-    }
 
     protected function sharedPreChecks()
     {
