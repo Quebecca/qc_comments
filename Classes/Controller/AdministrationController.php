@@ -27,7 +27,7 @@ class AdministrationController extends QcBackendModuleActionController
 {
     use InjectPDO, InjectTranslation;
 
-    protected $tableName = 'tx_qcComments_comments';
+    protected $tableName = 'tx_gabarit_pgu_form_comments_problems';
     /**
      * @var int|mixed
      */
@@ -131,14 +131,13 @@ class AdministrationController extends QcBackendModuleActionController
     }
 
     /**
-     * @param Filter $filter
+     * @param Filter|null $filter // we need to specify the filter class in the argument to prevent map error
      * @return void
      */
-    public function listAction($filter = null)
+    public function listAction(Filter $filter = null)
     {
-/*
-
         $filter = $this->processFilter($filter);
+
         $csvButton = [
             'href' => $this->getUrl('exportList'),
             'icon' => $this->icon,
@@ -163,7 +162,7 @@ class AdministrationController extends QcBackendModuleActionController
             $message = $this->translate('tooMuchResults', [$this->settings['maxStats'], $this->settings['maxComments']]);
             $this->addFlashMessage($message, null, AbstractMessage::WARNING);
         }
-        $comments = $this->getListData($filter, \PDO::FETCH_GROUP | \PDO::FETCH_ASSOC, true, $pages_ids);
+        //$comments = $this->getListData($filter, \PDO::FETCH_GROUP | \PDO::FETCH_ASSOC, true, $pages_ids);
         $statsHeaders = $this->getStatsHeaders();
         $commentHeaders = $this->getCommentHeaders();
         $this
@@ -174,12 +173,10 @@ class AdministrationController extends QcBackendModuleActionController
                 'statsHeaders',
                 'commentHeaders',
                 'stats',
-                'comments'
+              // 'comments'
             ));
-*/
+
     }
-
-
 
     public function resetFilterAction(){
         $filter = $this->processFilter(new Filter());
@@ -187,10 +184,10 @@ class AdministrationController extends QcBackendModuleActionController
     }
 
     /**
-     * @param Filter $filter
+     * @param Filter|null $filter // we need to specify the filter class in the argument to prevent map error
      * @return void
      */
-    public function statsAction($filter = null)
+    public function statsAction(Filter $filter = null)
     {
         $filter = $this->processFilter($filter);
         $pages_ids = $this->getPageIdsList($filter->getDepth());
@@ -321,6 +318,24 @@ class AdministrationController extends QcBackendModuleActionController
      */
     protected function getListData(Filter $filter, $fetch_mode = \PDO::FETCH_ASSOC, $limit = false, $ids = [])
     {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         $comments_limit = $limit ? 'limit ' . $this->settings['maxComments'] : '';
         $query = strtr($this->getQueryStub($filter, $ids), [
             '%select' => 'p.uid page_uid, p.title page_title,  date_heure, commentaire, utile',
@@ -331,6 +346,8 @@ class AdministrationController extends QcBackendModuleActionController
             0 => $this->translate('negative'),
             1 => $this->translate('positive'),
         ];
+       // debug($query);
+       // die();
         $stmt = $this->getPdo()->query($query);
         $rows = $stmt->fetchAll($fetch_mode | \PDO::FETCH_FUNC,
             function () use ($tr) {
@@ -431,7 +448,7 @@ class AdministrationController extends QcBackendModuleActionController
                 select * from (
                       select %select
                         from pages p 
-                            $join tx_qcComments_comments comm 
+                            $join tx_gabarit_pgu_form_comments_problems comm 
                                 on p.uid = uid_orig $date_criteria $lang_criteria 
                         where  
                               p.uid in ($ids_csv) 
@@ -441,7 +458,7 @@ class AdministrationController extends QcBackendModuleActionController
                 ) a
                 ",
             'comments count' => "select count(*) total
-                from tx_qcComments_comments comm 
+                from tx_gabarit_pgu_form_comments_problems comm 
                 where uid_orig in ($ids_csv) $date_criteria $lang_criteria 
                 ",
         ][$query_name];

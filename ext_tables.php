@@ -1,19 +1,19 @@
 <?php
-defined('TYPO3_MODE') || die('Access denied.');
+defined('TYPO3') || die('Access denied.');
 
 call_user_func(
     function () {
 
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-            'qcComments',
-            'qcComments',
+            'QcComments',
+            'QcComments',
             'Add comments section in page'
         );
 
         if (TYPO3_MODE === 'BE') {
 
             \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-                'qcComments',
+                'QcComments',
                 'web', // Make module a submodule of 'web'
                 'admin', // Submodule key
                 '', // Position
@@ -24,7 +24,7 @@ call_user_func(
                     'access' => 'user,group',
                     'icon' => 'EXT:qc_comments/Resources/Public/Icons/qc_comments.svg',
                   //  'labels' => 'LLL:EXT:qc_comments/Resources/Private/Language/locallang_qcComments.xlf',
-                    'labels' => 'Comments',
+                    'labels' => 'AAAAAA',
 //                    'navigationComponentId' => '',
                 ]
             );
