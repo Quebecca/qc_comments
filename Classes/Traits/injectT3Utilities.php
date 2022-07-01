@@ -4,6 +4,7 @@
 namespace Qc\QcComments\Traits;
 
 
+
 use Symfony\Polyfill\Intl\Icu\NumberFormatter;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\TypoScriptAspect;

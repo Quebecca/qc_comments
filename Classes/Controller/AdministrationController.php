@@ -2,11 +2,13 @@
 
 namespace Qc\QcComments\Controller;
 
+use Qc\QcComments\Domain\Repository\CommentsRepository;
 use Qc\QcComments\Domain\Dto\Filter;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Traits\InjectPDO;
 use Qc\QcComments\Traits\InjectTranslation;
+use Qc\QcComments\View\CsvView;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
@@ -25,7 +27,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 
 class AdministrationController extends QcBackendModuleActionController
 {
-    use InjectPDO, InjectTranslation;
+    use InjectTranslation;
 
     protected $tableName = 'tx_gabarit_pgu_form_comments_problems';
     /**
@@ -42,6 +44,9 @@ class AdministrationController extends QcBackendModuleActionController
      * @var array
      */
     protected $settings;
+
+    protected CommentsRepository $commentsRepository;
+
 
     /**
      * Set up the doc header properly here
@@ -73,8 +78,9 @@ class AdministrationController extends QcBackendModuleActionController
     public function initializeAction()
     {
         $this->root_id = GeneralUtility::_GP('id');
-
         parent::initializeAction();
+        $this->commentsRepository->setRootId((int)$this->root_id);
+        $this->commentsRepository->setSettings($this->settings);
     }
 
     public function initializeStatsAction()
@@ -97,6 +103,10 @@ class AdministrationController extends QcBackendModuleActionController
         $constraintConfiguration = $this->arguments->getArgument('filter')->getPropertyMappingConfiguration();
         $constraintConfiguration->allowAllProperties();
         $this->sharedPreChecks();
+    }
+
+    public function injectCommentRepository(CommentsRepository $commentsRepository){
+        $this->commentsRepository = $commentsRepository;
     }
 
     protected function sharedPreChecks()
@@ -147,13 +157,13 @@ class AdministrationController extends QcBackendModuleActionController
             'href' => $this->getUrl('resetFilter')
         ];
         $tooMuchPages = false;
-        $tooMuchComments = $this->getListCount($filter) > $this->settings['maxComments'];
-        $pages_ids = $this->getPageIdsList($filter->getDepth());
+        $tooMuchComments = $this->commentsRepository->getListCount($filter) > $this->settings['maxComments'];
+        $pages_ids = $this->commentsRepository->getPageIdsList($filter->getDepth());
         if (count($pages_ids) > $this->settings['maxStats'] && $filter->getIncludeEmptyPages()) {
             $tooMuchPages = true;
             $pages_ids = array_slice($pages_ids, 0, $this->settings['maxStats']);
         }
-        $stats = $this->getStatsData($filter, $pages_ids, true);
+        $stats = $this->commentsRepository->getStatsData($filter, $pages_ids, true);
         $tooMuchPages = $tooMuchPages ?: count($stats) > $this->settings['maxStats'];
         $pages_ids = array_map(function ($row) {
             return $row['page_uid'];
@@ -162,7 +172,7 @@ class AdministrationController extends QcBackendModuleActionController
             $message = $this->translate('tooMuchResults', [$this->settings['maxStats'], $this->settings['maxComments']]);
             $this->addFlashMessage($message, null, AbstractMessage::WARNING);
         }
-        $comments = $this->getListData($filter, \PDO::FETCH_GROUP | \PDO::FETCH_ASSOC, true, $pages_ids);
+        $comments = $this->commentsRepository->getListData($filter, \PDO::FETCH_GROUP | \PDO::FETCH_ASSOC, true, $pages_ids);
         $statsHeaders = $this->getStatsHeaders();
         $commentHeaders = $this->getCommentHeaders();
         $this
@@ -190,13 +200,13 @@ class AdministrationController extends QcBackendModuleActionController
     public function statsAction(Filter $filter = null)
     {
         $filter = $this->processFilter($filter);
-        $pages_ids = $this->getPageIdsList($filter->getDepth());
+        $pages_ids = $this->commentsRepository->getPageIdsList($filter->getDepth());
         $tooMuchResults = false;
         if (count($pages_ids) > $this->settings['maxStats'] && $filter->getIncludeEmptyPages()) {
             $tooMuchResults = true;
             $pages_ids = array_slice($pages_ids, 0, $this->settings['maxStats']);
         }
-        $rows = $this->getStatsData($filter, $pages_ids);
+        $rows = $this->commentsRepository->getStatsData($filter, $pages_ids,true);
         if ($tooMuchResults || count($rows) > $this->settings['maxStats']) {
             $message = $this->translate('tooMuchPages', [$this->settings['maxStats']]);
             $this->addFlashMessage($message, null, AbstractMessage::WARNING);
@@ -295,84 +305,6 @@ class AdministrationController extends QcBackendModuleActionController
     }
 
     /**
-     * @param Filter $filter
-     * @param array $page_ids
-     * @return array
-     */
-    protected function getStatsData(Filter $filter, $page_ids = [], $limit = true)
-    {
-        $page_ids = $page_ids ?: $this->getPageIdsList($filter->getDepth());
-
-        $query = strtr($this->getQueryStub($filter, $page_ids), [
-            '%select' => 'p.uid page_uid, p.title page_title, ifNull(sum(utile), 0) total_pos, count(uid_orig)-ifNull(sum(utile), 0) total_neg, count(uid_orig) total, ifNull(avg(utile),0) avg',
-            '%group_by' => 'group by p.uid, p.title',
-            '%limit' => ($limit ? 'limit ' . ($this->settings['maxStats'] + 1) : '')
-        ]);
-
-        return $this->getPdo()->query($query)->fetchAll(\PDO::FETCH_ASSOC);
-    }
-
-    /**
-     * @param Filter $filter
-     * @return array
-     */
-    protected function getListData(Filter $filter, $fetch_mode = \PDO::FETCH_ASSOC, $limit = false, $ids = [])
-    {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        $comments_limit = $limit ? 'limit ' . $this->settings['maxComments'] : '';
-        $query = strtr($this->getQueryStub($filter, $ids), [
-            '%select' => 'p.uid page_uid, p.title page_title,  date_heure, commentaire, utile',
-            '%group_by' => '',
-            "%limit" => $comments_limit,
-        ]);
-        $tr = [
-            0 => $this->translate('negative'),
-            1 => $this->translate('positive'),
-        ];
-       // debug($query);
-       // die();
-        $stmt = $this->getPdo()->query($query);
-        $rows = $stmt->fetchAll($fetch_mode | \PDO::FETCH_FUNC,
-            function () use ($tr) {
-                $args = func_get_args();
-                $vals = array('page_uid', 'page_title', 'date_heure', 'commentaire', 'appreciation');
-                if (count($args) < count($vals)) {
-                    array_shift($vals);
-                }
-                $output = array_combine($vals, $args);
-                $output['appreciation'] = $tr[$output['appreciation']];
-                return $output;
-            });
-
-        return $rows;
-
-    }
-
-    protected function getListCount(Filter $filter)
-    {
-        $query = $this->getQueryStub($filter, [], 'comments count');
-        $total = (int) $this->getPdo()->query($query)->fetch(\PDO::FETCH_COLUMN);
-        return $total;
-    }
-
-    /**
      * @param null $filter
      */
     public function exportStatsAction($filter = null)
@@ -383,7 +315,7 @@ class AdministrationController extends QcBackendModuleActionController
         $this->view->setControllerContext($this->controllerContext);
         $this->view->assign('headers', $this->getStatsHeaders());
         $filter->setIncludeEmptyPages(true);
-        $this->view->assign('rows', $this->getStatsData($filter, [], false));
+        $this->view->assign('rows', $this->commentsRepository->getStatsData($filter, [], false));
     }
 
     /**
@@ -397,29 +329,11 @@ class AdministrationController extends QcBackendModuleActionController
         $this->view->setControllerContext($this->controllerContext);
         $this->view->assign('headers', $this->getCommentHeaders(true));
         $filter->setIncludeEmptyPages(true);
-        $rows = $this->getListData($filter);
+        $rows = $this->commentsRepository->getListData($filter);
         $this->view->assign('rows', $rows);
     }
 
-    /**
-     * @param $depth
-     * @return array
-     */
-    protected function getPageTreeIds($depth)
-    {
-        $page_ids = [];
-        if ($depth > 0) {
-            /** @var PageTreeView $pageTree */
-            $pageTree = GeneralUtility::makeInstance(PageTreeView::class);
-            $pageTree->init('AND ' . $GLOBALS['BE_USER']->getPagePermsClause(1));
-            $pageTree->makeHTML = 0;
-            $pageTree->fieldArray = ['uid'];
-            $pageTree->getTree($this->root_id, $depth);
-            $page_ids = $pageTree->ids;
-        }
-        array_unshift($page_ids, $this->root_id);
-        return $page_ids;
-    }
+
 
 
     protected function forwardIfNoPageSelected()
@@ -428,53 +342,6 @@ class AdministrationController extends QcBackendModuleActionController
             $this->forward('noPageSelected');
         }
     }
-
-
-    /**
-     * @param Filter $filter
-     * @param array $ids_list
-     * @return string
-     */
-    protected function getQueryStub(Filter $filter, $ids_list = [], $query_name = 'comments joins pages')
-    {
-        $ids_list = $ids_list ?: $this->getPageIdsList($filter->getDepth());
-        $ids_csv = implode(',', $ids_list);
-        $min_date = $filter->getDateForRange();
-        $lang_criteria = $filter->getLangCriteria();
-        $date_criteria = $filter->getDateCriteria();
-        $join = $filter->getIncludeEmptyPages() ? 'left join' : 'join';
-        return [
-            'comments joins pages' => "
-                select * from (
-                      select %select
-                        from pages p 
-                            $join tx_gabarit_pgu_form_comments_problems comm 
-                                on p.uid = uid_orig $date_criteria $lang_criteria 
-                        where  
-                              p.uid in ($ids_csv) 
-                        %group_by
-                        %limit
-
-                ) a
-                ",
-            'comments count' => "select count(*) total
-                from tx_gabarit_pgu_form_comments_problems comm 
-                where uid_orig in ($ids_csv) $date_criteria $lang_criteria 
-                ",
-        ][$query_name];
-    }
-
-
-    protected function getPageIdsList($depth)
-    {
-        $page_ids = [];
-        if ($depth > 0) {
-            $page_ids = $this->getPageTreeIds($depth);
-        }
-        $page_ids[] = $this->root_id;
-        return $page_ids;
-    }
-
 
     /**
      * Renvoie les clause de jointure pour les niveaux de profondeur du pagetree
