@@ -1,4 +1,17 @@
 # Module configuration
+
+plugin.commentsForm {
+    view {
+        templateRootPath = {$plugin.commentsForm.view.templateRootPath}
+        partialRootPath = {$plugin.commentsForm.view.partialRootPath}
+        layoutRootPath = {$plugin.commentsForm.view.layoutRootPath}
+    }
+    settings{
+
+    }
+}
+
+
 module.tx_qccomments {
     persistence {
         storagePid =

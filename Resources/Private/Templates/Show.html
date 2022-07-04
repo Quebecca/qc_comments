@@ -1,0 +1,30 @@
+<html
+        xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+        xmlns:p="http://typo3.org/ns/Scg/GabaritPgu/ViewHelpers"
+>
+<f:debug>{_all}</f:debug>
+
+<f:form action="submitFormAction" object="{filter}" objectName="filter">
+    <div class="d-flex flex-column">
+        <div class="p-2">
+            <f:form.radio name="useful" value="Non" id="usefulO" />
+            <label for="usefulO">Useful</label>
+            <f:form.radio name="useful" value="Oui" id="usefulN"/>
+            <label for="usefulN">Not Useful</label>
+
+        </div>
+        <div class="p-2">
+            <f:form.textarea
+                    property="startDate"
+                    id="startDate"
+                    class="form-control  t3js-datetimepicker t3js-clearable"
+                    data="{date-type: 'date'}"
+            />
+        </div>
+    </div>
+    <f:form.submit value="Soumettre" class="btn btn-default"/>
+
+</f:form>
+
+
+</html>

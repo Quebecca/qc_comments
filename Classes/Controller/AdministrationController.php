@@ -49,11 +49,11 @@ class AdministrationController extends QcBackendModuleActionController
      */
     protected Icon $icon;
 
-    /**
-     * @var array
-     */
-    protected $settings;
+    protected array $settings;
 
+    /**
+     * @var CommentsRepository
+     */
     protected CommentsRepository $commentsRepository;
 
     // should place the DI before any methods
