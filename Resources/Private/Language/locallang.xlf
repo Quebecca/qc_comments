@@ -4,6 +4,9 @@
 		  product-name="qc_comments">
 		<header/>
 		<body>
+			<trans-unit id="qc_comments">
+				<source>Qc comments</source>
+			</trans-unit>
 			<trans-unit id="comments">
 				<source>Comments</source>
 			</trans-unit>

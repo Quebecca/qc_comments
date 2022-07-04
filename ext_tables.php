@@ -23,8 +23,7 @@ call_user_func(
                 [
                     'access' => 'user,group',
                     'icon' => 'EXT:qc_comments/Resources/Public/Icons/qc_comments.svg',
-                  //  'labels' => 'LLL:EXT:qc_comments/Resources/Private/Language/locallang_qcComments.xlf',
-                    'labels' => 'Qc Comments',
+                    'labels' => 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:qc_comments',
 //                    'navigationComponentId' => '',
                 ]
             );

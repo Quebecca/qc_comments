@@ -7,12 +7,15 @@ use Qc\QcComments\Domain\Dto\Filter;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Traits\InjectPDO;
+use Qc\QcComments\Traits\injectT3Utilities;
 use Qc\QcComments\Traits\InjectTranslation;
 use Qc\QcComments\View\CsvView;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -29,7 +32,7 @@ class AdministrationController extends QcBackendModuleActionController
 {
     // @todo : repalce root_id  - $context->getPropertyFromAspect('language', 'id');
 
-    use InjectTranslation;
+    use InjectTranslation, injectT3Utilities;
 
     protected $tableName = 'tx_gabarit_pgu_form_comments_problems';
     /**
@@ -76,8 +79,6 @@ class AdministrationController extends QcBackendModuleActionController
     }
 
 
-
-
     /**
      * Function will be called before every other action
      *
@@ -87,6 +88,8 @@ class AdministrationController extends QcBackendModuleActionController
     public function initializeAction()
     {
         $this->root_id = GeneralUtility::_GP('id');
+        //$context = GeneralUtility::makeInstance(Context::class);
+       // debug($context->getPropertyFromAspect('id', ''));
         parent::initializeAction();
         $this->commentsRepository->setRootId((int)$this->root_id);
         $this->commentsRepository->setSettings($this->settings);

@@ -3,6 +3,7 @@
 # todo add T3 columns
 
 CREATE TABLE tx_gabarit_pgu_form_comments_problems (
+
        uid int(11) NOT NULL auto_increment,
        date_heure varchar(20) DEFAULT '' NOT NULL,
        utile tinyint(1) DEFAULT '0' NOT NULL,
@@ -14,4 +15,6 @@ CREATE TABLE tx_gabarit_pgu_form_comments_problems (
        etat_suivi varchar(25) DEFAULT '' NOT NULL,
        note_suivi text,
        PRIMARY KEY (uid)
+
+
 );

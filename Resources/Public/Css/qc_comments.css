@@ -5,11 +5,11 @@
   border-bottom: 1px solid #ccc; }
 
 .checkbox-input {
-  margin-top: 2.1rem; }
+  margin-top: 2rem; }
 
 .form-check-label {
-  margin-top: 0.4rem;
-  padding-left: 2rem; }
+  padding-left: 0.2rem;
+}
 
 .no-page .no-comment {
   padding: 6px; }

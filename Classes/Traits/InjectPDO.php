@@ -15,6 +15,7 @@ trait InjectPDO
     protected $pdo;
 
     /**
+     * This method is used to return the PDO Object
      * @return PDO
      */
     protected function getPdo()
