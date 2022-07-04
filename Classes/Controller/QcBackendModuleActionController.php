@@ -22,6 +22,7 @@ class QcBackendModuleActionController extends BackendModuleActionController
      * @var string
      */
     protected $extensionName = '';
+
     /**
      * @var string
      */
@@ -58,6 +59,7 @@ class QcBackendModuleActionController extends BackendModuleActionController
     }
 
     /**
+     * This function is used to check if the action key is in the menu of actions
      * @param $actionKey
      * @return bool
      */

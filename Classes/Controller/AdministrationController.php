@@ -37,7 +37,7 @@ class AdministrationController extends QcBackendModuleActionController
     /**
      * @var string
      */
-    protected $tableName = 'tx_gabarit_pgu_form_comments_problems';
+    protected string $tableName = 'tx_gabarit_pgu_form_comments_problems';
 
     /**
      * @var int|mixed
@@ -47,7 +47,7 @@ class AdministrationController extends QcBackendModuleActionController
     /**
      * @var Icon
      */
-    protected $icon;
+    protected Icon $icon;
 
     /**
      * @var array
@@ -90,20 +90,21 @@ class AdministrationController extends QcBackendModuleActionController
     public function initializeAction()
     {
         $this->root_id = GeneralUtility::_GP('id');
-        //$context = GeneralUtility::makeInstance(Context::class);
-       // debug($context->getPropertyFromAspect('id', ''));
         parent::initializeAction();
         $this->commentsRepository->setRootId((int)$this->root_id);
         $this->commentsRepository->setSettings($this->settings);
     }
 
+    /**
+     * @throws StopActionException
+     */
     public function initializeStatsAction()
     {
         $this->sharedPreChecks();
     }
 
     /**
-     * @throws NoSuchArgumentException
+     * @throws NoSuchArgumentException|StopActionException
      */
     public function initializeListAction()
     {
@@ -120,12 +121,14 @@ class AdministrationController extends QcBackendModuleActionController
     }
 
 
+    /**
+     * @throws StopActionException
+     */
     protected function sharedPreChecks()
     {
         $this->forwardIfNoPageSelected();
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->icon = $this->iconFactory->getIcon('actions-document-export-csv', Icon::SIZE_SMALL);
-
     }
 
     /**
@@ -155,7 +158,8 @@ class AdministrationController extends QcBackendModuleActionController
     }
 
     /**
-     * @param Filter|null $filter // we need to specify the filter class in the argument to prevent map error
+     *  We need to specify the filter class in the argument to prevent map error
+     * @param Filter|null $filter
      * @return void
      */
     public function listAction(Filter $filter = null)
@@ -202,6 +206,10 @@ class AdministrationController extends QcBackendModuleActionController
 
     }
 
+    /**
+     * This function will reset the search filter
+     * @throws StopActionException
+     */
     public function resetFilterAction(){
         $filter = $this->processFilter(new Filter());
         $this->redirect('list', NULL, NULL, ['filter' => $filter]);
@@ -278,7 +286,12 @@ class AdministrationController extends QcBackendModuleActionController
 
     }
 
-    protected function getCSVFilename(Filter $filter, $base_name)
+    /**
+     * @param Filter $filter
+     * @param $base_name
+     * @return string
+     */
+    protected function getCSVFilename(Filter $filter, $base_name): string
     {
         $format = $this->settings['csvExport']['filename']["dateFormat"];
         $now = date($format);
@@ -293,7 +306,10 @@ class AdministrationController extends QcBackendModuleActionController
 
     }
 
-    protected function getStatsHeaders()
+    /**
+     * @return array
+     */
+    protected function getStatsHeaders(): array
     {
         $headers = [];
         foreach (['page_uid', 'page_title', 'total_pos', 'total_neg', 'total', 'avg'] as $col) {
@@ -302,7 +318,11 @@ class AdministrationController extends QcBackendModuleActionController
         return $headers;
     }
 
-    protected function getCommentHeaders($include_csv_headers = false)
+    /**
+     * @param false $include_csv_headers
+     * @return array|string[]
+     */
+    protected function getCommentHeaders($include_csv_headers = false): array
     {
         $headers = [];
 
