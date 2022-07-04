@@ -34,7 +34,11 @@ class AdministrationController extends QcBackendModuleActionController
 
     use InjectTranslation, injectT3Utilities;
 
+    /**
+     * @var string
+     */
     protected $tableName = 'tx_gabarit_pgu_form_comments_problems';
+
     /**
      * @var int|mixed
      */
@@ -58,8 +62,6 @@ class AdministrationController extends QcBackendModuleActionController
     }
 
     /**
-     * Set up the doc header properly here
-     *
      * @param ViewInterface $view
      * @return void
      * @throws RouteNotFoundException
@@ -80,7 +82,7 @@ class AdministrationController extends QcBackendModuleActionController
 
 
     /**
-     * Function will be called before every other action
+     * This function will be called before every other action
      *
      * @return void
      * @throws StopActionException
@@ -126,6 +128,9 @@ class AdministrationController extends QcBackendModuleActionController
 
     }
 
+    /**
+     * This function is used to set the functions elements of the module
+     */
     protected function setMenu()
     {
         if (!$this->root_id) {
@@ -342,9 +347,10 @@ class AdministrationController extends QcBackendModuleActionController
         $this->view->assign('rows', $rows);
     }
 
-
-
-
+    /**
+     * This function will be called if there is no page selected
+     * @throws StopActionException
+     */
     protected function forwardIfNoPageSelected()
     {
         if (!$this->root_id) {
@@ -353,12 +359,11 @@ class AdministrationController extends QcBackendModuleActionController
     }
 
     /**
-     * Renvoie les clause de jointure pour les niveaux de profondeur du pagetree
-     * @param $depth - niveau de profondeur
-     * @param $comm_alias - alias de la table des commentaires
-     * @return array - la clause de jointure indexées par alias de niveau de page
+     * Returns join clauses for pagetree depth levels
+     * @param $depth
+     * @return string
      */
-    protected function getPageTreeView($depth)
+    protected function getPageTreeView($depth): string
     {
 
         $child = $parent = 'lvl_0';

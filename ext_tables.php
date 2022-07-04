@@ -14,9 +14,9 @@ call_user_func(
 
             \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
                 'QcComments',
-                'web', // Make module a submodule of 'web'
-                'admin', // Submodule key
-                '', // Position
+                'web',
+                'admin',
+                '',
                 [
                     \Qc\QcComments\Controller\AdministrationController::class => 'stats,list, exportStats, exportList, resetFilter',
                 ],
@@ -29,6 +29,6 @@ call_user_func(
             );
 
         }
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('qc_comments', 'Configuration/TypoScript', 'Module be gestion des commentaires');
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('qc_comments', 'Configuration/TypoScript', 'Module used to manage FE users comments on pages');
     }
 );
