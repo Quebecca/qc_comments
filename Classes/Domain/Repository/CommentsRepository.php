@@ -1,10 +1,13 @@
 <?php
 namespace Qc\QcComments\Domain\Repository;
 
+use Doctrine\DBAL\Driver\Exception;
 use Qc\QcComments\Domain\Dto\Filter;
 use Qc\QcComments\Traits\InjectPDO;
 use Qc\QcComments\Traits\InjectTranslation;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class CommentsRepository
@@ -12,6 +15,7 @@ class CommentsRepository
     use InjectPDO, InjectTranslation;
     protected int $root_id = 0;
     protected array $settings;
+    protected string $tableName = 'tx_gabarit_pgu_form_comments_problems';
     /**
      * @param Filter $filter
      * @param array $ids_list
@@ -46,6 +50,82 @@ class CommentsRepository
                 ",
         ][$query_name];
     }
+
+
+    public function generateQueryBuilder(): QueryBuilder
+    {
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        return $connectionPool->getQueryBuilderForTable($this->tableName);
+    }
+
+
+    /**
+     * @param Filter $filter
+     * @return array
+     */
+    public function setFilterForQuery(QueryBuilder  $queryBuilder, Filter $filter, $ids_list = [])  {
+        $constrains = [
+            'joinCond' => '',
+            'whereClause' => ''
+        ];
+        $ids_list = $ids_list ?: $this->getPageIdsList($filter->getDepth());
+        $ids_csv = implode(',', $ids_list);
+        $lang_criteria = $filter->getLangCriteria();
+        $date_criteria = $filter->getDateCriteria();
+
+        $constrains['joinCond'] = " p.uid = uid_orig $date_criteria $lang_criteria";
+        $constrains['whereClause'] = " p.uid in ($ids_csv)";
+
+        /*
+        "
+                select * from (
+                      select %select
+                        from pages p
+                            $join tx_gabarit_pgu_form_comments_problems comm
+                                on p.uid = uid_orig $date_criteria $lang_criteria
+                        where
+                              p.uid in ($ids_csv)
+                        %group_by
+                        %limit
+
+                ) a
+                "
+
+        */
+
+
+        return $constrains;
+    }
+
+
+    /**
+     * @param Filter $filter
+     * @param int|null $limit
+     * @return array
+     * @throws Exception
+     */
+    public function getDataList(Filter $filter, int $limit = null): array
+    {
+        $queryBuilder = $this->generateQueryBuilder();
+        $constraints = $this->setFilterForQuery($queryBuilder, $filter);
+        debug($constraints);
+        return $queryBuilder
+            ->select('p.uid','p.title', 'date_heure', 'commentaire', 'utile')
+            ->from($this->tableName)
+            ->join(
+                $this->tableName,
+                'pages',
+                'p',
+                $constraints['joinCond']
+            )
+            ->where(
+                $constraints['whereClause']
+            )
+
+            ->execute()
+            ->fetchAllAssociative();
+    }
+
 
 
     /**

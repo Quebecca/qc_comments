@@ -2,6 +2,7 @@
 
 namespace Qc\QcComments\Controller;
 
+use Doctrine\DBAL\Driver\Exception;
 use Qc\QcComments\Domain\Repository\CommentsRepository;
 use Qc\QcComments\Domain\Dto\Filter;
 use Psr\Http\Message\ResponseInterface;
@@ -49,7 +50,7 @@ class AdministrationController extends QcBackendModuleActionController
      */
     protected Icon $icon;
 
-    protected array $settings;
+    protected  $settings;
 
     /**
      * @var CommentsRepository
@@ -191,6 +192,8 @@ class AdministrationController extends QcBackendModuleActionController
             $this->addFlashMessage($message, null, AbstractMessage::WARNING);
         }
         $comments = $this->commentsRepository->getListData($filter, \PDO::FETCH_GROUP | \PDO::FETCH_ASSOC, true, $pages_ids);
+        $x =  $this->commentsRepository->getDataList($filter);
+        debug($x);
         $statsHeaders = $this->getStatsHeaders();
         $commentHeaders = $this->getCommentHeaders();
         $this
@@ -354,6 +357,7 @@ class AdministrationController extends QcBackendModuleActionController
 
     /**
      * @param null $filter
+     * @throws Exception
      */
     public function exportListAction($filter = null)
     {
@@ -364,6 +368,9 @@ class AdministrationController extends QcBackendModuleActionController
         $this->view->assign('headers', $this->getCommentHeaders(true));
         $filter->setIncludeEmptyPages(true);
         $rows = $this->commentsRepository->getListData($filter);
+
+
+
         $this->view->assign('rows', $rows);
     }
 

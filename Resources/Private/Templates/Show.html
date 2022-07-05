@@ -4,7 +4,7 @@
 >
 <f:debug>{_all}</f:debug>
 
-<f:form action="submitFormAction" object="{filter}" objectName="filter">
+<f:form action="submitForm" object="{comment}" objectName="comment">
     <div class="d-flex flex-column">
         <div class="p-2">
             <f:form.radio name="useful" value="Non" id="usefulO" />
@@ -17,6 +17,7 @@
             <f:form.textarea
                     property="startDate"
                     id="startDate"
+                    name="comment"
                     class="form-control  t3js-datetimepicker t3js-clearable"
                     data="{date-type: 'date'}"
             />
