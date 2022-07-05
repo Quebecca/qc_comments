@@ -6,7 +6,7 @@ call_user_func(
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
             'Qc.QcComments',
             'commentsForm',
-            ['Frontend\Comments' => 'submitForm'],
+            ['Comments' => 'submitForm'],
             []
         );
 
@@ -14,7 +14,7 @@ call_user_func(
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
             'Qc.QcComments',
             'commentsForm',
-            ['Frontend\Comments' => 'show'],
+            ['Comments' => 'show'],
             []
         );
 

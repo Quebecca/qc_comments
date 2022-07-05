@@ -5,7 +5,12 @@ use Qc\QcComments\Controller\AdministrationController;
 
 defined('TYPO3') || die('Access denied.');
 
-
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+    'QcComments', 'commentsForm', 'Show comments form'
+);
+/*\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+    'QcComments', 'submittedForm', 'Comments form is submitted'
+);*/
 
 call_user_func(
     function () {

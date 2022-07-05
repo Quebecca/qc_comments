@@ -3,21 +3,13 @@
 namespace Qc\QcComments\Controller;
 
 use Doctrine\DBAL\Driver\Exception;
-use Qc\QcComments\Domain\Repository\CommentsRepository;
+use Qc\QcComments\Domain\Repository\CommentRepository;
 use Qc\QcComments\Domain\Dto\Filter;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Qc\QcComments\Traits\InjectPDO;
 use Qc\QcComments\Traits\injectT3Utilities;
 use Qc\QcComments\Traits\InjectTranslation;
 use Qc\QcComments\View\CsvView;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
-use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
-use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
@@ -26,7 +18,6 @@ use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 
 
 class AdministrationController extends QcBackendModuleActionController
@@ -50,15 +41,15 @@ class AdministrationController extends QcBackendModuleActionController
      */
     protected Icon $icon;
 
-    protected  $settings;
+    protected array $settings;
 
     /**
-     * @var CommentsRepository
+     * @var CommentRepository
      */
-    protected CommentsRepository $commentsRepository;
+    protected CommentRepository $commentsRepository;
 
     // should place the DI before any methods
-    public function injectCommentRepository(CommentsRepository $commentsRepository){
+    public function injectCommentRepository(CommentRepository $commentsRepository){
         $this->commentsRepository = $commentsRepository;
     }
 

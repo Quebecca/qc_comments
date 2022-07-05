@@ -46,5 +46,4 @@ class Comment extends AbstractEntity
         $this->comment = $comment;
     }
 
-
 }

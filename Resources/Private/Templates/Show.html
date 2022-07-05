@@ -2,30 +2,34 @@
         xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
         xmlns:p="http://typo3.org/ns/Scg/GabaritPgu/ViewHelpers"
 >
-<f:debug>{_all}</f:debug>
+<f:if condition="{submittedComment}">
+    <f:then>
+        <h3>Formulaire envoyé avec succès!</h3>
+    </f:then>
+    <f:else>
+        <f:form action="show" object="{comment}" objectName="comment">
+            <div class="d-flex flex-column">
+                <div class="p-2">
+                    <f:form.radio property="useful" value="1" id="usefulO" />
+                    <label for="usefulO">Useful</label>
+                    <f:form.radio property="useful" value="0" id="usefulN"/>
+                    <label for="usefulN">Not Useful</label>
 
-<f:form action="submitForm" object="{comment}" objectName="comment">
-    <div class="d-flex flex-column">
-        <div class="p-2">
-            <f:form.radio name="useful" value="Non" id="usefulO" />
-            <label for="usefulO">Useful</label>
-            <f:form.radio name="useful" value="Oui" id="usefulN"/>
-            <label for="usefulN">Not Useful</label>
+                </div>
+                <div class="p-2">
+                    <f:form.textarea
+                            property="comment"
+                            id="comment"
+                            class="form-control  t3js-datetimepicker t3js-clearable"
+                            data="{date-type: 'date'}"
+                    />
+                </div>
+            </div>
+            <f:form.submit value="Soumettre" class="btn btn-default"/>
 
-        </div>
-        <div class="p-2">
-            <f:form.textarea
-                    property="startDate"
-                    id="startDate"
-                    name="comment"
-                    class="form-control  t3js-datetimepicker t3js-clearable"
-                    data="{date-type: 'date'}"
-            />
-        </div>
-    </div>
-    <f:form.submit value="Soumettre" class="btn btn-default"/>
-
-</f:form>
+        </f:form>
+    </f:else>
+</f:if>
 
 
 </html>

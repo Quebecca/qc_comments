@@ -9,8 +9,9 @@ use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Repository;
 
-class CommentsRepository
+class CommentRepository extends Repository
 {
     use InjectPDO, InjectTranslation;
     protected int $root_id = 0;
