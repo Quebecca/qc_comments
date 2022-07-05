@@ -58,12 +58,13 @@ class CommentsRepository
         return $connectionPool->getQueryBuilderForTable($this->tableName);
     }
 
-
     /**
      * @param Filter $filter
-     * @return array
+     * @param array $ids_list
+     * @return string[]
      */
-    public function setFilterForQuery(QueryBuilder  $queryBuilder, Filter $filter, $ids_list = [])  {
+    public function setFilterForQuery(Filter $filter, $ids_list = []): array
+    {
         $constrains = [
             'joinCond' => '',
             'whereClause' => ''
@@ -72,10 +73,8 @@ class CommentsRepository
         $ids_csv = implode(',', $ids_list);
         $lang_criteria = $filter->getLangCriteria();
         $date_criteria = $filter->getDateCriteria();
-
         $constrains['joinCond'] = " p.uid = uid_orig $date_criteria $lang_criteria";
         $constrains['whereClause'] = " p.uid in ($ids_csv)";
-
         /*
         "
                 select * from (
@@ -92,13 +91,12 @@ class CommentsRepository
                 "
 
         */
-
-
         return $constrains;
     }
 
 
     /**
+     * QueryBuilder
      * @param Filter $filter
      * @param int|null $limit
      * @return array
@@ -107,8 +105,7 @@ class CommentsRepository
     public function getDataList(Filter $filter, int $limit = null): array
     {
         $queryBuilder = $this->generateQueryBuilder();
-        $constraints = $this->setFilterForQuery($queryBuilder, $filter);
-        debug($constraints);
+        $constraints = $this->setFilterForQuery($filter);
         return $queryBuilder
             ->select('p.uid','p.title', 'date_heure', 'commentaire', 'utile')
             ->from($this->tableName)
@@ -193,6 +190,46 @@ class CommentsRepository
 
         return $this->getPdo()->query($query)->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+
+    /**
+     * QueryBuilder
+     * @param Filter $filter
+     * @param $page_ids
+     * @param bool $limit
+     * @return array
+     * @throws Exception
+     */
+    public function getDataStats(Filter $filter, $page_ids, $limit = true): array
+    {
+        $queryBuilder = $this->generateQueryBuilder();
+        $constraints = $this->setFilterForQuery($filter, $page_ids);
+        $limitResult = $limit ? 'limit ' . ($this->settings['maxStats'] + 1) : '';
+        //p.uid page_uid, p.title page_title, ifNull(sum(utile), 0) total_pos, count(uid_orig)-ifNull(sum(utile), 0) total_neg, count(uid_orig) total, ifNull(avg(utile),0) avg
+        //'count(uid_orig)-sum(utile) as total_neg'
+        return $queryBuilder
+            ->select('p.uid as page_uid', 'p.title as page_title')
+            ->addSelectLiteral(
+                $queryBuilder->expr()->avg('utile', 'avg'),
+                $queryBuilder->expr()->sum('utile', 'total_pos'),
+                $queryBuilder->expr()->count('uid_orig', 'total'),
+            )
+            ->from($this->tableName)
+            ->join(
+                $this->tableName,
+                'pages',
+                'p',
+                $constraints['joinCond']
+            )
+            ->where(
+                $constraints['whereClause']
+            )
+            ->groupBy('p.uid', 'p.title')
+           // ->setMaxResults($limitResult)
+            ->execute()
+            ->fetchAllAssociative();
+    }
+
 
     /**
      * @param $depth

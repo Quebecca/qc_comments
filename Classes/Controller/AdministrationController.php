@@ -192,8 +192,8 @@ class AdministrationController extends QcBackendModuleActionController
             $this->addFlashMessage($message, null, AbstractMessage::WARNING);
         }
         $comments = $this->commentsRepository->getListData($filter, \PDO::FETCH_GROUP | \PDO::FETCH_ASSOC, true, $pages_ids);
-        $x =  $this->commentsRepository->getDataList($filter);
-        debug($x);
+       // $x =  $this->commentsRepository->getDataList($filter);
+       // debug($x);
         $statsHeaders = $this->getStatsHeaders();
         $commentHeaders = $this->getCommentHeaders();
         $this
@@ -221,6 +221,7 @@ class AdministrationController extends QcBackendModuleActionController
     /**
      * @param Filter|null $filter // we need to specify the filter class in the argument to prevent map error
      * @return void
+     * @throws Exception
      */
     public function statsAction(Filter $filter = null)
     {
@@ -231,7 +232,12 @@ class AdministrationController extends QcBackendModuleActionController
             $tooMuchResults = true;
             $pages_ids = array_slice($pages_ids, 0, $this->settings['maxStats']);
         }
-        $rows = $this->commentsRepository->getStatsData($filter, $pages_ids,true);
+        $resultData = $this->commentsRepository->getDataStats($filter, $pages_ids,true);
+        $rows = [];
+        foreach ($resultData as $item){
+            $item['total_neg'] = $item['total'] - $item['total_pos'];;
+            $rows[] = $item;
+        }
         if ($tooMuchResults || count($rows) > $this->settings['maxStats']) {
             $message = $this->translate('tooMuchPages', [$this->settings['maxStats']]);
             $this->addFlashMessage($message, null, AbstractMessage::WARNING);
