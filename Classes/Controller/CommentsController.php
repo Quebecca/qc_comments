@@ -14,17 +14,23 @@ class CommentsController extends ActionController
     public function injectCommentsRepository(CommentRepository $commentsRepository){
         $this->commentsRepository = $commentsRepository;
     }
-
-    /**
-     * @throws IllegalObjectTypeException
-     */
-    public function showAction(Comment $comment = null){
-        if($comment == null)
+    
+    public function showAction(){
+        /*if($comment == null)
             $comment = new Comment();
         else{
             $this->view->assign("submittedComment", true);
-            $this->commentsRepository->add($comment);
-        }
+        }*/
+    }
+
+    /**
+     * @param Comment|null $comment
+     * @throws IllegalObjectTypeException
+     */
+    public function addCommentAction(Comment $comment = null){
+        $this->commentsRepository->add($comment);
+        debug('Saving comment!!!!');
+        // forward vers show
     }
 
 }

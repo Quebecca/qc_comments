@@ -4,12 +4,14 @@
 .form-row {
   border-bottom: 1px solid #ccc; }
 
+.comments-form {
+  display: none !important; }
+
 .checkbox-input {
   margin-top: 2rem; }
 
 .form-check-label {
-  padding-left: 0.2rem;
-}
+  padding-left: 0.2rem; }
 
 .no-page .no-comment {
   padding: 6px; }

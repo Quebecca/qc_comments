@@ -1,4 +1,5 @@
 <?php
+// @todo : TYPO3 die...
 call_user_func(
     function()
     {
@@ -6,16 +7,8 @@ call_user_func(
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
             'Qc.QcComments',
             'commentsForm',
-            ['Comments' => 'submitForm'],
-            []
-        );
-
-
-        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-            'Qc.QcComments',
-            'commentsForm',
-            ['Comments' => 'show'],
-            []
+            [Qc\QcComments\Controller\CommentsController::class => 'show,addComment'], //With cash - prevent storing cashed data
+            [Qc\QcComments\Controller\CommentsController::class  => 'show,addComment'] // storing without passing by cash
         );
 
     });

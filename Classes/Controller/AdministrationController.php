@@ -41,7 +41,7 @@ class AdministrationController extends QcBackendModuleActionController
      */
     protected Icon $icon;
 
-    protected array $settings;
+
 
     /**
      * @var CommentRepository
@@ -153,6 +153,7 @@ class AdministrationController extends QcBackendModuleActionController
      *  We need to specify the filter class in the argument to prevent map error
      * @param Filter|null $filter
      * @return void
+     * @throws Exception
      */
     public function listAction(Filter $filter = null)
     {
@@ -167,13 +168,13 @@ class AdministrationController extends QcBackendModuleActionController
             'href' => $this->getUrl('resetFilter')
         ];
         $tooMuchPages = false;
-        $tooMuchComments = $this->commentsRepository->getListCount($filter) > $this->settings['maxComments'];
+        $tooMuchComments = $this->commentsRepository->getListCount() > $this->settings['maxComments'];
         $pages_ids = $this->commentsRepository->getPageIdsList($filter->getDepth());
         if (count($pages_ids) > $this->settings['maxStats'] && $filter->getIncludeEmptyPages()) {
             $tooMuchPages = true;
             $pages_ids = array_slice($pages_ids, 0, $this->settings['maxStats']);
         }
-        $stats = $this->commentsRepository->getStatsData($filter, $pages_ids, true);
+        $stats = $this->commentsRepository->getDataStats( $pages_ids, true);
         $tooMuchPages = $tooMuchPages ?: count($stats) > $this->settings['maxStats'];
         $pages_ids = array_map(function ($row) {
             return $row['page_uid'];
@@ -182,9 +183,7 @@ class AdministrationController extends QcBackendModuleActionController
             $message = $this->translate('tooMuchResults', [$this->settings['maxStats'], $this->settings['maxComments']]);
             $this->addFlashMessage($message, null, AbstractMessage::WARNING);
         }
-        $comments = $this->commentsRepository->getListData($filter, \PDO::FETCH_GROUP | \PDO::FETCH_ASSOC, true, $pages_ids);
-       // $x =  $this->commentsRepository->getDataList($filter);
-       // debug($x);
+        $comments = $this->commentsRepository->getDataList( $pages_ids,true);
         $statsHeaders = $this->getStatsHeaders();
         $commentHeaders = $this->getCommentHeaders();
         $this
@@ -223,7 +222,7 @@ class AdministrationController extends QcBackendModuleActionController
             $tooMuchResults = true;
             $pages_ids = array_slice($pages_ids, 0, $this->settings['maxStats']);
         }
-        $resultData = $this->commentsRepository->getDataStats($filter, $pages_ids,true);
+        $resultData = $this->commentsRepository->getDataStats($pages_ids,true);
         $rows = [];
         foreach ($resultData as $item){
             $item['total_neg'] = $item['total'] - $item['total_pos'];;
@@ -282,6 +281,7 @@ class AdministrationController extends QcBackendModuleActionController
             $this->backendSession->store('filter', $filter);
         }
         $this->view->assign('filter', $filter);
+        $this->commentsRepository->setFilter($filter);
         return $filter;
 
     }

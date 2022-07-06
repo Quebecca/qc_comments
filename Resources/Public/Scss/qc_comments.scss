@@ -4,7 +4,9 @@
 .form-row {
   border-bottom: 1px solid #ccc
 }
-
+.comments-form {
+  display : none !important;
+}
 .checkbox-input {
   margin-top  : 2rem;
 }
