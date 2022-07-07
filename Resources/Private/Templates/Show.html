@@ -7,8 +7,8 @@
         <div class="comments-form">
             <f:form action="addComment" object="{comment}" objectName="comment" >
                 <div class="d-flex flex-column">
-                    <f:form.hidden  property="url_orig" value="{v:page.absoluteUrl()}"/>
-                    <f:form.hidden  property="uid_orig" value="{v:page.uid}"/>
+                    <f:form.hidden  property="urlOrig" value="{v:page.absoluteUrl()}"/>
+                    <f:form.hidden  property="uidOrig" value="{v:page.info(field: 'uid')}"/>
                     <div class="p-2">
                         <f:form.radio property="useful" value="1" id="usefulO" />
                         <label for="usefulO">Useful</label>

@@ -109,7 +109,6 @@ return [
         ],
         'comment' => [
             'exclude' => true,
-
             'label' => 'Comment message',
             'config' => [
                 'type' => 'input',
@@ -117,12 +116,32 @@ return [
         ],
         'useful' => [
             'exclude' => true,
-
             'label' => 'Useful',
             'config' => [
                 'type' => 'input',
             ],
         ],
+        'url_orig' => [
+            'exclude' => true,
+            'label' => 'url_orig',
+            'config' => [
+                'type' => 'input',
+            ],
+        ],
+        'uid_orig' => [
+            'exclude' => true,
+            'label' => 'uid_orig',
+            'config' => [
+                'type' => 'input',
+            ],
+        ],
+        'uid_perms_group' => [
+            'exclude' => true,
+            'label' => 'uid_orig',
+            'config' => [
+                'type' => 'input',
+            ],
+        ]
 
     ],
 ];

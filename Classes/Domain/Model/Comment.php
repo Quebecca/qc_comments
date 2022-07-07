@@ -16,14 +16,19 @@ class Comment extends AbstractEntity
     protected string $comment = '';
 
     /**
-     * @var string
+     * @var int
      */
-    protected string $url_orig = '';
+    protected int $urlOrig = 0;
 
     /**
-     * @var string
+     * @var int
      */
-    protected string $uid_orig = '';
+    protected int $uidOrig = 0;
+
+    /**
+     * @var int
+     */
+    protected int $uid_perms_group = 0;
 
     /**
      * @return int
@@ -58,35 +63,53 @@ class Comment extends AbstractEntity
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getUrlOrig(): string
+    public function getUrlOrig(): int
     {
-        return $this->url_orig;
+        return $this->urlOrig;
     }
 
     /**
-     * @param string $url_orig
+     * @param int $urlOrig
      */
-    public function setUrlOrig(string $url_orig): void
+    public function setUrlOrig(int $urlOrig): void
     {
-        $this->url_orig = $url_orig;
+        $this->urlOrig = $urlOrig;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getUidOrig(): string
+    public function getUidOrig(): int
     {
-        return $this->uid_orig;
+        return $this->uidOrig;
     }
 
     /**
-     * @param string $uid_orig
+     * @param int $uidOrig
      */
-    public function setUidOrig(string $uid_orig): void
+    public function setUidOrig(int $uidOrig): void
     {
-        $this->uid_orig = $uid_orig;
+        $this->uidOrig = $uidOrig;
     }
+
+    /**
+     * @return int
+     */
+    public function getUidPermsGroup(): int
+    {
+        return $this->uid_perms_group;
+    }
+
+    /**
+     * @param int $uid_perms_group
+     */
+    public function setUidPermsGroup(int $uid_perms_group): void
+    {
+        $this->uid_perms_group = $uid_perms_group;
+    }
+
+
 
 }
