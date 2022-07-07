@@ -7,7 +7,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility as LocalizationUtilityExtbase;
 
 trait InjectTranslation
 {
-    use injectT3Utilities;
+    //use injectT3Utilities;
     /**
      * @var string
      */
@@ -27,6 +27,20 @@ trait InjectTranslation
                     ?? ($this instanceof ActionController ? $this->request->getControllerExtensionKey() : false);
 
         return $extKey != '' ? LocalizationUtilityExtbase::translate($key, $extKey, (array) $arguments).$this::addTrKey($key) : '';
+    }
+
+    /**
+     * This function is used to return the extension key
+     * @param $key
+     * @return string
+     */
+    static  protected function addTrKey($key): string
+    {
+
+        if ($_GET['addTrKey'] == 1) {
+            return " ($key)";
+        }
+        return '';
     }
 
 }

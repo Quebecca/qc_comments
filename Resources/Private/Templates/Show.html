@@ -1,14 +1,14 @@
-<html
-        xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
->
-<f:if condition="{submittedComment}">
+{namespace v=FluidTYPO3\Vhs\ViewHelpers}
+<f:if condition="{submitted}">
     <f:then>
-        <h3>Formulaire envoyé avec succès!</h3>
+        <span>Formulaire envoyé avec succès!</span>
     </f:then>
     <f:else>
         <div class="comments-form">
             <f:form action="addComment" object="{comment}" objectName="comment" >
                 <div class="d-flex flex-column">
+                    <f:form.hidden  property="url_orig" value="{v:page.absoluteUrl()}"/>
+                    <f:form.hidden  property="uid_orig" value="{v:page.uid}"/>
                     <div class="p-2">
                         <f:form.radio property="useful" value="1" id="usefulO" />
                         <label for="usefulO">Useful</label>
@@ -31,6 +31,3 @@
         </div>
     </f:else>
 </f:if>
-
-
-</html>

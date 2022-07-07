@@ -1,7 +1,7 @@
 <?php
 
 
-use Qc\QcComments\Controller\AdministrationController;
+use Qc\QcComments\Controller\Backend\AdministrationController;
 
 defined('TYPO3') || die('Access denied.');
 

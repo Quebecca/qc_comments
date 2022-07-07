@@ -9,10 +9,21 @@ class Comment extends AbstractEntity
      * @var int
      */
     protected int $useful = 0;
+
     /**
      * @var string
      */
     protected string $comment = '';
+
+    /**
+     * @var string
+     */
+    protected string $url_orig = '';
+
+    /**
+     * @var string
+     */
+    protected string $uid_orig = '';
 
     /**
      * @return int
@@ -44,6 +55,38 @@ class Comment extends AbstractEntity
     public function setComment(string $comment): void
     {
         $this->comment = $comment;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrlOrig(): string
+    {
+        return $this->url_orig;
+    }
+
+    /**
+     * @param string $url_orig
+     */
+    public function setUrlOrig(string $url_orig): void
+    {
+        $this->url_orig = $url_orig;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUidOrig(): string
+    {
+        return $this->uid_orig;
+    }
+
+    /**
+     * @param string $uid_orig
+     */
+    public function setUidOrig(string $uid_orig): void
+    {
+        $this->uid_orig = $uid_orig;
     }
 
 }

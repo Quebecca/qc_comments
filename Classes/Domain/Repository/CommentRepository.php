@@ -4,7 +4,6 @@ namespace Qc\QcComments\Domain\Repository;
 use Doctrine\DBAL\Connection as ConnectionAlias;
 use Doctrine\DBAL\Driver\Exception;
 use Qc\QcComments\Domain\Dto\Filter;
-use Qc\QcComments\Traits\InjectPDO;
 use Qc\QcComments\Traits\InjectTranslation;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -14,7 +13,7 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 
 class CommentRepository extends Repository
 {
-    use InjectPDO, InjectTranslation;
+    use  InjectTranslation;
     protected int $root_id = 0;
     protected array $settings;
     protected string $tableName = 'tx_gabarit_pgu_form_comments_problems';

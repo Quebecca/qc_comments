@@ -1,6 +1,6 @@
 <?php
 
-namespace Qc\QcComments\Controller;
+namespace Qc\QcComments\Controller\Backend;
 
 use LST\BackendModule\Controller\BackendModuleActionController;
 use LST\BackendModule\Domain\Session\BackendSession;
@@ -96,6 +96,7 @@ class QcBackendModuleActionController extends BackendModuleActionController
      * @param $action
      * @param array $arguments
      * @param null $controller
+     * @return string
      */
     protected function getUrl($action, $arguments = [], $controller = null)
     {

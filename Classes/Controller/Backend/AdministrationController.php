@@ -1,6 +1,6 @@
 <?php
 
-namespace Qc\QcComments\Controller;
+namespace Qc\QcComments\Controller\Backend;
 
 use Doctrine\DBAL\Driver\Exception;
 use Qc\QcComments\Domain\Repository\CommentRepository;
@@ -22,14 +22,8 @@ use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
 class AdministrationController extends QcBackendModuleActionController
 {
-    // @todo : repalce root_id  - $context->getPropertyFromAspect('language', 'id');
 
     use InjectTranslation, injectT3Utilities;
-
-    /**
-     * @var string
-     */
-    protected string $tableName = 'tx_gabarit_pgu_form_comments_problems';
 
     /**
      * @var int|mixed
