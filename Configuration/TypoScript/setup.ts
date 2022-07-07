@@ -9,6 +9,21 @@ plugin.commentsForm {
     settings{
 
     }
+    persistence {
+        classes {
+            Qc\QcComments\Domain\Model\Comment {
+                mapping {
+                    columns {
+                        url_orig.mapOnProperty = urlOrig
+                        uid_orig.mapOnProperty = uidOrig
+                        uid_perms_group.mapOnProperty = uidPermsGroup
+                    }
+                }
+            }
+        }
+    }
+
+
 }
 
 

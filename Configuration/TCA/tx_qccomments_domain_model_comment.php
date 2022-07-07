@@ -128,7 +128,7 @@ return [
                 'type' => 'input',
             ],
         ],
-        'uid_orig' => [
+        'uid_Orig' => [
             'exclude' => true,
             'label' => 'uid_orig',
             'config' => [
@@ -137,7 +137,7 @@ return [
         ],
         'uid_perms_group' => [
             'exclude' => true,
-            'label' => 'uid_orig',
+            'label' => 'uid_perms_group',
             'config' => [
                 'type' => 'input',
             ],

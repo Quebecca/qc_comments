@@ -15,20 +15,11 @@ class Comment extends AbstractEntity
      */
     protected string $comment = '';
 
-    /**
-     * @var int
-     */
-    protected int $urlOrig = 0;
+    protected string $urlOrig = '';
 
-    /**
-     * @var int
-     */
     protected int $uidOrig = 0;
 
-    /**
-     * @var int
-     */
-    protected int $uid_perms_group = 0;
+    protected int $uidPermsGroup = 0;
 
     /**
      * @return int
@@ -63,17 +54,17 @@ class Comment extends AbstractEntity
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getUrlOrig(): int
+    public function getUrlOrig(): string
     {
         return $this->urlOrig;
     }
 
     /**
-     * @param int $urlOrig
+     * @param string $urlOrig
      */
-    public function setUrlOrig(int $urlOrig): void
+    public function setUrlOrig(string $urlOrig): void
     {
         $this->urlOrig = $urlOrig;
     }
@@ -99,17 +90,14 @@ class Comment extends AbstractEntity
      */
     public function getUidPermsGroup(): int
     {
-        return $this->uid_perms_group;
+        return $this->uidPermsGroup;
     }
 
     /**
-     * @param int $uid_perms_group
+     * @param int $uidPermsGroup
      */
-    public function setUidPermsGroup(int $uid_perms_group): void
+    public function setUidPermsGroup(int $uidPermsGroup): void
     {
-        $this->uid_perms_group = $uid_perms_group;
+        $this->uidPermsGroup = $uidPermsGroup;
     }
-
-
-
 }

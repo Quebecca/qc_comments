@@ -28,19 +28,18 @@ class CommentsController extends ActionController
     }
 
     /**
-     * @param Comment|null $comment
+     * @param Comment $comment
      * @throws IllegalObjectTypeException
      * @throws StopActionException
-     * @throws AspectNotFoundException
      */
-    public function addCommentAction(Comment $comment = null){
-        $context = GeneralUtility::makeInstance(Context::class);
-        debug($context->getPropertyFromAspect('backend.user', 'groupIds'));
+    public function saveCommentAction(Comment $comment){
         $pageUid = $comment->getUidOrig();
+        // @todo : should store the absolute url or uri
         $comment->setUidPermsGroup(
             BackendUtility::getRecord('pages', $pageUid, 'perms_groupid', "uid = $pageUid")['perms_groupid']
         );
         $this->commentsRepository->add($comment);
+
         $this->forward('show',null, null, ['submitted' => true]);
     }
 
