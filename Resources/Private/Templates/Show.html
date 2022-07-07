@@ -4,6 +4,7 @@
         <span>Formulaire envoyé avec succès!</span>
     </f:then>
     <f:else>
+        <f:variable name="absUrl" value="{v:page.absoluteUrl()}" />
         <div class="comments-form">
             <f:form action="saveComment" object="{comment}" objectName="comment" >
                 <div class="d-flex flex-column">
