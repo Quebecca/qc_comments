@@ -220,7 +220,8 @@ class AdministrationController extends QcBackendModuleActionController
         $resultData = $this->commentsRepository->getDataStats($pages_ids,true);
         $rows = [];
         foreach ($resultData as $item){
-            $item['total_neg'] = $item['total'] - $item['total_pos'];;
+            $item['total_neg'] = $item['total'] - $item['total_pos'];
+            $item['avg'] = number_format((($item['total_pos'] - $item['total_neg']) / $item['total']), 3)  ;
             $rows[] = $item;
         }
         if ($tooMuchResults || count($rows) > $this->settings['maxStats']) {

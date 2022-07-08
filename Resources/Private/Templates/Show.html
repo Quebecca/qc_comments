@@ -7,9 +7,19 @@
     input[type=radio] {
     }
     input[type=submit] {
-        margin-left : 0.5rem;
+        margin-left : 1rem;
+    }
+    .comment-section {
+        display : none;
+    }
+    .comments-form {
+        background-color : red;
     }
 </style>
+<script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
 <f:if condition="{submitted}">
     <f:then>
         <span>Formulaire envoyé avec succès!</span>
@@ -22,24 +32,37 @@
                     <f:form.hidden  property="urlOrig" value="{absUrl}"/>
                     <f:form.hidden  property="uidOrig" value="{v:page.info(field: 'uid')}"/>
 
-                    <div class="p-2 useful-check">
-                        <f:form.radio property="useful" value="1" id="usefulO" />
+                    <div class="p-2 ">
+                        <f:form.radio property="useful" value="1" id="usefulO" checked="false" />
                         <label for="usefulO">Useful</label>
 
-                        <f:form.radio property="useful" value="0" id="usefulN"/>
+                        <f:form.radio property="useful" value="0" id="usefulN"  checked="false"/>
                         <label for="usefulN">Not Useful</label>
                     </div>
-                    <div class="p-2">
-                        <f:form.textarea
-                                property="comment"
-                                class="powermail_textarea form-control "
-                                data="{date-type: 'date'}"
-                        />
+                    <div class="comment-section" >
+                        <div class="p-2 comment-section">
+                            <f:form.textarea
+                                    property="comment"
+                                    class="powermail_textarea form-control "
+                                    data="{date-type: 'date'}"
+                            />
+                        </div>
+                        <br>
+                        <f:form.submit value="Soumettre" class="powermail_submit btn btn-primary displayBlock" style="height : 3rem; margin-left : 0.5rem;"/>
                     </div>
                 </div>
-                <f:form.submit value="Soumettre" class="powermail_submit btn btn-primary displayBlock" style="height : 3rem;"/>
-
             </f:form>
         </div>
     </f:else>
 </f:if>
+
+<script>
+    $(document).ready(function(){
+        [$('#usefulN'), $('#usefulO')].map(displayCommentSection)
+        function displayCommentSection (element) {
+            element.change(function (){
+                $('.comment-section').css('display', 'block');
+            })
+        }
+    });
+</script>
