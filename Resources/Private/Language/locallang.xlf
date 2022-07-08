@@ -110,13 +110,13 @@
 			<trans-unit id="comments.h.comment_uid">
 				<source>Uid</source>
 			</trans-unit>
-			<trans-unit id="comments.h.date_heure">
+			<trans-unit id="comments.h.date_houre">
 				<source>Date/Time</source>
 			</trans-unit>
-			<trans-unit id="comments.h.commentaire">
+			<trans-unit id="comments.h.comment">
 				<source>Comment</source>
 			</trans-unit>
-			<trans-unit id="comments.h.appreciation">
+			<trans-unit id="comments.h.useful">
 				<source>Useful</source>
 			</trans-unit>
 			<trans-unit id="positive">

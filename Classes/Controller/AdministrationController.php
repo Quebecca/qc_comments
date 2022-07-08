@@ -1,8 +1,9 @@
 <?php
 
-namespace Qc\QcComments\Controller\Backend;
+namespace Qc\QcComments\Controller;
 
 use Doctrine\DBAL\Driver\Exception;
+use Qc\QcComments\Controller\Backend\QcBackendModuleActionController;
 use Qc\QcComments\Domain\Repository\CommentRepository;
 use Qc\QcComments\Domain\Dto\Filter;
 use Qc\QcComments\Traits\injectT3Utilities;
@@ -320,7 +321,8 @@ class AdministrationController extends QcBackendModuleActionController
     {
         $headers = [];
 
-        foreach (['date_heure', 'commentaire', 'appreciation',] as $col) {
+       // foreach (['date_houre', 'comment', 'appreciation',] as $col) {
+        foreach (['date_houre', 'comment', 'useful',] as $col) {
             $headers[$col] = $this->translate('comments.h.' . $col);
         }
         if ($include_csv_headers) {

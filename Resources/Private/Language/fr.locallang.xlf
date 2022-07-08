@@ -116,13 +116,13 @@
             <trans-unit id="csv.h.comment_uid">
                 <target>Id du commentaire</target>
             </trans-unit>
-            <trans-unit id="comments.h.date_heure">
+            <trans-unit id="comments.h.date_houre">
                 <target>Date et heure</target>
             </trans-unit>
-            <trans-unit id="comments.h.commentaire">
+            <trans-unit id="comments.h.comment">
                 <target>Commentaire</target>
             </trans-unit>
-            <trans-unit id="comments.h.appreciation">
+            <trans-unit id="comments.h.useful">
                 <target>Utile</target>
             </trans-unit>
             <trans-unit id="positive">

@@ -16,7 +16,7 @@ class CommentRepository extends Repository
     use  InjectTranslation;
     protected int $root_id = 0;
     protected array $settings;
-    protected string $tableName = 'tx_gabarit_pgu_form_comments_problems';
+    protected string $tableName = 'tx_qccomments_domain_model_comment';
     protected Filter $filter;
     protected string $lang_criteria;
     protected string $date_criteria;
@@ -87,7 +87,7 @@ class CommentRepository extends Repository
             1 => $this->translate('positive'),
         ];
         $data =  $queryBuilder
-            ->select('p.uid','p.title', 'date_heure', 'commentaire', 'utile')
+            ->select('p.uid','p.title', 'date_houre', 'comment', 'useful')
             ->from($this->tableName)
             ->join(
                 $this->tableName,
@@ -105,7 +105,6 @@ class CommentRepository extends Repository
             $rows[$item['uid']][] = $item;
         }
         return $rows;
-
     }
 
 
@@ -145,8 +144,8 @@ class CommentRepository extends Repository
         return $queryBuilder
             ->select('p.uid as page_uid', 'p.title as page_title')
             ->addSelectLiteral(
-                $queryBuilder->expr()->avg('utile', 'avg'),
-                $queryBuilder->expr()->sum('utile', 'total_pos'),
+                $queryBuilder->expr()->avg('useful', 'avg'),
+                $queryBuilder->expr()->sum('useful', 'total_pos'),
                 $queryBuilder->expr()->count('uid_orig', 'total'),
             )
             ->from($this->tableName)

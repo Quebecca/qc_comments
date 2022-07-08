@@ -14,6 +14,7 @@ plugin.commentsForm {
             Qc\QcComments\Domain\Model\Comment {
                 mapping {
                     columns {
+                        date_houre.mapOnProperty = dateHoure
                         url_orig.mapOnProperty = urlOrig
                         uid_orig.mapOnProperty = uidOrig
                         uid_perms_group.mapOnProperty = uidPermsGroup

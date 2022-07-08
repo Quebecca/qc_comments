@@ -193,15 +193,15 @@ class Filter
             if($this->startDate != ''){
                 // delete minutes seconds
                 $formatedStartDate = explode(' ', $this->startDate);
-                $criteria = " and date_heure >= '". date('Y-m-d H:i:s', strtotime($formatedStartDate[0]))."'";
+                $criteria = " and date_houre >= '". date('Y-m-d H:i:s', strtotime($formatedStartDate[0]))."'";
             }
             if($this->endDate != ''){
                 $formatedEndDate = explode(' ', $this->endDate);
-                $criteria .= " and date_heure <= '". date('Y-m-d H:i:s',strtotime($formatedEndDate[0]))."'";
+                $criteria .= " and date_houre <= '". date('Y-m-d H:i:s',strtotime($formatedEndDate[0]))."'";
             }
         }
        else{
-           $criteria = " and date_heure >= '" . $this->getDateForRange()."'";
+           $criteria = " and date_houre >= '" . $this->getDateForRange()."'";
        }
         return $criteria;
     }

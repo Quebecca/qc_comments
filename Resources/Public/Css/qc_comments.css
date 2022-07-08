@@ -26,3 +26,6 @@
   .commentaire span:hover {
     white-space: normal;
     height: 100%; }
+
+.useful-check {
+  color: red; }

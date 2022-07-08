@@ -21,6 +21,8 @@ class Comment extends AbstractEntity
 
     protected int $uidPermsGroup = 0;
 
+    protected string $dateHoure = '';
+
     /**
      * @return int
      */
@@ -100,4 +102,21 @@ class Comment extends AbstractEntity
     {
         $this->uidPermsGroup = $uidPermsGroup;
     }
+
+    /**
+     * @return string
+     */
+    public function getDateHoure(): string
+    {
+        return $this->dateHoure;
+    }
+
+    /**
+     * @param string $dateHoure
+     */
+    public function setDateHoure(string $dateHoure): void
+    {
+        $this->dateHoure = $dateHoure;
+    }
+
 }

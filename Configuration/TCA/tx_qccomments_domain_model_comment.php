@@ -141,6 +141,13 @@ return [
             'config' => [
                 'type' => 'input',
             ],
+        ],
+        'date_houre' => [
+            'exclude' => true,
+            'label' => 'date_houre',
+            'config' => [
+                'type' => 'input',
+            ],
         ]
 
     ],

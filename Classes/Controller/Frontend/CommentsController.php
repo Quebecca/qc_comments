@@ -38,6 +38,7 @@ class CommentsController extends ActionController
         $comment->setUidPermsGroup(
             BackendUtility::getRecord('pages', $pageUid, 'perms_groupid', "uid = $pageUid")['perms_groupid']
         );
+        $comment->setDateHoure(date('Y-m-d H:i:s'));
         $this->commentsRepository->add($comment);
 
         $this->forward('show',null, null, ['submitted' => true]);
