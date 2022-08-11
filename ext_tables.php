@@ -16,8 +16,8 @@ call_user_func(
     function () {
 
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-            'QcComments',
-            'Qccomments',
+            'Qc.QcComments',
+            'commentsForm',
             'Add comments section in page'
         );
 
