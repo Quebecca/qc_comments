@@ -4,6 +4,7 @@ namespace Qc\QcComments\Controller;
 
 use Doctrine\DBAL\Driver\Exception;
 use Qc\QcComments\Domain\Dto\Filter;
+use Qc\QcComments\View\CsvView;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 
 class StatisticsTabController extends QcBackendModuleController
@@ -37,7 +38,7 @@ class StatisticsTabController extends QcBackendModuleController
          }
          $this->view
              ->assign('csvButton', [
-                 'href' => $this->getUrl('exportStats'),
+                 'href' => $this->getUrl('exportStatistics'),
                  'icon' => $this->icon,
              ])
              ->assign('resetButton', [
@@ -49,16 +50,17 @@ class StatisticsTabController extends QcBackendModuleController
 
     /**
      * @param null $filter
+     * @throws Exception
      */
     public function exportStatisticsAction($filter = null)
     {
         $filter = $this->processFilter($filter);
         $this->view = $this->objectManager->get(CsvView::class);
-        $this->view->setFilename($this->getCSVFilename($filter, 'stats'));
+        $this->view->setFilename($this->getCSVFilename($filter, 'statistics'));
         $this->view->setControllerContext($this->controllerContext);
         $this->view->assign('headers', $this->getStatsHeaders());
         $filter->setIncludeEmptyPages(true);
-        $this->view->assign('rows', $this->commentsRepository->getStatsData($filter, [], false));
+        $this->view->assign('rows', $this->commentsRepository->getDataStats($filter, [], false));
     }
 
 }

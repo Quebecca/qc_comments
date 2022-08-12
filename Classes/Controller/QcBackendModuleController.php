@@ -8,6 +8,7 @@ use Qc\QcComments\Domain\Dto\Filter;
 use Qc\QcComments\Domain\Repository\CommentRepository;
 use Qc\QcComments\Traits\injectT3Utilities;
 use Qc\QcComments\Traits\InjectTranslation;
+use Qc\QcComments\View\CsvView;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -319,6 +320,36 @@ class QcBackendModuleController extends BackendModuleActionController
     public function resetFilterAction(){
         $filter = $this->processFilter(new Filter());
         $this->redirect('list', NULL, NULL, ['filter' => $filter]);
+    }
+
+    /**
+     * @param Filter $filter
+     * @param $base_name
+     * @return string
+     */
+    protected function getCSVFilename(Filter $filter, $base_name): string
+    {
+        $format = $this->settings['csvExport']['filename']["dateFormat"];
+        $now = date($format);
+        $from = $filter->getDateForRange($format);
+        return implode('-', array_filter([
+                $this->translate($base_name),
+                $filter->getLang(),
+                'uid' . $this->root_id,
+                $from,
+                $now,
+            ])) . '.csv';
+
+    }
+
+    public function export(string $base_name, array $data, $filter){
+        $filter = $this->processFilter($filter);
+        $this->view = $this->objectManager->get(CsvView::class);
+        $this->view->setFilename($this->getCSVFilename($filter, $base_name));
+        $this->view->setControllerContext($this->controllerContext);
+        $this->view->assign('headers', $this->getStatsHeaders());
+        $this->view->assign('rows', $data);
+        $filter->setIncludeEmptyPages(true);
     }
 
 }

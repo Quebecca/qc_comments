@@ -48,25 +48,12 @@ class CommentRepository extends Repository
             'whereClause' => ''
         ];
         $ids_list = $ids_list ?: $this->getPageIdsList($this->filter->getDepth());
-        $ids_csv = implode(',', $ids_list);
+
+        debug($ids_list);
+        $ids_list = ['14528'];
+        $ids_csv = $ids_list != null ? implode(',', $ids_list) : '';
         $constrains['joinCond'] = " p.uid = uid_orig $this->date_criteria $this->lang_criteria";
         $constrains['whereClause'] = " p.uid in ($ids_csv)";
-        /*
-        "
-                select * from (
-                      select %select
-                        from pages p
-                            $join tx_gabarit_pgu_form_comments_problems comm
-                                on p.uid = uid_orig $date_criteria $lang_criteria
-                        where
-                              p.uid in ($ids_csv)
-                        %group_by
-                        %limit
-
-                ) a
-                "
-
-        */
         return $constrains;
     }
 
