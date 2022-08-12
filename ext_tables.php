@@ -2,6 +2,9 @@
 
 
 use Qc\QcComments\Controller\AdministrationController;
+use Qc\QcComments\Controller\Backend\CommentsTabController;
+use Qc\QcComments\Controller\Backend\QcBackendModuleActionController;
+use Qc\QcComments\Controller\Backend\StatisticsTabController;
 
 defined('TYPO3') || die('Access denied.');
 
@@ -29,13 +32,14 @@ call_user_func(
                 'admin',
                 '',
                 [
-                    AdministrationController::class => 'stats, list, exportStats, exportList, resetFilter',
+                    QcBackendModuleActionController::class => 'resetFilter',
+                    StatisticsTabController::class => 'statistics, , exportStatistics, , ',
+                    CommentsTabController::class => 'comments, exportComments',
                 ],
                 [
                     'access' => 'user,group',
                     'icon' => 'EXT:qc_comments/Resources/Public/Icons/qc_comments.svg',
                     'labels' => 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:qc_comments',
-//                    'navigationComponentId' => '',
                 ]
             );
 

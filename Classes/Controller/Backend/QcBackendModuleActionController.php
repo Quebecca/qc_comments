@@ -4,12 +4,34 @@ namespace Qc\QcComments\Controller\Backend;
 
 use LST\BackendModule\Controller\BackendModuleActionController;
 use LST\BackendModule\Domain\Session\BackendSession;
+use Qc\QcComments\Domain\Repository\CommentRepository;
+use Qc\QcComments\Traits\injectT3Utilities;
+use Qc\QcComments\Traits\InjectTranslation;
+use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
+use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class QcBackendModuleActionController extends BackendModuleActionController
 {
+    use InjectTranslation, injectT3Utilities;
+
+    /**
+     * @var int|mixed
+     */
+    protected $root_id;
+
+    /**
+     * @var Icon
+     */
+    protected Icon $icon;
+
     /** @var BackendSession */
     protected $backendSession = null;
 
@@ -34,6 +56,15 @@ class QcBackendModuleActionController extends BackendModuleActionController
         $this->backendSession = $backendSession;
     }
 
+    /**
+     * @var CommentRepository
+     */
+    protected CommentRepository $commentsRepository;
+
+    // should place the DI before any methods
+    public function injectCommentRepository(CommentRepository $commentsRepository){
+        $this->commentsRepository = $commentsRepository;
+    }
     /**
      * Forward to the last selected action in case the current action is the default one
      * @throws StopActionException
@@ -88,9 +119,38 @@ class QcBackendModuleActionController extends BackendModuleActionController
         $this->backendSession->setStorageKey($this->extKey);
         $this->setMenu();
         $this->forwardToLastSelectedAction();
+        $this->root_id = GeneralUtility::_GP('id');
+        $this->commentsRepository->setRootId((int)$this->root_id);
+        $this->commentsRepository->setSettings($this->settings);
     }
 
-    protected function setMenu() {}
+
+    /**
+     * This function is used to set the functions elements of the module
+     */
+    protected function setMenu()
+    {
+        if (!$this->root_id) {
+            return;
+        }
+        // Define menu items
+        $this->setMenuIdentifier('commentsMenu');
+        $menuItems = [
+            [
+                'label' => $this->translate('menu.stats'),
+                'action' => 'stats',
+                'controller' => 'Administration'
+            ],
+            [
+                'label' => $this->translate('menu.list'),
+                'action' => 'list',
+                'controller' => 'Administration'
+            ],
+
+        ];
+        $this->setMenuItems($menuItems);
+    }
+
 
     /**
      * @param $action
@@ -106,5 +166,129 @@ class QcBackendModuleActionController extends BackendModuleActionController
         return $uriBuilder->uriFor($action, $arguments, $controller);
     }
 
+    /**
+     * @param ViewInterface $view
+     * @return void
+     * @throws RouteNotFoundException
+     */
+    protected function initializeView(ViewInterface $view)
+    {
+        parent::initializeView($view);
+        $moduleTemplate = $view->getModuleTemplate();
+        if ($this->root_id && $moduleTemplate) {
+            $record = BackendUtility::readPageAccess($this->root_id, $this->getBackendUser()->getPagePermsClause(1));
+            $moduleTemplate->getDocHeaderComponent()->setMetaInformation($record);
+
+            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
+
+            $this->pageRenderer->addCssFile('EXT:qc_comments/Resources/Public/Css/qc_comments.css');
+        }
+    }
+
+
+    public function initializeStatsAction()
+    {
+        $this->sharedPreChecks();
+    }
+    /**
+     * @throws NoSuchArgumentException|StopActionException
+     */
+    public function initializeListAction()
+    {
+        if (!isset($this->settings['dateFormat'])) {
+            $this->settings['dateFormat'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?: 'd-m-Y';
+        }
+        if (!isset($this->settings['timeFormat'])) {
+            $this->settings['timeFormat'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
+        }
+
+        $constraintConfiguration = $this->arguments->getArgument('filter')->getPropertyMappingConfiguration();
+        $constraintConfiguration->allowAllProperties();
+        $this->sharedPreChecks();
+    }
+
+    /**
+     * @throws StopActionException
+     */
+    protected function sharedPreChecks()
+    {
+        $this->forwardIfNoPageSelected();
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $this->icon = $this->iconFactory->getIcon('actions-document-export-csv', Icon::SIZE_SMALL);
+    }
+
+
+    public function noPageSelectedAction()
+    {
+        $this->setMenuItems([]);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getStatsHeaders(): array
+    {
+        $headers = [];
+        foreach (['page_uid', 'page_title', 'total_pos', 'total_neg', 'total', 'avg'] as $col) {
+            $headers[$col] = $this->translate('stats.h.' . $col);
+        }
+        return $headers;
+    }
+
+    /**
+     * @param false $include_csv_headers
+     * @return array|string[]
+     */
+    protected function getCommentHeaders($include_csv_headers = false): array
+    {
+        $headers = [];
+
+        // foreach (['date_houre', 'comment', 'appreciation',] as $col) {
+        foreach (['date_houre', 'comment', 'useful',] as $col) {
+            $headers[$col] = $this->translate('comments.h.' . $col);
+        }
+        if ($include_csv_headers) {
+            $headers = array_merge([
+                'page_uid' => $this->translate('csv.h.page_uid'),
+                'page_title' => $this->translate('stats.h.page_title'),
+            ], $headers);
+        }
+        return $headers;
+    }
+
+    /**
+     * This function will be called if there is no page selected
+     * @throws StopActionException
+     */
+    protected function forwardIfNoPageSelected()
+    {
+        if (!$this->root_id) {
+            $this->forward('noPageSelected');
+        }
+    }
+
+    /**
+     * Returns join clauses for pagetree depth levels
+     * @param $depth
+     * @return string
+     */
+    protected function getPageTreeView($depth): string
+    {
+
+        $child = $parent = 'lvl_0';
+        $clauses = [];
+        for ($i = 1; $i <= $depth; $i++) {
+            $child = 'lvl_' . $i;
+            $clauses[] = "left join pages $child on $parent.uid in ($child.uid, $child.pid) and !$child.deleted";
+            $parent = $child;
+        }
+        $joins = implode("\n", $clauses);
+        return "select distinct $child.* from pages lvl_0 $joins where lvl_0.uid = $this->root_id";
+    }
+
+    public function resetFilterAction(){
+        debug("reset Filter ....");
+        die();
+    }
 
 }
