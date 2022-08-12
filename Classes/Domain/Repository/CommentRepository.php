@@ -89,7 +89,6 @@ class CommentRepository extends Repository
         foreach ($data as $item){
             $rows[$item['uid']][] = $item;
         }
-        debug($rows);
         return $rows;
     }
 
@@ -127,7 +126,7 @@ class CommentRepository extends Repository
         $queryBuilder = $this->generateQueryBuilder();
         $constraints = $this->getConstraints($page_ids);
         $limitResult = $limit ? 'limit ' . ($this->settings['maxStats'] + 1) : '';
-        $x =  $queryBuilder
+        return $queryBuilder
             ->select('p.uid as page_uid', 'p.title as page_title')
             ->addSelectLiteral(
                 $queryBuilder->expr()->avg('useful', 'avg'),
@@ -148,8 +147,6 @@ class CommentRepository extends Repository
            // ->setMaxResults($limitResult)
             ->execute()
             ->fetchAllAssociative();
-debug($x);
-return $x;
     }
 
 
