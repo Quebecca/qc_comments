@@ -4,6 +4,7 @@ namespace Qc\QcComments\Controller;
 
 use Doctrine\DBAL\Driver\Exception;
 use Qc\QcComments\Domain\Dto\Filter;
+use Qc\QcComments\View\CsvView;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 
 class CommentsTabController extends QcBackendModuleController
@@ -19,7 +20,7 @@ class CommentsTabController extends QcBackendModuleController
         $filter = $this->processFilter($filter);
 
         $csvButton = [
-            'href' => $this->getUrl('exportList'),
+            'href' => $this->getUrl('exportComments'),
             'icon' => $this->icon,
         ];
 
@@ -28,12 +29,12 @@ class CommentsTabController extends QcBackendModuleController
         ];
         $tooMuchPages = false;
         $tooMuchComments = $this->commentsRepository->getListCount() > $this->settings['maxComments'];
-        $pages_ids = $this->commentsRepository->getPageIdsList($filter->getDepth());
-        if (count($pages_ids) > $this->settings['maxStats'] && $filter->getIncludeEmptyPages()) {
+        $this->pages_ids = $this->commentsRepository->getPageIdsList($filter->getDepth());
+        if (count($this->pages_ids) > $this->settings['maxStats'] && $filter->getIncludeEmptyPages()) {
             $tooMuchPages = true;
-            $pages_ids = array_slice($pages_ids, 0, $this->settings['maxStats']);
+            $pages_ids = array_slice($this->pages_ids, 0, $this->settings['maxStats']);
         }
-        $stats = $this->commentsRepository->getDataStats( $pages_ids, true);
+        $stats = $this->commentsRepository->getDataStats( $this->pages_ids, true);
         $tooMuchPages = $tooMuchPages ?: count($stats) > $this->settings['maxStats'];
         $pages_ids = array_map(function ($row) {
             return $row['page_uid'];
@@ -68,12 +69,16 @@ class CommentsTabController extends QcBackendModuleController
         $this->view = $this->objectManager->get(CsvView::class);
         $this->view->setFilename($this->getCSVFilename($filter, 'comments'));
         $this->view->setControllerContext($this->controllerContext);
-        $this->view->assign('headers', $this->getCommentHeaders(true));
+        $this->view->assign('headers', $this->getStatsHeaders());
         $filter->setIncludeEmptyPages(true);
-        $rows = $this->commentsRepository->getListData($filter);
+        $data = $this->commentsRepository->getDataList($this->pages_ids);
+        $rows = [];
+        foreach ($data as $row){
+            foreach ($row as $item){
+                $rows[] = $item;
 
-
-
+            }
+        }
         $this->view->assign('rows', $rows);
     }
 
