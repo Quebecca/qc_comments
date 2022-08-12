@@ -18,13 +18,13 @@ class StatisticsTabController extends QcBackendModuleController
     public function statisticsAction(Filter $filter = null)
     {
          $filter = $this->processFilter($filter);
-         $pages_ids = $this->commentsRepository->getPageIdsList($filter->getDepth());
+         $this->pages_ids = $this->commentsRepository->getPageIdsList($filter->getDepth());
          $tooMuchResults = false;
-         if (count($pages_ids) > $this->settings['maxStats'] && $filter->getIncludeEmptyPages()) {
+         if (count($this->pages_ids) > $this->settings['maxStats'] && $filter->getIncludeEmptyPages()) {
              $tooMuchResults = true;
-             $pages_ids = array_slice($pages_ids, 0, $this->settings['maxStats']);
+             $pages_ids = array_slice($this->pages_ids, 0, $this->settings['maxStats']);
          }
-         $resultData = $this->commentsRepository->getDataStats($pages_ids,true);
+         $resultData = $this->commentsRepository->getDataStats($this->pages_ids,true);
          $rows = [];
          foreach ($resultData as $item){
              $item['total_neg'] = $item['total'] - $item['total_pos'];
@@ -60,7 +60,7 @@ class StatisticsTabController extends QcBackendModuleController
         $this->view->setControllerContext($this->controllerContext);
         $this->view->assign('headers', $this->getStatsHeaders());
         $filter->setIncludeEmptyPages(true);
-        $this->view->assign('rows', $this->commentsRepository->getDataStats($filter, [], false));
+        $this->view->assign('rows', $this->commentsRepository->getDataStats($this->pages_ids, [], false));
     }
 
 }

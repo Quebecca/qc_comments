@@ -52,6 +52,8 @@ class QcBackendModuleController extends BackendModuleActionController
      */
     protected string $controllerName;
 
+    protected array $pages_ids = [];
+
 
     public function injectBackendSession(BackendSession $backendSession)
     {

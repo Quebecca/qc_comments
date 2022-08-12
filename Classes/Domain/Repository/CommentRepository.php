@@ -49,9 +49,7 @@ class CommentRepository extends Repository
         ];
         $ids_list = $ids_list ?: $this->getPageIdsList($this->filter->getDepth());
 
-        debug($ids_list);
-        $ids_list = ['14528'];
-        $ids_csv = $ids_list != null ? implode(',', $ids_list) : '';
+        $ids_csv = implode(',', $ids_list);
         $constrains['joinCond'] = " p.uid = uid_orig $this->date_criteria $this->lang_criteria";
         $constrains['whereClause'] = " p.uid in ($ids_csv)";
         return $constrains;
