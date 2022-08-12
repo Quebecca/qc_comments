@@ -1,12 +1,12 @@
 <?php
 
-namespace Qc\QcComments\Controller\Backend;
+namespace Qc\QcComments\Controller;
 
 use Doctrine\DBAL\Driver\Exception;
 use Qc\QcComments\Domain\Dto\Filter;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 
-class StatisticsTabController
+class StatisticsTabController extends QcBackendModuleController
 {
 
     /**
@@ -16,9 +16,7 @@ class StatisticsTabController
      */
     public function statisticsAction(Filter $filter = null)
     {
-        debug("statistics section ....");
-
-        /* $filter = $this->processFilter($filter);
+         $filter = $this->processFilter($filter);
          $pages_ids = $this->commentsRepository->getPageIdsList($filter->getDepth());
          $tooMuchResults = false;
          if (count($pages_ids) > $this->settings['maxStats'] && $filter->getIncludeEmptyPages()) {
@@ -46,7 +44,7 @@ class StatisticsTabController
                  'href' => $this->getUrl('resetFilter'),
              ])
              ->assign('headers', $this->getStatsHeaders())
-             ->assign('rows', $rows);*/
+             ->assign('rows', $rows);
     }
 
     /**

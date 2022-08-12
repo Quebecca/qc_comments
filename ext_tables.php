@@ -1,10 +1,9 @@
 <?php
 
 
-use Qc\QcComments\Controller\AdministrationController;
-use Qc\QcComments\Controller\Backend\CommentsTabController;
-use Qc\QcComments\Controller\Backend\QcBackendModuleActionController;
-use Qc\QcComments\Controller\Backend\StatisticsTabController;
+use Qc\QcComments\Controller\CommentsTabController;
+use Qc\QcComments\Controller\QcBackendModuleController;
+use Qc\QcComments\Controller\StatisticsTabController;
 
 defined('TYPO3') || die('Access denied.');
 
@@ -32,9 +31,9 @@ call_user_func(
                 'admin',
                 '',
                 [
-                    QcBackendModuleActionController::class => 'resetFilter',
                     StatisticsTabController::class => 'statistics, , exportStatistics, , ',
                     CommentsTabController::class => 'comments, exportComments',
+                    QcBackendModuleController::class => 'resetFilter',
                 ],
                 [
                     'access' => 'user,group',

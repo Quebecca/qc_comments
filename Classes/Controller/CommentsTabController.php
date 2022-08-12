@@ -1,12 +1,12 @@
 <?php
 
-namespace Qc\QcComments\Controller\Backend;
+namespace Qc\QcComments\Controller;
 
 use Doctrine\DBAL\Driver\Exception;
 use Qc\QcComments\Domain\Dto\Filter;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 
-class CommentsTabController
+class CommentsTabController extends QcBackendModuleController
 {
     /**
      *  We need to specify the filter class in the argument to prevent map error
@@ -16,8 +16,7 @@ class CommentsTabController
      */
     public function commentsAction(Filter $filter = null)
     {
-        debug("comments section ....");
-       /* $filter = $this->processFilter($filter);
+        $filter = $this->processFilter($filter);
 
         $csvButton = [
             'href' => $this->getUrl('exportList'),
@@ -55,7 +54,7 @@ class CommentsTabController
                 'commentHeaders',
                 'stats',
                 'comments'
-            ));*/
+            ));
 
     }
 

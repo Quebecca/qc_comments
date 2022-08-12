@@ -1,9 +1,10 @@
 <?php
 
-namespace Qc\QcComments\Controller\Backend;
+namespace Qc\QcComments\Controller;
 
 use LST\BackendModule\Controller\BackendModuleActionController;
 use LST\BackendModule\Domain\Session\BackendSession;
+use Qc\QcComments\Domain\Dto\Filter;
 use Qc\QcComments\Domain\Repository\CommentRepository;
 use Qc\QcComments\Traits\injectT3Utilities;
 use Qc\QcComments\Traits\InjectTranslation;
@@ -18,7 +19,7 @@ use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
-class QcBackendModuleActionController extends BackendModuleActionController
+class QcBackendModuleController extends BackendModuleActionController
 {
     use InjectTranslation, injectT3Utilities;
 
@@ -30,7 +31,7 @@ class QcBackendModuleActionController extends BackendModuleActionController
     /**
      * @var Icon
      */
-    protected Icon $icon;
+    protected ?Icon $icon = null;
 
     /** @var BackendSession */
     protected $backendSession = null;
@@ -130,21 +131,18 @@ class QcBackendModuleActionController extends BackendModuleActionController
      */
     protected function setMenu()
     {
-        if (!$this->root_id) {
-            return;
-        }
         // Define menu items
         $this->setMenuIdentifier('commentsMenu');
         $menuItems = [
             [
                 'label' => $this->translate('menu.stats'),
-                'action' => 'stats',
-                'controller' => 'Administration'
+                'action' => 'statistics',
+                'controller' => 'StatisticsTab'
             ],
             [
                 'label' => $this->translate('menu.list'),
-                'action' => 'list',
-                'controller' => 'Administration'
+                'action' => 'comments',
+                'controller' => 'CommentsTab'
             ],
 
         ];
@@ -178,14 +176,15 @@ class QcBackendModuleActionController extends BackendModuleActionController
         if ($this->root_id && $moduleTemplate) {
             $record = BackendUtility::readPageAccess($this->root_id, $this->getBackendUser()->getPagePermsClause(1));
             $moduleTemplate->getDocHeaderComponent()->setMetaInformation($record);
-
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
-
             $this->pageRenderer->addCssFile('EXT:qc_comments/Resources/Public/Css/qc_comments.css');
         }
     }
 
 
+    /**
+     * @throws StopActionException
+     */
     public function initializeStatsAction()
     {
         $this->sharedPreChecks();
@@ -201,7 +200,6 @@ class QcBackendModuleActionController extends BackendModuleActionController
         if (!isset($this->settings['timeFormat'])) {
             $this->settings['timeFormat'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
         }
-
         $constraintConfiguration = $this->arguments->getArgument('filter')->getPropertyMappingConfiguration();
         $constraintConfiguration->allowAllProperties();
         $this->sharedPreChecks();
@@ -286,9 +284,41 @@ class QcBackendModuleActionController extends BackendModuleActionController
         return "select distinct $child.* from pages lvl_0 $joins where lvl_0.uid = $this->root_id";
     }
 
+    /**
+     * @param Filter|null $filter
+     * @return mixed|Filter
+     */
+    protected function processFilter(Filter $filter = null)
+    {
+        // Add filtering to records
+
+        if ($filter === null) {
+            // Get filter from session if available
+            $filter = $this->backendSession->get('filter');
+            if (!$filter instanceof Filter) {
+                // No filter available, create new one
+                $filter = new Filter();
+            }
+        } else {
+            if($filter->getDateRange() != 'userDefined'){
+                $filter->setStartDate(null);
+                $filter->setEndDate(null);
+            }
+            $this->backendSession->store('filter', $filter);
+        }
+        $this->view->assign('filter', $filter);
+        $this->commentsRepository->setFilter($filter);
+        return $filter;
+
+    }
+
+    /**
+     * This function will reset the search filter
+     * @throws StopActionException
+     */
     public function resetFilterAction(){
-        debug("reset Filter ....");
-        die();
+        $filter = $this->processFilter(new Filter());
+        $this->redirect('list', NULL, NULL, ['filter' => $filter]);
     }
 
 }
