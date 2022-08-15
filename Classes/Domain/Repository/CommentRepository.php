@@ -150,7 +150,7 @@ class CommentRepository extends Repository
         $rows = [];
         foreach ($data as $item){
             $item['total_neg'] = $item['total'] - $item['total_pos'];
-            $x =  $item['total_neg'] >  $item['total_pos'] ? ($item['total_neg'] - $item['total_pos']) :  $item['total_pos'];
+            $x =  $item['total_neg'] >  $item['total_pos'] ? - (intval($item['total_neg']) - intval($item['total_pos'])) :  $item['total_pos'];
             $item['avg'] = ' ' . number_format((($x) / $item['total']), 3) * 100 . ' %';
             $rows[] = $item;
         }
