@@ -14,6 +14,8 @@ use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 
 class CommentsController extends ActionController
 {
+    // @Todo : Security Test SQL injection in the form OWASP ZAP
+
     protected CommentRepository $commentsRepository;
     public function injectCommentsRepository(CommentRepository $commentsRepository){
         $this->commentsRepository = $commentsRepository;

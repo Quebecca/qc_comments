@@ -2,6 +2,17 @@
 
 namespace Qc\QcComments\Controller;
 
+/***
+ *
+ * This file is part of Qc Comments project.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ *  (c) 2022 <techno@quebec.ca>
+ *
+ ***/
+
 use LST\BackendModule\Controller\BackendModuleActionController;
 use LST\BackendModule\Domain\Session\BackendSession;
 use Qc\QcComments\Domain\Dto\Filter;
@@ -20,7 +31,7 @@ use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
-class QcBackendModuleController extends BackendModuleActionController
+abstract class QcBackendModuleController extends BackendModuleActionController
 {
     use InjectTranslation, injectT3Utilities;
 
@@ -191,6 +202,7 @@ class QcBackendModuleController extends BackendModuleActionController
     {
         $this->sharedPreChecks();
     }
+
     /**
      * @throws NoSuchArgumentException|StopActionException
      */
@@ -254,6 +266,7 @@ class QcBackendModuleController extends BackendModuleActionController
     }
 
     /**
+     * This function is used to get the filter from the backend session
      * @param Filter|null $filter
      * @return mixed|Filter
      */
@@ -310,6 +323,13 @@ class QcBackendModuleController extends BackendModuleActionController
 
     }
 
+    /**
+     * This function is used to export csv file
+     * @param string $base_name
+     * @param array $headers
+     * @param array $data
+     * @param $filter
+     */
     public function export(string $base_name,array $headers, array $data, $filter){
         $filter = $this->processFilter($filter);
         $this->view = $this->objectManager->get(CsvView::class);
@@ -320,5 +340,6 @@ class QcBackendModuleController extends BackendModuleActionController
         $filter->setIncludeEmptyPages(true);
     }
 
+    protected abstract function getHeaders() : array;
 
 }

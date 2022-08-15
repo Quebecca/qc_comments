@@ -2,6 +2,17 @@
 
 namespace Qc\QcComments\Controller;
 
+/***
+ *
+ * This file is part of Qc Comments project.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ *  (c) 2022 <techno@quebec.ca>
+ *
+ ***/
+
 use Doctrine\DBAL\Driver\Exception;
 use Qc\QcComments\Domain\Dto\Filter;
 use Qc\QcComments\View\CsvView;
@@ -11,6 +22,7 @@ use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 class CommentsTabController extends QcBackendModuleController
 {
     /**
+     * This function is used to get the list of comments in BE module
      *  We need to specify the filter class in the argument to prevent map error
      * @param Filter|null $filter
      * @return void
@@ -49,9 +61,6 @@ class CommentsTabController extends QcBackendModuleController
         }
         $comments = $this->commentsRepository->getDataList( $pages_ids,true);
         $commentHeaders = $this->getHeaders();
-
-        // Avg
-      //  $statisticsAvg = $this->statisticsTabController->getStatisticsAvg() * 100 . '%';
         $this
             ->view
             ->assignMultiple(compact(
@@ -65,13 +74,13 @@ class CommentsTabController extends QcBackendModuleController
     }
 
     /**
+     * This function is used to return the headers used in the exported file and the BE module table
      * @param false $include_csv_headers
      * @return array
      */
     protected function getHeaders($include_csv_headers = false): array {
         $headers = [];
 
-        // foreach (['date_houre', 'comment', 'appreciation',] as $col) {
         foreach (['date_houre', 'comment', 'useful',] as $col) {
             $headers[$col] = $this->translate('comments.h.' . $col);
         }
@@ -83,19 +92,15 @@ class CommentsTabController extends QcBackendModuleController
         }
         return $headers;
     }
+
+
     /**
+     * Export function to export comments list to csv file
      * @param null $filter
      * @throws Exception
      */
     public function exportCommentsAction($filter = null)
     {
-     /*   $filter = $this->processFilter($filter);
-        $this->view = $this->objectManager->get(CsvView::class);
-        $this->view->setFilename($this->getCSVFilename($filter, 'comments'));
-        $this->view->setControllerContext($this->controllerContext);
-        $this->view->assign('headers', $this->getStatsHeaders());
-
-        $this->view->assign('rows', $rows);*/
         $filter = $this->processFilter($filter);
         $filter->setIncludeEmptyPages(true);
         $data = $this->commentsRepository->getDataList($this->pages_ids);
