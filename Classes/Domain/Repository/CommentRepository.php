@@ -126,7 +126,7 @@ class CommentRepository extends Repository
         $queryBuilder = $this->generateQueryBuilder();
         $constraints = $this->getConstraints($page_ids);
         $limitResult = $limit ? 'limit ' . ($this->settings['maxStats'] + 1) : '';
-        return $queryBuilder
+        $data =  $queryBuilder
             ->select('p.uid as page_uid', 'p.title as page_title')
             ->addSelectLiteral(
                 $queryBuilder->expr()->avg('useful', 'avg'),
@@ -147,6 +147,14 @@ class CommentRepository extends Repository
            // ->setMaxResults($limitResult)
             ->execute()
             ->fetchAllAssociative();
+        $rows = [];
+        foreach ($data as $item){
+            $item['total_neg'] = $item['total'] - $item['total_pos'];
+            $x =  $item['total_neg'] >  $item['total_pos'] ? ($item['total_neg'] - $item['total_pos']) :  $item['total_pos'];
+            $item['avg'] = ' ' . number_format((($x) / $item['total']), 3) * 100 . ' %';
+            $rows[] = $item;
+        }
+        return $rows;
     }
 
 

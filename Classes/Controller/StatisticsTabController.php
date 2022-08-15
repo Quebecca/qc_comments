@@ -9,23 +9,8 @@ use TYPO3\CMS\Core\Messaging\AbstractMessage;
 
 class StatisticsTabController extends QcBackendModuleController
 {
-    protected array $data = [];
-    protected $statisticsAvg = 0.0;
 
 
-
-    /**
-     * @throws Exception
-     */
-    public function getStatisticsData(){
-        $resultData = $this->commentsRepository->getDataStats($this->pages_ids,true);
-        foreach ($resultData as $item){
-            $item['total_neg'] = $item['total'] - $item['total_pos'];
-            $item['avg'] = number_format((($item['total_pos'] - $item['total_neg']) / $item['total']), 3);
-            $this->setStatisticsAvg($item['avg']);
-            $this->data[] = $item;
-        }
-    }
     /**
      * @param Filter|null $filter // we need to specify the filter class in the argument to prevent map error
      * @return void
@@ -40,11 +25,16 @@ class StatisticsTabController extends QcBackendModuleController
              $tooMuchResults = true;
              $pages_ids = array_slice($this->pages_ids, 0, $this->settings['maxStats']);
          }
-        $this->getStatisticsData();
-         if ($tooMuchResults || count($this->data) > $this->settings['maxStats']) {
+        $resultData = $this->commentsRepository->getDataStats($this->pages_ids,true);
+       /* foreach ($resultData as $item){
+            $item['total_neg'] = $item['total'] - $item['total_pos'];
+            $item['avg'] = number_format((($item['total_pos'] - $item['total_neg']) / $item['total']), 3);
+            $data[] = $item;
+        } */
+         if ($tooMuchResults || count($resultData) > $this->settings['maxStats']) {
              $message = $this->translate('tooMuchPages', [$this->settings['maxStats']]);
              $this->addFlashMessage($message, null, AbstractMessage::WARNING);
-             array_pop($this->data); // last line was there to check that limit has been reached
+             array_pop($resultData); // last line was there to check that limit has been reached
          }
          $this->view
              ->assign('csvButton', [
@@ -55,7 +45,7 @@ class StatisticsTabController extends QcBackendModuleController
                  'href' => $this->getUrl('resetFilter'),
              ])
              ->assign('headers', $this->getHeaders())
-             ->assign('rows', $this->data);
+             ->assign('rows', $resultData);
     }
 
     /**
@@ -90,20 +80,4 @@ class StatisticsTabController extends QcBackendModuleController
 
     }
 
-    /**
-     * @throws Exception
-     */
-    public function getStatisticsAvg(): float
-    {
-        $this->getStatisticsData();
-        return $this->statisticsAvg;
-    }
-
-    /**
-     * @param $statisticsAvg
-     */
-    public function setStatisticsAvg($statisticsAvg): void
-    {
-        $this->statisticsAvg = $statisticsAvg;
-    }
 }

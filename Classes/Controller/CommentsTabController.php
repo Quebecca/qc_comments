@@ -9,13 +9,6 @@ use TYPO3\CMS\Core\Messaging\AbstractMessage;
 
 class CommentsTabController extends QcBackendModuleController
 {
-
-    protected StatisticsTabController $statisticsTabController;
-    public function injectStatisticsTabController(StatisticsTabController $statisticsTabController)
-    {
-        $this->statisticsTabController = $statisticsTabController;
-    }
-
     /**
      *  We need to specify the filter class in the argument to prevent map error
      * @param Filter|null $filter
@@ -57,7 +50,7 @@ class CommentsTabController extends QcBackendModuleController
         $commentHeaders = $this->getHeaders();
 
         // Avg
-        $statisticsAvg = $this->statisticsTabController->getStatisticsAvg() * 100 . '%';
+      //  $statisticsAvg = $this->statisticsTabController->getStatisticsAvg() * 100 . '%';
         $this
             ->view
             ->assignMultiple(compact(
@@ -66,7 +59,6 @@ class CommentsTabController extends QcBackendModuleController
                 'commentHeaders',
                 'stats',
                 'comments',
-                'statisticsAvg'
             ));
 
     }
