@@ -285,9 +285,9 @@ class QcBackendModuleController extends BackendModuleActionController
      * This function will reset the search filter
      * @throws StopActionException
      */
-    public function resetFilterAction(){
+    public function resetFilterAction(string $tabName = ''){
         $filter = $this->processFilter(new Filter());
-        $this->redirect('comments', NULL, NULL, ['filter' => $filter]);
+        $this->redirect($tabName, NULL, NULL, ['filter' => $filter]);
     }
 
     /**

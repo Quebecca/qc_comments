@@ -6,6 +6,7 @@ use Doctrine\DBAL\Driver\Exception;
 use Qc\QcComments\Domain\Dto\Filter;
 use Qc\QcComments\View\CsvView;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 
 class StatisticsTabController extends QcBackendModuleController
 {
@@ -78,6 +79,14 @@ class StatisticsTabController extends QcBackendModuleController
         $data = $this->commentsRepository->getDataStats($this->pages_ids, [], false);
         parent::export('statistics',$this->getHeaders(),$data,$filter);
 
+    }
+
+    /**
+     * This function will reset the search filter
+     * @throws StopActionException
+     */
+    public function resetFilterAction(string $tabName = ''){
+        parent::resetFilterAction('statistics');
     }
 
 }

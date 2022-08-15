@@ -31,9 +31,9 @@ call_user_func(
                 'admin',
                 '',
                 [
-                    StatisticsTabController::class => 'statistics, exportStatistics',
-                    CommentsTabController::class => 'comments, exportComments',
-                    QcBackendModuleController::class => 'resetFilter',
+                    StatisticsTabController::class => 'statistics, exportStatistics, resetFilter',
+                    CommentsTabController::class => 'comments, exportComments, resetFilter',
+                   // QcBackendModuleController::class => 'resetFilter',
                 ],
                 [
                     'access' => 'user,group',
