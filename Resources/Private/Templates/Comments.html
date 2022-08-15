@@ -32,7 +32,7 @@
 
         <div class="panel panel-space panel-default recordlist">
             <div class="panel-heading">
-                {stat.page_uid} - {stat.page_title} ({stat.avg * 100} %)
+                {stat.page_uid} - {stat.page_title} ({statisticsAvg})
             </div>
             <f:render partial="CommentsTable" arguments="{rows:'{comments.{stat.page_uid}}', headers:commentHeaders}"/>
         </div>

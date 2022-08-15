@@ -54,7 +54,6 @@ class QcBackendModuleController extends BackendModuleActionController
 
     protected array $pages_ids = [];
 
-
     public function injectBackendSession(BackendSession $backendSession)
     {
         $this->backendSession = $backendSession;
@@ -225,39 +224,6 @@ class QcBackendModuleController extends BackendModuleActionController
     }
 
     /**
-     * @return array
-     */
-    protected function getStatsHeaders(): array
-    {
-        $headers = [];
-        foreach (['page_uid', 'page_title', 'total_pos', 'total_neg', 'total', 'avg'] as $col) {
-            $headers[$col] = $this->translate('stats.h.' . $col);
-        }
-        return $headers;
-    }
-
-    /**
-     * @param false $include_csv_headers
-     * @return array|string[]
-     */
-    protected function getCommentHeaders($include_csv_headers = false): array
-    {
-        $headers = [];
-
-        // foreach (['date_houre', 'comment', 'appreciation',] as $col) {
-        foreach (['date_houre', 'comment', 'useful',] as $col) {
-            $headers[$col] = $this->translate('comments.h.' . $col);
-        }
-        if ($include_csv_headers) {
-            $headers = array_merge([
-                'page_uid' => $this->translate('csv.h.page_uid'),
-                'page_title' => $this->translate('stats.h.page_title'),
-            ], $headers);
-        }
-        return $headers;
-    }
-
-    /**
      * This function will be called if there is no page selected
      * @throws StopActionException
      */
@@ -321,7 +287,7 @@ class QcBackendModuleController extends BackendModuleActionController
      */
     public function resetFilterAction(){
         $filter = $this->processFilter(new Filter());
-        $this->redirect('list', NULL, NULL, ['filter' => $filter]);
+        $this->redirect('comments', NULL, NULL, ['filter' => $filter]);
     }
 
     /**
@@ -344,14 +310,15 @@ class QcBackendModuleController extends BackendModuleActionController
 
     }
 
-    public function export(string $base_name, array $data, $filter){
+    public function export(string $base_name,array $headers, array $data, $filter){
         $filter = $this->processFilter($filter);
         $this->view = $this->objectManager->get(CsvView::class);
         $this->view->setFilename($this->getCSVFilename($filter, $base_name));
         $this->view->setControllerContext($this->controllerContext);
-        $this->view->assign('headers', $this->getStatsHeaders());
+        $this->view->assign('headers', $headers);
         $this->view->assign('rows', $data);
         $filter->setIncludeEmptyPages(true);
     }
+
 
 }
