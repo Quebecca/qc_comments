@@ -15,7 +15,6 @@ namespace Qc\QcComments\Controller;
 
 use Doctrine\DBAL\Driver\Exception;
 use Qc\QcComments\Domain\Dto\Filter;
-use Qc\QcComments\View\CsvView;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 
@@ -23,7 +22,7 @@ class CommentsTabController extends QcBackendModuleController
 {
     /**
      * This function is used to get the list of comments in BE module
-     *  We need to specify the filter class in the argument to prevent map error
+     *  We need to specify the filter class in the argument to prevent a map error
      * @param Filter|null $filter
      * @return void
      * @throws Exception
@@ -45,7 +44,7 @@ class CommentsTabController extends QcBackendModuleController
         $this->pages_ids = $this->commentsRepository->getPageIdsList($filter->getDepth());
         if (count($this->pages_ids) > $this->settings['maxStats'] && $filter->getIncludeEmptyPages()) {
             $tooMuchPages = true;
-            $pages_ids = array_slice($this->pages_ids, 0, $this->settings['maxStats']);
+           // $pages_ids = array_slice($this->pages_ids, 0, $this->settings['maxStats']);
         }
 
         $stats = $this->commentsRepository->getDataStats($this->pages_ids, true);

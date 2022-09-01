@@ -125,6 +125,7 @@ class CommentRepository extends Repository
     {
         $queryBuilder = $this->generateQueryBuilder();
         $constraints = $this->getConstraints($page_ids);
+        // @todo : set limit for records
         $limitResult = $limit ? 'limit ' . ($this->settings['maxStats'] + 1) : '';
         $data =  $queryBuilder
             ->select('p.uid as page_uid', 'p.title as page_title')

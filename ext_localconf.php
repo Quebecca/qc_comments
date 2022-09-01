@@ -1,5 +1,9 @@
 <?php
-// @todo : TYPO3 die...
+
+if (!defined('TYPO3')) {
+    die('Access denied.');
+}
+
 call_user_func(
     function()
     {
@@ -8,7 +12,6 @@ call_user_func(
             'Qc.QcComments',
             'commentsForm',
             [Qc\QcComments\Controller\Frontend\CommentsController::class => 'show,saveComment'], //With cash - prevent storing cashed data
-            [Qc\QcComments\Controller\Frontend\CommentsController::class  => 'show,saveComment'] // storing without passing by cash
+            [Qc\QcComments\Controller\Frontend\CommentsController::class  => 'show,saveComment'] // storing without using cash
         );
-
     });

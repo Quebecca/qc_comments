@@ -2,31 +2,43 @@
 
 namespace Qc\QcComments\Controller\Frontend;
 
+/***
+ *
+ * This file is part of Qc Comments project.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ *  (c) 2022 <techno@quebec.ca>
+ *
+ ***/
+
 use Qc\QcComments\Domain\Model\Comment;
 use Qc\QcComments\Domain\Repository\CommentRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 
+// FrontEnd Controller
 class CommentsController extends ActionController
 {
-    // @Todo : Security Test SQL injection in the form OWASP ZAP
+    // @Todo : FrontEnd form rendering configuration
+    // @Todo : Database migration for old records
+    // @Todo : Backend tabs CSS bugs
+    // @Todo : Security Test XSS, SQL injection in the form OWASP ZAP
 
+    /**
+     * @var CommentRepository
+     */
     protected CommentRepository $commentsRepository;
+
     public function injectCommentsRepository(CommentRepository $commentsRepository){
         $this->commentsRepository = $commentsRepository;
     }
 
     public function showAction(array $args = []){
-        $comment = new Comment();
-        $this->view->assignMultiple([
-            "submitted" => $this->request->getArguments()['submitted'],
-            "comment" => $comment
-        ]);
+        $this->view->assign( "submitted",$this->request->getArguments()['submitted']);
     }
 
     /**

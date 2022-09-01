@@ -15,7 +15,6 @@ namespace Qc\QcComments\Controller;
 
 use Doctrine\DBAL\Driver\Exception;
 use Qc\QcComments\Domain\Dto\Filter;
-use Qc\QcComments\View\CsvView;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 
@@ -73,8 +72,8 @@ class StatisticsTabController extends QcBackendModuleController
     public function exportStatisticsAction($filter = null)
     {
         $filter = $this->processFilter($filter);
-        $this->view->assign('rows', $this->commentsRepository->getDataStats($this->pages_ids, [], false));
-        $data = $this->commentsRepository->getDataStats($this->pages_ids, [], false);
+        $this->view->assign('rows', $this->commentsRepository->getDataStats($this->pages_ids));
+        $data = $this->commentsRepository->getDataStats($this->pages_ids);
         // Resort array elements for export
         $mappedData = [];
         $i = 0;

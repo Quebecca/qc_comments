@@ -29,7 +29,6 @@ use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 abstract class QcBackendModuleController extends BackendModuleActionController
 {
@@ -75,10 +74,10 @@ abstract class QcBackendModuleController extends BackendModuleActionController
      */
     protected CommentRepository $commentsRepository;
 
-    // should place the DI before any methods
     public function injectCommentRepository(CommentRepository $commentsRepository){
         $this->commentsRepository = $commentsRepository;
     }
+
     /**
      * Forward to the last selected action in case the current action is the default one
      * @throws StopActionException
