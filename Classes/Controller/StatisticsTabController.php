@@ -75,7 +75,16 @@ class StatisticsTabController extends QcBackendModuleController
         $filter = $this->processFilter($filter);
         $this->view->assign('rows', $this->commentsRepository->getDataStats($this->pages_ids, [], false));
         $data = $this->commentsRepository->getDataStats($this->pages_ids, [], false);
-        parent::export('statistics',$this->getHeaders(),$data,$filter);
+        // Resort array elements for export
+        $mappedData = [];
+        $i = 0;
+        foreach ($data as $record){
+            foreach ($this->getHeaders() as $headerKey => $header){
+                $mappedData[$i][$header] = $record[$headerKey];
+            }
+            $i++;
+        }
+        parent::export('statistics',$this->getHeaders(),$mappedData,$filter);
     }
 
     /**
