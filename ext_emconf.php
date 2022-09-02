@@ -10,7 +10,7 @@
  ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'Qc comments',
+    'title' => 'Qc Comments',
     'description' => 'Add comments for FE pages',
     'category' => 'plugin',
     'author' => 'Quebec.ca',
