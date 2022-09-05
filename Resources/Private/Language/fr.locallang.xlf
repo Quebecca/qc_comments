@@ -122,9 +122,6 @@
             <trans-unit id="comments.h.comment">
                 <target>Commentaire</target>
             </trans-unit>
-            <trans-unit id="comments.h.useful">
-                <target>Utile</target>
-            </trans-unit>
             <trans-unit id="positive">
                 <target>Oui</target>
             </trans-unit>
@@ -143,6 +140,22 @@
             <trans-unit id="userDefined">
                 <source>User defined</source>
                 <target>Défini par l'utilisateur</target>
+            </trans-unit>
+           <trans-unit id="formSentSuccessfully">
+                <source>Form sent successfully!</source>
+                <target>Formulaire envoyé avec succès!</target>
+            </trans-unit>
+            <trans-unit id="useful">
+                <source>Useful</source>
+                <target>Outil</target>
+            </trans-unit>
+            <trans-unit id="notUseful">
+                <source>Not useful</source>
+                <target>Inutile</target>
+            </trans-unit>
+            <trans-unit id="submit">
+                <source>Submit</source>
+                <target>Soumettre</target>
             </trans-unit>
         </body>
     </file>

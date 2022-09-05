@@ -116,9 +116,7 @@
 			<trans-unit id="comments.h.comment">
 				<source>Comment</source>
 			</trans-unit>
-			<trans-unit id="comments.h.useful">
-				<source>Useful</source>
-			</trans-unit>
+
 			<trans-unit id="positive">
 				<source>Yes</source>
 			</trans-unit>
@@ -142,6 +140,18 @@
 			</trans-unit>
 			<trans-unit id="userDefined">
                 <source>User defined</source>
+            </trans-unit>
+            <trans-unit id="formSentSuccessfully">
+                <source>Form sent successfully!</source>
+            </trans-unit>
+            <trans-unit id="useful">
+                <source>Useful</source>
+            </trans-unit>
+            <trans-unit id="notUseful">
+                <source>Not useful</source>
+            </trans-unit>
+            <trans-unit id="submit">
+                <source>Submit</source>
             </trans-unit>
 		</body>
 	</file>
