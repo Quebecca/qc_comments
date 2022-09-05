@@ -1,25 +1,4 @@
 {namespace v=FluidTYPO3\Vhs\ViewHelpers}
-<style>
-    label {
-        margin-right : 2rem;
-        padding-left : 0.5rem;
-    }
-    input[type=radio] {
-    }
-    input[type=submit] {
-        margin-left : 1rem;
-    }
-    .comment-section {
-        display : none;
-    }
-    .comments-form {
-        background-color : red;
-    }
-</style>
-<script
-        src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-        crossorigin="anonymous"></script>
 <f:if condition="{submitted}">
     <f:then>
         <span>Formulaire envoyé avec succès!</span>
@@ -33,14 +12,14 @@
                     <f:form.hidden  property="uidOrig" value="{v:page.info(field: 'uid')}"/>
 
                     <div class="p-2 ">
-                        <f:form.radio property="useful" value="1" id="usefulO" checked="false" />
-                        <label for="usefulO">Useful</label>
+                        <f:form.radio property="useful" value="1" id="usefulY" checked="false" />
+                        <label for="usefulY">Useful</label>
 
                         <f:form.radio property="useful" value="0" id="usefulN"  checked="false"/>
                         <label for="usefulN">Not Useful</label>
                     </div>
-                    <div class="comment-section" >
-                        <div class="p-2 comment-section">
+                    <div id="comment-section" class="d-none" >
+                        <div class="p-2">
                             <f:form.textarea
                                     property="comment"
                                     class="powermail_textarea form-control "
@@ -57,12 +36,12 @@
 </f:if>
 
 <script>
-    $(document).ready(function(){
-        [$('#usefulN'), $('#usefulO')].map(displayCommentSection)
-        function displayCommentSection (element) {
-            element.change(function (){
-                $('.comment-section').css('display', 'block');
-            })
-        }
-    });
+        [
+            document.getElementById('usefulN'),
+            document.getElementById('usefulY')
+        ].map(function (element) {
+            element.addEventListener("change", function () {
+                document.getElementById('comment-section').className = 'd-block';
+            });
+        });
 </script>
