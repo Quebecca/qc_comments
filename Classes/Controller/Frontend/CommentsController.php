@@ -24,7 +24,7 @@ use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 class CommentsController extends ActionController
 {
     // @Todo : FrontEnd form rendering configuration
-    // @Todo : Database migration for old records - Script to change the old table structure
+    // @Todo : Create Functional Tests
     // @Todo : Backend tabs CSS bugs
     // @Todo : Security Test XSS, SQL injection ...  OWASP ZAP, Burpsuit
 

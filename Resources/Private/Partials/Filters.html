@@ -1,21 +1,21 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <f:form action="{action}" object="{filter}" objectName="filter">
-    <div class="d-flex flex-row form-row">
-        <div class="p-2">
+    <div class="row">
+        <div class="col-md-2">
             <label>{f:translate(key: 'filter.lang')}</label>
             <f:form.select property="lang"
                            options="{filter.langOptions}"
                            optionLabelField="title"
-                           class="form-control"/>
+                           class="form-control"
+                          />
         </div>
-        <div class="p-2">
+        <div class="col-md-2">
             <label>{f:translate(key: 'filter.depth')}</label>
             <f:form.select property="depth"
                            options="{filter.depthOptions}"
                            optionLabelField="title"
                            class="form-control"/>
         </div>
-        <div class="p-2">
+        <div class="col-md-2">
             <label>{f:translate(key: 'filter.dateRange')}</label>
             <f:form.select property="dateRange"
                            options="{filter.dateRangeOptions}"
@@ -25,7 +25,7 @@
                            id="selectDateRange"
             />
         </div>
-        <div class="p-2">
+        <div class="col-md-2">
             <f:if condition="{filter.dateRange} == 'userDefined'">
                 <div class="datepicker">
                     <label for="startDate">{f:translate(key:'filter.userDefined.from')}</label>
@@ -37,10 +37,10 @@
                                 data="{date-type: 'date'}"
                         />
                         <span class="input-group-btn">
-                                <label class="btn btn-default" for="startDate">
-                                    <span class="fa fa-calendar"></span>
-                                </label>
-                            </span>
+                            <label class="btn btn-default" for="startDate">
+                                <span class="fa fa-calendar"></span>
+                            </label>
+                        </span>
                     </div>
                 </div>
                 <div class="datepicker">
@@ -53,43 +53,38 @@
                                 data="{date-type: 'date'}"
                         />
                         <span class="input-group-btn">
-                                <label class="btn btn-default" for="endDate">
-                                    <span class="fa fa-calendar"></span>
-                                </label>
-                            </span>
+                            <label class="btn btn-default" for="endDate">
+                                <span class="fa fa-calendar"></span>
+                            </label>
+                        </span>
                     </div>
                 </div>
 
             </f:if>
         </div>
-        <div class="p-2 checkbox-input">
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-3">
             <f:form.checkbox property="includeEmptyPages"
                              value="1"
                              id="emptyPage"
             />
             <label class="form-check-label" for="emptyPage">{f:translate(key: 'filter.includeEmptyPages')}</label>
+
         </div>
-        <div class="p-4">
+        <div class="col-md-4">
             <f:render section="buttons" arguments="{_all}"/>
         </div>
     </div>
 </f:form>
 
 <f:section name="buttons">
-    <div class="d-flex flex-row">
-        <div class="p-2">
             <f:form.submit value="{f:translate(key: 'filter.submit')}" class="btn btn-default"/>
-        </div>
-        <div class="p-2">
             <a href="{resetButton.href}"  class="btn btn-default" >{f:translate(key:'filter.reset')}</a>
-        </div>
-        <div class="p-2">
             <a href="{csvButton.href}" class="btn btn-default">{csvButton.icon -> f:format.raw()}
                 {f:translate(key:'links.exportCsv')}
             </a>
-        </div>
-    </div>
-
 </f:section>
 
 
