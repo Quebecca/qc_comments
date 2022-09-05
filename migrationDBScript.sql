@@ -1,3 +1,5 @@
+# DataBase migration script
+
 CREATE TABLE tx_qccomments_domain_model_comment LIKE tx_gabarit_pgu_form_comments_problems;
 
 INSERT INTO tx_qccomments_domain_model_comment SELECT * FROM tx_gabarit_pgu_form_comments_problems;
@@ -20,4 +22,5 @@ ALTER table tx_qccomments_domain_model_comment
     CHANGE commentaire comment text,
     CHANGE etat_suivi state_follow_up varchar(25) DEFAULT '' NOT NULL,
     CHANGE note_suivi note_follow_up text;
+
 
