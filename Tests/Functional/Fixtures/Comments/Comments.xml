@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <tx_qccomments_domain_model_comment>
+        <uid>1</uid>
+        <pid>1</pid>
+        <useful>1</useful>
+        <date_houre>2022-07-08 08:19:51</date_houre>
+        <comment>Positif comment</comment>
+        <uid_orig>1</uid_orig>
+        <url_orig>1</url_orig>
+        <theme>Them 1</theme>
+        <uid_perms_group>1</uid_perms_group>
+        <state_follow_up>1</state_follow_up>
+        <note_follow_up>1</note_follow_up>
+    </tx_qccomments_domain_model_comment>
+
+    <tx_qccomments_domain_model_comment>
+        <uid>1</uid>
+        <pid>1</pid>
+        <useful>0</useful>
+        <date_houre>2021-05-02 18:19:51</date_houre>
+        <comment>Negatif comment</comment>
+        <uid_orig>2</uid_orig>
+        <url_orig>2</url_orig>
+        <theme>Them 2</theme>
+        <uid_perms_group>2</uid_perms_group>
+        <state_follow_up>2</state_follow_up>
+        <note_follow_up>2</note_follow_up>
+    </tx_qccomments_domain_model_comment>
+</dataset>
