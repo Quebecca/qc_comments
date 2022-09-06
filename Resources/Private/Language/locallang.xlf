@@ -132,6 +132,9 @@
 			<trans-unit id="no-result">
 				<source>No result</source>
 			</trans-unit>
+			<trans-unit id="useful">
+                <source>Useful</source>
+            </trans-unit>
 			<trans-unit id="tooMuchPages">
 				<source>Too much results: only the first %s rows are displayed. Please choose csv export, or change your filters.</source>
 			</trans-unit>

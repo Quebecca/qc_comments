@@ -141,6 +141,10 @@
                 <source>User defined</source>
                 <target>Défini par l'utilisateur</target>
             </trans-unit>
+            <trans-unit id="comments.h.useful">
+                <source>Useful</source>
+                <target>Utile</target>
+            </trans-unit>
            <trans-unit id="formSentSuccessfully">
                 <source>Form sent successfully!</source>
                 <target>Formulaire envoyé avec succès!</target>

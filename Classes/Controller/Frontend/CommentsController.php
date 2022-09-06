@@ -23,11 +23,8 @@ use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 // FrontEnd Controller
 class CommentsController extends ActionController
 {
-    // @Todo : FrontEnd form rendering configuration
-    // @Todo : Create Functional Tests
     // @Todo : Security Test XSS, SQL injection ...  OWASP ZAP, Burpsuit
 
-    // @Todo : check comment length sent by user
     /**
      * @var CommentRepository
      */
@@ -38,6 +35,10 @@ class CommentsController extends ActionController
         $this->commentsRepository = $commentsRepository;
     }
 
+    /**
+     * This function is used to render comments form
+     * @param array $args
+     */
     public function showAction(array $args = [])
     {
         $this->view->assignMultiple([
@@ -47,7 +48,8 @@ class CommentsController extends ActionController
     }
 
     /**
-     * @param Comment $comment
+     * This function is used to save user comment
+     * @param Comment|null $comment
      * @throws IllegalObjectTypeException
      * @throws StopActionException
      */
@@ -59,6 +61,8 @@ class CommentsController extends ActionController
             $comment->setUidPermsGroup(
                 BackendUtility::getRecord('pages', $pageUid, 'perms_groupid', "uid = $pageUid")['perms_groupid']
             );
+            // set limit for 500 characters
+            $comment->setComment(substr($comment->getComment(), 0, 500));
             $comment->setDateHoure(date('Y-m-d H:i:s'));
             $this->commentsRepository->add($comment);
         }

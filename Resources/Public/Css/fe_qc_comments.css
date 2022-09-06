@@ -1,5 +1,4 @@
-@import "../../../../gabarit_pgu/Resources/Public/Css/gabarit_pgu.css";
-
+@import url(../../../../gabarit_pgu/Resources/Public/Css/gabarit_pgu.css);
 .form-row {
   border-bottom: 1px solid #ccc; }
 
@@ -25,4 +24,3 @@
   .commentaire span:hover {
     white-space: normal;
     height: 100%; }
-
