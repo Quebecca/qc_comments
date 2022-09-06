@@ -1,3 +1,4 @@
+@import "../../../../gabarit_pgu/Resources/Public/Css/gabarit_pgu.css";
 
 .form-row {
   border-bottom: 1px solid #ccc; }
@@ -25,5 +26,3 @@
     white-space: normal;
     height: 100%; }
 
-.useful-check {
-  color: red; }

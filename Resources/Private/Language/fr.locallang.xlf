@@ -145,13 +145,13 @@
                 <source>Form sent successfully!</source>
                 <target>Formulaire envoyé avec succès!</target>
             </trans-unit>
-            <trans-unit id="useful">
-                <source>Useful</source>
-                <target>Outil</target>
+            <trans-unit id="yes">
+                <source>Yes</source>
+                <target>Oui</target>
             </trans-unit>
-            <trans-unit id="notUseful">
-                <source>Not useful</source>
-                <target>Inutile</target>
+            <trans-unit id="no">
+                <source>No</source>
+                <target>Non</target>
             </trans-unit>
             <trans-unit id="submit">
                 <source>Submit</source>

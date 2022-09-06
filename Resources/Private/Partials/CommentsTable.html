@@ -22,7 +22,7 @@
             <f:for as="row" each="{rows}" iteration="iterator">
                 <tr class="t3js-entity{f:if(condition:iterator.isFirst, then:' firstcol', else:'')}">
                     <f:for as="header" each="{headers}" key="col" iteration="iterator">
-                        <td class="{col}"><span>{row.{col}}</span></td>
+                        <td class="{col}"><f:format.html>{row.{col}}</f:format.html></td>
                     </f:for>
                 </tr>
             </f:for>

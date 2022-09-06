@@ -25,9 +25,9 @@ class CommentsController extends ActionController
 {
     // @Todo : FrontEnd form rendering configuration
     // @Todo : Create Functional Tests
-    // @Todo : Backend tabs CSS bugs
     // @Todo : Security Test XSS, SQL injection ...  OWASP ZAP, Burpsuit
 
+    // @Todo : check comment length sent by user
     /**
      * @var CommentRepository
      */

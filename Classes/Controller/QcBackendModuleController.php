@@ -189,7 +189,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
             $record = BackendUtility::readPageAccess($this->root_id, $this->getBackendUser()->getPagePermsClause(1));
             $moduleTemplate->getDocHeaderComponent()->setMetaInformation($record);
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
-            $this->pageRenderer->addCssFile('EXT:qc_comments/Resources/Public/Css/qc_comments.css');
+          //  $this->pageRenderer->addCssFile('EXT:qc_comments/Resources/Public/Css/qc_comments.css');
         }
     }
 

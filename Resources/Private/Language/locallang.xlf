@@ -144,11 +144,11 @@
             <trans-unit id="formSentSuccessfully">
                 <source>Form sent successfully!</source>
             </trans-unit>
-            <trans-unit id="useful">
-                <source>Useful</source>
+            <trans-unit id="yes">
+                <source>Yes</source>
             </trans-unit>
-            <trans-unit id="notUseful">
-                <source>Not useful</source>
+            <trans-unit id="no">
+                <source>No</source>
             </trans-unit>
             <trans-unit id="submit">
                 <source>Submit</source>
