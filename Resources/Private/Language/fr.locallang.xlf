@@ -185,6 +185,10 @@
                 <source>Please contact Services Québec</source>
                 <target>Communiquez avec Services Québec</target>
             </trans-unit>
+            <trans-unit id="thankYouForHelpingUs">
+                <source>Thank you for helping us improve Quebec.ca. Your comments are important to us.</source>
+                <target>Votre message a été envoyé. Merci de nous aider à améliorer Québec.ca. Vos commentaires sont importants pour nous.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

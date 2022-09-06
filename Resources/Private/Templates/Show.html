@@ -8,7 +8,9 @@
         <div class="tx-powermail">
             <f:if condition="{submitted}">
                 <f:then>
-                    <span> <f:translate key="formSentSuccessfully" extensionName="qc_comments"/></span>
+                    <div class="powermail_create" role="alert">
+                        <p><f:translate key="thankYouForHelpingUs" extensionName="qc_comments"/></p>
+                    </div>
                 </f:then>
                 <f:else>
                     <f:variable name="absUrl" value="{v:page.absoluteUrl()}" />
