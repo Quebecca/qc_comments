@@ -153,6 +153,27 @@
             <trans-unit id="submit">
                 <source>Submit</source>
             </trans-unit>
+            <trans-unit id="commentsLabel">
+                <source>Comments</source>
+            </trans-unit>
+            <trans-unit id="wasInfoUseful">
+                <source>Was the information on this page useful to you?</source>
+            </trans-unit>
+            <trans-unit id="encounterAProblem">
+                <source>Did you encounter any problems while navigating?</source>
+            </trans-unit>
+            <trans-unit id="sendUsYouObservation">
+                <source>Please send us your observations and help us improve the Québec.ca website. Please do not enter any personal information in this field. Note that you will not receive a reply.</source>
+            </trans-unit>
+            <trans-unit id="limitCharacter">
+                <source>Limit is 500 characters</source>
+            </trans-unit>
+            <trans-unit id="questionsOrHelp">
+                <source>You have questions or require additional information?</source>
+            </trans-unit>
+            <trans-unit id="contactTheService">
+                <source>Please contact Services Québec</source>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>

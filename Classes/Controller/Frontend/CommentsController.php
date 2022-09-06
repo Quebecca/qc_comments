@@ -38,7 +38,10 @@ class CommentsController extends ActionController
     }
 
     public function showAction(array $args = []){
-        $this->view->assign( "submitted",$this->request->getArguments()['submitted']);
+        $this->view->assignMultiple( [
+            'submitted' => $this->request->getArguments()['submitted'],
+            'comment' => new Comment()
+        ]);
     }
 
     /**
@@ -46,15 +49,17 @@ class CommentsController extends ActionController
      * @throws IllegalObjectTypeException
      * @throws StopActionException
      */
-    public function saveCommentAction(Comment $comment){
-        $pageUid = $comment->getUidOrig();
-        // @todo : should store the absolute url or uri
-        $comment->setUidPermsGroup(
-            BackendUtility::getRecord('pages', $pageUid, 'perms_groupid', "uid = $pageUid")['perms_groupid']
-        );
-        $comment->setDateHoure(date('Y-m-d H:i:s'));
-        $this->commentsRepository->add($comment);
+    public function saveCommentAction(Comment $comment = null){
+        if($comment){
+            $pageUid = $comment->getUidOrig();
+            // @todo : should store the absolute url or uri
+            $comment->setUidPermsGroup(
+                BackendUtility::getRecord('pages', $pageUid, 'perms_groupid', "uid = $pageUid")['perms_groupid']
+            );
+            $comment->setDateHoure(date('Y-m-d H:i:s'));
+            $this->commentsRepository->add($comment);
 
+        }
         $this->forward('show',null, null, ['submitted' => true]);
     }
 

@@ -1,7 +1,10 @@
 {namespace v=FluidTYPO3\Vhs\ViewHelpers}
+
 <div class="col-12 formBasPage" id="formBasPageCommentaire">
     <div class="frame frame-default frame-type-list frame-layout-0">
-        <h2>Évaluation de page</h2>
+        <h2>
+            <f:translate key="commentsLabel" extensionName="qc_comments"/>
+        </h2>
         <div class="tx-powermail">
             <f:if condition="{submitted}">
                 <f:then>
@@ -15,7 +18,7 @@
                                 <f:form.hidden  property="urlOrig" value="{absUrl}"/>
                                 <f:form.hidden  property="uidOrig" value="{v:page.info(field: 'uid')}"/>
                                 <div class="form-inline mt-2">
-                                    <legend class="control-label">L’information sur cette page vous a-t-elle été utile?</legend>
+                                    <legend class="control-label"><f:translate key="wasInfoUseful" extensionName="qc_comments"/></legend>
                                     <div class="form-group mr-2">
                                         <f:form.radio property="useful" value="1" id="usefulY" checked="false" />
                                         <label for="usefulY" class="p-md-2" style="font-weight : normal;">
@@ -33,10 +36,10 @@
                                 <div id="comment-section" class="form-group d-none" >
 
                                     <label for="comment-textarea" class="control-label" title="">
-                                        Avez-vous un commentaire à nous transmettre ou un problème à signaler ?
+                                        <f:translate key="encounterAProblem" extensionName="qc_comments"/>
                                         <span id="commentpage_complement_label" class="complementLabel">
-                                        Évitez d’inscrire des renseignements  personnels. Notez que vous ne recevrez aucune réponse.
-                                    </span>
+                                            <f:translate key="sendUsYouObservation" extensionName="qc_comments"/>
+                                        </span>
                                     </label>
                                     <f:form.textarea
                                             property="comment"
@@ -44,7 +47,7 @@
                                             data="{date-type: 'date'}"
                                             id="comment-textarea"
                                     />
-                                    <div id="infoMaxCaracteres" class="infoSupplJs" aria-hidden="true">Maximum 500 caractères</div>
+                                    <div id="infoMaxCaracteres" class="infoSupplJs" aria-hidden="true"><f:translate key="limitCharacter" extensionName="qc_comments"/></div>
                                     <br>
                                     <f:form.submit value="{f:translate(key: 'submit', extensionName:'qc_comments')}" class="powermail_submit btn btn-primary displayBlock" style="height : 3rem;"/>
                                 </div>
@@ -53,12 +56,12 @@
                         </div>
                         <div class="col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse sansBorder d-none" id="questionsLink-section">
                             <div class="powermail_fieldwrap powermail_fieldwrap_type_content powermail_fieldwrap_servicesquebecform form-group col-md-12 displayFlex">
-                                <div class=" col-sm-offset-2"><!-- Tous les autres frames -->
+                                <div class=" col-sm-offset-2">
                                     <div id="c34335" class=" frame frame-avisInterr frame-type-textmedia frame-layout-0">
                                         <div class="ce-textpic ce-left ce-above">
                                             <div class="ce-bodytext">
-                                                <h3>Des questions ou besoin de renseignements?</h3>
-                                                <p><a href="/nous-joindre">Communiquez avec Services Québec</a></p>
+                                                <h3><f:translate key="questionsOrHelp" extensionName="qc_comments"/></h3>
+                                                <p><a href="/nous-joindre"><f:translate key="contactTheService" extensionName="qc_comments"/></a></p>
                                             </div>
                                         </div>
                                     </div>
@@ -73,6 +76,7 @@
 
     </div>
     <script>
+        document.getElementById('comment-textarea').setAttribute("maxLength", "500");
         [
             document.getElementById('usefulN'),
             document.getElementById('usefulY')
@@ -83,7 +87,6 @@
             });
         });
 
-        document.getElementById('comment-textarea').setAttribute("maxLength", "500");
     </script>
 </div>
 
