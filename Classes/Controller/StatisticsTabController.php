@@ -22,25 +22,24 @@ class StatisticsTabController extends QcBackendModuleController
 {
     /**
      * @param Filter|null $filter // we need to specify the filter class in the argument to prevent map error
-     * @return void
      * @throws Exception
      */
     public function statisticsAction(Filter $filter = null)
     {
-         $filter = $this->processFilter($filter);
-         $this->pages_ids = $this->commentsRepository->getPageIdsList($filter->getDepth());
-         $tooMuchResults = false;
-         if (count($this->pages_ids) > $this->settings['maxStats'] && $filter->getIncludeEmptyPages()) {
-             $tooMuchResults = true;
-             $pages_ids = array_slice($this->pages_ids, 0, $this->settings['maxStats']);
-         }
-        $resultData = $this->commentsRepository->getDataStats($this->pages_ids,true);
-         if ($tooMuchResults || count($resultData) > $this->settings['maxStats']) {
-             $message = $this->translate('tooMuchPages', [$this->settings['maxStats']]);
-             $this->addFlashMessage($message, null, AbstractMessage::WARNING);
-             array_pop($resultData); // last line was there to check that limit has been reached
-         }
-         $this->view
+        $filter = $this->processFilter($filter);
+        $this->pages_ids = $this->commentsRepository->getPageIdsList($filter->getDepth());
+        $tooMuchResults = false;
+        if (count($this->pages_ids) > $this->settings['maxStats'] && $filter->getIncludeEmptyPages()) {
+            $tooMuchResults = true;
+            $pages_ids = array_slice($this->pages_ids, 0, $this->settings['maxStats']);
+        }
+        $resultData = $this->commentsRepository->getDataStats($this->pages_ids, true);
+        if ($tooMuchResults || count($resultData) > $this->settings['maxStats']) {
+            $message = $this->translate('tooMuchPages', [$this->settings['maxStats']]);
+            $this->addFlashMessage($message, null, AbstractMessage::WARNING);
+            array_pop($resultData); // last line was there to check that limit has been reached
+        }
+        $this->view
              ->assign('csvButton', [
                  'href' => $this->getUrl('exportStatistics'),
                  'icon' => $this->icon,
@@ -77,21 +76,21 @@ class StatisticsTabController extends QcBackendModuleController
         // Resort array elements for export
         $mappedData = [];
         $i = 0;
-        foreach ($data as $record){
-            foreach ($this->getHeaders() as $headerKey => $header){
+        foreach ($data as $record) {
+            foreach ($this->getHeaders() as $headerKey => $header) {
                 $mappedData[$i][$header] = $record[$headerKey];
             }
             $i++;
         }
-        parent::export('statistics',$this->getHeaders(),$mappedData,$filter);
+        parent::export('statistics', $this->getHeaders(), $mappedData, $filter);
     }
 
     /**
      * This function will reset the search filter
      * @throws StopActionException
      */
-    public function resetFilterAction(string $tabName = ''){
+    public function resetFilterAction(string $tabName = '')
+    {
         parent::resetFilterAction('statistics');
     }
-
 }

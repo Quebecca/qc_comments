@@ -32,7 +32,8 @@ use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
 abstract class QcBackendModuleController extends BackendModuleActionController
 {
-    use InjectTranslation, injectT3Utilities;
+    use InjectTranslation;
+    use injectT3Utilities;
 
     /**
      * @var int|mixed
@@ -45,7 +46,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
     protected ?Icon $icon = null;
 
     /** @var BackendSession */
-    protected $backendSession = null;
+    protected $backendSession;
 
     /**
      * @var string
@@ -74,7 +75,8 @@ abstract class QcBackendModuleController extends BackendModuleActionController
      */
     protected CommentRepository $commentsRepository;
 
-    public function injectCommentRepository(CommentRepository $commentsRepository){
+    public function injectCommentRepository(CommentRepository $commentsRepository)
+    {
         $this->commentsRepository = $commentsRepository;
     }
 
@@ -88,13 +90,13 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         if (!$this->menuItems) {
             return;
         }
-        $currentAction = $this->controllerName.'::'.$this->request->getControllerActionName();
+        $currentAction = $this->controllerName . '::' . $this->request->getControllerActionName();
         $arguments = $this->request->getArguments();
         if (!$arguments) { // no arguments means no action was selected
             $lastAction = $this->backendSession->get('lastAction');
-            if ($lastAction && $lastAction != $currentAction ) {
-                list($controller,$action) = explode('::',$lastAction);
-                $this->forward($action,$controller);
+            if ($lastAction && $lastAction != $currentAction) {
+                list($controller, $action) = explode('::', $lastAction);
+                $this->forward($action, $controller);
             }
         }
         if ($this->isMenuAction($currentAction)) {
@@ -109,7 +111,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
      */
     protected function isMenuAction($actionKey): bool
     {
-        list($controller,$action) = explode('::',$actionKey);
+        list($controller, $action) = explode('::', $actionKey);
         foreach ($this->menuItems as $item) {
             if ($item['action'] == $action
                && $item['controller'] == $controller) {
@@ -137,7 +139,6 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         $this->commentsRepository->setSettings($this->settings);
     }
 
-
     /**
      * This function is used to set the functions elements of the module
      */
@@ -161,7 +162,6 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         $this->setMenuItems($menuItems);
     }
 
-
     /**
      * @param $action
      * @param array $arguments
@@ -178,7 +178,6 @@ abstract class QcBackendModuleController extends BackendModuleActionController
 
     /**
      * @param ViewInterface $view
-     * @return void
      * @throws RouteNotFoundException
      */
     protected function initializeView(ViewInterface $view)
@@ -189,10 +188,9 @@ abstract class QcBackendModuleController extends BackendModuleActionController
             $record = BackendUtility::readPageAccess($this->root_id, $this->getBackendUser()->getPagePermsClause(1));
             $moduleTemplate->getDocHeaderComponent()->setMetaInformation($record);
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
-          //  $this->pageRenderer->addCssFile('EXT:qc_comments/Resources/Public/Css/qc_comments.css');
+            //  $this->pageRenderer->addCssFile('EXT:qc_comments/Resources/Public/Css/qc_comments.css');
         }
     }
-
 
     /**
      * @throws StopActionException
@@ -228,7 +226,6 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         $this->icon = $this->iconFactory->getIcon('actions-document-export-csv', Icon::SIZE_SMALL);
     }
 
-
     public function noPageSelectedAction()
     {
         $this->setMenuItems([]);
@@ -252,7 +249,6 @@ abstract class QcBackendModuleController extends BackendModuleActionController
      */
     protected function getPageTreeView($depth): string
     {
-
         $child = $parent = 'lvl_0';
         $clauses = [];
         for ($i = 1; $i <= $depth; $i++) {
@@ -281,7 +277,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
                 $filter = new Filter();
             }
         } else {
-            if($filter->getDateRange() != 'userDefined'){
+            if ($filter->getDateRange() != 'userDefined') {
                 $filter->setStartDate(null);
                 $filter->setEndDate(null);
             }
@@ -290,16 +286,16 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         $this->view->assign('filter', $filter);
         $this->commentsRepository->setFilter($filter);
         return $filter;
-
     }
 
     /**
      * This function will reset the search filter
      * @throws StopActionException
      */
-    public function resetFilterAction(string $tabName = ''){
+    public function resetFilterAction(string $tabName = '')
+    {
         $filter = $this->processFilter(new Filter());
-        $this->redirect($tabName, NULL, NULL, ['filter' => $filter]);
+        $this->redirect($tabName, null, null, ['filter' => $filter]);
     }
 
     /**
@@ -309,7 +305,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
      */
     protected function getCSVFilename(Filter $filter, $base_name): string
     {
-        $format = $this->settings['csvExport']['filename']["dateFormat"];
+        $format = $this->settings['csvExport']['filename']['dateFormat'];
         $now = date($format);
         $from = $filter->getDateForRange($format);
         return implode('-', array_filter([
@@ -319,7 +315,6 @@ abstract class QcBackendModuleController extends BackendModuleActionController
                 $from,
                 $now,
             ])) . '.csv';
-
     }
 
     /**
@@ -329,7 +324,8 @@ abstract class QcBackendModuleController extends BackendModuleActionController
      * @param array $data
      * @param $filter
      */
-    public function export(string $base_name,array $headers, array $data, $filter){
+    public function export(string $base_name, array $headers, array $data, $filter)
+    {
         $filter = $this->processFilter($filter);
         $this->view = $this->objectManager->get(CsvView::class);
         $this->view->setFilename($this->getCSVFilename($filter, $base_name));
@@ -339,6 +335,5 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         $filter->setIncludeEmptyPages(true);
     }
 
-    protected abstract function getHeaders() : array;
-
+    abstract protected function getHeaders(): array;
 }

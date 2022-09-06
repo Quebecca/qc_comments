@@ -1,12 +1,11 @@
 <?php
-namespace Qc\QcComments\View;
 
+namespace Qc\QcComments\View;
 
 use TYPO3\CMS\Extbase\Mvc\View\AbstractView;
 
-class CsvView extends  AbstractView
+class CsvView extends AbstractView
 {
-
     protected $filename = 'data.csv';
     protected $delimiter = ',';
     protected $enclosure = '""';
@@ -23,7 +22,6 @@ class CsvView extends  AbstractView
         return $this;
     }
 
-
     /**
      * @param string $escapeChar
      * @return CsvView
@@ -34,7 +32,6 @@ class CsvView extends  AbstractView
         return $this;
     }
 
-
     /**
      * @param $delimiter
      * @return CsvView
@@ -44,7 +41,6 @@ class CsvView extends  AbstractView
         $this->delimiter = $delimiter;
         return $this;
     }
-
 
     /**
      * @param $enclosure
@@ -75,18 +71,18 @@ class CsvView extends  AbstractView
     {
         $response = $this->controllerContext->getResponse();
         $response->setHeader('Content-Type', 'text/csv; charset=utf-8');
-        $response->setHeader('Content-Disposition', 'attachment; filename='.$this->filename);
+        $response->setHeader('Content-Disposition', 'attachment; filename=' . $this->filename);
         $rows = $this->variables['rows'];
         $headers = $this->variables['headers'] ?? $this->headers ?? array_keys($rows[0]);
 
         $fp = fopen('php://temp', 'r+');
         // BOM utf-8 pour excel
-        fputs( $fp, "\xEF\xBB\xBF");
+        fwrite($fp, "\xEF\xBB\xBF");
         fputcsv($fp, $headers, $this->delimiter, $this->enclosure, $this->escapeChar);
         foreach ($rows as $row) {
-            array_walk($row, function(&$field) {
-                $field = str_replace("\r",' ', $field);
-                $field = str_replace("\n",' ', $field);
+            array_walk($row, function (&$field) {
+                $field = str_replace("\r", ' ', $field);
+                $field = str_replace("\n", ' ', $field);
             });
             fputcsv($fp, $row, $this->delimiter, $this->enclosure, $this->escapeChar);
         }
@@ -94,6 +90,5 @@ class CsvView extends  AbstractView
         $str_data = rtrim(stream_get_contents($fp), "\n");
         fclose($fp);
         return $str_data;
-
     }
 }

@@ -1,10 +1,11 @@
 {
   "name": "qc/qc-comments",
   "type": "typo3-cms-extension",
-  "description": "Qc Comments",
+  "description": "Qc comments",
   "authors": [],
   "require": {
-    "typo3/cms-core": "^10.4.30"
+    "typo3/cms-core": "^10.4.30",
+    "lst/backend-module": "2.2.1"
   },
   "autoload": {
     "psr-4": {

@@ -49,7 +49,7 @@ class QcCommentsRepositoryFunctionalTest extends FunctionalTestCase
     /**
      * @var array<int, non-empty-string>
      */
-    protected $testExtensionsToLoad = ['typo3conf/ext/qc_comments'];
+    protected $testExtensionsToLoad = ['typo3conf/ext/qc_comments', 'typo3conf/ext/backend_module'];
 
     /**
      * @throws ContainerExceptionInterface
@@ -78,18 +78,40 @@ class QcCommentsRepositoryFunctionalTest extends FunctionalTestCase
     public function getComments(): void
     {
         $this->importDataSet(__DIR__ . '/../Fixtures/Comments/Comments.xml');
+        $row = $this->commentRepository->getDataList([1, 2], 10);
 
-        /*  $row = $this->referenceRepository->getReferences(3, 0, 1)['paginatedData'][0];
-          $recordTitle = $row['recordTitle'];
-          $tablename = $row['tablename'];
-          $path = $row['path'];
-          $groupName = $row['groupName'];
-          $pid = $row['pid'];
-          self::assertNotNull($row);
-          self::assertSame('my header', $recordTitle);
-          self::assertSame('tt_content', $tablename);
-          self::assertSame('/Page 2/', $path);
-          self::assertSame('Group 1', $groupName);
-          self::assertSame(2, $pid);*/
+        self::assertNotNull($row);
+        self::assertSame('Positif comment', $row[1][0]['comment']);
+        self::assertSame('2022-07-08 08:19:51', $row[1][0]['date_houre']);
+        self::assertSame(1, $row[1][0]['useful']);
+        self::assertSame('Page 1', $row[1][0]['title']);
+    }
+
+    /**
+    * @test
+    * @throws \Doctrine\DBAL\Driver\Exception|\TYPO3\TestingFramework\Core\Exception
+    */
+    public function getStatistics(): void
+    {
+        $this->importDataSet(__DIR__ . '/../Fixtures/Comments/Comments.xml');
+        $row = $this->commentRepository->getDataStats([1, 2], 10);
+
+        self::assertNotNull($row);
+
+        $expectedData = [
+            [1, 'Page 1', ' 100 %', '1', 1, 0],
+            [2, 'Page 2', ' -100 %', '0', 1, 1]
+        ];
+
+        foreach ($row as $key => $dataItem) {
+            $i = 0;
+            foreach ($dataItem as $item) {
+                if ($expectedData[$key][$i] !== $item) {
+                    var_dump($dataItem);
+                }
+                self::assertSame($expectedData[$key][$i], $item);
+                $i++;
+            }
+        }
     }
 }

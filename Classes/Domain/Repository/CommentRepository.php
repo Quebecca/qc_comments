@@ -1,4 +1,5 @@
 <?php
+
 namespace Qc\QcComments\Domain\Repository;
 
 use Doctrine\DBAL\Connection as ConnectionAlias;
@@ -15,11 +16,11 @@ class CommentRepository extends Repository
 {
     use  InjectTranslation;
     protected int $root_id = 0;
-    protected array $settings;
+    protected array $settings = [];
     protected string $tableName = 'tx_qccomments_domain_model_comment';
     protected Filter $filter;
-    protected string $lang_criteria;
-    protected string $date_criteria;
+    protected string $lang_criteria = '';
+    protected string $date_criteria = '';
     /**
      * @param Filter $filter
      */
@@ -29,7 +30,6 @@ class CommentRepository extends Repository
         $this->lang_criteria = $filter->getLangCriteria();
         $this->date_criteria = $filter->getDateCriteria();
     }
-
 
     public function generateQueryBuilder(): QueryBuilder
     {
@@ -55,7 +55,6 @@ class CommentRepository extends Repository
         return $constrains;
     }
 
-
     /**
      * QueryBuilder
      * @param array $ids_list
@@ -72,7 +71,7 @@ class CommentRepository extends Repository
             1 => $this->translate('positive'),
         ];
         $data =  $queryBuilder
-            ->select('p.uid','p.title', 'date_houre', 'comment', 'useful')
+            ->select('p.uid', 'p.title', 'date_houre', 'comment', 'useful')
             ->from($this->tableName)
             ->join(
                 $this->tableName,
@@ -86,12 +85,11 @@ class CommentRepository extends Repository
             ->execute()
             ->fetchAllAssociative();
         $rows = [];
-        foreach ($data as $item){
+        foreach ($data as $item) {
             $rows[$item['uid']][] = $item;
         }
         return $rows;
     }
-
 
     /**
      * @return int
@@ -101,8 +99,8 @@ class CommentRepository extends Repository
     {
         $ids_list = $this->getPageIdsList($this->filter->getDepth());
         $queryBuilder = $this->generateQueryBuilder();
-        $constraints = $queryBuilder->expr()->in('uid_orig', $queryBuilder->createNamedParameter($ids_list,  ConnectionAlias::PARAM_INT_ARRAY));
-        $constraints .= $this->date_criteria .' ' .$this->lang_criteria;
+        $constraints = $queryBuilder->expr()->in('uid_orig', $queryBuilder->createNamedParameter($ids_list, ConnectionAlias::PARAM_INT_ARRAY));
+        $constraints .= $this->date_criteria . ' ' . $this->lang_criteria;
         $total = $queryBuilder
             ->count('*')
             ->from($this->tableName)
@@ -149,15 +147,14 @@ class CommentRepository extends Repository
             ->execute()
             ->fetchAllAssociative();
         $rows = [];
-        foreach ($data as $item){
+        foreach ($data as $item) {
             $item['total_neg'] = $item['total'] - $item['total_pos'];
-            $x =  $item['total_neg'] >  $item['total_pos'] ? - (intval($item['total_neg']) - intval($item['total_pos'])) :  $item['total_pos'];
+            $x =  $item['total_neg'] >  $item['total_pos'] ? - ((int)($item['total_neg']) - (int)($item['total_pos'])) :  $item['total_pos'];
             $item['avg'] = ' ' . number_format((($x) / $item['total']), 3) * 100 . ' %';
             $rows[] = $item;
         }
         return $rows;
     }
-
 
     /**
      * @param $depth

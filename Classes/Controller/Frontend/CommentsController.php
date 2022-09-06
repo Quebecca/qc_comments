@@ -33,12 +33,14 @@ class CommentsController extends ActionController
      */
     protected CommentRepository $commentsRepository;
 
-    public function injectCommentsRepository(CommentRepository $commentsRepository){
+    public function injectCommentsRepository(CommentRepository $commentsRepository)
+    {
         $this->commentsRepository = $commentsRepository;
     }
 
-    public function showAction(array $args = []){
-        $this->view->assignMultiple( [
+    public function showAction(array $args = [])
+    {
+        $this->view->assignMultiple([
             'submitted' => $this->request->getArguments()['submitted'],
             'comment' => new Comment()
         ]);
@@ -49,8 +51,9 @@ class CommentsController extends ActionController
      * @throws IllegalObjectTypeException
      * @throws StopActionException
      */
-    public function saveCommentAction(Comment $comment = null){
-        if($comment){
+    public function saveCommentAction(Comment $comment = null)
+    {
+        if ($comment) {
             $pageUid = $comment->getUidOrig();
             // @todo : should store the absolute url or uri
             $comment->setUidPermsGroup(
@@ -58,9 +61,7 @@ class CommentsController extends ActionController
             );
             $comment->setDateHoure(date('Y-m-d H:i:s'));
             $this->commentsRepository->add($comment);
-
         }
-        $this->forward('show',null, null, ['submitted' => true]);
+        $this->forward('show', null, null, ['submitted' => true]);
     }
-
 }

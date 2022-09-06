@@ -1,4 +1,5 @@
 <?php
+
 namespace Qc\QcComments\Domain\Model;
 
 /***
@@ -129,5 +130,4 @@ class Comment extends AbstractEntity
     {
         $this->dateHoure = $dateHoure;
     }
-
 }

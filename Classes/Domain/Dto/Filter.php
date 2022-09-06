@@ -19,7 +19,7 @@ class Filter
 {
     use InjectTranslation;
 
-    function __construct()
+    public function __construct()
     {
         $this->extKey = 'qc_comments';
     }
@@ -179,7 +179,8 @@ class Filter
         ];
     }
 
-    public function setStartDate(string $startDate = null) {
+    public function setStartDate(string $startDate = null)
+    {
         $this->startDate = $startDate;
     }
 
@@ -188,7 +189,8 @@ class Filter
         return $this->startDate;
     }
 
-    public function setEndDate(string $endDate = null) {
+    public function setEndDate(string $endDate = null)
+    {
         $this->endDate = $endDate;
     }
 
@@ -201,20 +203,19 @@ class Filter
     {
         $criteria = '';
 
-        if($this->getDateRange() === 'userDefined'){
-            if($this->startDate != ''){
+        if ($this->getDateRange() === 'userDefined') {
+            if ($this->startDate != '') {
                 // delete minutes seconds
                 $formatedStartDate = explode(' ', $this->startDate);
-                $criteria = " and date_houre >= '". date('Y-m-d H:i:s', strtotime($formatedStartDate[0]))."'";
+                $criteria = " and date_houre >= '" . date('Y-m-d H:i:s', strtotime($formatedStartDate[0])) . "'";
             }
-            if($this->endDate != ''){
+            if ($this->endDate != '') {
                 $formatedEndDate = explode(' ', $this->endDate);
-                $criteria .= " and date_houre <= '". date('Y-m-d H:i:s',strtotime($formatedEndDate[0]))."'";
+                $criteria .= " and date_houre <= '" . date('Y-m-d H:i:s', strtotime($formatedEndDate[0])) . "'";
             }
+        } else {
+            $criteria = " and date_houre >= '" . $this->getDateForRange() . "'";
         }
-       else{
-           $criteria = " and date_houre >= '" . $this->getDateForRange()."'";
-       }
         return $criteria;
     }
 }

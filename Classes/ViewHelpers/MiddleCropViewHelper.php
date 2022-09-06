@@ -2,8 +2,8 @@
 
 namespace Qc\QcComments\ViewHelpers;
 
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 class MiddleCropViewHelper extends AbstractViewHelper
@@ -11,7 +11,7 @@ class MiddleCropViewHelper extends AbstractViewHelper
     use CompileWithRenderStatic;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $escapeOutput = false;
 
@@ -21,18 +21,18 @@ class MiddleCropViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         // Convertir la chaîne pour retirer les caractères spéciaux (ex. &quot);
-        $str = htmlspecialchars_decode($renderChildrenClosure(),ENT_QUOTES);
+        $str = htmlspecialchars_decode($renderChildrenClosure(), ENT_QUOTES);
         $maxlength = $arguments['maxLength'];
         if (strlen($str) <= $maxlength) {
             return $str;
         }
         $separator = ' […]';
-        $separatorlength = strlen($separator) ;
+        $separatorlength = strlen($separator);
 
         $maxlength = $arguments['maxLength'] - $separatorlength;
 
         // nb caractères avant et après l'ellipse
-        $len = $maxlength / 2 ;
+        $len = $maxlength / 2;
 
         // texte avant ellipse
         $avant = mb_substr($str, 0, $len);
@@ -47,7 +47,6 @@ class MiddleCropViewHelper extends AbstractViewHelper
      */
     public function initializeArguments()
     {
-        $this->registerArgument('maxLength','integer','Max length for the text',false, 95);
+        $this->registerArgument('maxLength', 'integer', 'Max length for the text', false, 95);
     }
-
 }

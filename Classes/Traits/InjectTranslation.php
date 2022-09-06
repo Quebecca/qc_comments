@@ -20,13 +20,13 @@ trait InjectTranslation
      * @param null $extKey
      * @return string
      */
-    protected function translate($key,  $arguments = [], $extKey = null): string
+    protected function translate($key, $arguments = [], $extKey = null): string
     {
         $extKey = $extKey
                     ?? $this->extKey
                     ?? ($this instanceof ActionController ? $this->request->getControllerExtensionKey() : false);
 
-        return $extKey != '' ? LocalizationUtilityExtbase::translate($key, $extKey, (array) $arguments).$this::addTrKey($key) : '';
+        return $extKey != '' ? LocalizationUtilityExtbase::translate($key, $extKey, (array)$arguments) . $this::addTrKey($key) : '';
     }
 
     /**
@@ -34,13 +34,11 @@ trait InjectTranslation
      * @param $key
      * @return string
      */
-    static  protected function addTrKey($key): string
+    protected static function addTrKey($key): string
     {
-
         if ($_GET['addTrKey'] == 1) {
             return " ($key)";
         }
         return '';
     }
-
 }
