@@ -23,6 +23,11 @@ use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 // FrontEnd Controller
 class CommentsController extends ActionController
 {
+    // @Todo : Intégrer le FE de form dans le gabarit
+    // Dans gabarit_pgu/Configuration/TypoScript/contentFormBasPage.typoscript - branche : changes_for_qc_comments_integration
+    // @Todo : Configurer l'activation de formulaire
+    // Modifier le pgu_be pour ajouter un champs pour selectionner le mode de bas de page ticket : 3053 +
+
     // @Todo : Security Test XSS, SQL injection ...  OWASP ZAP, Burpsuit
 
     /**
@@ -68,4 +73,5 @@ class CommentsController extends ActionController
         }
         $this->forward('show', null, null, ['submitted' => true]);
     }
+
 }

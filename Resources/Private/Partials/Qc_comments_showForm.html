@@ -1,15 +1,11 @@
 {namespace v=FluidTYPO3\Vhs\ViewHelpers}
-{namespace qcComments=Qc\QcComments\ViewHelpers}
-
-<f:variable name="pageUid" value="{v:page.info(field: 'uid')}"/>
-<f:variable name="checkBasPageMode" value="{modeBasPage -> qcComments:CheckBasPageMode(pageUid: pageUid)}" />
-<f:if condition="{checkBasPageMode} || {settings.activeModeBasPage} = 'true'">
+<div class="col-12 formBasPage" id="formBasPageCommentaire">
     <div class="frame frame-default frame-type-list frame-layout-0">
         <h2>
             <f:translate key="commentsLabel" extensionName="qc_comments"/>
         </h2>
         <div class="tx-powermail">
-            <f:if condition="{submitted}">
+            <f:if condition="   {submitted}">
                 <f:then>
                     <div class="powermail_create" role="alert">
                         <p><f:translate key="thankYouForHelpingUs" extensionName="qc_comments"/></p>
@@ -43,8 +39,8 @@
                                     <label for="comment-textarea" class="control-label" title="">
                                         <f:translate key="encounterAProblem" extensionName="qc_comments"/>
                                         <span id="commentpage_complement_label" class="complementLabel">
-                                        <f:translate key="sendUsYouObservation" extensionName="qc_comments"/>
-                                    </span>
+                                            <f:translate key="sendUsYouObservation" extensionName="qc_comments"/>
+                                        </span>
                                     </label>
                                     <f:form.textarea
                                             property="comment"
@@ -93,6 +89,5 @@
         });
 
     </script>
-</f:if>
-
+</div>
 
