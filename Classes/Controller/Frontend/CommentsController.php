@@ -73,5 +73,4 @@ class CommentsController extends ActionController
         }
         $this->forward('show', null, null, ['submitted' => true]);
     }
-
 }
