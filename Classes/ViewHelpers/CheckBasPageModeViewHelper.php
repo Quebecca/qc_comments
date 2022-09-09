@@ -33,24 +33,32 @@ class CheckBasPageModeViewHelper extends AbstractViewHelper
      */
     public function getBasPageMode(int $pageUid): bool
     {
+        /*
+           ['Non précisé', 'not specified', ''],
+                    ['Afficher pour cette page et ses sous-pages', 'mode 1', ''],
+                    ['Afficher pour cette page seulement', 'mode 2', ''],
+                    ['Masquer pour cette page et ses sous-pages', 'mode 3', ''],
+                    ['Masquer pour cette page seulement', 'mode 4', ''],
+        */
         $data = BackendUtility::getRecord('pages',$pageUid,'uid,pid,tx_select_bas_page_mode');
-        if($data['tx_select_bas_page_mode'] == 'mode 1' || $data['tx_select_bas_page_mode'] == 'mode 2')
-            return true;
-        // mode 3 ou mode 4
-        else if($data['tx_select_bas_page_mode'] != '')
-            return false;
+        $enabledMode = ['mode 1', 'mode 2'];
+        $disabledMode = ['mode 3', 'mode 4'];
+        $inheritanceMode = ['', 'not specified'];
+        $currentMode = $data['tx_select_bas_page_mode'];
+
+        if(in_array($currentMode, $enabledMode) || in_array($currentMode, $disabledMode))
+            return in_array($currentMode, $enabledMode);
+
 
         // check parentes page
         $pageUid = $data['pid'];
-        while ($pageUid != 0 && $data['tx_select_bas_page_mode'] == ''){
+        while ($pageUid != 0 && in_array($currentMode, $inheritanceMode)){
             $data = BackendUtility::getRecord('pages',$pageUid,'uid,pid,tx_select_bas_page_mode');
+            $currentMode = $data['tx_select_bas_page_mode'];
             $pageUid = $data['pid'];
         }
         // if the parent page has the mode 1
-        if($data['tx_select_bas_page_mode'] == 'mode 1')
-            return true;
-        else
-            return false;
+        return $currentMode == 'mode 1';
 
     }
 
