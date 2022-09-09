@@ -37,6 +37,7 @@ class PagesConfigurationMigrationToDB
         $ids[] = '17';
 
         $ids = $this->getIdsArray($idsStr);
+        //$this->updatePagesTable("mode 1", $ids);
     }
 
     public function transposeExceptionsPagesForEnabledBasPage(){
@@ -65,6 +66,7 @@ class PagesConfigurationMigrationToDB
         foreach ($strF as $item){
             foreach ($strToBeRemoved as $str){
                 $id =  str_replace($str,"", $item);
+                $item = $id;
             }
             $formattedS[] = $id;
         }
@@ -72,7 +74,6 @@ class PagesConfigurationMigrationToDB
     }
 
     public function updatePagesTable(string $mode, array $ids){
-
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder
             ->update('pages')
