@@ -3,17 +3,6 @@
 
 <f:layout name="Default"/>
 
-This Template is responsible for creating a table of domain objects.
-
-If you modify this template, do not forget to change the overwrite settings
-in /Configuration/ExtensionBuilder/settings.yaml:
-Resources:
-Private:
-Templates:
-List.html: keep
-
-Otherwise your changes will be overwritten the next time you save the extension in the extension builder
-
 <f:section name="headline">
     <h1>
         {f:translate(key: 'menu.stats')}
@@ -39,9 +28,8 @@ Otherwise your changes will be overwritten the next time you save the extension 
 <f:section name="rows">
     <div class="panel panel-space panel-default recordlist">
         <div class="panel-heading">
-            Commentaires
+            {f:translate(key: 'comments')}
         </div>
-
         <f:render partial="StatsTable" arguments="{rows:rows, headers:headers, settings:settings}"/>
     </div>
 </f:section>

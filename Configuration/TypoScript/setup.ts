@@ -41,10 +41,15 @@ module.tx_qccomments {
         layoutRootPaths.0 = EXT:qc_comments/Resources/Private/Layouts/
         layoutRootPaths.1 = {$module.tx_qccomments.view.layoutRootPath}
     }
-
     settings {
-        maxComments = 2000
-        maxStats = 100
+        comments {
+            maxRecords = 100
+            numberOfSubPages = 5
+        }
+        statistics {
+            maxRecords = 5
+        }
+
         cropMaxLength = 95
         csvExport {
             filename {

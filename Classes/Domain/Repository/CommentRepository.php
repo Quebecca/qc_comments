@@ -56,13 +56,14 @@ class CommentRepository extends Repository
     }
 
     /**
+     * This function is used to get pages comments for BE rendering and for export as well
      * QueryBuilder
      * @param array $ids_list
-     * @param int|null $limit
+     * @param int|null $limit false id the function is called for export to export all comment, number for BE table
      * @return array
      * @throws Exception
      */
-    public function getDataList($ids_list = [], int $limit = null): array
+    public function getDataList($ids_list = [], $limit): array
     {
         $queryBuilder = $this->generateQueryBuilder();
         $constraints = $this->getConstraints($ids_list);
@@ -81,9 +82,13 @@ class CommentRepository extends Repository
             )
             ->where(
                 $constraints['whereClause']
-            )
-            ->execute()
-            ->fetchAllAssociative();
+            );
+
+        if($limit != false){
+            $data = $data->setMaxResults($limit);
+        }
+        $data = $data->execute()
+        ->fetchAllAssociative();
         $rows = [];
         foreach ($data as $item) {
             $rows[$item['uid']][] = $item;
@@ -113,18 +118,17 @@ class CommentRepository extends Repository
     }
 
     /**
+     * This function is used to get pages statistics for BE rendering and for export as well
      * QueryBuilder
      * @param $page_ids
      * @param bool $limit
      * @return array
      * @throws Exception
      */
-    public function getDataStats($page_ids, $limit = true): array
+    public function getDataStats($page_ids, $limit): array
     {
         $queryBuilder = $this->generateQueryBuilder();
         $constraints = $this->getConstraints($page_ids);
-        // @todo : set limit for records
-        $limitResult = $limit ? 'limit ' . ($this->settings['maxStats'] + 1) : '';
         $data =  $queryBuilder
             ->select('p.uid as page_uid', 'p.title as page_title')
             ->addSelectLiteral(
@@ -142,10 +146,15 @@ class CommentRepository extends Repository
             ->where(
                 $constraints['whereClause']
             )
-            ->groupBy('p.uid', 'p.title')
-           // ->setMaxResults($limitResult)
+            ->groupBy('p.uid', 'p.title');
+
+        if($limit != false)
+            // we add one record to limit to verify if there are more than limit results
+            $data = $data->setMaxResults($limit + 1);
+        $data = $data
             ->execute()
             ->fetchAllAssociative();
+
         $rows = [];
         foreach ($data as $item) {
             $item['total_neg'] = $item['total'] - $item['total_pos'];

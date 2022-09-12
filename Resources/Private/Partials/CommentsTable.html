@@ -8,28 +8,30 @@
 </f:if>
 
 <f:section name="table">
-    <div class="table-fit">
-        <table class="table table-striped table-hover">
-            <thead>
-            <tr>
-                <f:for as="header" key="col" each="{headers}" iteration="iterator">
-                    <th>{header}</th>
-                </f:for>
-            </tr>
-            </thead>
-            <tbody>
-            <f:for as="row" each="{rows}" iteration="iterator">
-                <tr class="t3js-entity{f:if(condition:iterator.isFirst, then:' firstcol', else:'')}">
-                   <td>{row.date_houre}</td>
-                   <td>
-                       <div class="text-hover">
-                           {row.comment}
-                       </div>
-                   </td>
-                   <td>{row.useful}</td>
+    <f:if condition="{rows}">
+        <div class="table-fit">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <f:for as="header" key="col" each="{headers}" iteration="iterator">
+                        <th>{header}</th>
+                    </f:for>
                 </tr>
-            </f:for>
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                <f:for as="row" each="{rows}" iteration="iterator">
+                    <tr class="t3js-entity{f:if(condition:iterator.isFirst, then:' firstcol', else:'')}">
+                        <td>{row.date_houre}</td>
+                        <td>
+                            <div class="text-hover">
+                                {row.comment}
+                            </div>
+                        </td>
+                        <td>{row.useful}</td>
+                    </tr>
+                </f:for>
+                </tbody>
+            </table>
+        </div>
+    </f:if>
 </f:section>

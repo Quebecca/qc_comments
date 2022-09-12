@@ -38,25 +38,24 @@ class CommentsTabController extends QcBackendModuleController
         $resetButton = [
             'href' => $this->getUrl('resetFilter')
         ];
-        $tooMuchPages = false;
-        $tooMuchComments = $this->commentsRepository->getListCount() > $this->settings['maxComments'];
-        $this->pages_ids = $this->commentsRepository->getPageIdsList($filter->getDepth());
-        if (count($this->pages_ids) > $this->settings['maxStats'] && $filter->getIncludeEmptyPages()) {
-            $tooMuchPages = true;
-            // $pages_ids = array_slice($this->pages_ids, 0, $this->settings['maxStats']);
-        }
 
-        $stats = $this->commentsRepository->getDataStats($this->pages_ids, true);
-        $tooMuchPages = $tooMuchPages ?: count($stats) > $this->settings['maxStats'];
-        $pages_ids = array_map(function ($row) {
-            return $row['page_uid'];
-        }, $stats);
+        $maxRecords = $this->settings['comments']['records'];
+        $numberOfSubPages = $this->settings['comments']['numberOfSubPages'];
+        $this->pages_ids = array_slice(
+            $this->commentsRepository->getPageIdsList($filter->getDepth()),
+            0,
+            $numberOfSubPages
+        );
 
-        if ($tooMuchComments | $tooMuchPages) {
-            $message = $this->translate('tooMuchResults', [$this->settings['maxStats'], $this->settings['maxComments']]);
+        $stats = $this->commentsRepository->getDataStats($this->pages_ids, $maxRecords);
+        $tooMuchPages = count($this->pages_ids) > $numberOfSubPages;
+
+        $comments = $this->commentsRepository->getDataList($this->pages_ids, $maxRecords);
+        if ($this->commentsRepository->getListCount() > $maxRecords || $tooMuchPages) {
+            $message = $this->translate('tooMuchResults', [$numberOfSubPages, $maxRecords]);
             $this->addFlashMessage($message, null, AbstractMessage::WARNING);
         }
-        $comments = $this->commentsRepository->getDataList($pages_ids, true);
+
         $commentHeaders = $this->getHeaders();
         $this
             ->view
@@ -99,7 +98,7 @@ class CommentsTabController extends QcBackendModuleController
     {
         $filter = $this->processFilter($filter);
         $filter->setIncludeEmptyPages(true);
-        $data = $this->commentsRepository->getDataList($this->pages_ids);
+        $data = $this->commentsRepository->getDataList($this->pages_ids, false);
         $rows = [];
         foreach ($data as $row) {
             foreach ($row as $item) {

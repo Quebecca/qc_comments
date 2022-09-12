@@ -29,13 +29,17 @@ class StatisticsTabController extends QcBackendModuleController
         $filter = $this->processFilter($filter);
         $this->pages_ids = $this->commentsRepository->getPageIdsList($filter->getDepth());
         $tooMuchResults = false;
-        if (count($this->pages_ids) > $this->settings['maxStats'] && $filter->getIncludeEmptyPages()) {
+
+
+        /*if (count($this->pages_ids) > $this->settings['maxStats'] && $filter->getIncludeEmptyPages()) {
             $tooMuchResults = true;
             $pages_ids = array_slice($this->pages_ids, 0, $this->settings['maxStats']);
-        }
-        $resultData = $this->commentsRepository->getDataStats($this->pages_ids, true);
-        if ($tooMuchResults || count($resultData) > $this->settings['maxStats']) {
-            $message = $this->translate('tooMuchPages', [$this->settings['maxStats']]);
+        }*/
+
+        $maxRecords = $this->settings['statistics']['maxRecords'];
+        $resultData = $this->commentsRepository->getDataStats($this->pages_ids, $maxRecords);
+        if (count($resultData) > $maxRecords) {
+            $message = $this->translate('tooMuchPages', [$maxRecords]);
             $this->addFlashMessage($message, null, AbstractMessage::WARNING);
             array_pop($resultData); // last line was there to check that limit has been reached
         }
@@ -71,8 +75,7 @@ class StatisticsTabController extends QcBackendModuleController
     public function exportStatisticsAction($filter = null)
     {
         $filter = $this->processFilter($filter);
-        $this->view->assign('rows', $this->commentsRepository->getDataStats($this->pages_ids));
-        $data = $this->commentsRepository->getDataStats($this->pages_ids);
+        $data = $this->commentsRepository->getDataStats($this->pages_ids, false);
         // Resort array elements for export
         $mappedData = [];
         $i = 0;
