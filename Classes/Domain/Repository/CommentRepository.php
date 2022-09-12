@@ -71,28 +71,33 @@ class CommentRepository extends Repository
             0 => $this->translate('negative'),
             1 => $this->translate('positive'),
         ];
-        $data =  $queryBuilder
-            ->select('p.uid', 'p.title', 'date_houre', 'comment', 'useful')
-            ->from($this->tableName)
-            ->join(
-                $this->tableName,
-                'pages',
-                'p',
-                $constraints['joinCond']
-            )
-            ->where(
-                $constraints['whereClause']
-            );
+        $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
+
+        $data= $queryBuilder
+                ->select('p.uid', 'p.title', 'date_houre', 'comment', 'useful')
+                ->from($this->tableName)
+                ->$joinMethod(
+                    $this->tableName,
+                    'pages',
+                    'p',
+                    $constraints['joinCond']
+                )
+                ->where(
+                    $constraints['whereClause']
+                );
 
         if($limit != false){
             $data = $data->setMaxResults($limit);
         }
-        $data = $data->execute()
-        ->fetchAllAssociative();
+        $data = $data
+                ->execute()
+                ->fetchAllAssociative();
+
         $rows = [];
         foreach ($data as $item) {
             $rows[$item['uid']][] = $item;
         }
+
         return $rows;
     }
 
@@ -128,6 +133,7 @@ class CommentRepository extends Repository
     public function getDataStats($page_ids, $limit): array
     {
         $queryBuilder = $this->generateQueryBuilder();
+        $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
         $constraints = $this->getConstraints($page_ids);
         $data =  $queryBuilder
             ->select('p.uid as page_uid', 'p.title as page_title')
@@ -137,7 +143,7 @@ class CommentRepository extends Repository
                 $queryBuilder->expr()->count('uid_orig', 'total'),
             )
             ->from($this->tableName)
-            ->join(
+            ->$joinMethod(
                 $this->tableName,
                 'pages',
                 'p',
@@ -159,7 +165,10 @@ class CommentRepository extends Repository
         foreach ($data as $item) {
             $item['total_neg'] = $item['total'] - $item['total_pos'];
             $x =  $item['total_neg'] >  $item['total_pos'] ? - ((int)($item['total_neg']) - (int)($item['total_pos'])) :  $item['total_pos'];
-            $item['avg'] = ' ' . number_format((($x) / $item['total']), 3) * 100 . ' %';
+            $item['avg'] = $item['total'] > 0 ?
+                ' ' . number_format((($x) / $item['total']), 3) * 100 . ' %'
+            : '0 %';
+            $item['total_pos'] = $item['total_pos'] ?: '0';
             $rows[] = $item;
         }
         return $rows;
@@ -175,7 +184,7 @@ class CommentRepository extends Repository
         if ($depth > 0) {
             $page_ids = $this->getPageTreeIds($depth);
         }
-        $page_ids[] = $this->root_id;
+      //  $page_ids[] = $this->root_id;
         return $page_ids;
     }
 

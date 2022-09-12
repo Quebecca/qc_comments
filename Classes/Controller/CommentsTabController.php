@@ -43,16 +43,14 @@ class CommentsTabController extends QcBackendModuleController
         $maxRecords = $this->settings['comments']['maxRecords'];
         $numberOfSubPages = $this->settings['comments']['numberOfSubPages'];
         $tooMuchPages = count($this->pages_ids) > $numberOfSubPages;
-
         $this->pages_ids = array_slice(
             $this->pages_ids,
             0,
             $numberOfSubPages
         );
-
         $stats = $this->commentsRepository->getDataStats($this->pages_ids, $maxRecords);
-
         $comments = $this->commentsRepository->getDataList($this->pages_ids, $maxRecords);
+
         if ($this->commentsRepository->getListCount() > $maxRecords || $tooMuchPages) {
             $message = $this->translate('tooMuchResults', [$numberOfSubPages, $maxRecords]);
             $this->addFlashMessage($message, null, AbstractMessage::WARNING);

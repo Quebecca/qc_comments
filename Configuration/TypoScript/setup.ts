@@ -44,10 +44,10 @@ module.tx_qccomments {
     settings {
         comments {
             maxRecords = 100
-            numberOfSubPages = 5
+            numberOfSubPages = 50
         }
         statistics {
-            maxRecords = 3
+            maxRecords = 30
         }
 
         cropMaxLength = 95
