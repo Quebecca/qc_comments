@@ -47,7 +47,7 @@ module.tx_qccomments {
             numberOfSubPages = 5
         }
         statistics {
-            maxRecords = 5
+            maxRecords = 3
         }
 
         cropMaxLength = 95

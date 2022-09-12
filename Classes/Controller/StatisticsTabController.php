@@ -28,14 +28,6 @@ class StatisticsTabController extends QcBackendModuleController
     {
         $filter = $this->processFilter($filter);
         $this->pages_ids = $this->commentsRepository->getPageIdsList($filter->getDepth());
-        $tooMuchResults = false;
-
-
-        /*if (count($this->pages_ids) > $this->settings['maxStats'] && $filter->getIncludeEmptyPages()) {
-            $tooMuchResults = true;
-            $pages_ids = array_slice($this->pages_ids, 0, $this->settings['maxStats']);
-        }*/
-
         $maxRecords = $this->settings['statistics']['maxRecords'];
         $resultData = $this->commentsRepository->getDataStats($this->pages_ids, $maxRecords);
         if (count($resultData) > $maxRecords) {

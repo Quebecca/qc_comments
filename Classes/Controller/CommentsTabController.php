@@ -39,16 +39,18 @@ class CommentsTabController extends QcBackendModuleController
             'href' => $this->getUrl('resetFilter')
         ];
 
-        $maxRecords = $this->settings['comments']['records'];
+        $this->pages_ids = $this->commentsRepository->getPageIdsList($filter->getDepth());
+        $maxRecords = $this->settings['comments']['maxRecords'];
         $numberOfSubPages = $this->settings['comments']['numberOfSubPages'];
+        $tooMuchPages = count($this->pages_ids) > $numberOfSubPages;
+
         $this->pages_ids = array_slice(
-            $this->commentsRepository->getPageIdsList($filter->getDepth()),
+            $this->pages_ids,
             0,
             $numberOfSubPages
         );
 
         $stats = $this->commentsRepository->getDataStats($this->pages_ids, $maxRecords);
-        $tooMuchPages = count($this->pages_ids) > $numberOfSubPages;
 
         $comments = $this->commentsRepository->getDataList($this->pages_ids, $maxRecords);
         if ($this->commentsRepository->getListCount() > $maxRecords || $tooMuchPages) {
