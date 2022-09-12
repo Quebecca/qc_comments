@@ -33,7 +33,6 @@ use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 abstract class QcBackendModuleController extends BackendModuleActionController
 {
     use InjectTranslation;
-    use injectT3Utilities;
 
     /**
      * @var int|mixed

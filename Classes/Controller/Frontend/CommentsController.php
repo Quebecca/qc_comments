@@ -23,6 +23,9 @@ use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 // FrontEnd Controller
 class CommentsController extends ActionController
 {
+    // @Todo : verify that comment in English
+    // @Todo : code cleaning
+
     // @Todo : Intégrer le FE de form dans le gabarit
     // Dans gabarit_pgu/Configuration/TypoScript/contentFormBasPage.typoscript - branche : changes_for_qc_comments_integration
     // @Todo : Configurer l'activation de formulaire

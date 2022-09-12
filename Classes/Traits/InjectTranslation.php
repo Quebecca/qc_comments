@@ -7,7 +7,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility as LocalizationUtilityExtbase;
 
 trait InjectTranslation
 {
-    //use injectT3Utilities;
     /**
      * @var string
      */
