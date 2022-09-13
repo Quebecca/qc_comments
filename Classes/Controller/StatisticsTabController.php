@@ -13,7 +13,6 @@ namespace Qc\QcComments\Controller;
  *
  ***/
 
-use Doctrine\DBAL\Driver\Exception;
 use Qc\QcComments\Domain\Dto\Filter;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;

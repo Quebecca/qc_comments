@@ -17,6 +17,7 @@ namespace Qc\QcCommentsTest\Tests\Functional\Comments;
 
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Qc\QcComments\Domain\Dto\Filter;
 use Qc\QcComments\Domain\Repository\CommentRepository;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
@@ -69,6 +70,12 @@ class QcCommentsRepositoryFunctionalTest extends FunctionalTestCase
             $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
             $this->commentRepository = $objectManager->get(CommentRepository::class);
         }
+        $filter = new Filter();
+        $filter->setDepth(10);
+        $filter->setDateRange('userDefined');
+        $filter->setStartDate('2021-07-08 00:00:00');
+        $filter->setIncludeEmptyPages(true);
+        $this->commentRepository->setFilter($filter);
     }
 
     /**
@@ -78,11 +85,10 @@ class QcCommentsRepositoryFunctionalTest extends FunctionalTestCase
     public function getComments(): void
     {
         $this->importDataSet(__DIR__ . '/../Fixtures/Comments/Comments.xml');
-        $row = $this->commentRepository->getDataList([1, 2], 10);
-
+        $row = $this->commentRepository->getComments([1, 2], true);
         self::assertNotNull($row);
         self::assertSame('Positif comment', $row[1][0]['comment']);
-        self::assertSame('2022-07-08 08:19:51', $row[1][0]['date_houre']);
+        self::assertSame('2022-07-08 00:00:00', $row[1][0]['date_houre']);
         self::assertSame(1, $row[1][0]['useful']);
         self::assertSame('Page 1', $row[1][0]['title']);
     }
@@ -94,10 +100,8 @@ class QcCommentsRepositoryFunctionalTest extends FunctionalTestCase
     public function getStatistics(): void
     {
         $this->importDataSet(__DIR__ . '/../Fixtures/Comments/Comments.xml');
-        $row = $this->commentRepository->getDataStats([1, 2], 10);
-
+        $row = $this->commentRepository->getStatistics([1, 2], false);
         self::assertNotNull($row);
-
         $expectedData = [
             [1, 'Page 1', ' 100 %', '1', 1, 0],
             [2, 'Page 2', ' -100 %', '0', 1, 1]
@@ -106,9 +110,6 @@ class QcCommentsRepositoryFunctionalTest extends FunctionalTestCase
         foreach ($row as $key => $dataItem) {
             $i = 0;
             foreach ($dataItem as $item) {
-                if ($expectedData[$key][$i] !== $item) {
-                    var_dump($dataItem);
-                }
                 self::assertSame($expectedData[$key][$i], $item);
                 $i++;
             }

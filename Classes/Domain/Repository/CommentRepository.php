@@ -22,7 +22,6 @@ class CommentRepository extends Repository
     protected string $lang_criteria = '';
     protected string $date_criteria = '';
 
-
     /**
      * @param Filter $filter
      */
@@ -65,10 +64,10 @@ class CommentRepository extends Repository
      * This function is used to get pages comments for BE rendering and for export as well
      * QueryBuilder
      * @param array $pages_ids
-     * @param int|null $limit false if the function is called for export comments
+     * @param int|bool $limit false if the function is called for export comments
      * @return array
      */
-    public function getComments(array $pages_ids, ?int $limit): array
+    public function getComments(array $pages_ids, $limit): array
     {
         $queryBuilder = $this->generateQueryBuilder();
         $constraints = $this->getConstraints($pages_ids);
@@ -92,7 +91,7 @@ class CommentRepository extends Repository
                     $constraints['whereClause']
                 );
 
-        if($limit != false){
+        if ($limit != false) {
             $data = $data->setMaxResults($limit);
         }
         $data = $data
@@ -132,7 +131,7 @@ class CommentRepository extends Repository
      * This function is used to get pages statistics for BE rendering and for export as well
      * QueryBuilder
      * @param $page_ids
-     * @param int | bool $limit
+     * @param int|bool $limit
      * @return array
      */
     public function getStatistics($page_ids, $limit): array
@@ -159,9 +158,10 @@ class CommentRepository extends Repository
             )
             ->groupBy('p.uid', 'p.title');
 
-        if($limit != false)
+        if ($limit != false) {
             // we add one record to limit to verify if there are more than limit results
             $data = $data->setMaxResults($limit + 1);
+        }
         $data = $data
             ->execute()
             ->fetchAllAssociative();
@@ -190,8 +190,9 @@ class CommentRepository extends Repository
         if ($depth > 0) {
             $page_ids = $this->getPageTreeIds($depth);
         }
-        if($this->filter->getDepth() == 0)
+        if ($this->filter->getDepth() == 0) {
             $page_ids[] = $this->root_id;
+        }
         return $page_ids;
     }
 
