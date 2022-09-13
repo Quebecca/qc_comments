@@ -17,7 +17,6 @@ use LST\BackendModule\Controller\BackendModuleActionController;
 use LST\BackendModule\Domain\Session\BackendSession;
 use Qc\QcComments\Domain\Dto\Filter;
 use Qc\QcComments\Domain\Repository\CommentRepository;
-use Qc\QcComments\Traits\injectT3Utilities;
 use Qc\QcComments\Traits\InjectTranslation;
 use Qc\QcComments\View\CsvView;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
@@ -44,7 +43,9 @@ abstract class QcBackendModuleController extends BackendModuleActionController
      */
     protected ?Icon $icon = null;
 
-    /** @var BackendSession */
+    /**
+     * @var BackendSession
+     */
     protected $backendSession;
 
     /**
@@ -60,7 +61,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
     /**
      * @var string
      */
-    protected string $controllerName;
+    protected string $controllerName = '';
 
     protected array $pages_ids = [];
 
@@ -167,7 +168,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
      * @param null $controller
      * @return string
      */
-    protected function getUrl($action, $arguments = [], $controller = null)
+    protected function getUrl($action, array $arguments = [], $controller = null): string
     {
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = $this->objectManager->get(UriBuilder::class);
@@ -267,7 +268,6 @@ abstract class QcBackendModuleController extends BackendModuleActionController
     protected function processFilter(Filter $filter = null)
     {
         // Add filtering to records
-
         if ($filter === null) {
             // Get filter from session if available
             $filter = $this->backendSession->get('filter');

@@ -27,27 +27,27 @@ class Filter
     /**
      * @var string
      */
-    protected $lang = 'fr';
+    protected string $lang = 'fr';
 
     /**
      * @var string
      */
-    public $startDate;
+    public $startDate = '';
 
     /**
      * @var string
      */
-    public $endDate;
+    public $endDate = '';
 
     /**
      * @var bool
      */
-    protected $includeEmptyPages = true;
+    protected bool $includeEmptyPages = true;
 
     /**
      * @var int
      */
-    protected $depth = 0;
+    protected int $depth = 0;
 
     /**
      * @return bool
@@ -71,7 +71,7 @@ class Filter
     /**
      * @var string
      */
-    protected $dateRange = '1 day';
+    protected string $dateRange = '1 day';
 
     /**
      * @return int
@@ -83,6 +83,7 @@ class Filter
 
     /**
      * @param int $depth
+     * @return Filter
      */
     public function setDepth(int $depth): Filter
     {
@@ -108,7 +109,7 @@ class Filter
         return $this;
     }
 
-    public function getLangCriteria()
+    public function getLangCriteria(): string
     {
         $criteria = '';
         switch ($this->lang) {
@@ -137,6 +138,7 @@ class Filter
 
     /**
      * @param string $date_range
+     * @return Filter
      */
     public function setDateRange(string $date_range): Filter
     {
@@ -144,7 +146,10 @@ class Filter
         return $this;
     }
 
-    public function getDepthOptions()
+    /**
+     * @return array
+     */
+    public function getDepthOptions(): array
     {
         return [
             0 => $this->translate('filter.depth.thisPage'),
@@ -155,7 +160,10 @@ class Filter
         ];
     }
 
-    public function getDateRangeOptions()
+    /**
+     * @return array
+     */
+    public function getDateRangeOptions(): array
     {
         return [
             '1 day' => '1 ' . $this->translate('filter.dateRange.day'),
@@ -170,7 +178,10 @@ class Filter
         ];
     }
 
-    public function getLangOptions()
+    /**
+     * @return array
+     */
+    public function getLangOptions(): array
     {
         return [
             '' => $this->translate('filter.lang.all'),
@@ -179,27 +190,42 @@ class Filter
         ];
     }
 
+    /**
+     * @param string|null $startDate
+     */
     public function setStartDate(string $startDate = null)
     {
         $this->startDate = $startDate;
     }
 
-    public function getStartDate()
+    /**
+     * @return string
+     */
+    public function getStartDate(): string
     {
         return $this->startDate;
     }
 
+    /**
+     * @param string|null $endDate
+     */
     public function setEndDate(string $endDate = null)
     {
         $this->endDate = $endDate;
     }
 
-    public function getEndDate()
+    /**
+     * @return string
+     */
+    public function getEndDate(): string
     {
         return $this->endDate;
     }
 
-    public function getDateCriteria()
+    /**
+     * @return string
+     */
+    public function getDateCriteria(): string
     {
         $criteria = '';
 

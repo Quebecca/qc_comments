@@ -21,15 +21,14 @@ use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 class StatisticsTabController extends QcBackendModuleController
 {
     /**
-     * @param Filter|null $filter // we need to specify the filter class in the argument to prevent map error
-     * @throws Exception
+     * @param Filter|null $filter
      */
     public function statisticsAction(Filter $filter = null)
     {
         $filter = $this->processFilter($filter);
-        $this->pages_ids = $this->commentsRepository->getPageIdsList($filter->getDepth());
+        $this->pages_ids = $this->commentsRepository->getPageIdsList();
         $maxRecords = $this->settings['statistics']['maxRecords'];
-        $resultData = $this->commentsRepository->getDataStats($this->pages_ids, $maxRecords);
+        $resultData = $this->commentsRepository->getStatistics($this->pages_ids, $maxRecords);
         if (count($resultData) > $maxRecords) {
             $message = $this->translate('tooMuchPages', [$maxRecords]);
             $this->addFlashMessage($message, null, AbstractMessage::WARNING);
@@ -62,12 +61,11 @@ class StatisticsTabController extends QcBackendModuleController
 
     /**
      * @param null $filter
-     * @throws Exception
      */
     public function exportStatisticsAction($filter = null)
     {
         $filter = $this->processFilter($filter);
-        $data = $this->commentsRepository->getDataStats($this->pages_ids, false);
+        $data = $this->commentsRepository->getStatistics($this->pages_ids, false);
         // Resort array elements for export
         $mappedData = [];
         $i = 0;

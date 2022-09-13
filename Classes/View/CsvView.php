@@ -1,4 +1,14 @@
 <?php
+/***
+ *
+ * This file is part of Qc Comments project.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ *  (c) 2022 <techno@quebec.ca>
+ *
+ ***/
 
 namespace Qc\QcComments\View;
 
@@ -6,11 +16,31 @@ use TYPO3\CMS\Extbase\Mvc\View\AbstractView;
 
 class CsvView extends AbstractView
 {
-    protected $filename = 'data.csv';
-    protected $delimiter = ',';
-    protected $enclosure = '""';
-    protected $escapeChar = '\\';
-    protected $headers = [];
+
+    /**
+     * @var string
+     */
+    protected string $filename = 'data.csv';
+
+    /**
+     * @var string
+     */
+    protected string $delimiter = ',';
+
+    /**
+     * @var string
+     */
+    protected string $enclosure = '""';
+
+    /**
+     * @var string
+     */
+    protected string $escapeChar = '\\';
+
+    /**
+     * @var array
+     */
+    protected array $headers = [];
 
     /**
      * @param array $headers

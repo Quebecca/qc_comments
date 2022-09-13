@@ -22,7 +22,6 @@ class CommentsTabController extends QcBackendModuleController
 {
     /**
      * This function is used to get the list of comments in BE module
-     *  We need to specify the filter class in the argument to prevent a map error
      * @param Filter|null $filter
      * @throws Exception
      */
@@ -39,7 +38,7 @@ class CommentsTabController extends QcBackendModuleController
             'href' => $this->getUrl('resetFilter')
         ];
 
-        $this->pages_ids = $this->commentsRepository->getPageIdsList($filter->getDepth());
+        $this->pages_ids = $this->commentsRepository->getPageIdsList();
         $maxRecords = $this->settings['comments']['maxRecords'];
         $numberOfSubPages = $this->settings['comments']['numberOfSubPages'];
         $tooMuchPages = count($this->pages_ids) > $numberOfSubPages;
@@ -48,8 +47,8 @@ class CommentsTabController extends QcBackendModuleController
             0,
             $numberOfSubPages
         );
-        $stats = $this->commentsRepository->getDataStats($this->pages_ids, $maxRecords);
-        $comments = $this->commentsRepository->getDataList($this->pages_ids, $maxRecords);
+        $stats = $this->commentsRepository->getStatistics($this->pages_ids, $maxRecords);
+        $comments = $this->commentsRepository->getComments($this->pages_ids, $maxRecords);
 
         if ($this->commentsRepository->getListCount() > $maxRecords || $tooMuchPages) {
             $message = $this->translate('tooMuchResults', [$numberOfSubPages, $maxRecords]);
@@ -73,7 +72,7 @@ class CommentsTabController extends QcBackendModuleController
      * @param false $include_csv_headers
      * @return array
      */
-    protected function getHeaders($include_csv_headers = false): array
+    protected function getHeaders(bool $include_csv_headers = false): array
     {
         $headers = [];
 
@@ -90,15 +89,14 @@ class CommentsTabController extends QcBackendModuleController
     }
 
     /**
-     * Export function to export comments list to csv file
+     * Export function is for exporting comments list to csv file
      * @param null $filter
-     * @throws Exception
      */
     public function exportCommentsAction($filter = null)
     {
         $filter = $this->processFilter($filter);
         $filter->setIncludeEmptyPages(true);
-        $data = $this->commentsRepository->getDataList($this->pages_ids, false);
+        $data = $this->commentsRepository->getComments($this->pages_ids, false);
         $rows = [];
         foreach ($data as $row) {
             foreach ($row as $item) {

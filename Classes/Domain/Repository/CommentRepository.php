@@ -21,6 +21,8 @@ class CommentRepository extends Repository
     protected Filter $filter;
     protected string $lang_criteria = '';
     protected string $date_criteria = '';
+
+
     /**
      * @param Filter $filter
      */
@@ -31,6 +33,9 @@ class CommentRepository extends Repository
         $this->date_criteria = $filter->getDateCriteria();
     }
 
+    /**
+     * @return QueryBuilder
+     */
     public function generateQueryBuilder(): QueryBuilder
     {
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
@@ -38,16 +43,17 @@ class CommentRepository extends Repository
     }
 
     /**
-     * @param array $ids_list
+     * This function is used to get SQL constraints comments and statistics queries
+     * @param array $page_ids
      * @return string[]
      */
-    public function getConstraints($ids_list = []): array
+    public function getConstraints(array $page_ids): array
     {
         $constrains = [
             'joinCond' => '',
             'whereClause' => ''
         ];
-        $ids_list = $ids_list ?: $this->getPageIdsList($this->filter->getDepth());
+        $ids_list = $page_ids ?: $this->getPageIdsList();
 
         $ids_csv = implode(',', $ids_list);
         $constrains['joinCond'] = " p.uid = uid_orig $this->date_criteria $this->lang_criteria";
@@ -58,19 +64,19 @@ class CommentRepository extends Repository
     /**
      * This function is used to get pages comments for BE rendering and for export as well
      * QueryBuilder
-     * @param array $ids_list
-     * @param int|null $limit false id the function is called for export to export all comment, number for BE table
+     * @param array $pages_ids
+     * @param int|null $limit false if the function is called for export comments
      * @return array
-     * @throws Exception
      */
-    public function getDataList($ids_list = [], $limit): array
+    public function getComments(array $pages_ids, ?int $limit): array
     {
         $queryBuilder = $this->generateQueryBuilder();
-        $constraints = $this->getConstraints($ids_list);
+        $constraints = $this->getConstraints($pages_ids);
         $tr = [
             0 => $this->translate('negative'),
             1 => $this->translate('positive'),
         ];
+
         $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
 
         $data= $queryBuilder
@@ -102,16 +108,17 @@ class CommentRepository extends Repository
     }
 
     /**
+     * This function is used to get the number of records by page depth for BE rendering verification
      * @return int
      * @throws Exception
      */
     public function getListCount(): int
     {
-        $ids_list = $this->getPageIdsList($this->filter->getDepth());
+        $ids_list = $this->getPageIdsList();
         $queryBuilder = $this->generateQueryBuilder();
         $constraints = $queryBuilder->expr()->in('uid_orig', $queryBuilder->createNamedParameter($ids_list, ConnectionAlias::PARAM_INT_ARRAY));
         $constraints .= $this->date_criteria . ' ' . $this->lang_criteria;
-        $total = $queryBuilder
+        return $queryBuilder
             ->count('*')
             ->from($this->tableName)
             ->where(
@@ -119,18 +126,16 @@ class CommentRepository extends Repository
             )
             ->execute()
             ->fetchAssociative()['COUNT(*)'];
-        return $total;
     }
 
     /**
      * This function is used to get pages statistics for BE rendering and for export as well
      * QueryBuilder
      * @param $page_ids
-     * @param bool $limit
+     * @param int | bool $limit
      * @return array
-     * @throws Exception
      */
-    public function getDataStats($page_ids, $limit): array
+    public function getStatistics($page_ids, $limit): array
     {
         $queryBuilder = $this->generateQueryBuilder();
         $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
@@ -175,16 +180,18 @@ class CommentRepository extends Repository
     }
 
     /**
-     * @param $depth
+     * Getting pages uid based on selected page depth
      * @return array
      */
-    public function getPageIdsList($depth): array
+    public function getPageIdsList(): array
     {
+        $depth = $this->filter->getDepth();
         $page_ids = [];
         if ($depth > 0) {
             $page_ids = $this->getPageTreeIds($depth);
         }
-      //  $page_ids[] = $this->root_id;
+        if($this->filter->getDepth() == 0)
+            $page_ids[] = $this->root_id;
         return $page_ids;
     }
 
