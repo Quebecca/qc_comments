@@ -180,6 +180,27 @@
             <trans-unit id="thankYouForHelpingUs">
                 <source>Thank you for helping us improve Quebec.ca. Your comments are important to us.</source>
             </trans-unit>
+            <trans-unit id="pages.tx_select_bas_page_mode">
+                <source>Select comments section display mode</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_select_bas_page_mode.desc">
+                <source>By default, if the mode is not specified, the page inherits the mode from its parent page.</source>
+            </trans-unit>
+    <trans-unit id="pages.notSpecified">
+                <source>Not specified</source>
+            </trans-unit>
+             <trans-unit id="pages.mode1">
+                <source>Show for this page and its sub-pages</source>
+            </trans-unit>
+            <trans-unit id="pages.mode2">
+                <source>Show for this page only</source>
+            </trans-unit>
+            <trans-unit id="pages.mode3">
+                <source>Hide for this page and its subpages</source>
+            </trans-unit>
+            <trans-unit id="pages.mode4">
+                <source>Hide for this page only</source>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>

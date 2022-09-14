@@ -193,6 +193,34 @@
                 <source>Thank you for helping us improve Quebec.ca. Your comments are important to us.</source>
                 <target>Votre message a été envoyé. Merci de nous aider à améliorer Québec.ca. Vos commentaires sont importants pour nous.</target>
             </trans-unit>
+            <trans-unit id="pages.tx_select_bas_page_mode">
+                <source>Select comments section display mode</source>
+                <target>Sélectionner le mode d'affichage de la section des commentaires</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_select_bas_page_mode.desc">
+                <source>By default, if the mode is not specified, the page inherits the mode from its parent page.</source>
+                <target>Par défaut si le mode n'est pas précisé la page hérite le mode de sa page parente.</target>
+            </trans-unit>
+            <trans-unit id="pages.notSpecified">
+                <source>Not specified</source>
+                <target>Non précisé</target>
+            </trans-unit>
+             <trans-unit id="pages.mode1">
+                <source>Show for this page and its sub-pages</source>
+                <target>Afficher pour cette page et ses sous-pages</target>
+            </trans-unit>
+            <trans-unit id="pages.mode2">
+                <source>Show for this page only</source>
+                <target>Afficher pour cette page seulement</target>
+            </trans-unit>
+            <trans-unit id="pages.mode3">
+                <source>Hide for this page and its subpages</source>
+                <target>Masquer pour cette page et ses sous-pages</target>
+            </trans-unit>
+            <trans-unit id="pages.mode4">
+                <source>Hide for this page only</source>
+                <target>Masquer pour cette page seulement</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
