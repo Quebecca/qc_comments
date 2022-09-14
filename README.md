@@ -22,14 +22,37 @@ This module contains two different tabs :
 ####Statistics tab
 This tab is used to give the administrator an idea of how much a selected page is useful for frontend users by using a table
 with analytics data.
-: image
+###### Screenshot of the statistics tab
+
+![Statistics tab](Documentation/Images/statistics.PNG)
 ####Comments tab
 By using this tab, the administrator can list the comments records that are sent for each selected page by the users.
-: image
+###### Screenshot of the comments tab
+
+![Comments tab](Documentation/Images/comments.PNG)
 NB : All the rendering data for each tab can be filtered and exported as csv file.
 The rendering result can be controlled by Typoscript configuration :
-: typoscript config
 
+    settings {
+        comments {
+            // Maximum number of records that will be display in comments tab
+            maxRecords = 100
+            
+            // Number of subpages used for rendering comments
+            numberOfSubPages = 50
+        }
+        statistics {
+            // Maximum number of records that will be display in statistics tab
+            maxRecords = 30
+        }
+        
+        // Specify the export date format
+        csvExport {
+            filename {
+                dateFormat = YmdHi
+            }
+        }
+    }
 
 [Version française]
 # Documentation Qc Comments
@@ -62,4 +85,23 @@ En utilisant cette tabulation, l'administrateur peut lister les commentaires env
 NB : Tous les données listés dans les deux tabulations peuvent être filtré or exporter sous format csv.
 L'affichage dans deux tabulations peut être controller en utilisant la configuration typiscript ce dessous :
 
-    : typoscript config
+    settings {
+        comments {
+            // Nombre maximum des commentaires affiché dans la tabulation des commentaires
+            maxRecords = 100
+            
+            // Nombre maximum des sous pages utilisées pour récupérer les commentaires
+            numberOfSubPages = 50
+        }
+        statistics {
+            // Nombre maximum des résultat calculés dans la tabulation des statistiques 
+            maxRecords = 30
+        }
+        
+        // Format de date utilisée pour l'export csv
+        csvExport {
+            filename {
+                dateFormat = YmdHi
+            }
+        }
+    }
