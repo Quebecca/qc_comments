@@ -20,7 +20,7 @@ If the option isn't override in a page by administrator, the option will be inhe
 ### Backend module
 This module contains two different tabs :
 
-####Statistics tab
+#### Statistics tab
 
 
 This tab is used to give the administrator an idea of how much a selected page is useful for frontend users by using a table
@@ -30,7 +30,7 @@ with analytics data.
 ![Statistics tab](Documentation/Images/statistics.PNG)
 
 
-####Comments tab
+#### Comments tab
 By using this tab, the administrator can list the comments records that are sent for each selected page by the users.
 
 #### Screenshot of the comments tab
@@ -88,7 +88,7 @@ Ce module vient avec deux tabulations :
 Cette tabulation permet l'administrateur d'avoir une idée sur l'utilité de la page pour les utilisateurs frontend, en se basant sur les commentaires positifs et les commentaires
 négatifs.
 
-####Commentaires
+#### Commentaires
 En utilisant cette tabulation, l'administrateur peut lister les commentaires envoyés par page.
 
 NB : Tous les données listés dans les deux tabulations peuvent être filtré or exporter sous format csv.
