@@ -22,14 +22,19 @@ This module contains two different tabs :
 ####Statistics tab
 This tab is used to give the administrator an idea of how much a selected page is useful for frontend users by using a table
 with analytics data.
-###### Screenshot of the statistics tab
+#### Screenshot of the statistics tab
 
 ![Statistics tab](Documentation/Images/statistics.PNG)
+
+
 ####Comments tab
 By using this tab, the administrator can list the comments records that are sent for each selected page by the users.
-###### Screenshot of the comments tab
+
+#### Screenshot of the comments tab
 
 ![Comments tab](Documentation/Images/comments.PNG)
+
+
 NB : All the rendering data for each tab can be filtered and exported as csv file.
 The rendering result can be controlled by Typoscript configuration :
 
@@ -62,7 +67,8 @@ Cette extension propose une solution pour gérer la partie commentaires pour les
 
 ### Frontend plugin
 Cette plugin permet l'administrateur d'ajouter le composant de commentaires sous forme d'un formulaire frontend, où les utilisateur peuvent envoyer leurs commentaires et avis.
-L'affichage de formulaire de commentaires dans le frontend peut être controller par quatre différents choix :
+L'affichage de formulaire de commentaires dans le frontend peut être controller 
+par quatre différents choix :
 - Afficher pour cette page et ses sous-pages
 - Afficher pour cette page seulement
 - Masquer pour cette page et ses sous-pages
