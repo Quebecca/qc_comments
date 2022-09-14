@@ -50,7 +50,6 @@ module.tx_qccomments {
             maxRecords = 30
         }
 
-        cropMaxLength = 95
         csvExport {
             filename {
                 dateFormat = YmdHi
