@@ -84,7 +84,7 @@ Si le choix d'affichage n'est pas choisie manuellement par l'administrateur le c
 ### Backend module
 Ce module vient avec deux tabulations :
 
-####Statistiques
+#### Statistiques
 Cette tabulation permet l'administrateur d'avoir une idée sur l'utilité de la page pour les utilisateurs frontend, en se basant sur les commentaires positifs et les commentaires
 négatifs.
 
