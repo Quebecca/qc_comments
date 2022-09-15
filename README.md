@@ -54,7 +54,7 @@ The rendering result can be controlled by Typoscript configuration :
             maxRecords = 30
         }
         
-        // Specify the export date format
+        // Specify the date format for the exported csv file
         csvExport {
             filename {
                 dateFormat = YmdHi
@@ -107,7 +107,7 @@ L'affichage dans deux tabulations peut être controller en utilisant la configur
             maxRecords = 30
         }
         
-        // Format de date utilisée pour l'export csv
+        // Format de date utilisé pour le nom csv exporté
         csvExport {
             filename {
                 dateFormat = YmdHi
