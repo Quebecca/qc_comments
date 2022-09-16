@@ -199,7 +199,7 @@
             </trans-unit>
             <trans-unit id="pages.tx_select_bas_page_mode.desc">
                 <source>By default, if the mode is not specified, the page inherits the mode from its parent page.</source>
-                <target>Par défaut si le mode n'est pas précisé la page hérite le mode de sa page parente.</target>
+                <target>Par défaut si le mode n'est pas précisé la page hérite du mode de sa page parente.</target>
             </trans-unit>
             <trans-unit id="pages.notSpecified">
                 <source>Not specified</source>

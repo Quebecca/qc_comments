@@ -54,7 +54,7 @@ The rendering result can be controlled by Typoscript configuration :
             maxRecords = 30
         }
         
-        // Specify the date format for the exported csv file
+        // Specify the date format for the exported csv file name
         csvExport {
             filename {
                 dateFormat = YmdHi

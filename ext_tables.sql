@@ -1,5 +1,4 @@
 # table for the users comments tx_qccomments_users_comments
-
 CREATE TABLE tx_qccomments_domain_model_comment (
 
        uid int(11) NOT NULL auto_increment,
@@ -28,4 +27,8 @@ CREATE TABLE tx_qccomments_domain_model_comment (
 
        PRIMARY KEY (uid)
 
+);
+
+CREATE TABLE pages (
+    tx_select_bas_page_mode varchar(50) DEFAULT ''
 );
