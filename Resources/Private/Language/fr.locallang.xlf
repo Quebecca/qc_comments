@@ -145,6 +145,18 @@
                 <source>Useful</source>
                 <target>Utile</target>
             </trans-unit>
+            <trans-unit id="notUseful">
+                <source>Not useful</source>
+                <target>Pas utile</target>
+            </trans-unit>
+            <trans-unit id="utility">
+                <source>Useful</source>
+                <target>Utilité</target>
+            </trans-unit>
+            <trans-unit id="all">
+                <source>All</source>
+                <target>Tous</target>
+            </trans-unit>
            <trans-unit id="formSentSuccessfully">
                 <source>Form sent successfully!</source>
                 <target>Formulaire envoyé avec succès!</target>

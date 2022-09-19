@@ -15,6 +15,16 @@
                            optionLabelField="title"
                            class="form-control"/>
         </div>
+        <f:if condition="{action} == 'comments'">
+            <div class="col-md-2">
+                <label>{f:translate(key: 'utility')}</label>
+                <f:form.select property="useful"
+                               options="{filter.commentsUtility}"
+                               optionLabelField="title"
+                               class="form-control"
+                />
+            </div>
+        </f:if>
         <div class="col-md-2">
             <label>{f:translate(key: 'filter.dateRange')}</label>
             <f:form.select property="dateRange"

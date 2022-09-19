@@ -57,6 +57,10 @@ class CommentRepository extends Repository
         $ids_csv = implode(',', $ids_list);
         $constrains['joinCond'] = " p.uid = uid_orig $this->date_criteria $this->lang_criteria";
         $constrains['whereClause'] = " p.uid in ($ids_csv)";
+        $usefulCond = $this->filter->getUseful() != '' ?  'useful = ' . $this->filter->getUseful() : '';
+        if($usefulCond != ''){
+            $constrains['whereClause'] .= "AND $usefulCond";
+        }
         return $constrains;
     }
 

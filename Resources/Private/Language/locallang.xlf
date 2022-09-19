@@ -135,6 +135,15 @@
 			<trans-unit id="useful">
                 <source>Useful</source>
             </trans-unit>
+            <trans-unit id="notUseful">
+                <source>Not useful</source>
+            </trans-unit>
+            <trans-unit id="all">
+                <source>All</source>
+            </trans-unit>
+             <trans-unit id="utility">
+                <source>Useful</source>
+            </trans-unit>
 			<trans-unit id="tooMuchPages">
 				<source>Too much results: only the first %s rows are displayed. Please choose csv export, or change your filters.</source>
 			</trans-unit>

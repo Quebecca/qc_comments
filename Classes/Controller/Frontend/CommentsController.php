@@ -64,7 +64,6 @@ class CommentsController extends ActionController
     {
         if ($comment) {
             $pageUid = $comment->getUidOrig();
-            // @todo : should store the absolute url or uri
             $comment->setUidPermsGroup(
                 BackendUtility::getRecord('pages', $pageUid, 'perms_groupid', "uid = $pageUid")['perms_groupid']
             );

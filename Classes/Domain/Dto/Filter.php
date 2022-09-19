@@ -49,6 +49,8 @@ class Filter
      */
     protected int $depth = 0;
 
+    protected string $useful = '';
+
     /**
      * @return bool
      */
@@ -189,6 +191,35 @@ class Filter
             'en' => $this->translate('filter.lang.english'),
         ];
     }
+
+    /**
+     * @return array
+     */
+    public function getCommentsUtility(): array
+    {
+        return [
+            '' => $this->translate('all'),
+            '0' => $this->translate('notUseful'),
+            '1' => $this->translate('comments.h.useful'),
+        ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getUseful(): string
+    {
+        return $this->useful;
+    }
+
+    /**
+     * @param string $useful
+     */
+    public function setUseful(string $useful): void
+    {
+        $this->useful = $useful;
+    }
+
 
     /**
      * @param string|null $startDate
