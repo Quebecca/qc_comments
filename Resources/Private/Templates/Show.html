@@ -6,13 +6,21 @@
 <f:if condition="{checkBasPageMode} || {settings.activeModeBasPage} = 'true'">
     <div class="frame frame-default frame-type-list frame-layout-0">
         <h2>
-            <f:translate key="commentsLabel" extensionName="qc_comments"/>
+            <f:comment>
+                <f:translate key="commentsLabel" extensionName="qc_comments"/>
+            </f:comment>
+            {config.formSectionTitle}
         </h2>
         <div class="tx-powermail">
             <f:if condition="{submitted}">
                 <f:then>
                     <div class="powermail_create" role="alert">
-                        <p><f:translate key="thankYouForHelpingUs" extensionName="qc_comments"/></p>
+                        <p>
+                            <f:comment>
+                                <f:translate key="thankYouForHelpingUs" extensionName="qc_comments"/>
+                            </f:comment>
+                            {config.formSubmittedSuccessfully}
+                        </p>
                     </div>
                 </f:then>
                 <f:else>
@@ -23,7 +31,12 @@
                                 <f:form.hidden  property="urlOrig" value="{absUrl}"/>
                                 <f:form.hidden  property="uidOrig" value="{v:page.info(field: 'uid')}"/>
                                 <div class="form-inline mt-2">
-                                    <legend class="control-label"><f:translate key="wasInfoUseful" extensionName="qc_comments"/></legend>
+                                    <legend class="control-label">
+                                        {config.isThePageUseful}
+                                        <f:comment>
+                                            <f:translate key="wasInfoUseful" extensionName="qc_comments"/>
+                                        </f:comment>
+                                    </legend>
                                     <div class="form-group mr-2">
                                         <f:form.radio property="useful" value="1" id="usefulY" checked="false" />
                                         <label for="usefulY" class="p-md-2" style="font-weight : normal;">
@@ -41,10 +54,16 @@
                                 <div id="comment-section" class="form-group d-none" >
 
                                     <label for="comment-textarea" class="control-label" title="">
-                                        <f:translate key="encounterAProblem" extensionName="qc_comments"/>
+                                        {config.haveYouAComment}
+                                        <f:comment>
+                                            <f:translate key="encounterAProblem" extensionName="qc_comments"/>
+                                        </f:comment>
                                         <span id="commentpage_complement_label" class="complementLabel">
-                                        <f:translate key="sendUsYouObservation" extensionName="qc_comments"/>
-                                    </span>
+                                            {config.haveYouACommentDescription}
+                                            <f:comment>
+                                                <f:translate key="sendUsYouObservation" extensionName="qc_comments"/>
+                                            </f:comment>
+                                        </span>
                                     </label>
                                     <f:form.textarea
                                             property="comment"
@@ -52,7 +71,10 @@
                                             data="{date-type: 'date'}"
                                             id="comment-textarea"
                                     />
-                                    <div id="infoMaxCaracteres" class="infoSupplJs" aria-hidden="true"><f:translate key="limitCharacter" extensionName="qc_comments"/></div>
+
+                                    <input type="hidden" id="maxCharacters" value="{config.maxCharacters}">
+
+                                    <div id="infoMaxCaracteres" class="infoSupplJs" aria-hidden="true"><span id="limitLabel">Maximum {config.maxCharacters} caractères</span></div>
                                     <br>
                                     <f:form.submit value="{f:translate(key: 'submit', extensionName:'qc_comments')}" class="powermail_submit btn btn-primary displayBlock" style="height : 3rem;"/>
                                 </div>
@@ -80,19 +102,37 @@
         </div>
 
     </div>
-    <script>
-        document.getElementById('comment-textarea').setAttribute("maxLength", "500");
-        [
-            document.getElementById('usefulN'),
-            document.getElementById('usefulY')
-        ].map(function (element) {
-            element.addEventListener("change", function () {
-                document.getElementById('comment-section').className = 'form-group d-block';
-                document.getElementById('questionsLink-section').className = 'col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse sansBorder d-block';
-            });
-        });
-
-    </script>
 </f:if>
+<script>
+    let maxCharacters = document.getElementById('maxCharacters').value;
+    let limitLabel = document.getElementById('limitLabel');
+    textareaElement = document.getElementById('comment-textarea');
+
+
+    textareaElement.setAttribute("maxlength", maxCharacters);
+    let initialLimit = Number(maxCharacters);
+    textareaElement.addEventListener("keydown", (event) => {
+        if(event.code !== '8'){
+            var length = textareaElement.value.length
+            var x = initialLimit === length ? 0
+                :(length === 0 ? initialLimit
+                    : (initialLimit - length));
+            if(x >= 0)
+                limitLabel.innerText = "Maximum "+ x + " caractères";
+        }
+    });
+
+
+    [
+        document.getElementById('usefulN'),
+        document.getElementById('usefulY')
+    ].map(function (element) {
+        element.addEventListener("change", function () {
+            document.getElementById('comment-section').className = 'form-group d-block';
+            document.getElementById('questionsLink-section').className = 'col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse sansBorder d-block';
+        });
+    });
+
+</script>
 
 

@@ -15,7 +15,10 @@ namespace Qc\QcComments\Controller\Frontend;
 
 use Qc\QcComments\Domain\Model\Comment;
 use Qc\QcComments\Domain\Repository\CommentRepository;
+use Qc\QcComments\Traits\InjectTranslation;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
@@ -28,9 +31,8 @@ class CommentsController extends ActionController
     // @Todo : rendre le nombre de caractères dynamique (en affichage aussi) dans le FE (config typoscript)
     // @Todo : Test on typo3 v11
     // @Todo : Recaptcha, Utilisation des Unix timestamp(Modify export task for map the date column )
-    // @Todo : Security Test XSS (il faut pas utiliser f:format.raw),
-    // @Todo : SQL injection (on enregistre avec PersistenceManagerInterface) ...  OWASP ZAP, Burpsuit
 
+    use InjectTranslation;
 
     /**
      * @var CommentRepository
@@ -48,9 +50,23 @@ class CommentsController extends ActionController
      */
     public function showAction(array $args = [])
     {
+        $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
+        $typoScriptSettings = $typoScriptService->convertTypoScriptArrayToPlainArray($GLOBALS['TSFE']->tmpl->setup);
+
+        $tsConfig = $typoScriptSettings['plugin']['commentsForm']['settings']['comments'];
+
+        $config = [];
+        foreach ($tsConfig as $key => $val){
+            if($key == 'maxCharacters')
+                $config[$key] = intval($tsConfig['maxCharacters']) > 0 ? intval($tsConfig['maxCharacters']) : 500;
+            else
+                $config[$key] = $val !== '' ? $val : $this->translate($key);
+        }
+
         $this->view->assignMultiple([
             'submitted' => $this->request->getArguments()['submitted'],
-            'comment' => new Comment()
+            'comment' => new Comment(),
+            'config' => $config
         ]);
     }
 

@@ -165,16 +165,16 @@
             <trans-unit id="submit">
                 <source>Submit</source>
             </trans-unit>
-            <trans-unit id="commentsLabel">
+            <trans-unit id="formSectionTitle">
                 <source>Comments</source>
             </trans-unit>
-            <trans-unit id="wasInfoUseful">
+            <trans-unit id="isThePageUseful">
                 <source>Was the information on this page useful to you?</source>
             </trans-unit>
-            <trans-unit id="encounterAProblem">
+            <trans-unit id="haveYouAComment">
                 <source>Did you encounter any problems while navigating?</source>
             </trans-unit>
-            <trans-unit id="sendUsYouObservation">
+            <trans-unit id="haveYouACommentDescription">
                 <source>Please send us your observations and help us improve the Québec.ca website. Please do not enter any personal information in this field. Note that you will not receive a reply.</source>
             </trans-unit>
             <trans-unit id="limitCharacter">
@@ -186,7 +186,7 @@
             <trans-unit id="contactTheService">
                 <source>Please contact Services Québec</source>
             </trans-unit>
-            <trans-unit id="thankYouForHelpingUs">
+            <trans-unit id="formSubmittedSuccessfully">
                 <source>Thank you for helping us improve Quebec.ca. Your comments are important to us.</source>
             </trans-unit>
             <trans-unit id="pages.tx_select_bas_page_mode">

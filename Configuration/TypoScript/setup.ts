@@ -6,8 +6,17 @@ plugin.commentsForm {
         partialRootPath = {$plugin.commentsForm.view.partialRootPath}
         layoutRootPath = {$plugin.commentsForm.view.layoutRootPath}
     }
-    settings{
-
+    settings {
+        comments {
+            // if empty default will be 500
+            maxCharacters = 100
+            // if empty default value will be assigned
+            formSectionTitle = Évaluation de page
+            isThePageUseful = L’information sur cette page vous a-t-elle été utile?
+            haveYouAComment = Avez-vous un commentaire à nous transmettre ou un problème à signaler ?
+            haveYouACommentDescription = Évitez d’inscrire des renseignements personnels. Notez que vous ne recevrez aucune réponse.
+            formSubmittedSuccessfully = Votre message a été envoyé. Merci de nous aider à améliorer Québec.ca. Vos commentaires sont importants pour nous.
+        }
     }
     persistence {
         classes {
@@ -23,8 +32,6 @@ plugin.commentsForm {
             }
         }
     }
-
-
 }
 
 
@@ -45,6 +52,7 @@ module.tx_qccomments {
         comments {
             maxRecords = 100
             numberOfSubPages = 50
+            maxCharacters = 10
         }
         statistics {
             maxRecords = 30

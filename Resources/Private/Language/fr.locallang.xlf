@@ -173,19 +173,19 @@
                 <source>Submit</source>
                 <target>Soumettre</target>
             </trans-unit>
-            <trans-unit id="commentsLabel">
+            <trans-unit id="formSectionTitle">
                 <source>Comments</source>
                 <target>Évaluation de page</target>
             </trans-unit>
-            <trans-unit id="wasInfoUseful">
+            <trans-unit id="isThePageUseful">
                 <source>Was the information on this page useful to you?</source>
                 <target>L’information sur cette page vous a-t-elle été utile?</target>
             </trans-unit>
-            <trans-unit id="encounterAProblem">
+            <trans-unit id="haveYouAComment">
                 <source>Did you encounter any problems while navigating?</source>
                 <target>Avez-vous un commentaire à nous transmettre ou un problème à signaler ?</target>
             </trans-unit>
-            <trans-unit id="sendUsYouObservation">
+            <trans-unit id="haveYouACommentDescription">
                 <source>Please send us your observations and help us improve the Québec.ca website. Please do not enter any personal information in this field. Note that you will not receive a reply.</source>
                 <target>Évitez d’inscrire des renseignements  personnels. Notez que vous ne recevrez aucune réponse.</target>
             </trans-unit>
@@ -201,7 +201,7 @@
                 <source>Please contact Services Québec</source>
                 <target>Communiquez avec Services Québec</target>
             </trans-unit>
-            <trans-unit id="thankYouForHelpingUs">
+            <trans-unit id="formSubmittedSuccessfully">
                 <source>Thank you for helping us improve Quebec.ca. Your comments are important to us.</source>
                 <target>Votre message a été envoyé. Merci de nous aider à améliorer Québec.ca. Vos commentaires sont importants pour nous.</target>
             </trans-unit>
