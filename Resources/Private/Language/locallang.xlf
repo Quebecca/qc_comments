@@ -210,6 +210,12 @@
             <trans-unit id="pages.mode4">
                 <source>Hide for this page only</source>
             </trans-unit>
+            <trans-unit id="max">
+                <source>Max </source>
+            </trans-unit>
+            <trans-unit id="characters">
+                <source> characters</source>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -71,12 +71,17 @@
                                             data="{date-type: 'date'}"
                                             id="comment-textarea"
                                     />
-                                    <input type="hidden" id="maxCharacters" value="{config.maxCharacters}">
-                                    <input type="hidden" id="sitekey" value="{recaptchaConfig.sitekey}">
-                                    <input type="hidden" id="enabledRecaptcha" value="{recaptchaConfig.enabled}">
 
-                                    <div id="infoMaxCaracteres" class="infoSupplJs" aria-hidden="true"><span
-                                            id="limitLabel">Maximum {config.maxCharacters} caractères</span></div>
+                                    <div class="d-none" id="maxLabel" data-tr-label="{f:translate(key: 'max', extensionName:'qc_comments')}"></div>
+                                    <div class="d-none" id="charLabel" data-tr-label="{f:translate(key='characters', extensionName='qc_comments')}"></div>
+                                    <div class="d-none" id="sitekey" data-tr-label="{recaptchaConfig.sitekey}"></div>
+                                    <div class="d-none" id="maxCharacters" data-tr-label="{config.maxCharacters}"></div>
+
+                                    <div id="infoMaxCaracteres" class="infoSupplJs" aria-hidden="true">
+                                        <span id="limitLabel">
+                                          <f:translate key="max" extensionName="qc_comments"/> {config.maxCharacters} <f:translate key="characters" extensionName="qc_comments"/>
+                                        </span>
+                                    </div>
                                     <br>
                                     <f:if condition="{recaptchaConfig.enabled} == '1'">
                                         <f:then>
@@ -99,7 +104,6 @@
 
                                 </div>
                             </f:form>
-
                         </div>
                         <div class="col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse sansBorder d-none"
                              id="questionsLink-section">
@@ -133,8 +137,8 @@
 <script src="https://www.google.com/recaptcha/api.js?render={recaptcha.sitekey}"></script>
 <script>
     if (document.getElementById('commentForm') !== null) {
-        let siteKey = document.getElementById('sitekey') !== null ? document.getElementById('sitekey').value : '';
-        let enabledRecaptcha = document.getElementById('enabledRecaptcha').value
+
+        let siteKey = document.getElementById('sitekey').getAttribute('data-tr-label') !== null ? document.getElementById('sitekey').getAttribute('data-tr-label') : '';
         window.addEventListener("DOMContentLoaded", function () {
             $('#commentForm').submit(function (e) {
                 grecaptcha.ready(function (token) {
@@ -154,10 +158,16 @@
             $('#commentForm').trigger('submit', [true]);
         }
 
-        let maxCharacters = document.getElementById('maxCharacters') != null ? document.getElementById('maxCharacters').value : '';
+        let maxCharacters = document.getElementById('maxCharacters').getAttribute('data-tr-label') != null
+            ? document.getElementById('maxCharacters').getAttribute('data-tr-label') : '';
         let limitLabel = document.getElementById('limitLabel');
         textareaElement = document.getElementById('comment-textarea');
         let initialLimit = Number(maxCharacters);
+
+        var t = limitLabel.innerHTML
+        maxLabel = document.getElementById('maxLabel').getAttribute('data-tr-label')
+        charLabel = document.getElementById('charLabel').getAttribute('data-tr-label')
+
 
         textareaElement.setAttribute("maxlength", maxCharacters);
         textareaElement.addEventListener("keydown", (event) => {
@@ -166,14 +176,14 @@
                 : (length === 0 ? initialLimit
                     : (initialLimit - length));
             if (event.code !== 'Backspace' && x >= 1) {
-                    limitLabel.innerText = "Maximum " + (x-1) + " caractères";
+                    limitLabel.innerText = maxLabel + (x-1) + charLabel;
             }
             else{
                 if(x !== initialLimit && event.code === 'Backspace'){
-                    limitLabel.innerText = "Maximum " + (x+1) + " caractères";
+                    limitLabel.innerText = maxLabel + (x+1) + charLabel;
                 }
                 else if(initialLimit === length){
-                    limitLabel.innerText = "Maximum 0 caractères";
+                    limitLabel.innerText = maxLabel + "0"+ charLabel;
                 }
 
             }

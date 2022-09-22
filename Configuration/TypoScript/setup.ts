@@ -9,13 +9,13 @@ plugin.commentsForm {
     settings {
         comments {
             // if empty default will be 500
-            maxCharacters = 5
+            maxCharacters = 10
             // if empty default value will be assigned
-            formSectionTitle = Évaluation de page
-            isThePageUseful = L’information sur cette page vous a-t-elle été utile?
-            haveYouAComment = Avez-vous un commentaire à nous transmettre ou un problème à signaler ?
-            haveYouACommentDescription = Évitez d’inscrire des renseignements personnels. Notez que vous ne recevrez aucune réponse.
-            formSubmittedSuccessfully = Votre message a été envoyé. Merci de nous aider à améliorer Québec.ca. Vos commentaires sont importants pour nous.
+            formSectionTitle = X Évaluation de page
+            isThePageUseful =X L’information sur cette page vous a-t-elle été utile?
+            haveYouAComment = X Avez-vous un commentaire à nous transmettre ou un problème à signaler ?
+            haveYouACommentDescription = X Évitez d’inscrire des renseignements personnels. Notez que vous ne recevrez aucune réponse.
+            formSubmittedSuccessfully =X Votre message a été envoyé. Merci de nous aider à améliorer Québec.ca. Vos commentaires sont importants pour nous.
         }
 
         // Activate recaptcha

@@ -39,10 +39,26 @@ class CommentsController extends ActionController
      */
     protected CommentRepository $commentsRepository;
 
+    private const DEFAULT_MAX_CHARACTERS = 500;
+
+    private array $tsConfig = [];
+
     public function injectCommentsRepository(CommentRepository $commentsRepository)
     {
         $this->commentsRepository = $commentsRepository;
     }
+
+    protected function initializeAction()
+    {
+        parent::initializeAction();
+        $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
+        $typoScriptSettings = $typoScriptService->convertTypoScriptArrayToPlainArray($GLOBALS['TSFE']->tmpl->setup);
+        $this->tsConfig =$typoScriptSettings['plugin']['commentsForm']['settings'];
+        $this->tsConfig['comments']['maxCharacters'] = intval($this->tsConfig['comments']['maxCharacters']) > 0
+            ? intval($this->tsConfig['comments']['maxCharacters'])
+            : self::DEFAULT_MAX_CHARACTERS;
+    }
+
 
     /**
      * This function is used to render comments form
@@ -50,27 +66,22 @@ class CommentsController extends ActionController
      */
     public function showAction(array $args = [])
     {
-        $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
-        $typoScriptSettings = $typoScriptService->convertTypoScriptArrayToPlainArray($GLOBALS['TSFE']->tmpl->setup);
-
-        $tsConfig = $typoScriptSettings['plugin']['commentsForm']['settings'];
-
         $config = [];
-        foreach ($tsConfig['comments'] as $key => $val){
-            if($key == 'maxCharacters')
-                $config[$key] = intval($tsConfig['comments']['maxCharacters']) > 0 ? intval($tsConfig['comments']['maxCharacters']) : 500;
-            else
+        foreach ($this->tsConfig['comments'] as $key => $val){
+            if($key != 'maxCharacters')
                 $config[$key] = $val !== '' ? $val : $this->translate($key);
+            else
+                $config[$key] = $val;
         }
-
 
         $this->view->assignMultiple([
             'submitted' => $this->request->getArguments()['submitted'],
             'comment' => new Comment(),
             'config' => $config,
-            'recaptchaConfig' => $tsConfig['recaptcha']
+            'recaptchaConfig' => $this->tsConfig['recaptcha']
         ]);
     }
+
 
     /**
      * This function is used to save user comment
@@ -86,10 +97,11 @@ class CommentsController extends ActionController
                 BackendUtility::getRecord('pages', $pageUid, 'perms_groupid', "uid = $pageUid")['perms_groupid']
             );
             // set limit for 500 characters
-            $comment->setComment(substr($comment->getComment(), 0, 500));
+            $comment->setComment(substr($comment->getComment(), 0, $this->tsConfig['comments']['maxCharacters']));
             $comment->setDateHoure(date('Y-m-d H:i:s'));
             $this->commentsRepository->add($comment);
         }
         $this->forward('show', null, null, ['submitted' => true]);
     }
+
 }

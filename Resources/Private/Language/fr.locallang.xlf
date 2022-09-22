@@ -233,6 +233,14 @@
                 <source>Hide for this page only</source>
                 <target>Masquer pour cette page seulement</target>
             </trans-unit>
+            <trans-unit id="max">
+                <source>Max </source>
+                <target>Maximum </target>
+            </trans-unit>
+            <trans-unit id="characters">
+                <source> characters</source>
+                <target> caractères</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
