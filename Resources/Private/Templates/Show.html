@@ -27,7 +27,7 @@
                     <f:variable name="absUrl" value="{v:page.absoluteUrl()}" />
                     <div class="row">
                         <div class="comments-form col-12 col-lg-8 sansBorder ">
-                            <f:form action="saveComment" object="{comment}" objectName="comment" >
+                            <f:form action="saveComment" object="{comment}" objectName="comment" id="commentForm"  >
                                 <f:form.hidden  property="urlOrig" value="{absUrl}"/>
                                 <f:form.hidden  property="uidOrig" value="{v:page.info(field: 'uid')}"/>
                                 <div class="form-inline mt-2">
@@ -71,12 +71,28 @@
                                             data="{date-type: 'date'}"
                                             id="comment-textarea"
                                     />
-
                                     <input type="hidden" id="maxCharacters" value="{config.maxCharacters}">
+                                    <input type="hidden" id="sitekey" value="{recaptchaConfig.sitekey}">
+                                    <input type="hidden" id="enabledRecaptcha" value="{recaptchaConfig.enabled}">
 
                                     <div id="infoMaxCaracteres" class="infoSupplJs" aria-hidden="true"><span id="limitLabel">Maximum {config.maxCharacters} caractères</span></div>
                                     <br>
-                                    <f:form.submit value="{f:translate(key: 'submit', extensionName:'qc_comments')}" class="powermail_submit btn btn-primary displayBlock" style="height : 3rem;"/>
+                                    <f:if condition="{recaptchaConfig.enabled} == '1'">
+                                        <f:then>
+                                            <button
+                                                    id="submitButtom"
+                                                    data-sitekey="{recaptchaConfig.sitekey}"
+                                                    data-callback="onCompleted"
+                                                    class="powermail_submit btn btn-primary displayBlock g-recaptcha"
+                                                    style="height : 3rem;">
+                                                {f:translate(key: 'submit', extensionName:'qc_comments')}
+                                            </button>
+                                        </f:then>
+                                        <f:else>
+                                            <f:form.submit value="{f:translate(key: 'submit', extensionName:'qc_comments')}" class="powermail_submit btn btn-primary displayBlock" style="height : 3rem;"/>
+                                        </f:else>
+                                    </f:if>
+
                                 </div>
                             </f:form>
 
@@ -103,35 +119,59 @@
 
     </div>
 </f:if>
+
+<script src="https://www.google.com/recaptcha/api.js?render={recaptcha.sitekey}"></script>
 <script>
-    let maxCharacters = document.getElementById('maxCharacters').value;
-    let limitLabel = document.getElementById('limitLabel');
-    textareaElement = document.getElementById('comment-textarea');
-
-
-    textareaElement.setAttribute("maxlength", maxCharacters);
-    let initialLimit = Number(maxCharacters);
-    textareaElement.addEventListener("keydown", (event) => {
-        if(event.code !== '8'){
-            var length = textareaElement.value.length
-            var x = initialLimit === length ? 0
-                :(length === 0 ? initialLimit
-                    : (initialLimit - length));
-            if(x >= 0)
-                limitLabel.innerText = "Maximum "+ x + " caractères";
-        }
-    });
-
-
-    [
-        document.getElementById('usefulN'),
-        document.getElementById('usefulY')
-    ].map(function (element) {
-        element.addEventListener("change", function () {
-            document.getElementById('comment-section').className = 'form-group d-block';
-            document.getElementById('questionsLink-section').className = 'col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse sansBorder d-block';
+    if(document.getElementById('commentForm') !== null){
+        let siteKey = document.getElementById('sitekey') !== null ? document.getElementById('sitekey').value : '';
+        let enabledRecaptcha = document.getElementById('enabledRecaptcha').value
+        window.addEventListener("DOMContentLoaded", function () {
+            $('#commentForm').submit(function (e) {
+                grecaptcha.ready(function(token) {
+                    grecaptcha.execute(siteKey, {action: 'submit'}).then(function(token) {
+                        return true;
+                    });
+                });
+            })
         });
-    });
+        function onCompleted () {
+            $('form .powermail_submit').prop("disabled", true);
+            setTimeout(function enable() {
+                submitAmount = 0;
+                $('form .powermail_submit').prop("disabled", false);
+            }, 2000);
+            $('#commentForm').trigger('submit', [true]);
+        }
+
+        let maxCharacters = document.getElementById('maxCharacters') != null ? document.getElementById('maxCharacters').value : '';
+        let limitLabel = document.getElementById('limitLabel');
+        textareaElement = document.getElementById('comment-textarea');
+        let initialLimit = Number(maxCharacters);
+
+        textareaElement.setAttribute("maxlength", maxCharacters);
+        textareaElement.addEventListener("keydown", (event) => {
+            if(event.code !== '8'){
+                var length = textareaElement.value.length
+                var x = initialLimit === length ? 0
+                    :(length === 0 ? initialLimit
+                        : (initialLimit - length));
+                if(x >= 0)
+                    limitLabel.innerText = "Maximum "+ x + " caractères";
+            }
+        });
+        [
+            document.getElementById('usefulN'),
+            document.getElementById('usefulY')
+        ].map(function (element) {
+            element.addEventListener("change", function () {
+                document.getElementById('comment-section').className = 'form-group d-block';
+                document.getElementById('questionsLink-section').className = 'col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse sansBorder d-block';
+            });
+        });
+
+    }
+
+
 
 </script>
 

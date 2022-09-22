@@ -17,6 +17,13 @@ plugin.commentsForm {
             haveYouACommentDescription = Évitez d’inscrire des renseignements personnels. Notez que vous ne recevrez aucune réponse.
             formSubmittedSuccessfully = Votre message a été envoyé. Merci de nous aider à améliorer Québec.ca. Vos commentaires sont importants pour nous.
         }
+
+        // Activate recaptcha
+        recaptcha {
+            enabled = 1
+            sitekey = {$plugin.tx_invisiblerecaptcha.sitekey}
+            secret = {$plugin.tx_invisiblerecaptcha.secretkey}
+        }
     }
     persistence {
         classes {

@@ -53,20 +53,22 @@ class CommentsController extends ActionController
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         $typoScriptSettings = $typoScriptService->convertTypoScriptArrayToPlainArray($GLOBALS['TSFE']->tmpl->setup);
 
-        $tsConfig = $typoScriptSettings['plugin']['commentsForm']['settings']['comments'];
+        $tsConfig = $typoScriptSettings['plugin']['commentsForm']['settings'];
 
         $config = [];
-        foreach ($tsConfig as $key => $val){
+        foreach ($tsConfig['comments'] as $key => $val){
             if($key == 'maxCharacters')
                 $config[$key] = intval($tsConfig['maxCharacters']) > 0 ? intval($tsConfig['maxCharacters']) : 500;
             else
                 $config[$key] = $val !== '' ? $val : $this->translate($key);
         }
 
+
         $this->view->assignMultiple([
             'submitted' => $this->request->getArguments()['submitted'],
             'comment' => new Comment(),
-            'config' => $config
+            'config' => $config,
+            'recaptchaConfig' => $tsConfig['recaptcha']
         ]);
     }
 
