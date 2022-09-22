@@ -9,7 +9,7 @@ plugin.commentsForm {
     settings {
         comments {
             // if empty default will be 500
-            maxCharacters = 100
+            maxCharacters = 5
             // if empty default value will be assigned
             formSectionTitle = Évaluation de page
             isThePageUseful = L’information sur cette page vous a-t-elle été utile?

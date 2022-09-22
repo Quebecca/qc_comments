@@ -58,7 +58,7 @@ class CommentsController extends ActionController
         $config = [];
         foreach ($tsConfig['comments'] as $key => $val){
             if($key == 'maxCharacters')
-                $config[$key] = intval($tsConfig['maxCharacters']) > 0 ? intval($tsConfig['maxCharacters']) : 500;
+                $config[$key] = intval($tsConfig['comments']['maxCharacters']) > 0 ? intval($tsConfig['comments']['maxCharacters']) : 500;
             else
                 $config[$key] = $val !== '' ? $val : $this->translate($key);
         }

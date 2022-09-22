@@ -161,13 +161,21 @@
 
         textareaElement.setAttribute("maxlength", maxCharacters);
         textareaElement.addEventListener("keydown", (event) => {
-            if (event.code !== '8') {
-                var length = textareaElement.value.length
-                var x = initialLimit === length ? 0
-                    : (length === 0 ? initialLimit
-                        : (initialLimit - length));
-                if (x >= 0)
-                    limitLabel.innerText = "Maximum " + x + " caractères";
+            var length = textareaElement.value.length
+            var x = initialLimit === length ? 0
+                : (length === 0 ? initialLimit
+                    : (initialLimit - length));
+            if (event.code !== 'Backspace' && x >= 1) {
+                    limitLabel.innerText = "Maximum " + (x-1) + " caractères";
+            }
+            else{
+                if(x !== initialLimit && event.code === 'Backspace'){
+                    limitLabel.innerText = "Maximum " + (x+1) + " caractères";
+                }
+                else if(initialLimit === length){
+                    limitLabel.innerText = "Maximum 0 caractères";
+                }
+
             }
         });
         [
