@@ -12,7 +12,8 @@
 <f:section name="content">
     <div class="statistic_sections">
         <f:flashMessages/>
-        <f:render partial="Filters" arguments="{action: 'statistics', filter: filter, csvButton:csvButton, resetButton:resetButton}"/>
+        <f:render partial="Filters"
+                  arguments="{action: 'statistics', filter: filter, csvButton:csvButton, resetButton:resetButton}"/>
 
         <f:if condition="{rows -> f:count()} == 0">
             <f:then>

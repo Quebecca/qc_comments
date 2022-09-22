@@ -13,7 +13,8 @@
 <f:section name="content">
     <div class="comments-sections">
         <f:flashMessages/>
-        <f:render partial="Filters" arguments="{action: 'comments', filter: filter, csvButton:csvButton, resetButton:resetButton}"/>
+        <f:render partial="Filters"
+                  arguments="{action: 'comments', filter: filter, csvButton:csvButton, resetButton:resetButton}"/>
         <f:if condition="{stats -> f:count()} == 0">
             <f:then>
                 <div class="no-page">{f:translate(key:'no-result')}</div>

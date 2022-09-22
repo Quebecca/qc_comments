@@ -4,20 +4,20 @@
         <span> <f:translate key="formSentSuccessfully" extensionName="qc_comments"/></span>
     </f:then>
     <f:else>
-        <f:variable name="absUrl" value="{v:page.absoluteUrl()}" />
+        <f:variable name="absUrl" value="{v:page.absoluteUrl()}"/>
         <div class="comments-form">
-            <f:form action="saveComment" object="{comment}" objectName="comment" >
-                <f:form.hidden  property="urlOrig" value="{absUrl}"/>
-                <f:form.hidden  property="uidOrig" value="{v:page.info(field: 'uid')}"/>
+            <f:form action="saveComment" object="{comment}" objectName="comment">
+                <f:form.hidden property="urlOrig" value="{absUrl}"/>
+                <f:form.hidden property="uidOrig" value="{v:page.info(field: 'uid')}"/>
 
                 <div class="form-inline form-group mt-1">
-                    <f:form.radio property="useful" value="1" id="usefulY" checked="false" />
+                    <f:form.radio property="useful" value="1" id="usefulY" checked="false"/>
                     <label for="usefulY" class="p-md-2">
                         <f:translate key="useful" extensionName="qc_comments"/>
                     </label>
                 </div>
                 <div class="form-inline form-group mt-1">
-                    <f:form.radio property="useful" value="0" id="usefulN"  checked="false"/>
+                    <f:form.radio property="useful" value="0" id="usefulN" checked="false"/>
                     <label for="usefulN" class="p-md-2">
                         <f:translate key="notUseful" extensionName="qc_comments"/>
                     </label>
@@ -25,7 +25,7 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <div id="comment-section" class="form-group d-none" >
+                        <div id="comment-section" class="form-group d-none">
                             <div class="p-2">
                                 <f:form.textarea
                                         property="comment"
@@ -34,7 +34,9 @@
                                 />
                             </div>
                             <br>
-                            <f:form.submit value="{f:translate(key: 'submit', extensionName:'qc_comments')}" class="powermail_submit btn btn-primary displayBlock" style="height : 3rem; margin-left : 0.5rem;"/>
+                            <f:form.submit value="{f:translate(key: 'submit', extensionName:'qc_comments')}"
+                                           class="powermail_submit btn btn-primary displayBlock"
+                                           style="height : 3rem; margin-left : 0.5rem;"/>
                         </div>
                     </div>
                 </div>
@@ -44,12 +46,12 @@
 </f:if>
 
 <script>
-        [
-            document.getElementById('usefulN'),
-            document.getElementById('usefulY')
-        ].map(function (element) {
-            element.addEventListener("change", function () {
-                document.getElementById('comment-section').className = 'form-group d-block';
-            });
+    [
+        document.getElementById('usefulN'),
+        document.getElementById('usefulY')
+    ].map(function (element) {
+        element.addEventListener("change", function () {
+            document.getElementById('comment-section').className = 'form-group d-block';
         });
+    });
 </script>

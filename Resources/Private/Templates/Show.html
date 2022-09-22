@@ -2,7 +2,7 @@
 {namespace qcComments=Qc\QcComments\ViewHelpers}
 
 <f:variable name="pageUid" value="{v:page.info(field: 'uid')}"/>
-<f:variable name="checkBasPageMode" value="{modeBasPage -> qcComments:CheckBasPageMode(pageUid: pageUid)}" />
+<f:variable name="checkBasPageMode" value="{modeBasPage -> qcComments:CheckBasPageMode(pageUid: pageUid)}"/>
 <f:if condition="{checkBasPageMode} || {settings.activeModeBasPage} = 'true'">
     <div class="frame frame-default frame-type-list frame-layout-0">
         <h2>
@@ -24,12 +24,12 @@
                     </div>
                 </f:then>
                 <f:else>
-                    <f:variable name="absUrl" value="{v:page.absoluteUrl()}" />
+                    <f:variable name="absUrl" value="{v:page.absoluteUrl()}"/>
                     <div class="row">
                         <div class="comments-form col-12 col-lg-8 sansBorder ">
-                            <f:form action="saveComment" object="{comment}" objectName="comment" id="commentForm"  >
-                                <f:form.hidden  property="urlOrig" value="{absUrl}"/>
-                                <f:form.hidden  property="uidOrig" value="{v:page.info(field: 'uid')}"/>
+                            <f:form action="saveComment" object="{comment}" objectName="comment" id="commentForm">
+                                <f:form.hidden property="urlOrig" value="{absUrl}"/>
+                                <f:form.hidden property="uidOrig" value="{v:page.info(field: 'uid')}"/>
                                 <div class="form-inline mt-2">
                                     <legend class="control-label">
                                         {config.isThePageUseful}
@@ -38,20 +38,20 @@
                                         </f:comment>
                                     </legend>
                                     <div class="form-group mr-2">
-                                        <f:form.radio property="useful" value="1" id="usefulY" checked="false" />
+                                        <f:form.radio property="useful" value="1" id="usefulY" checked="false"/>
                                         <label for="usefulY" class="p-md-2" style="font-weight : normal;">
                                             <f:translate key="yes" extensionName="qc_comments"/>
                                         </label>
                                     </div>
                                     <div class="form-group ">
-                                        <f:form.radio property="useful" value="0" id="usefulN"  checked="false"/>
+                                        <f:form.radio property="useful" value="0" id="usefulN" checked="false"/>
                                         <label for="usefulN" class="p-md-2" style="font-weight : normal;">
                                             <f:translate key="no" extensionName="qc_comments"/>
                                         </label>
                                     </div>
                                 </div>
 
-                                <div id="comment-section" class="form-group d-none" >
+                                <div id="comment-section" class="form-group d-none">
 
                                     <label for="comment-textarea" class="control-label" title="">
                                         {config.haveYouAComment}
@@ -75,7 +75,8 @@
                                     <input type="hidden" id="sitekey" value="{recaptchaConfig.sitekey}">
                                     <input type="hidden" id="enabledRecaptcha" value="{recaptchaConfig.enabled}">
 
-                                    <div id="infoMaxCaracteres" class="infoSupplJs" aria-hidden="true"><span id="limitLabel">Maximum {config.maxCharacters} caractères</span></div>
+                                    <div id="infoMaxCaracteres" class="infoSupplJs" aria-hidden="true"><span
+                                            id="limitLabel">Maximum {config.maxCharacters} caractères</span></div>
                                     <br>
                                     <f:if condition="{recaptchaConfig.enabled} == '1'">
                                         <f:then>
@@ -89,7 +90,10 @@
                                             </button>
                                         </f:then>
                                         <f:else>
-                                            <f:form.submit value="{f:translate(key: 'submit', extensionName:'qc_comments')}" class="powermail_submit btn btn-primary displayBlock" style="height : 3rem;"/>
+                                            <f:form.submit
+                                                    value="{f:translate(key: 'submit', extensionName:'qc_comments')}"
+                                                    class="powermail_submit btn btn-primary displayBlock"
+                                                    style="height : 3rem;"/>
                                         </f:else>
                                     </f:if>
 
@@ -97,14 +101,20 @@
                             </f:form>
 
                         </div>
-                        <div class="col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse sansBorder d-none" id="questionsLink-section">
+                        <div class="col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse sansBorder d-none"
+                             id="questionsLink-section">
                             <div class="powermail_fieldwrap powermail_fieldwrap_type_content powermail_fieldwrap_servicesquebecform form-group col-md-12 displayFlex">
                                 <div class=" col-sm-offset-2">
-                                    <div id="c34335" class=" frame frame-avisInterr frame-type-textmedia frame-layout-0">
+                                    <div id="c34335"
+                                         class=" frame frame-avisInterr frame-type-textmedia frame-layout-0">
                                         <div class="ce-textpic ce-left ce-above">
                                             <div class="ce-bodytext">
-                                                <h3><f:translate key="questionsOrHelp" extensionName="qc_comments"/></h3>
-                                                <p><a href="/nous-joindre"><f:translate key="contactTheService" extensionName="qc_comments"/></a></p>
+                                                <h3>
+                                                    <f:translate key="questionsOrHelp" extensionName="qc_comments"/>
+                                                </h3>
+                                                <p><a href="/nous-joindre">
+                                                    <f:translate key="contactTheService" extensionName="qc_comments"/>
+                                                </a></p>
                                             </div>
                                         </div>
                                     </div>
@@ -122,19 +132,20 @@
 
 <script src="https://www.google.com/recaptcha/api.js?render={recaptcha.sitekey}"></script>
 <script>
-    if(document.getElementById('commentForm') !== null){
+    if (document.getElementById('commentForm') !== null) {
         let siteKey = document.getElementById('sitekey') !== null ? document.getElementById('sitekey').value : '';
         let enabledRecaptcha = document.getElementById('enabledRecaptcha').value
         window.addEventListener("DOMContentLoaded", function () {
             $('#commentForm').submit(function (e) {
-                grecaptcha.ready(function(token) {
-                    grecaptcha.execute(siteKey, {action: 'submit'}).then(function(token) {
+                grecaptcha.ready(function (token) {
+                    grecaptcha.execute(siteKey, {action: 'submit'}).then(function (token) {
                         return true;
                     });
                 });
             })
         });
-        function onCompleted () {
+
+        function onCompleted() {
             $('form .powermail_submit').prop("disabled", true);
             setTimeout(function enable() {
                 submitAmount = 0;
@@ -150,13 +161,13 @@
 
         textareaElement.setAttribute("maxlength", maxCharacters);
         textareaElement.addEventListener("keydown", (event) => {
-            if(event.code !== '8'){
+            if (event.code !== '8') {
                 var length = textareaElement.value.length
                 var x = initialLimit === length ? 0
-                    :(length === 0 ? initialLimit
+                    : (length === 0 ? initialLimit
                         : (initialLimit - length));
-                if(x >= 0)
-                    limitLabel.innerText = "Maximum "+ x + " caractères";
+                if (x >= 0)
+                    limitLabel.innerText = "Maximum " + x + " caractères";
             }
         });
         [
@@ -170,7 +181,6 @@
         });
 
     }
-
 
 
 </script>

@@ -200,7 +200,7 @@ class Filter
         return [
             '' => $this->translate('all'),
             '0' => $this->translate('notUseful'),
-            '1' => $this->translate('useful'),
+            '1' => $this->translate('comments.h.useful'),
         ];
     }
 

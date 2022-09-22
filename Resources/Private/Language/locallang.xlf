@@ -132,7 +132,7 @@
 			<trans-unit id="no-result">
 				<source>No result</source>
 			</trans-unit>
-			<trans-unit id="useful">
+			<trans-unit id="comments.h.useful">
                 <source>Useful</source>
             </trans-unit>
             <trans-unit id="notUseful">
