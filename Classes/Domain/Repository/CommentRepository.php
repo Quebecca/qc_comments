@@ -66,12 +66,12 @@ class CommentRepository extends Repository
 
     /**
      * This function is used to get pages comments for BE rendering and for export as well
-     * QueryBuilder
      * @param array $pages_ids
-     * @param int|bool $limit false if the function is called for export comments
+     * @param string $limit
+     * @param string $orderType
      * @return array
      */
-    public function getComments(array $pages_ids, $limit): array
+    public function getComments(array $pages_ids,string $limit, string $orderType): array
     {
         $queryBuilder = $this->generateQueryBuilder();
         $constraints = $this->getConstraints($pages_ids);
@@ -99,6 +99,7 @@ class CommentRepository extends Repository
             $data = $data->setMaxResults($limit);
         }
         $data = $data
+                ->orderBy('date_houre', $orderType)
                 ->execute()
                 ->fetchAllAssociative();
 

@@ -57,6 +57,8 @@ module.tx_qccomments {
     }
     settings {
         comments {
+            // Order by comment date
+            orderType = DESC
             maxRecords = 100
             numberOfSubPages = 50
             maxCharacters = 10

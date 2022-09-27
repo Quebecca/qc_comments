@@ -26,11 +26,9 @@ use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 // FrontEnd Controller
 class CommentsController extends ActionController
 {
-    // @Todo : Add filter by util
     // @Todo : Template for public part
-    // @Todo : rendre le nombre de caractères dynamique (en affichage aussi) dans le FE (config typoscript)
     // @Todo : Test on typo3 v11
-    // @Todo : Recaptcha, Utilisation des Unix timestamp(Modify export task for map the date column )
+    // @Todo : Utilisation des Unix timestamp(Modify export task for map the date column )
 
     use InjectTranslation;
 
@@ -63,6 +61,7 @@ class CommentsController extends ActionController
     /**
      * This function is used to render comments form
      * @param array $args
+     * @throws StopActionException
      */
     public function showAction(array $args = [])
     {
@@ -73,7 +72,6 @@ class CommentsController extends ActionController
             else
                 $config[$key] = $val;
         }
-
         $this->view->assignMultiple([
             'submitted' => $this->request->getArguments()['submitted'],
             'comment' => new Comment(),

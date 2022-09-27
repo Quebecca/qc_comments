@@ -20,6 +20,9 @@ use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 
 class CommentsTabController extends QcBackendModuleController
 {
+
+    protected const DEFAULT_ORDER_TYPES = 'DESC';
+
     /**
      * This function is used to get the list of comments in BE module
      * @param Filter|null $filter
@@ -41,6 +44,8 @@ class CommentsTabController extends QcBackendModuleController
         $this->pages_ids = $this->commentsRepository->getPageIdsList();
         $maxRecords = $this->settings['comments']['maxRecords'];
         $numberOfSubPages = $this->settings['comments']['numberOfSubPages'];
+        $orderType = $this->settings['comments']['orderType'];
+        $orderType = in_array($orderType,  ['DESC', 'ASC']) ? $orderType : self::DEFAULT_ORDER_TYPES;
         $tooMuchPages = count($this->pages_ids) > $numberOfSubPages;
         $this->pages_ids = array_slice(
             $this->pages_ids,
@@ -48,7 +53,7 @@ class CommentsTabController extends QcBackendModuleController
             $numberOfSubPages
         );
         $stats = $this->commentsRepository->getStatistics($this->pages_ids, $maxRecords);
-        $comments = $this->commentsRepository->getComments($this->pages_ids, $maxRecords);
+        $comments = $this->commentsRepository->getComments($this->pages_ids, $maxRecords, $orderType);
 
         if ($this->commentsRepository->getListCount() > $maxRecords || $tooMuchPages) {
             $message = $this->translate('tooMuchResults', [$numberOfSubPages, $maxRecords]);
