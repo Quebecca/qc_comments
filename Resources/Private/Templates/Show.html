@@ -16,9 +16,6 @@
                 <f:then>
                     <div class="powermail_create" role="alert">
                         <p>
-                            <f:comment>
-                                <f:translate key="thankYouForHelpingUs" extensionName="qc_comments"/>
-                            </f:comment>
                             {config.formSubmittedSuccessfully}
                         </p>
                     </div>
@@ -33,9 +30,6 @@
                                 <div class="form-inline mt-2">
                                     <legend class="control-label">
                                         {config.isThePageUseful}
-                                        <f:comment>
-                                            <f:translate key="wasInfoUseful" extensionName="qc_comments"/>
-                                        </f:comment>
                                     </legend>
                                     <div class="form-group mr-2">
                                         <f:form.radio property="useful" value="1" id="usefulY" checked="false"/>
@@ -55,14 +49,8 @@
 
                                     <label for="comment-textarea" class="control-label" title="">
                                         {config.haveYouAComment}
-                                        <f:comment>
-                                            <f:translate key="encounterAProblem" extensionName="qc_comments"/>
-                                        </f:comment>
                                         <span id="commentpage_complement_label" class="complementLabel">
                                             {config.haveYouACommentDescription}
-                                            <f:comment>
-                                                <f:translate key="sendUsYouObservation" extensionName="qc_comments"/>
-                                            </f:comment>
                                         </span>
                                     </label>
                                     <f:form.textarea
@@ -70,6 +58,7 @@
                                             class="powermail_textarea form-control"
                                             data="{date-type: 'date'}"
                                             id="comment-textarea"
+                                            required="required"
                                     />
 
                                     <div class="d-none" id="maxLabel" data-tr-label="{f:translate(key: 'max', extensionName:'qc_comments')}"></div>

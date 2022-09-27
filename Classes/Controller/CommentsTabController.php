@@ -22,6 +22,8 @@ class CommentsTabController extends QcBackendModuleController
 {
 
     protected const DEFAULT_ORDER_TYPES = 'DESC';
+    protected const DEFAULT_MAX_RECORDS = '100';
+    protected const DEFAULT_MAX_PAGES = '100';
 
     /**
      * This function is used to get the list of comments in BE module
@@ -42,10 +44,17 @@ class CommentsTabController extends QcBackendModuleController
         ];
 
         $this->pages_ids = $this->commentsRepository->getPageIdsList();
-        $maxRecords = $this->settings['comments']['maxRecords'];
-        $numberOfSubPages = $this->settings['comments']['numberOfSubPages'];
-        $orderType = $this->settings['comments']['orderType'];
-        $orderType = in_array($orderType,  ['DESC', 'ASC']) ? $orderType : self::DEFAULT_ORDER_TYPES;
+
+        $maxRecords = is_numeric($this->settings['comments']['maxRecords'])
+                        ? $this->settings['comments']['maxRecords'] : self::DEFAULT_MAX_RECORDS;
+
+        $numberOfSubPages = is_numeric($this->settings['comments']['numberOfSubPages'])
+                            ? $this->settings['comments']['numberOfSubPages'] : self::DEFAULT_MAX_PAGES;
+
+        $orderType = in_array($this->settings['comments']['orderType'],  ['DESC', 'ASC'])
+                    ? $this->settings['comments']['orderType'] : self::DEFAULT_ORDER_TYPES;
+
+
         $tooMuchPages = count($this->pages_ids) > $numberOfSubPages;
         $this->pages_ids = array_slice(
             $this->pages_ids,
