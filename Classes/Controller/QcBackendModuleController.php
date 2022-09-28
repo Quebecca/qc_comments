@@ -21,6 +21,7 @@ use Qc\QcComments\Traits\InjectTranslation;
 use Qc\QcComments\View\CsvView;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -263,7 +264,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
     /**
      * This function is used to get the filter from the backend session
      * @param Filter|null $filter
-     * @return mixed|Filter
+     * @return Filter
      */
     protected function processFilter(Filter $filter = null)
     {
@@ -322,16 +323,16 @@ abstract class QcBackendModuleController extends BackendModuleActionController
      * @param array $headers
      * @param array $data
      * @param $filter
+     * @return Response
      */
-    public function export(string $base_name, array $headers, array $data, $filter)
+    public function export(string $base_name, array $headers, array $data, $filter): Response
     {
         $filter = $this->processFilter($filter);
-        $this->view = $this->objectManager->get(CsvView::class);
-        $this->view->setFilename($this->getCSVFilename($filter, $base_name));
-        $this->view->setControllerContext($this->controllerContext);
-        $this->view->assign('headers', $headers);
-        $this->view->assign('rows', $data);
+        $csv = $this->objectManager->get(CsvView::class);
+        $csv->setFilename($this->getCSVFilename($filter, $base_name));
+
         $filter->setIncludeEmptyPages(true);
+        return $csv->render($data, $headers, $base_name);
     }
 
     abstract protected function getHeaders(): array;

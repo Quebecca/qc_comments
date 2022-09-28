@@ -20,7 +20,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 
 // FrontEnd Controller
@@ -61,7 +60,6 @@ class CommentsController extends ActionController
     /**
      * This function is used to render comments form
      * @param array $args
-     * @throws StopActionException
      */
     public function showAction(array $args = [])
     {
@@ -85,7 +83,6 @@ class CommentsController extends ActionController
      * This function is used to save user comment
      * @param Comment|null $comment
      * @throws IllegalObjectTypeException
-     * @throws StopActionException
      */
     public function saveCommentAction(Comment $comment = null)
     {

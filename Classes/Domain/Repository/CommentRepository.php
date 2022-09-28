@@ -55,7 +55,8 @@ class CommentRepository extends Repository
         $ids_list = $page_ids ?: $this->getPageIdsList();
 
         $ids_csv = implode(',', $ids_list);
-        $constrains['joinCond'] = " p.uid = uid_orig $this->date_criteria $this->lang_criteria";
+       // $constrains['joinCond'] = " p.uid = uid_orig $this->date_criteria $this->lang_criteria";
+        $constrains['joinCond'] = " p.uid = uid_orig";
         $constrains['whereClause'] = " p.uid in ($ids_csv)";
         $usefulCond = $this->filter->getUseful() != '' ?  'useful = ' . $this->filter->getUseful() : '';
         if($usefulCond != ''){
@@ -190,8 +191,8 @@ class CommentRepository extends Repository
      */
     public function getPageIdsList(): array
     {
-        $depth = $this->filter->getDepth();
         $page_ids = [];
+        $depth = $this->filter->getDepth();
         if ($depth > 0) {
             $page_ids = $this->getPageTreeIds($depth);
         }

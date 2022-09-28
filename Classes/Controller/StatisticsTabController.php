@@ -14,6 +14,7 @@ namespace Qc\QcComments\Controller;
  ***/
 
 use Qc\QcComments\Domain\Dto\Filter;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 
@@ -25,6 +26,7 @@ class StatisticsTabController extends QcBackendModuleController
     public function statisticsAction(Filter $filter = null)
     {
         $filter = $this->processFilter($filter);
+
         $this->pages_ids = $this->commentsRepository->getPageIdsList();
         $maxRecords = $this->settings['statistics']['maxRecords'];
         $resultData = $this->commentsRepository->getStatistics($this->pages_ids, $maxRecords);
@@ -58,10 +60,12 @@ class StatisticsTabController extends QcBackendModuleController
         return $headers;
     }
 
+
     /**
      * @param null $filter
+     * @return Response
      */
-    public function exportStatisticsAction($filter = null)
+    public function exportStatisticsAction ($filter = null): Response
     {
         $filter = $this->processFilter($filter);
         $data = $this->commentsRepository->getStatistics($this->pages_ids, false);
@@ -74,7 +78,7 @@ class StatisticsTabController extends QcBackendModuleController
             }
             $i++;
         }
-        parent::export('statistics', $this->getHeaders(), $mappedData, $filter);
+        return parent::export('statistics', $this->getHeaders(), $mappedData, $filter);
     }
 
     /**

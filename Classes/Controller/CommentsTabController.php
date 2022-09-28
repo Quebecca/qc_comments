@@ -15,6 +15,7 @@ namespace Qc\QcComments\Controller;
 
 use Doctrine\DBAL\Driver\Exception;
 use Qc\QcComments\Domain\Dto\Filter;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 
@@ -33,7 +34,6 @@ class CommentsTabController extends QcBackendModuleController
     public function commentsAction(Filter $filter = null)
     {
         $filter = $this->processFilter($filter);
-
         $csvButton = [
             'href' => $this->getUrl('exportComments'),
             'icon' => $this->icon,
@@ -106,18 +106,18 @@ class CommentsTabController extends QcBackendModuleController
      * Export function is for exporting comments list to csv file
      * @param null $filter
      */
-    public function exportCommentsAction($filter = null)
+    public function exportCommentsAction($filter = null): Response
     {
         $filter = $this->processFilter($filter);
         $filter->setIncludeEmptyPages(true);
-        $data = $this->commentsRepository->getComments($this->pages_ids, false);
+        $data = $this->commentsRepository->getComments($this->pages_ids, false, self::DEFAULT_ORDER_TYPES);
         $rows = [];
         foreach ($data as $row) {
             foreach ($row as $item) {
                 $rows[] = $item;
             }
         }
-        parent::export('comments', $this->getHeaders(true), $rows, $filter);
+        return parent::export('comments', $this->getHeaders(true), $rows, $filter);
     }
 
     /**
