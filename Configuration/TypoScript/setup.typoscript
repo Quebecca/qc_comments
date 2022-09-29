@@ -10,12 +10,6 @@ plugin.commentsForm {
         comments {
             // if empty default will be 500
             maxCharacters = 10
-            // if empty default value will be assigned
-            formSectionTitle = X Évaluation de page
-            isThePageUseful =X L’information sur cette page vous a-t-elle été utile?
-            haveYouAComment = X Avez-vous un commentaire à nous transmettre ou un problème à signaler ?
-            haveYouACommentDescription = X Évitez d’inscrire des renseignements personnels. Notez que vous ne recevrez aucune réponse.
-            formSubmittedSuccessfully =X Votre message a été envoyé. Merci de nous aider à améliorer Québec.ca. Vos commentaires sont importants pour nous.
         }
 
         // Activate recaptcha
@@ -58,7 +52,7 @@ module.tx_qccomments {
     settings {
         comments {
             // Order by comment date
-            orderType = DESC
+            orderType = ASC
             maxRecords = 100
             numberOfSubPages = 50
             maxCharacters = 10

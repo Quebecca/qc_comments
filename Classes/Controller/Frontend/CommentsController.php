@@ -61,7 +61,6 @@ class CommentsController extends ActionController
     /**
      * This function is used to render comments form
      * @param array $args
-     * @throws StopActionException
      */
     public function showAction(array $args = [])
     {

@@ -14,7 +14,8 @@ namespace Qc\QcComments\Controller;
  ***/
 
 use Doctrine\DBAL\Driver\Exception;
-use Qc\QcComments\Domain\Dto\Filter;
+use Qc\QcComments\Domain\Filter\Filter;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 
@@ -22,6 +23,8 @@ class CommentsTabController extends QcBackendModuleController
 {
 
     protected const DEFAULT_ORDER_TYPES = 'DESC';
+    protected const DEFAULT_MAX_RECORDS = '100';
+    protected const DEFAULT_MAX_PAGES = '100';
 
     /**
      * This function is used to get the list of comments in BE module
@@ -42,10 +45,17 @@ class CommentsTabController extends QcBackendModuleController
         ];
 
         $this->pages_ids = $this->commentsRepository->getPageIdsList();
-        $maxRecords = $this->settings['comments']['maxRecords'];
-        $numberOfSubPages = $this->settings['comments']['numberOfSubPages'];
-        $orderType = $this->settings['comments']['orderType'];
-        $orderType = in_array($orderType,  ['DESC', 'ASC']) ? $orderType : self::DEFAULT_ORDER_TYPES;
+
+        $maxRecords = is_numeric($this->settings['comments']['maxRecords'])
+                        ? $this->settings['comments']['maxRecords'] : self::DEFAULT_MAX_RECORDS;
+
+        $numberOfSubPages = is_numeric($this->settings['comments']['numberOfSubPages'])
+                            ? $this->settings['comments']['numberOfSubPages'] : self::DEFAULT_MAX_PAGES;
+
+        $orderType = in_array($this->settings['comments']['orderType'],  ['DESC', 'ASC'])
+                    ? $this->settings['comments']['orderType'] : self::DEFAULT_ORDER_TYPES;
+
+
         $tooMuchPages = count($this->pages_ids) > $numberOfSubPages;
         $this->pages_ids = array_slice(
             $this->pages_ids,
@@ -96,12 +106,13 @@ class CommentsTabController extends QcBackendModuleController
     /**
      * Export function is for exporting comments list to csv file
      * @param null $filter
+     * @throws StopActionException
      */
     public function exportCommentsAction($filter = null)
     {
         $filter = $this->processFilter($filter);
         $filter->setIncludeEmptyPages(true);
-        $data = $this->commentsRepository->getComments($this->pages_ids, false);
+        $data = $this->commentsRepository->getComments($this->pages_ids, false, self::DEFAULT_ORDER_TYPES);
         $rows = [];
         foreach ($data as $row) {
             foreach ($row as $item) {
@@ -109,6 +120,8 @@ class CommentsTabController extends QcBackendModuleController
             }
         }
         parent::export('comments', $this->getHeaders(true), $rows, $filter);
+        $this->forward('comments');
+
     }
 
     /**

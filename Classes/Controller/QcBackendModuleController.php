@@ -13,14 +13,15 @@ namespace Qc\QcComments\Controller;
  *
  ***/
 
-use LST\BackendModule\Controller\BackendModuleActionController;
-use LST\BackendModule\Domain\Session\BackendSession;
-use Qc\QcComments\Domain\Dto\Filter;
+
+use Qc\QcComments\Domain\Filter\Filter;
+use Qc\QcComments\Domain\Session\BackendSession;
 use Qc\QcComments\Domain\Repository\CommentRepository;
 use Qc\QcComments\Traits\InjectTranslation;
 use Qc\QcComments\View\CsvView;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -86,6 +87,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
      */
     protected function forwardToLastSelectedAction()
     {
+
         // if no menu, no forward is done
         if (!$this->menuItems) {
             return;
@@ -131,7 +133,6 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         $this->extensionName = $this->request->getControllerExtensionName();
         $this->controllerName = $this->request->getControllerName();
         $this->tsControllerKey = lcfirst($this->controllerName);
-        $this->backendSession->setStorageKey($this->extKey);
         $this->setMenu();
         $this->forwardToLastSelectedAction();
         $this->root_id = GeneralUtility::_GP('id');
@@ -263,9 +264,9 @@ abstract class QcBackendModuleController extends BackendModuleActionController
     /**
      * This function is used to get the filter from the backend session
      * @param Filter|null $filter
-     * @return mixed|Filter
+     * @return Filter
      */
-    protected function processFilter(Filter $filter = null)
+    protected function processFilter(Filter $filter = null): ?Filter
     {
         // Add filtering to records
         if ($filter === null) {
@@ -283,7 +284,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
             $this->backendSession->store('filter', $filter);
         }
         $this->view->assign('filter', $filter);
-        $this->commentsRepository->setFilter($filter);
+       $this->commentsRepository->setFilter($filter);
         return $filter;
     }
 
@@ -326,12 +327,11 @@ abstract class QcBackendModuleController extends BackendModuleActionController
     public function export(string $base_name, array $headers, array $data, $filter)
     {
         $filter = $this->processFilter($filter);
-        $this->view = $this->objectManager->get(CsvView::class);
-        $this->view->setFilename($this->getCSVFilename($filter, $base_name));
-        $this->view->setControllerContext($this->controllerContext);
-        $this->view->assign('headers', $headers);
-        $this->view->assign('rows', $data);
+        $csv = $this->objectManager->get(CsvView::class);
+        $csv->setFilename($this->getCSVFilename($filter, $base_name));
+
         $filter->setIncludeEmptyPages(true);
+        $csv->render($data, $headers, $base_name);
     }
 
     abstract protected function getHeaders(): array;

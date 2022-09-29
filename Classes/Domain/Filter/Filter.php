@@ -1,6 +1,6 @@
 <?php
 
-namespace Qc\QcComments\Domain\Dto;
+namespace Qc\QcComments\Domain\Filter;
 
 /***
  *
@@ -14,15 +14,22 @@ namespace Qc\QcComments\Domain\Dto;
  ***/
 
 use Qc\QcComments\Traits\InjectTranslation;
+use Qc\QcComments\Util\Arrayable;
 
-class Filter
+class Filter implements Arrayable
 {
     use InjectTranslation;
 
-    public function __construct()
-    {
-        $this->extKey = 'qc_comments';
-    }
+    protected const KEY_LANG = 'lang';
+    protected const KEY_START_DATE = 'startDate';
+    protected const KEY_END_DATE = 'endDate';
+    protected const KEY_DATE_RANGE = 'dateRange';
+    protected const KEY_INCLUDE_EMPTY_PAGES = 'includeEmptyPages';
+    protected const KEY_DEPTH = 'depth';
+    protected const KEY_USEFUL = 'useful';
+
+
+
 
     /**
      * @var string
@@ -50,6 +57,36 @@ class Filter
     protected int $depth = 0;
 
     protected string $useful = '';
+
+
+    /**
+     * @param string $lang
+     * @param string $startDate
+     * @param string $endDate
+     * @param bool $includeEmptyPages
+     * @param int $depth
+     * @param string $useful
+     * @param string $dateRange
+     */
+    public function __construct(
+        string $lang = '',
+        string $startDate = '',
+        string $endDate = '',
+        bool $includeEmptyPages = false,
+        int $depth = 1,
+        string $useful = '',
+        string $dateRange =''
+    )
+    {
+        $this->lang = $lang;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
+        $this->includeEmptyPages = $includeEmptyPages;
+        $this->depth = $depth;
+        $this->useful = $useful;
+        $this->dateRange = $dateRange;
+        $this->extKey = 'qc_comments';
+    }
 
     /**
      * @return bool
@@ -274,5 +311,32 @@ class Filter
             $criteria = " and date_houre >= '" . $this->getDateForRange() . "'";
         }
         return $criteria;
+    }
+
+    public function toArray()
+    {
+        return [
+          self::KEY_LANG => $this->getLang(),
+          self::KEY_START_DATE => $this->getStartDate(),
+          self::KEY_END_DATE => $this->getEndDate(),
+          self::KEY_DATE_RANGE => $this->getDateRange(),
+          self::KEY_INCLUDE_EMPTY_PAGES => $this->getIncludeEmptyPages(),
+          self::KEY_DEPTH => $this->getDepth(),
+          self::KEY_USEFUL => $this->getUseful()
+        ];
+    }
+
+    public static function getInstanceFromArray(array $values)
+    {
+       return new Filter(
+           $values[self::KEY_LANG],
+           $values[self::KEY_START_DATE],
+           $values[self::KEY_END_DATE],
+           $values[self::KEY_DATE_RANGE],
+           $values[self::KEY_INCLUDE_EMPTY_PAGES],
+           $values[self::KEY_DEPTH],
+           $values[self::KEY_USEFUL]
+
+       );
     }
 }

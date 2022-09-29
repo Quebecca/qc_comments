@@ -12,9 +12,10 @@
 
 namespace Qc\QcComments\View;
 
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Extbase\Mvc\View\AbstractView;
 
-class CsvView extends AbstractView
+class CsvView
 {
 
     /**
@@ -91,25 +92,35 @@ class CsvView extends AbstractView
         $this->filename = $filename;
         return $this;
     }
+
     /**
-     * Renders the view
-     *
-     * @return string The rendered view
-     * @api
+     * Export the csv file
+     * @param $data
+     * @param $headers
+     * @param $fileName
+     * @return Response
      */
-    public function render()
+    public function render($data, $headers, $fileName): Response
     {
-        $response = $this->controllerContext->getResponse();
+        $response = new Response('php://temp', 200,
+            ['Content-Type' => 'text/csv; charset=utf-8',
+                'Content-Description' => 'File transfer',
+                'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
+            ]
+        );
+
+        /*$response = $this->controllerContext->getResponse();
         $response->setHeader('Content-Type', 'text/csv; charset=utf-8');
         $response->setHeader('Content-Disposition', 'attachment; filename=' . $this->filename);
-        $rows = $this->variables['rows'];
+        $rows = $this->variables['rows'];*/
         $headers = $this->variables['headers'] ?? $this->headers ?? array_keys($rows[0]);
+
 
         $fp = fopen('php://temp', 'r+');
         // BOM utf-8 pour excel
         fwrite($fp, "\xEF\xBB\xBF");
         fputcsv($fp, $headers, $this->delimiter, $this->enclosure, $this->escapeChar);
-        foreach ($rows as $row) {
+        foreach ($data as $row) {
             array_walk($row, function (&$field) {
                 $field = str_replace("\r", ' ', $field);
                 $field = str_replace("\n", ' ', $field);
@@ -117,8 +128,8 @@ class CsvView extends AbstractView
             fputcsv($fp, $row, $this->delimiter, $this->enclosure, $this->escapeChar);
         }
         rewind($fp);
-        $str_data = rtrim(stream_get_contents($fp), "\n");
+        rtrim(stream_get_contents($fp), "\n");
         fclose($fp);
-        return $str_data;
+        return $response;
     }
 }

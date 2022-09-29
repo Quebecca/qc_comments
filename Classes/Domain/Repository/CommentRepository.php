@@ -4,7 +4,7 @@ namespace Qc\QcComments\Domain\Repository;
 
 use Doctrine\DBAL\Connection as ConnectionAlias;
 use Doctrine\DBAL\Driver\Exception;
-use Qc\QcComments\Domain\Dto\Filter;
+use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Traits\InjectTranslation;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Core\Database\ConnectionPool;
