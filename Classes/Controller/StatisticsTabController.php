@@ -25,7 +25,8 @@ class StatisticsTabController extends QcBackendModuleController
      */
     public function statisticsAction(Filter $filter = null)
     {
-        $filter = $this->processFilter($filter);
+        if($filter)
+            $this->processFilter($filter);
         $this->pages_ids = $this->commentsRepository->getPageIdsList();
         $maxRecords = $this->settings['statistics']['maxRecords'];
         $resultData = $this->commentsRepository->getStatistics($this->pages_ids, $maxRecords);

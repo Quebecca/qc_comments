@@ -191,6 +191,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
             $this->pageRenderer->addCssFile('EXT:qc_comments/Resources/Public/Css/be_qc_comments.css');
         }
+        $this->processFilter();
     }
 
     /**
@@ -272,15 +273,12 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         if ($filter === null) {
             // Get filter from session if available
             $filter = $this->backendSession->get('filter');
-            if (!$filter instanceof Filter) {
-                // No filter available, create new one
-                $filter = new Filter();
-            }
         } else {
             if ($filter->getDateRange() != 'userDefined') {
                 $filter->setStartDate(null);
                 $filter->setEndDate(null);
             }
+
             $this->backendSession->store('filter', $filter);
         }
         $this->view->assign('filter', $filter);

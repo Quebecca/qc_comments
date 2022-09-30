@@ -15,6 +15,8 @@ declare(strict_types = 1);
 namespace Qc\QcComments\Domain\Session;
 
 use __PHP_Incomplete_Class;
+use phpDocumentor\Reflection\Types\String_;
+use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Util\Arrayable;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
@@ -27,8 +29,10 @@ class BackendSession
      */
     public $sessionObject;
 
-    protected const STORAGE_KEY_DEFAULT = 'qc_comments';
+    /** @var string[] */
+    protected $registeredKeys = [];
 
+    protected const STORAGE_KEY_DEFAULT = 'qc_comments';
 
     /**
      * Unique key to store data in the session.
@@ -38,9 +42,29 @@ class BackendSession
      */
     protected $storageKey = 'qc_comments';
 
+
     public function __construct()
     {
         $this->sessionObject = $GLOBALS['BE_USER'];
+        $this->registerFilterKey(self::STORAGE_KEY_DEFAULT, Filter::class);
+        $this->registerFilterKey('lastAction', String_::class);
+    }
+
+    public function registerFilterKey(string $key, string $class): void
+    {
+        if (!$this->isClassImplementsInterface($class, Arrayable::class) && $key != 'lastAction') {
+            throw new \InvalidArgumentException('Given class not instance of Arrayable');
+        }
+        $this->registeredKeys[$key] = $class;
+    }
+
+    protected function isClassImplementsInterface(string $class, string $interface): bool
+    {
+        $interfaces = class_implements($class);
+        if ($interfaces && in_array($interface, $interfaces)) {
+            return true;
+        }
+        return false;
     }
 
     public function setStorageKey($storageKey)
@@ -56,9 +80,23 @@ class BackendSession
      */
     public function store($key, $value)
     {
-        $sessionData = $this->sessionObject->getSessionData($this->storageKey);
-        $sessionData[$key] = $value;
-        $this->sessionObject->setAndSaveSessionData($this->storageKey, $sessionData);
+        if (!isset($this->registeredKeys[$key])) {
+            throw new \InvalidArgumentException('Unknown key ' . $key);
+        }
+        if($key != 'lastAction'){
+            $valueArray = $value->toArray();
+            $sessionData = $this->sessionObject->getSessionData(self::STORAGE_KEY_DEFAULT);
+            $sessionData[$key] = $valueArray;
+            $this->sessionObject->setAndSaveSessionData(self::STORAGE_KEY_DEFAULT, $sessionData);
+        }
+        else {
+            $sessionData = $this->sessionObject->getSessionData(self::STORAGE_KEY_DEFAULT);
+            $sessionData[$key] = $value;
+            $this->sessionObject->setAndSaveSessionData($key, $sessionData);
+            debug($this->sessionObject);
+        }
+
+
     }
 
     /**

@@ -36,8 +36,8 @@ class CommentsTabController extends QcBackendModuleController
      */
     public function commentsAction(Filter $filter = null)
     {
-        $filter = $this->processFilter($filter);
-
+        if($filter)
+            $this->processFilter($filter);
         $csvButton = [
             'href' => $this->getUrl('exportComments'),
             'icon' => $this->icon,

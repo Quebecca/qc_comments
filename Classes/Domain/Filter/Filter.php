@@ -34,7 +34,7 @@ class Filter implements Arrayable
     /**
      * @var string
      */
-    protected string $lang = 'fr';
+    public string $lang = 'fr';
 
     /**
      * @var string
@@ -49,14 +49,14 @@ class Filter implements Arrayable
     /**
      * @var bool
      */
-    protected bool $includeEmptyPages = true;
+    public bool $includeEmptyPages = true;
 
     /**
      * @var int
      */
-    protected int $depth = 0;
+    public int $depth = 0;
 
-    protected string $useful = '';
+    public string $useful = '';
 
 
     /**
@@ -72,10 +72,10 @@ class Filter implements Arrayable
         string $lang = '',
         string $startDate = '',
         string $endDate = '',
+        string $dateRange ='',
         bool $includeEmptyPages = false,
         int $depth = 1,
-        string $useful = '',
-        string $dateRange =''
+        string $useful = ''
     )
     {
         $this->lang = $lang;
@@ -110,7 +110,7 @@ class Filter implements Arrayable
     /**
      * @var string
      */
-    protected string $dateRange = '1 day';
+    public string $dateRange = '1 day';
 
     /**
      * @return int
@@ -266,10 +266,7 @@ class Filter implements Arrayable
         $this->startDate = $startDate;
     }
 
-    /**
-     * @return string
-     */
-    public function getStartDate(): string
+    public function getStartDate()
     {
         return $this->startDate;
     }
@@ -282,18 +279,13 @@ class Filter implements Arrayable
         $this->endDate = $endDate;
     }
 
-    /**
-     * @return string
-     */
-    public function getEndDate(): string
+    public function getEndDate()
     {
         return $this->endDate;
     }
 
-    /**
-     * @return string
-     */
-    public function getDateCriteria(): string
+
+    public function getDateCriteria()
     {
         $criteria = '';
 
@@ -316,13 +308,13 @@ class Filter implements Arrayable
     public function toArray()
     {
         return [
-          self::KEY_LANG => $this->getLang(),
-          self::KEY_START_DATE => $this->getStartDate(),
-          self::KEY_END_DATE => $this->getEndDate(),
-          self::KEY_DATE_RANGE => $this->getDateRange(),
-          self::KEY_INCLUDE_EMPTY_PAGES => $this->getIncludeEmptyPages(),
-          self::KEY_DEPTH => $this->getDepth(),
-          self::KEY_USEFUL => $this->getUseful()
+          self::KEY_LANG => $this->getLang() ?? '',
+          self::KEY_START_DATE => $this->getStartDate() ?? '',
+          self::KEY_END_DATE => $this->getEndDate()  ?? '',
+          self::KEY_DATE_RANGE => $this->getDateRange()  ?? '',
+          self::KEY_INCLUDE_EMPTY_PAGES => $this->getIncludeEmptyPages() ?? false,
+          self::KEY_DEPTH => $this->getDepth()  ?? '',
+          self::KEY_USEFUL => $this->getUseful() ?? ''
         ];
     }
 
