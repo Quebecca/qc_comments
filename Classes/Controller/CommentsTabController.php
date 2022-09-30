@@ -14,9 +14,12 @@ namespace Qc\QcComments\Controller;
  ***/
 
 use Doctrine\DBAL\Driver\Exception;
+use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Domain\Filter\Filter;
+use Qc\QcComments\Domain\Session\BackendSession;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 
 class CommentsTabController extends QcBackendModuleController
@@ -69,7 +72,7 @@ class CommentsTabController extends QcBackendModuleController
             $message = $this->translate('tooMuchResults', [$numberOfSubPages, $maxRecords]);
             $this->addFlashMessage($message, null, AbstractMessage::WARNING);
         }
-
+        $pagesId = $this->pages_ids;
         $commentHeaders = $this->getHeaders();
         $this
             ->view
@@ -79,6 +82,7 @@ class CommentsTabController extends QcBackendModuleController
                 'commentHeaders',
                 'stats',
                 'comments',
+                'pagesId'
             ));
     }
 
@@ -104,25 +108,79 @@ class CommentsTabController extends QcBackendModuleController
     }
 
     /**
-     * Export function is for exporting comments list to csv file
-     * @param null $filter
-     * @throws StopActionException
+     * @param ServerRequestInterface $request
+     * @return Response
      */
-    public function exportCommentsAction($filter = null)
+    public function exportCommentsAction(ServerRequestInterface  $request)
     {
-        $filter = $this->processFilter($filter);
-        $filter->setIncludeEmptyPages(true);
-        $data = $this->commentsRepository->getComments($this->pages_ids, false, self::DEFAULT_ORDER_TYPES);
-        $rows = [];
+        $response = new Response('php://output', 200,
+            ['Content-Type' => 'text/csv; charset=utf-8',
+                'Content-Description' => 'File transfer',
+                'Content-Disposition' => 'attachment; filename="' . 'Comments' . '.csv"'
+            ]
+        );
+
+        //$filter->setIncludeEmptyPages(true);
+        $backendSession = GeneralUtility::makeInstance(BackendSession::class);
+        $filter = $backendSession->sessionObject->getSessionData('qc_comments')['filter'];
+        $this->commentsRepository->setFilter($filter);
+        $pagesData = $request->getQueryParams()['pagesId'];
+        $data = $this->commentsRepository->getComments($pagesData, false, self::DEFAULT_ORDER_TYPES);
+        $fp = fopen('php://output', 'wb');
+        // BOM utf-8 pour excel
+        fwrite($fp, "\xEF\xBB\xBF");
+        $headers = array_keys($this->getHeaders(true));
+        fputcsv($fp, $headers, ",", '"', '\\');
         foreach ($data as $row) {
-            foreach ($row as $item) {
-                $rows[] = $item;
+            array_walk($row, function (&$field) {
+                $field = str_replace("\r", ' ', $field);
+                $field = str_replace("\n", ' ', $field);
+            });
+            foreach ($row as $item){
+                fputcsv($fp, $item, ",", '"', '\\');
             }
         }
-        parent::export('comments', $this->getHeaders(true), $rows, $filter);
-        $this->forward('comments');
-
+        //  rewind($fp);
+        $str_data = rtrim(stream_get_contents($fp), "\n");
+        fclose($fp);
+        return $response;
     }
+/*
+    public function exportTest(ServerRequestInterface $request){
+        $response = new Response('php://output', 200,
+            ['Content-Type' => 'text/csv; charset=utf-8',
+                'Content-Description' => 'File transfer',
+                'Content-Disposition' => 'attachment; filename="' . 'file' . '.csv"'
+            ]
+        );
+
+        //$filter->setIncludeEmptyPages(true);
+        $backendSession = GeneralUtility::makeInstance(BackendSession::class);
+        $filter = $backendSession->sessionObject->getSessionData('qc_comments')['filter'];
+        $this->commentsRepository->setFilter($filter);
+        $pagesData = $request->getQueryParams()['pagesId'];
+        $data = $this->commentsRepository->getComments($pagesData, false, self::DEFAULT_ORDER_TYPES);
+        $fp = fopen('php://output', 'wb');
+        // BOM utf-8 pour excel
+        fwrite($fp, "\xEF\xBB\xBF");
+        $headers = array_keys($this->getHeaders(true));
+        fputcsv($fp, $headers, ",", '"', '\\');
+        foreach ($data as $row) {
+            array_walk($row, function (&$field) {
+                $field = str_replace("\r", ' ', $field);
+                $field = str_replace("\n", ' ', $field);
+            });
+            foreach ($row as $item){
+                fputcsv($fp, $item, ",", '"', '\\');
+            }
+        }
+      //  rewind($fp);
+        $str_data = rtrim(stream_get_contents($fp), "\n");
+        fclose($fp);
+        return $response;
+    }
+
+*/
 
     /**
      * This function will reset the search filter
