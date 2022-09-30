@@ -107,7 +107,6 @@ class CommentRepository extends Repository
         foreach ($data as $item) {
             $rows[$item['uid']][] = $item;
         }
-
         return $rows;
     }
 
