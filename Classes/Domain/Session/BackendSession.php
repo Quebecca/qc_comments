@@ -91,7 +91,7 @@ class BackendSession
         else {
             $sessionData = $this->sessionObject->getSessionData($this->storageKey);
             $sessionData[$key] = $value;
-            $this->sessionObject->setAndSaveSessionData($key, $sessionData);
+            $this->sessionObject->setAndSaveSessionData($this->storageKey, $sessionData);
         }
 
 
