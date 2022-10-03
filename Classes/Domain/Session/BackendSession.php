@@ -32,7 +32,6 @@ class BackendSession
     /** @var string[] */
     protected $registeredKeys = [];
 
-    protected const STORAGE_KEY_DEFAULT = 'qc_comments';
 
     /**
      * Unique key to store data in the session.
@@ -46,7 +45,7 @@ class BackendSession
     public function __construct()
     {
         $this->sessionObject = $GLOBALS['BE_USER'];
-        $this->registerFilterKey(self::STORAGE_KEY_DEFAULT, Filter::class);
+        $this->registerFilterKey('filter', Filter::class);
         $this->registerFilterKey('lastAction', String_::class);
     }
 
@@ -85,15 +84,14 @@ class BackendSession
         }
         if($key != 'lastAction'){
             $valueArray = $value->toArray();
-            $sessionData = $this->sessionObject->getSessionData(self::STORAGE_KEY_DEFAULT);
+            $sessionData = $this->sessionObject->getSessionData($this->storageKey);
             $sessionData[$key] = $valueArray;
-            $this->sessionObject->setAndSaveSessionData(self::STORAGE_KEY_DEFAULT, $sessionData);
+            $this->sessionObject->setAndSaveSessionData($this->storageKey, $sessionData);
         }
         else {
-            $sessionData = $this->sessionObject->getSessionData(self::STORAGE_KEY_DEFAULT);
+            $sessionData = $this->sessionObject->getSessionData($this->storageKey);
             $sessionData[$key] = $value;
             $this->sessionObject->setAndSaveSessionData($key, $sessionData);
-            debug($this->sessionObject);
         }
 
 
@@ -118,7 +116,7 @@ class BackendSession
      */
     public function get(string $key)
     {
-        $sessionData = $this->sessionObject->getSessionData(self::STORAGE_KEY_DEFAULT);
+        $sessionData = $this->sessionObject->getSessionData($this->storageKey);
         if (!isset($sessionData[$key]) || !$sessionData[$key]) {
             return null;
         }

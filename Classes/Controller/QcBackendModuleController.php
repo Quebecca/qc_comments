@@ -265,7 +265,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
     /**
      * This function is used to get the filter from the backend session
      * @param Filter|null $filter
-     * @return Filter
+     * @return Filter|null
      */
     protected function processFilter(Filter $filter = null): ?Filter
     {
@@ -273,6 +273,9 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         if ($filter === null) {
             // Get filter from session if available
             $filter = $this->backendSession->get('filter');
+            if($filter == null){
+                $filter = new Filter();
+            }
         } else {
             if ($filter->getDateRange() != 'userDefined') {
                 $filter->setStartDate(null);
