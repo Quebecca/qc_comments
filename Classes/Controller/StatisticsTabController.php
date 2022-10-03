@@ -14,8 +14,10 @@ namespace Qc\QcComments\Controller;
  ***/
 
 use Qc\QcComments\Domain\Filter\Filter;
+use Qc\QcComments\Domain\Session\BackendSession;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 
 class StatisticsTabController extends QcBackendModuleController
@@ -66,8 +68,19 @@ class StatisticsTabController extends QcBackendModuleController
      */
     public function exportStatisticsAction ($filter = null): Response
     {
-        $filter = $this->processFilter($filter);
+        $response = new Response('php://output', 200,
+            ['Content-Type' => 'text/csv; charset=utf-8',
+                'Content-Description' => 'File transfer',
+                'Content-Disposition' => 'attachment; filename="' . 'Statistics' . '.csv"'
+            ]
+        );
+
+        //$filter->setIncludeEmptyPages(true);
+        $backendSession = GeneralUtility::makeInstance(BackendSession::class);
+        $filter = $backendSession->get('filter');
+        $this->commentsRepository->setFilter($filter);
         $data = $this->commentsRepository->getStatistics($this->pages_ids, false);
+
         // Resort array elements for export
         $mappedData = [];
         $i = 0;
@@ -77,7 +90,27 @@ class StatisticsTabController extends QcBackendModuleController
             }
             $i++;
         }
-        return parent::export('statistics', $this->getHeaders(), $mappedData, $filter);
+        //return parent::export('statistics', $this->getHeaders(), $mappedData, $filter);
+
+        $fp = fopen('php://output', 'wb');
+        // BOM utf-8 pour excel
+        fwrite($fp, "\xEF\xBB\xBF");
+        $headers = array_keys($this->getHeaders(true));
+        fputcsv($fp, $headers, ",", '"', '\\');
+        foreach ($data as $row) {
+            array_walk($row, function (&$field) {
+                $field = str_replace("\r", ' ', $field);
+                $field = str_replace("\n", ' ', $field);
+            });
+            foreach ($row as $item){
+                fputcsv($fp, $item, ",", '"', '\\');
+            }
+        }
+        //  rewind($fp);
+        $str_data = rtrim(stream_get_contents($fp), "\n");
+        fclose($fp);
+
+        return $response;
     }
 
     /**

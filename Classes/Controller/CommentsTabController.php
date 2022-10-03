@@ -122,7 +122,7 @@ class CommentsTabController extends QcBackendModuleController
 
         //$filter->setIncludeEmptyPages(true);
         $backendSession = GeneralUtility::makeInstance(BackendSession::class);
-        $filter = $backendSession->sessionObject->getSessionData('qc_comments')['filter'];
+        $filter = $backendSession->get('filter');
         $this->commentsRepository->setFilter($filter);
         $pagesData = $request->getQueryParams()['pagesId'];
         $data = $this->commentsRepository->getComments($pagesData, false, self::DEFAULT_ORDER_TYPES);
@@ -145,42 +145,7 @@ class CommentsTabController extends QcBackendModuleController
         fclose($fp);
         return $response;
     }
-/*
-    public function exportTest(ServerRequestInterface $request){
-        $response = new Response('php://output', 200,
-            ['Content-Type' => 'text/csv; charset=utf-8',
-                'Content-Description' => 'File transfer',
-                'Content-Disposition' => 'attachment; filename="' . 'file' . '.csv"'
-            ]
-        );
 
-        //$filter->setIncludeEmptyPages(true);
-        $backendSession = GeneralUtility::makeInstance(BackendSession::class);
-        $filter = $backendSession->sessionObject->getSessionData('qc_comments')['filter'];
-        $this->commentsRepository->setFilter($filter);
-        $pagesData = $request->getQueryParams()['pagesId'];
-        $data = $this->commentsRepository->getComments($pagesData, false, self::DEFAULT_ORDER_TYPES);
-        $fp = fopen('php://output', 'wb');
-        // BOM utf-8 pour excel
-        fwrite($fp, "\xEF\xBB\xBF");
-        $headers = array_keys($this->getHeaders(true));
-        fputcsv($fp, $headers, ",", '"', '\\');
-        foreach ($data as $row) {
-            array_walk($row, function (&$field) {
-                $field = str_replace("\r", ' ', $field);
-                $field = str_replace("\n", ' ', $field);
-            });
-            foreach ($row as $item){
-                fputcsv($fp, $item, ",", '"', '\\');
-            }
-        }
-      //  rewind($fp);
-        $str_data = rtrim(stream_get_contents($fp), "\n");
-        fclose($fp);
-        return $response;
-    }
-
-*/
 
     /**
      * This function will reset the search filter
