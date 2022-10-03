@@ -50,13 +50,13 @@ class CommentsTabController extends QcBackendModuleController
         $this->pages_ids = $this->commentsRepository->getPageIdsList();
 
         $maxRecords = is_numeric($this->settings['comments']['maxRecords'])
-                        ? $this->settings['comments']['maxRecords'] : self::DEFAULT_MAX_RECORDS;
+            ? $this->settings['comments']['maxRecords'] : self::DEFAULT_MAX_RECORDS;
 
         $numberOfSubPages = is_numeric($this->settings['comments']['numberOfSubPages'])
-                            ? $this->settings['comments']['numberOfSubPages'] : self::DEFAULT_MAX_PAGES;
+            ? $this->settings['comments']['numberOfSubPages'] : self::DEFAULT_MAX_PAGES;
 
         $orderType = in_array($this->settings['comments']['orderType'],  ['DESC', 'ASC'])
-                    ? $this->settings['comments']['orderType'] : self::DEFAULT_ORDER_TYPES;
+            ? $this->settings['comments']['orderType'] : self::DEFAULT_ORDER_TYPES;
 
 
         $tooMuchPages = count($this->pages_ids) > $numberOfSubPages;
@@ -123,9 +123,10 @@ class CommentsTabController extends QcBackendModuleController
         //$filter->setIncludeEmptyPages(true);
         $backendSession = GeneralUtility::makeInstance(BackendSession::class);
         $filter = $backendSession->get('filter');
-        $this->commentsRepository->setFilter($filter);
+        $this->commentsRepository->setFilter($filter ?? new Filter());
         $pagesData = $request->getQueryParams()['pagesId'];
         $data = $this->commentsRepository->getComments($pagesData, false, self::DEFAULT_ORDER_TYPES);
+
         $fp = fopen('php://output', 'wb');
         // BOM utf-8 pour excel
         fwrite($fp, "\xEF\xBB\xBF");

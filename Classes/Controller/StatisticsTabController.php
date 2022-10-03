@@ -13,6 +13,7 @@ namespace Qc\QcComments\Controller;
  *
  ***/
 
+use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Domain\Session\BackendSession;
 use TYPO3\CMS\Core\Http\Response;
@@ -37,16 +38,19 @@ class StatisticsTabController extends QcBackendModuleController
             $this->addFlashMessage($message, null, AbstractMessage::WARNING);
             array_pop($resultData); // last line was there to check that limit has been reached
         }
-        $this->view
-             ->assign('csvButton', [
-                 'href' => $this->getUrl('exportStatistics'),
-                 'icon' => $this->icon,
-             ])
-             ->assign('resetButton', [
-                 'href' => $this->getUrl('resetFilter'),
-             ])
-             ->assign('headers', $this->getHeaders())
-             ->assign('rows', $resultData);
+        $this->view->assignMultiple([
+           'csvButton' => [
+               'href' => $this->getUrl('exportStatistics'),
+               'icon' => $this->icon,
+           ],
+            'resetButton' => [
+                'href' => $this->getUrl('resetFilter'),
+            ],
+            'headers' => $this->getHeaders(),
+            'rows' => $resultData,
+            'pagesId' => $this->pages_ids
+        ]);
+
     }
 
     /**
@@ -63,10 +67,10 @@ class StatisticsTabController extends QcBackendModuleController
     }
 
     /**
-     * @param null $filter
+     * @param ServerRequestInterface $request
      * @return Response
      */
-    public function exportStatisticsAction ($filter = null): Response
+    public function exportStatisticsAction (ServerRequestInterface  $request): Response
     {
         $response = new Response('php://output', 200,
             ['Content-Type' => 'text/csv; charset=utf-8',
@@ -75,41 +79,32 @@ class StatisticsTabController extends QcBackendModuleController
             ]
         );
 
-        //$filter->setIncludeEmptyPages(true);
         $backendSession = GeneralUtility::makeInstance(BackendSession::class);
         $filter = $backendSession->get('filter');
-        $this->commentsRepository->setFilter($filter);
-        $data = $this->commentsRepository->getStatistics($this->pages_ids, false);
-
+        $this->commentsRepository->setFilter($filter ?? new Filter());
+        $pagesData = $request->getQueryParams()['pagesId'];
+        $data = $this->commentsRepository->getStatistics($pagesData, false);
         // Resort array elements for export
         $mappedData = [];
         $i = 0;
         foreach ($data as $record) {
             foreach ($this->getHeaders() as $headerKey => $header) {
-                $mappedData[$i][$header] = $record[$headerKey];
+                $mappedData[$i][$headerKey] = $record[$headerKey];
             }
             $i++;
         }
-        //return parent::export('statistics', $this->getHeaders(), $mappedData, $filter);
 
-        $fp = fopen('php://output', 'wb');
+        $fp = fopen('php://output', 'r+');
         // BOM utf-8 pour excel
         fwrite($fp, "\xEF\xBB\xBF");
-        $headers = array_keys($this->getHeaders(true));
+        $headers = array_keys($this->getHeaders());
         fputcsv($fp, $headers, ",", '"', '\\');
-        foreach ($data as $row) {
-            array_walk($row, function (&$field) {
-                $field = str_replace("\r", ' ', $field);
-                $field = str_replace("\n", ' ', $field);
-            });
-            foreach ($row as $item){
-                fputcsv($fp, $item, ",", '"', '\\');
-            }
+
+        foreach ($mappedData as $row) {
+            fputcsv($fp, $row, ",", '"', '\\');
         }
-        //  rewind($fp);
         $str_data = rtrim(stream_get_contents($fp), "\n");
         fclose($fp);
-
         return $response;
     }
 
