@@ -86,9 +86,8 @@ abstract class QcBackendModuleController extends BackendModuleActionController
     }
 
     public function __construct(
-        LocalizationUtility $localizationUtility = null
     ) {
-        $this->localizationUtility = $localizationUtility ?? GeneralUtility::makeInstance(LocalizationUtility::class);
+        $this->localizationUtility = GeneralUtility::makeInstance(LocalizationUtility::class);
     }
 
     /**
@@ -313,6 +312,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
      * @param Filter $filter
      * @param $fileName
      * @param $csvDateFormat
+     * @param $pageId
      * @return string
      */
     protected function getCSVFilename(Filter $filter, $fileName, $csvDateFormat, $pageId): string

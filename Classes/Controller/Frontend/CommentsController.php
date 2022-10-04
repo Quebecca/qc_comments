@@ -52,9 +52,8 @@ class CommentsController extends ActionController
     }
 
     public function __construct(
-        LocalizationUtility $localizationUtility = null
     ) {
-        $this->localizationUtility = $localizationUtility ?? GeneralUtility::makeInstance(LocalizationUtility::class);
+        $this->localizationUtility = GeneralUtility::makeInstance(LocalizationUtility::class);
     }
     protected function initializeAction()
     {

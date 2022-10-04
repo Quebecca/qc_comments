@@ -78,8 +78,7 @@ class Filter implements Arrayable
         string $dateRange ='1 day',
         bool $includeEmptyPages = false,
         int $depth = 1,
-        string $useful = '',
-        LocalizationUtility $localizationUtility = null
+        string $useful = ''
     ) {
         $this->lang = $lang;
         $this->startDate = $startDate;
@@ -89,7 +88,7 @@ class Filter implements Arrayable
         $this->useful = $useful;
         $this->dateRange = $dateRange;
         $this->extKey = 'qc_comments';
-        $this->localizationUtility = $localizationUtility ?? GeneralUtility::makeInstance(LocalizationUtility::class);
+        $this->localizationUtility = GeneralUtility::makeInstance(LocalizationUtility::class);
     }
 
     /**
