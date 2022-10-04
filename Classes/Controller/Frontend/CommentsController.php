@@ -53,7 +53,7 @@ class CommentsController extends ActionController
 
     public function __construct(
         LocalizationUtility $localizationUtility = null
-    ){
+    ) {
         $this->localizationUtility = $localizationUtility ?? GeneralUtility::makeInstance(LocalizationUtility::class);
     }
     protected function initializeAction()
@@ -62,11 +62,10 @@ class CommentsController extends ActionController
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         $typoScriptSettings = $typoScriptService->convertTypoScriptArrayToPlainArray($GLOBALS['TSFE']->tmpl->setup);
         $this->tsConfig =$typoScriptSettings['plugin']['commentsForm']['settings'];
-        $this->tsConfig['comments']['maxCharacters'] = intval($this->tsConfig['comments']['maxCharacters']) > 0
-            ? intval($this->tsConfig['comments']['maxCharacters'])
+        $this->tsConfig['comments']['maxCharacters'] = (int)($this->tsConfig['comments']['maxCharacters']) > 0
+            ? (int)($this->tsConfig['comments']['maxCharacters'])
             : self::DEFAULT_MAX_CHARACTERS;
     }
-
 
     /**
      * This function is used to render comments form
@@ -75,11 +74,12 @@ class CommentsController extends ActionController
     public function showAction(array $args = [])
     {
         $config = [];
-        foreach ($this->tsConfig['comments'] as $key => $val){
-            if($key != 'maxCharacters')
-                $config[$key] = $val !== '' ? $val : $this->localizationUtility->translate(self::QC_LANG_FILE.$key);
-            else
+        foreach ($this->tsConfig['comments'] as $key => $val) {
+            if ($key != 'maxCharacters') {
+                $config[$key] = $val !== '' ? $val : $this->localizationUtility->translate(self::QC_LANG_FILE . $key);
+            } else {
                 $config[$key] = $val;
+            }
         }
         $this->view->assignMultiple([
             'submitted' => $this->request->getArguments()['submitted'],
@@ -88,7 +88,6 @@ class CommentsController extends ActionController
             'recaptchaConfig' => $this->tsConfig['recaptcha']
         ]);
     }
-
 
     /**
      * This function is used to save user comment
@@ -110,5 +109,4 @@ class CommentsController extends ActionController
         }
         $this->forward('show', null, null, ['submitted' => true]);
     }
-
 }

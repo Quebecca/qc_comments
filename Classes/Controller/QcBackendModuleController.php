@@ -15,8 +15,8 @@ namespace Qc\QcComments\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Qc\QcComments\Domain\Filter\Filter;
-use Qc\QcComments\Domain\Session\BackendSession;
 use Qc\QcComments\Domain\Repository\CommentRepository;
+use Qc\QcComments\Domain\Session\BackendSession;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\Response;
@@ -75,8 +75,6 @@ abstract class QcBackendModuleController extends BackendModuleActionController
 
     const QC_LANG_FILE = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
 
-
-
     public function injectBackendSession(BackendSession $backendSession)
     {
         $this->backendSession = $backendSession;
@@ -89,7 +87,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
 
     public function __construct(
         LocalizationUtility $localizationUtility = null
-    ){
+    ) {
         $this->localizationUtility = $localizationUtility ?? GeneralUtility::makeInstance(LocalizationUtility::class);
     }
 
@@ -161,12 +159,12 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         $this->setMenuIdentifier('commentsMenu');
         $menuItems = [
             [
-                'label' => $this->localizationUtility->translate(self::QC_LANG_FILE.'menu.stats'),
+                'label' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'menu.stats'),
                 'action' => 'statistics',
                 'controller' => 'StatisticsTab'
             ],
             [
-                'label' => $this->localizationUtility->translate(self::QC_LANG_FILE.'menu.list'),
+                'label' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'menu.list'),
                 'action' => 'comments',
                 'controller' => 'CommentsTab'
             ],
@@ -285,7 +283,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         if ($filter === null) {
             // Get filter from session if available
             $filter = $this->backendSession->get('filter');
-            if($filter == null){
+            if ($filter == null) {
                 $filter = new Filter();
             }
         } else {
@@ -297,7 +295,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
             $this->backendSession->store('filter', $filter);
         }
         $this->view->assign('filter', $filter);
-       $this->commentsRepository->setFilter($filter);
+        $this->commentsRepository->setFilter($filter);
         return $filter;
     }
 
@@ -317,13 +315,13 @@ abstract class QcBackendModuleController extends BackendModuleActionController
      * @param $csvDateFormat
      * @return string
      */
-    protected function getCSVFilename(Filter $filter, $fileName,$csvDateFormat, $pageId): string
+    protected function getCSVFilename(Filter $filter, $fileName, $csvDateFormat, $pageId): string
     {
         $format = $csvDateFormat;
         $now = date($format);
         $from = $filter->getDateForRange($format);
         return implode('-', array_filter([
-                $this->localizationUtility->translate(self::QC_LANG_FILE.$fileName),
+                $this->localizationUtility->translate(self::QC_LANG_FILE . $fileName),
                 $filter->getLang(),
                 'uid' . $pageId,
                 $from,
@@ -340,7 +338,9 @@ abstract class QcBackendModuleController extends BackendModuleActionController
      */
     public function export(string $fileName, array $headers, array $data): ResponseInterface
     {
-        $response = new Response('php://output', 200,
+        $response = new Response(
+            'php://output',
+            200,
             ['Content-Type' => 'text/csv; charset=utf-8',
                 'Content-Description' => 'File transfer',
                 'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
@@ -350,10 +350,10 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         $fp = fopen('php://output', 'wb');
         // BOM utf-8 pour excel
         fwrite($fp, "\xEF\xBB\xBF");
-        fputcsv($fp, $headers, ",", '"', '\\');
+        fputcsv($fp, $headers, ',', '"', '\\');
         foreach ($data as $row) {
-            foreach ($row as $item){
-                fputcsv($fp, $item, ",", '"', '\\');
+            foreach ($row as $item) {
+                fputcsv($fp, $item, ',', '"', '\\');
             }
         }
         //  rewind($fp);

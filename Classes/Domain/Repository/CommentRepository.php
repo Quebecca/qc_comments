@@ -10,7 +10,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Repository;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class CommentRepository extends Repository
 {
@@ -38,7 +37,6 @@ class CommentRepository extends Repository
      * @var string
      */
     protected string $date_criteria = '';
-
 
     /**
      * @param Filter $filter
@@ -76,7 +74,7 @@ class CommentRepository extends Repository
         $constrains['joinCond'] = " p.uid = uid_orig $this->date_criteria $this->lang_criteria";
         $constrains['whereClause'] = " p.uid in ($ids_csv)";
         $usefulCond = $this->filter->getUseful() != '' ?  'useful = ' . $this->filter->getUseful() : '';
-        if($usefulCond != ''){
+        if ($usefulCond != '') {
             $constrains['whereClause'] .= "AND $usefulCond";
         }
         return $constrains;
@@ -89,7 +87,7 @@ class CommentRepository extends Repository
      * @param string $orderType
      * @return array
      */
-    public function getComments(array $pages_ids,string $limit, string $orderType): array
+    public function getComments(array $pages_ids, string $limit, string $orderType): array
     {
         $queryBuilder = $this->generateQueryBuilder();
         $constraints = $this->getConstraints($pages_ids);

@@ -27,13 +27,14 @@ class StatisticsTabController extends QcBackendModuleController
      */
     public function statisticsAction(Filter $filter = null)
     {
-        if($filter)
+        if ($filter) {
             $this->processFilter($filter);
+        }
         $this->pages_ids = $this->commentsRepository->getPageIdsList();
         $maxRecords = $this->settings['statistics']['maxRecords'];
         $resultData = $this->commentsRepository->getStatistics($this->pages_ids, $maxRecords);
         if (count($resultData) > $maxRecords) {
-            $message = $this->localizationUtility->translate(self::QC_LANG_FILE.'tooMuchPages',null, [$maxRecords]);
+            $message = $this->localizationUtility->translate(self::QC_LANG_FILE . 'tooMuchPages', null, [$maxRecords]);
             $this->addFlashMessage($message, null, AbstractMessage::WARNING);
             array_pop($resultData); // last line was there to check that limit has been reached
         }
@@ -50,7 +51,6 @@ class StatisticsTabController extends QcBackendModuleController
             'pagesId' => $this->pages_ids,
             'settings'
         ]);
-
     }
 
     /**
@@ -61,7 +61,7 @@ class StatisticsTabController extends QcBackendModuleController
     {
         $headers = [];
         foreach (['page_uid', 'page_title', 'total_pos', 'total_neg', 'total', 'avg'] as $col) {
-            $headers[$col] = $this->localizationUtility->translate(self::QC_LANG_FILE.'stats.h.' . $col);
+            $headers[$col] = $this->localizationUtility->translate(self::QC_LANG_FILE . 'stats.h.' . $col);
         }
         return $headers;
     }
@@ -70,7 +70,7 @@ class StatisticsTabController extends QcBackendModuleController
      * @param ServerRequestInterface $request
      * @return Response
      */
-    public function exportStatisticsAction (ServerRequestInterface  $request): Response
+    public function exportStatisticsAction(ServerRequestInterface $request): Response
     {
         $backendSession = GeneralUtility::makeInstance(BackendSession::class);
         $filter = $backendSession->get('filter');
@@ -78,7 +78,7 @@ class StatisticsTabController extends QcBackendModuleController
         $pagesData = $request->getQueryParams()['pagesId'];
         $csvDateFormat = $request->getQueryParams()['csvFormat'] ?? 'YmdHi';
 
-        $fileName = $this->getCSVFilename($filter,'stats', $csvDateFormat,$pagesData[0]);
+        $fileName = $this->getCSVFilename($filter, 'stats', $csvDateFormat, $pagesData[0]);
         $data = $this->commentsRepository->getStatistics($pagesData, false);
         // Resort array elements for export
         $mappedData = [];
@@ -90,7 +90,7 @@ class StatisticsTabController extends QcBackendModuleController
             }
             $i++;
         }
-        return parent::export($fileName,$headers, $mappedData);
+        return parent::export($fileName, $headers, $mappedData);
     }
 
     /**

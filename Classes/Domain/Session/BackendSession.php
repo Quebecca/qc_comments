@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 /***
  *
@@ -32,7 +33,6 @@ class BackendSession
     /** @var string[] */
     protected $registeredKeys = [];
 
-
     /**
      * Unique key to store data in the session.
      * Overwrite this key in your initializeAction method.
@@ -40,7 +40,6 @@ class BackendSession
      * @var string
      */
     protected $storageKey = 'qc_comments';
-
 
     public function __construct()
     {
@@ -82,19 +81,16 @@ class BackendSession
         if (!isset($this->registeredKeys[$key])) {
             throw new \InvalidArgumentException('Unknown key ' . $key);
         }
-        if($key != 'lastAction'){
+        if ($key != 'lastAction') {
             $valueArray = $value->toArray();
             $sessionData = $this->sessionObject->getSessionData($this->storageKey);
             $sessionData[$key] = $valueArray;
             $this->sessionObject->setAndSaveSessionData($this->storageKey, $sessionData);
-        }
-        else {
+        } else {
             $sessionData = $this->sessionObject->getSessionData($this->storageKey);
             $sessionData[$key] = $value;
             $this->sessionObject->setAndSaveSessionData($this->storageKey, $sessionData);
         }
-
-
     }
 
     /**
@@ -108,7 +104,6 @@ class BackendSession
         unset($sessionData[$key]);
         $this->sessionObject->setAndSaveSessionData($this->storageKey, $sessionData);
     }
-
 
     /**
      * @param string $key

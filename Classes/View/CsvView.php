@@ -13,7 +13,6 @@
 namespace Qc\QcComments\View;
 
 use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Extbase\Mvc\View\AbstractView;
 
 class CsvView
 {
@@ -102,7 +101,9 @@ class CsvView
      */
     public function render($data, $headers, $fileName): Response
     {
-        $response = new Response('php://temp', 200,
+        $response = new Response(
+            'php://temp',
+            200,
             ['Content-Type' => 'text/csv; charset=utf-8',
                 'Content-Description' => 'File transfer',
                 'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
@@ -114,7 +115,6 @@ class CsvView
         $response->setHeader('Content-Disposition', 'attachment; filename=' . $this->filename);
         $rows = $this->variables['rows'];*/
         $headers = $this->variables['headers'] ?? $this->headers ?? array_keys($rows[0]);
-
 
         $fp = fopen('php://temp', 'r+');
         // BOM utf-8 pour excel

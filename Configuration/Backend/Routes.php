@@ -14,5 +14,4 @@ return [
         'target' => \Qc\QcComments\Controller\StatisticsTabController::class . '::exportStatisticsAction'
     ],
 
-
 ];

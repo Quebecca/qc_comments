@@ -19,7 +19,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class Filter implements Arrayable
 {
-
     protected const KEY_LANG = 'lang';
     protected const KEY_START_DATE = 'startDate';
     protected const KEY_END_DATE = 'endDate';
@@ -32,7 +31,6 @@ class Filter implements Arrayable
      * @var LocalizationUtility
      */
     protected LocalizationUtility $localizationUtility;
-
 
     /**
      * @var string
@@ -63,7 +61,6 @@ class Filter implements Arrayable
 
     const QC_LANG_FILE = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
 
-
     /**
      * @param string $lang
      * @param string $startDate
@@ -83,8 +80,7 @@ class Filter implements Arrayable
         int $depth = 1,
         string $useful = '',
         LocalizationUtility $localizationUtility = null
-    )
-    {
+    ) {
         $this->lang = $lang;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
@@ -94,7 +90,6 @@ class Filter implements Arrayable
         $this->dateRange = $dateRange;
         $this->extKey = 'qc_comments';
         $this->localizationUtility = $localizationUtility ?? GeneralUtility::makeInstance(LocalizationUtility::class);
-
     }
 
     /**
@@ -200,11 +195,11 @@ class Filter implements Arrayable
     public function getDepthOptions(): array
     {
         return [
-            0 => $this->localizationUtility->translate(self::QC_LANG_FILE.'filter.depth.thisPage'),
-            1 => '1 ' . $this->localizationUtility->translate(self::QC_LANG_FILE.'filter.depth.level'),
-            2 => '2 ' . $this->localizationUtility->translate(self::QC_LANG_FILE.'filter.depth.levels'),
-            3 => '3 ' . $this->localizationUtility->translate(self::QC_LANG_FILE.'filter.depth.levels'),
-            999 => $this->localizationUtility->translate(self::QC_LANG_FILE.'filter.depth.limitless'),
+            0 => $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.depth.thisPage'),
+            1 => '1 ' . $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.depth.level'),
+            2 => '2 ' . $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.depth.levels'),
+            3 => '3 ' . $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.depth.levels'),
+            999 => $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.depth.limitless'),
         ];
     }
 
@@ -214,15 +209,15 @@ class Filter implements Arrayable
     public function getDateRangeOptions(): array
     {
         return [
-            '1 day' => '1 ' . $this->localizationUtility->translate(self::QC_LANG_FILE.'filter.dateRange.day'),
-            '2 day' => '2 ' . $this->localizationUtility->translate(self::QC_LANG_FILE.'filter.dateRange.days'),
-            '1 week' => '1 ' . $this->localizationUtility->translate(self::QC_LANG_FILE.'filter.dateRange.week'),
-            '2 week' => '2 ' . $this->localizationUtility->translate(self::QC_LANG_FILE.'filter.dateRange.weeks'),
-            '1 month' => '1 ' . $this->localizationUtility->translate(self::QC_LANG_FILE.'filter.dateRange.month'),
-            '3 month' => '3 ' . $this->localizationUtility->translate(self::QC_LANG_FILE.'filter.dateRange.months'),
-            '6 month' => '6 ' . $this->localizationUtility->translate(self::QC_LANG_FILE.'filter.dateRange.months'),
-            '1 year' => '1 ' . $this->localizationUtility->translate(self::QC_LANG_FILE.'filter.dateRange.year'),
-            'userDefined' =>  $this->localizationUtility->translate(self::QC_LANG_FILE.'userDefined')
+            '1 day' => '1 ' . $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.dateRange.day'),
+            '2 day' => '2 ' . $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.dateRange.days'),
+            '1 week' => '1 ' . $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.dateRange.week'),
+            '2 week' => '2 ' . $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.dateRange.weeks'),
+            '1 month' => '1 ' . $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.dateRange.month'),
+            '3 month' => '3 ' . $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.dateRange.months'),
+            '6 month' => '6 ' . $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.dateRange.months'),
+            '1 year' => '1 ' . $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.dateRange.year'),
+            'userDefined' =>  $this->localizationUtility->translate(self::QC_LANG_FILE . 'userDefined')
         ];
     }
 
@@ -232,9 +227,9 @@ class Filter implements Arrayable
     public function getLangOptions(): array
     {
         return [
-            '' => $this->localizationUtility->translate(self::QC_LANG_FILE.'filter.lang.all'),
-            'fr' => $this->localizationUtility->translate(self::QC_LANG_FILE.'filter.lang.french'),
-            'en' => $this->localizationUtility->translate(self::QC_LANG_FILE.'filter.lang.english'),
+            '' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.lang.all'),
+            'fr' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.lang.french'),
+            'en' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.lang.english'),
         ];
     }
 
@@ -244,9 +239,9 @@ class Filter implements Arrayable
     public function getCommentsUtility(): array
     {
         return [
-            '' => $this->localizationUtility->translate(self::QC_LANG_FILE.'all'),
-            '0' => $this->localizationUtility->translate(self::QC_LANG_FILE.'notUseful'),
-            '1' => $this->localizationUtility->translate(self::QC_LANG_FILE.'comments.h.useful'),
+            '' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'all'),
+            '0' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'notUseful'),
+            '1' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'comments.h.useful'),
         ];
     }
 
@@ -265,7 +260,6 @@ class Filter implements Arrayable
     {
         $this->useful = $useful;
     }
-
 
     /**
      * @param string|null $startDate
@@ -340,15 +334,14 @@ class Filter implements Arrayable
      */
     public static function getInstanceFromArray(array $values): Filter
     {
-       return new Filter(
-           $values[self::KEY_LANG],
-           $values[self::KEY_START_DATE],
-           $values[self::KEY_END_DATE],
-           $values[self::KEY_DATE_RANGE],
-           $values[self::KEY_INCLUDE_EMPTY_PAGES],
-           $values[self::KEY_DEPTH],
-           $values[self::KEY_USEFUL]
-
-       );
+        return new Filter(
+            $values[self::KEY_LANG],
+            $values[self::KEY_START_DATE],
+            $values[self::KEY_END_DATE],
+            $values[self::KEY_DATE_RANGE],
+            $values[self::KEY_INCLUDE_EMPTY_PAGES],
+            $values[self::KEY_DEPTH],
+            $values[self::KEY_USEFUL]
+        );
     }
 }

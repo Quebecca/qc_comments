@@ -24,7 +24,6 @@ use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 
 class CommentsTabController extends QcBackendModuleController
 {
-
     protected const DEFAULT_ORDER_TYPES = 'DESC';
     protected const DEFAULT_MAX_RECORDS = '100';
     protected const DEFAULT_MAX_PAGES = '100';
@@ -36,8 +35,9 @@ class CommentsTabController extends QcBackendModuleController
      */
     public function commentsAction(Filter $filter = null)
     {
-        if($filter)
+        if ($filter) {
             $this->processFilter($filter);
+        }
         $csvButton = [
             'href' => $this->getUrl('exportComments'),
             'icon' => $this->icon,
@@ -55,9 +55,8 @@ class CommentsTabController extends QcBackendModuleController
         $numberOfSubPages = is_numeric($this->settings['comments']['numberOfSubPages'])
             ? $this->settings['comments']['numberOfSubPages'] : self::DEFAULT_MAX_PAGES;
 
-        $orderType = in_array($this->settings['comments']['orderType'],  ['DESC', 'ASC'])
+        $orderType = in_array($this->settings['comments']['orderType'], ['DESC', 'ASC'])
             ? $this->settings['comments']['orderType'] : self::DEFAULT_ORDER_TYPES;
-
 
         $tooMuchPages = count($this->pages_ids) > $numberOfSubPages;
         $this->pages_ids = array_slice(
@@ -69,7 +68,7 @@ class CommentsTabController extends QcBackendModuleController
         $comments = $this->commentsRepository->getComments($this->pages_ids, $maxRecords, $orderType);
 
         if ($this->commentsRepository->getListCount() > $maxRecords || $tooMuchPages) {
-            $message = $this->localizationUtility->translate(self::QC_LANG_FILE.'tooMuchResults', null,(array)[$numberOfSubPages, $maxRecords]);
+            $message = $this->localizationUtility->translate(self::QC_LANG_FILE . 'tooMuchResults', null, (array)[$numberOfSubPages, $maxRecords]);
             $this->addFlashMessage($message, null, AbstractMessage::WARNING);
         }
         $pagesId = $this->pages_ids;
@@ -96,12 +95,12 @@ class CommentsTabController extends QcBackendModuleController
         $headers = [];
 
         foreach (['date_houre', 'comment', 'useful'] as $col) {
-            $headers[$col] = $this->localizationUtility->translate(self::QC_LANG_FILE.'comments.h.' . $col);
+            $headers[$col] = $this->localizationUtility->translate(self::QC_LANG_FILE . 'comments.h.' . $col);
         }
         if ($include_csv_headers) {
             $headers = array_merge([
-                'page_uid' => $this->localizationUtility->translate(self::QC_LANG_FILE.'csv.h.page_uid'),
-                'page_title' => $this->localizationUtility->translate(self::QC_LANG_FILE.'stats.h.page_title'),
+                'page_uid' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'csv.h.page_uid'),
+                'page_title' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'stats.h.page_title'),
             ], $headers);
         }
         return $headers;
@@ -111,7 +110,7 @@ class CommentsTabController extends QcBackendModuleController
      * @param ServerRequestInterface $request
      * @return Response
      */
-    public function exportCommentsAction(ServerRequestInterface  $request): ResponseInterface
+    public function exportCommentsAction(ServerRequestInterface $request): ResponseInterface
     {
         $backendSession = GeneralUtility::makeInstance(BackendSession::class);
         $filter = $backendSession->get('filter');
@@ -121,7 +120,7 @@ class CommentsTabController extends QcBackendModuleController
 
         $this->commentsRepository->setFilter($filter ?? new Filter());
         $data = $this->commentsRepository->getComments($pagesData, false, self::DEFAULT_ORDER_TYPES);
-        $fileName = $this->getCSVFilename($filter,'comments', $csvDateFormat, $pagesData[0]);
+        $fileName = $this->getCSVFilename($filter, 'comments', $csvDateFormat, $pagesData[0]);
         $headers = array_keys($this->getHeaders(true));
         foreach ($data as $row) {
             array_walk($row, function (&$field) {
@@ -129,10 +128,8 @@ class CommentsTabController extends QcBackendModuleController
                 $field = str_replace("\n", ' ', $field);
             });
         }
-        return parent::export($fileName,$headers, $data);
-
+        return parent::export($fileName, $headers, $data);
     }
-
 
     /**
      * This function will reset the search filter
