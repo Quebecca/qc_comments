@@ -33,7 +33,7 @@ class StatisticsTabController extends QcBackendModuleController
         $maxRecords = $this->settings['statistics']['maxRecords'];
         $resultData = $this->commentsRepository->getStatistics($this->pages_ids, $maxRecords);
         if (count($resultData) > $maxRecords) {
-            $message = $this->translate('tooMuchPages', [$maxRecords]);
+            $message = $this->localizationUtility->translate(self::QC_LANG_FILE.'tooMuchPages',null, [$maxRecords]);
             $this->addFlashMessage($message, null, AbstractMessage::WARNING);
             array_pop($resultData); // last line was there to check that limit has been reached
         }
@@ -47,7 +47,8 @@ class StatisticsTabController extends QcBackendModuleController
             ],
             'headers' => $this->getHeaders(),
             'rows' => $resultData,
-            'pagesId' => $this->pages_ids
+            'pagesId' => $this->pages_ids,
+            'settings'
         ]);
 
     }
@@ -60,7 +61,7 @@ class StatisticsTabController extends QcBackendModuleController
     {
         $headers = [];
         foreach (['page_uid', 'page_title', 'total_pos', 'total_neg', 'total', 'avg'] as $col) {
-            $headers[$col] = $this->translate('stats.h.' . $col);
+            $headers[$col] = $this->localizationUtility->translate(self::QC_LANG_FILE.'stats.h.' . $col);
         }
         return $headers;
     }
@@ -71,40 +72,25 @@ class StatisticsTabController extends QcBackendModuleController
      */
     public function exportStatisticsAction (ServerRequestInterface  $request): Response
     {
-        $response = new Response('php://output', 200,
-            ['Content-Type' => 'text/csv; charset=utf-8',
-                'Content-Description' => 'File transfer',
-                'Content-Disposition' => 'attachment; filename="' . 'Statistics' . '.csv"'
-            ]
-        );
-
         $backendSession = GeneralUtility::makeInstance(BackendSession::class);
         $filter = $backendSession->get('filter');
         $this->commentsRepository->setFilter($filter ?? new Filter());
         $pagesData = $request->getQueryParams()['pagesId'];
+        $csvDateFormat = $request->getQueryParams()['csvFormat'] ?? 'YmdHi';
+
+        $fileName = $this->getCSVFilename($filter,'stats', $csvDateFormat,$pagesData[0]);
         $data = $this->commentsRepository->getStatistics($pagesData, false);
         // Resort array elements for export
         $mappedData = [];
         $i = 0;
+        $headers = array_keys($this->getHeaders());
         foreach ($data as $record) {
             foreach ($this->getHeaders() as $headerKey => $header) {
-                $mappedData[$i][$headerKey] = $record[$headerKey];
+                $mappedData[$record['pages_uid']][$i][$headerKey] = $record[$headerKey];
             }
             $i++;
         }
-
-        $fp = fopen('php://output', 'r+');
-        // BOM utf-8 pour excel
-        fwrite($fp, "\xEF\xBB\xBF");
-        $headers = array_keys($this->getHeaders());
-        fputcsv($fp, $headers, ",", '"', '\\');
-
-        foreach ($mappedData as $row) {
-            fputcsv($fp, $row, ",", '"', '\\');
-        }
-        $str_data = rtrim(stream_get_contents($fp), "\n");
-        fclose($fp);
-        return $response;
+        return parent::export($fileName,$headers, $mappedData);
     }
 
     /**

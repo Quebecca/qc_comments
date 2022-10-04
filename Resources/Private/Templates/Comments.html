@@ -14,7 +14,7 @@
     <div class="comments-sections">
         <f:flashMessages/>
         <f:render partial="Filters"
-                  arguments="{action: 'comments', pagesId: pagesId, filter: filter, csvButton:csvButton, resetButton:resetButton}"/>
+                  arguments="{action: 'comments', pagesId: pagesId, csvFormat : settings.csvExport.filename.dateFormat, filter: filter, csvButton:csvButton, resetButton:resetButton}"/>
         <f:if condition="{stats -> f:count()} == 0">
             <f:then>
                 <div class="no-page">{f:translate(key:'no-result')}</div>

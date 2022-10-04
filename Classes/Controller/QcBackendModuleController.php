@@ -12,13 +12,14 @@ namespace Qc\QcComments\Controller;
  *  (c) 2022 <techno@quebec.ca>
  *
  ***/
+
+use Psr\Http\Message\ResponseInterface;
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Domain\Session\BackendSession;
 use Qc\QcComments\Domain\Repository\CommentRepository;
-use Qc\QcComments\Traits\InjectTranslation;
-use Qc\QcComments\View\CsvView;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -26,11 +27,10 @@ use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 abstract class QcBackendModuleController extends BackendModuleActionController
 {
-    use InjectTranslation;
-
     /**
      * @var int|mixed
      */
@@ -63,19 +63,34 @@ abstract class QcBackendModuleController extends BackendModuleActionController
 
     protected array $pages_ids = [];
 
-    public function injectBackendSession(BackendSession $backendSession)
-    {
-        $this->backendSession = $backendSession;
-    }
+    /**
+     * @var LocalizationUtility
+     */
+    protected LocalizationUtility $localizationUtility;
 
     /**
      * @var CommentRepository
      */
     protected CommentRepository $commentsRepository;
 
+    const QC_LANG_FILE = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
+
+
+
+    public function injectBackendSession(BackendSession $backendSession)
+    {
+        $this->backendSession = $backendSession;
+    }
+
     public function injectCommentRepository(CommentRepository $commentsRepository)
     {
         $this->commentsRepository = $commentsRepository;
+    }
+
+    public function __construct(
+        LocalizationUtility $localizationUtility = null
+    ){
+        $this->localizationUtility = $localizationUtility ?? GeneralUtility::makeInstance(LocalizationUtility::class);
     }
 
     /**
@@ -146,12 +161,12 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         $this->setMenuIdentifier('commentsMenu');
         $menuItems = [
             [
-                'label' => $this->translate('menu.stats'),
+                'label' => $this->localizationUtility->translate(self::QC_LANG_FILE.'menu.stats'),
                 'action' => 'statistics',
                 'controller' => 'StatisticsTab'
             ],
             [
-                'label' => $this->translate('menu.list'),
+                'label' => $this->localizationUtility->translate(self::QC_LANG_FILE.'menu.list'),
                 'action' => 'comments',
                 'controller' => 'CommentsTab'
             ],
@@ -293,23 +308,24 @@ abstract class QcBackendModuleController extends BackendModuleActionController
     public function resetFilterAction(string $tabName = '')
     {
         $filter = $this->processFilter(new Filter());
-        $this->redirect($tabName, null, null, ['filter' => $filter]);
+        $this->forward($tabName);
     }
 
     /**
      * @param Filter $filter
-     * @param $base_name
+     * @param $fileName
+     * @param $csvDateFormat
      * @return string
      */
-    protected function getCSVFilename(Filter $filter, $base_name): string
+    protected function getCSVFilename(Filter $filter, $fileName,$csvDateFormat, $pageId): string
     {
-        $format = $this->settings['csvExport']['filename']['dateFormat'];
+        $format = $csvDateFormat;
         $now = date($format);
         $from = $filter->getDateForRange($format);
         return implode('-', array_filter([
-                $this->translate($base_name),
+                $this->localizationUtility->translate(self::QC_LANG_FILE.$fileName),
                 $filter->getLang(),
-                'uid' . $this->root_id,
+                'uid' . $pageId,
                 $from,
                 $now,
             ])) . '.csv';
@@ -317,19 +333,33 @@ abstract class QcBackendModuleController extends BackendModuleActionController
 
     /**
      * This function is used to export csv file
-     * @param string $base_name
+     * @param string $fileName
      * @param array $headers
      * @param array $data
-     * @param $filter
+     * @return Response
      */
-    public function export(string $base_name, array $headers, array $data, $filter)
+    public function export(string $fileName, array $headers, array $data): ResponseInterface
     {
-        $filter = $this->processFilter($filter);
-        $csv = $this->objectManager->get(CsvView::class);
-        $csv->setFilename($this->getCSVFilename($filter, $base_name));
+        $response = new Response('php://output', 200,
+            ['Content-Type' => 'text/csv; charset=utf-8',
+                'Content-Description' => 'File transfer',
+                'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
+            ]
+        );
 
-        $filter->setIncludeEmptyPages(true);
-        $csv->render($data, $headers, $base_name);
+        $fp = fopen('php://output', 'wb');
+        // BOM utf-8 pour excel
+        fwrite($fp, "\xEF\xBB\xBF");
+        fputcsv($fp, $headers, ",", '"', '\\');
+        foreach ($data as $row) {
+            foreach ($row as $item){
+                fputcsv($fp, $item, ",", '"', '\\');
+            }
+        }
+        //  rewind($fp);
+        $str_data = rtrim(stream_get_contents($fp), "\n");
+        fclose($fp);
+        return $response;
     }
 
     abstract protected function getHeaders(): array;

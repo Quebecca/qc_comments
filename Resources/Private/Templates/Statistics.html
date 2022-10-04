@@ -13,7 +13,7 @@
     <div class="statistic_sections">
         <f:flashMessages/>
         <f:render partial="Filters"
-                  arguments="{action: 'statistics', filter: filter, pagesId: pagesId, csvButton:csvButton, resetButton:resetButton}"/>
+                  arguments="{action: 'statistics', filter: filter, pagesId: pagesId,csvFormat : settings.csvExport.filename.dateFormat, csvButton:csvButton, resetButton:resetButton}"/>
 
         <f:if condition="{rows -> f:count()} == 0">
             <f:then>

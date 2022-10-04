@@ -15,13 +15,13 @@ namespace Qc\QcComments\Controller\Frontend;
 
 use Qc\QcComments\Domain\Model\Comment;
 use Qc\QcComments\Domain\Repository\CommentRepository;
-use Qc\QcComments\Traits\InjectTranslation;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 // FrontEnd Controller
 class CommentsController extends ActionController
@@ -30,8 +30,6 @@ class CommentsController extends ActionController
     // @Todo : Test on typo3 v11
     // @Todo : Utilisation des Unix timestamp(Modify export task for map the date column )
 
-    use InjectTranslation;
-
     /**
      * @var CommentRepository
      */
@@ -39,13 +37,25 @@ class CommentsController extends ActionController
 
     private const DEFAULT_MAX_CHARACTERS = 500;
 
+    const QC_LANG_FILE = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
+
     private array $tsConfig = [];
+
+    /**
+     * @var LocalizationUtility
+     */
+    protected LocalizationUtility $localizationUtility;
 
     public function injectCommentsRepository(CommentRepository $commentsRepository)
     {
         $this->commentsRepository = $commentsRepository;
     }
 
+    public function __construct(
+        LocalizationUtility $localizationUtility = null
+    ){
+        $this->localizationUtility = $localizationUtility ?? GeneralUtility::makeInstance(LocalizationUtility::class);
+    }
     protected function initializeAction()
     {
         parent::initializeAction();
@@ -67,7 +77,7 @@ class CommentsController extends ActionController
         $config = [];
         foreach ($this->tsConfig['comments'] as $key => $val){
             if($key != 'maxCharacters')
-                $config[$key] = $val !== '' ? $val : $this->translate($key);
+                $config[$key] = $val !== '' ? $val : $this->localizationUtility->translate(self::QC_LANG_FILE.$key);
             else
                 $config[$key] = $val;
         }
