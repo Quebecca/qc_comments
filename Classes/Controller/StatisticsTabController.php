@@ -12,7 +12,6 @@ namespace Qc\QcComments\Controller;
  *  (c) 2022 <techno@quebec.ca>
  *
  ***/
-
 use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Domain\Session\BackendSession;

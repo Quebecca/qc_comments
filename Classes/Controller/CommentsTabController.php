@@ -12,7 +12,6 @@ namespace Qc\QcComments\Controller;
  *  (c) 2022 <techno@quebec.ca>
  *
  ***/
-
 use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Domain\Filter\Filter;

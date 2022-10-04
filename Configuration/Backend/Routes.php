@@ -2,9 +2,6 @@
 
 declare(strict_types=1);
 
-use Qc\QcInfoRights\Controller;
-
-
 return [
     'export_comments' => [
         'path' => '/export_comments',

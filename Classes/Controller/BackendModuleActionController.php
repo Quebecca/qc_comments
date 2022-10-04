@@ -3,18 +3,18 @@ declare(strict_types = 1);
 
 /***
  *
- * This file is part of the "Backend Module" Extension for TYPO3 CMS.
+ * This file is part of Qc Comments project.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2016 Christian Fries <christian.fries@lst.team>
+ *  (c) 2022 <techno@quebec.ca>
  *
  ***/
-
 namespace Qc\QcComments\Controller;
 
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
+use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder as BeUriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -134,7 +134,7 @@ class BackendModuleActionController extends ActionController
 
     /**
      * @param ViewInterface $view
-     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
+     * @throws RouteNotFoundException
      */
     protected function initializeView(ViewInterface $view)
     {
@@ -186,7 +186,7 @@ class BackendModuleActionController extends ActionController
 
     /**
      * Create the panel of buttons for the backend module
-     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
+     * @throws RouteNotFoundException
      */
     protected function createButtons()
     {
@@ -231,7 +231,7 @@ class BackendModuleActionController extends ActionController
      * @param string $iconIdentifier Name of the icon to use. If no icon is defined, the icon of the record will be used.
      * @param array $dataAttributes The data attributes to add to the button
      * @return array|null
-     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
+     * @throws RouteNotFoundException
      */
     protected function createNewRecordButton($table, $title, $displayConditions = null, $returnParameter = [], $returnUrl = null, $iconIdentifier = 'actions-document-new', $dataAttributes = [])
     {
@@ -422,7 +422,7 @@ class BackendModuleActionController extends ActionController
      * Get return url based on the current controller context
      *
      * @return string
-     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
+     * @throws RouteNotFoundException
      */
     public function getControllerContextBasedReturnUrl()
     {
@@ -448,7 +448,7 @@ class BackendModuleActionController extends ActionController
      *
      * @param $parameter
      * @return string
-     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
+     * @throws RouteNotFoundException
      */
     public function getReturnUrl($parameter)
     {

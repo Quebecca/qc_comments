@@ -12,8 +12,6 @@ namespace Qc\QcComments\Controller;
  *  (c) 2022 <techno@quebec.ca>
  *
  ***/
-
-
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Domain\Session\BackendSession;
 use Qc\QcComments\Domain\Repository\CommentRepository;
@@ -21,7 +19,6 @@ use Qc\QcComments\Traits\InjectTranslation;
 use Qc\QcComments\View\CsvView;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

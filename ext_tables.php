@@ -1,13 +1,8 @@
 <?php
 
-use Qc\QcComments\Controller\CommentsTabController;
-use Qc\QcComments\Controller\StatisticsTabController;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
-
 defined('TYPO3') || die('Access denied.');
 
-ExtensionUtility::registerPlugin(
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
     'QcComments',
     'commentsForm',
     'Show comments form'
@@ -15,21 +10,21 @@ ExtensionUtility::registerPlugin(
 
 call_user_func(
     function () {
-        ExtensionUtility::registerPlugin(
+        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
             'Qc.QcComments',
             'commentsForm',
             'Add comments section in page'
         );
 
         if (TYPO3_MODE === 'BE') {
-            ExtensionUtility::registerModule(
+            \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
                 'QcComments',
                 'web',
                 'admin',
                 '',
                 [
-                    StatisticsTabController::class => 'statistics, exportStatistics, resetFilter',
-                    CommentsTabController::class => 'comments, exportComments, resetFilter',
+                    \Qc\QcComments\Controller\StatisticsTabController::class => 'statistics, exportStatistics, resetFilter',
+                    \Qc\QcComments\Controller\CommentsTabController::class => 'comments, exportComments, resetFilter',
                 ],
                 [
                     'access' => 'user,group',
@@ -38,6 +33,6 @@ call_user_func(
                 ]
             );
         }
-        ExtensionManagementUtility::addStaticFile('qc_comments', 'Configuration/TypoScript', 'Module used to manage FE users comments on pages');
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('qc_comments', 'Configuration/TypoScript', 'Module used to manage FE users comments on pages');
     }
 );
