@@ -194,6 +194,8 @@ abstract class QcBackendModuleController extends BackendModuleActionController
     protected function initializeView(ViewInterface $view)
     {
         parent::initializeView($view);
+
+
         $moduleTemplate = $view->getModuleTemplate();
         if ($this->root_id && $moduleTemplate) {
             $record = BackendUtility::readPageAccess($this->root_id, $this->getBackendUser()->getPagePermsClause(1));
@@ -202,18 +204,13 @@ abstract class QcBackendModuleController extends BackendModuleActionController
             $this->pageRenderer->addCssFile('EXT:qc_comments/Resources/Public/Css/be_qc_comments.css');
         }
         $this->processFilter();
+
     }
 
-    /**
-     * @throws StopActionException
-     */
-    public function initializeStatsAction()
-    {
-        $this->sharedPreChecks();
-    }
+
 
     /**
-     * @throws NoSuchArgumentException|StopActionException
+     * @throws NoSuchArgumentException
      */
     public function initializeListAction()
     {
@@ -225,34 +222,12 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         }
         $constraintConfiguration = $this->arguments->getArgument('filter')->getPropertyMappingConfiguration();
         $constraintConfiguration->allowAllProperties();
-        $this->sharedPreChecks();
+
     }
 
-    /**
-     * @throws StopActionException
-     */
-    protected function sharedPreChecks()
-    {
-        $this->forwardIfNoPageSelected();
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->icon = $this->iconFactory->getIcon('actions-document-export-csv', Icon::SIZE_SMALL);
-    }
 
-    public function noPageSelectedAction()
-    {
-        $this->setMenuItems([]);
-    }
 
-    /**
-     * This function will be called if there is no page selected
-     * @throws StopActionException
-     */
-    protected function forwardIfNoPageSelected()
-    {
-        if (!$this->root_id) {
-            $this->forward('noPageSelected');
-        }
-    }
+
 
     /**
      * Returns join clauses for pagetree depth levels
@@ -305,7 +280,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
      */
     public function resetFilterAction(string $tabName = '')
     {
-        $filter = $this->processFilter(new Filter());
+        $this->processFilter(new Filter());
         $this->forward($tabName);
     }
 
@@ -340,13 +315,13 @@ abstract class QcBackendModuleController extends BackendModuleActionController
      */
     public function export(Filter $filter, ServerRequestInterface  $request,string $fileName,array $headers, array $data): ResponseInterface
     {
-        $pagesData = $request->getQueryParams()['pagesId'];
+        $pageId = $request->getQueryParams()['currentPageId'];
         $csvSettings = $request->getQueryParams()['csvSettings'];
         $separator = $csvSettings['separator'] ?? ',';
         $enclosure = $csvSettings['enclosure'] ?? '"';
         $escape = $csvSettings['escape'] ?? '\\';
         $csvDateFormat = $csvSettings['filename']['dateFormat'] ?? 'YmdHi';
-        $fileName = $this->getCSVFilename($filter, $fileName, $csvDateFormat, $pagesData[0]);
+        $fileName = $this->getCSVFilename($filter, $fileName, $csvDateFormat, $pageId);
 
         $response = new Response(
             'php://output',

@@ -35,54 +35,62 @@ class CommentsTabController extends QcBackendModuleController
      */
     public function commentsAction(Filter $filter = null)
     {
-        if ($filter) {
-            $this->processFilter($filter);
+        if (!$this->root_id) {
+            $this->view->assign('noPageSelected', true);
         }
-        $csvButton = [
-            'href' => $this->getUrl('exportComments'),
-            'icon' => $this->icon,
-        ];
+        else {
+            if ($filter) {
+                $this->processFilter($filter);
+            }
+            $csvButton = [
+                'href' => $this->getUrl('exportComments'),
+                'icon' => $this->icon,
+            ];
 
-        $resetButton = [
-            'href' => $this->getUrl('resetFilter')
-        ];
+            $resetButton = [
+                'href' => $this->getUrl('resetFilter')
+            ];
 
-        $this->pages_ids = $this->commentsRepository->getPageIdsList();
+            $this->pages_ids = $this->commentsRepository->getPageIdsList();
+            $maxRecords = is_numeric($this->settings['comments']['maxRecords'])
+                ? $this->settings['comments']['maxRecords'] : self::DEFAULT_MAX_RECORDS;
 
-        $maxRecords = is_numeric($this->settings['comments']['maxRecords'])
-            ? $this->settings['comments']['maxRecords'] : self::DEFAULT_MAX_RECORDS;
+            $numberOfSubPages = is_numeric($this->settings['comments']['numberOfSubPages'])
+                ? $this->settings['comments']['numberOfSubPages'] : self::DEFAULT_MAX_PAGES;
 
-        $numberOfSubPages = is_numeric($this->settings['comments']['numberOfSubPages'])
-            ? $this->settings['comments']['numberOfSubPages'] : self::DEFAULT_MAX_PAGES;
+            $orderType = in_array($this->settings['comments']['orderType'], ['DESC', 'ASC'])
+                ? $this->settings['comments']['orderType'] : self::DEFAULT_ORDER_TYPES;
 
-        $orderType = in_array($this->settings['comments']['orderType'], ['DESC', 'ASC'])
-            ? $this->settings['comments']['orderType'] : self::DEFAULT_ORDER_TYPES;
+            $tooMuchPages = count($this->pages_ids) > $numberOfSubPages;
+            $this->pages_ids = array_slice(
+                $this->pages_ids,
+                0,
+                $numberOfSubPages
+            );
+            $stats = $this->commentsRepository->getStatistics($this->pages_ids, $maxRecords);
+            $comments = $this->commentsRepository->getComments($this->pages_ids, $maxRecords, $orderType);
 
-        $tooMuchPages = count($this->pages_ids) > $numberOfSubPages;
-        $this->pages_ids = array_slice(
-            $this->pages_ids,
-            0,
-            $numberOfSubPages
-        );
-        $stats = $this->commentsRepository->getStatistics($this->pages_ids, $maxRecords);
-        $comments = $this->commentsRepository->getComments($this->pages_ids, $maxRecords, $orderType);
-
-        if ($this->commentsRepository->getListCount() > $maxRecords || $tooMuchPages) {
-            $message = $this->localizationUtility->translate(self::QC_LANG_FILE . 'tooMuchResults', null, (array)[$numberOfSubPages, $maxRecords]);
-            $this->addFlashMessage($message, null, AbstractMessage::WARNING);
+            if ($this->commentsRepository->getListCount() > $maxRecords || $tooMuchPages) {
+                $message = $this->localizationUtility->translate(self::QC_LANG_FILE . 'tooMuchResults', null, (array)[$numberOfSubPages, $maxRecords]);
+                $this->addFlashMessage($message, null, AbstractMessage::WARNING);
+            }
+            $pagesId = $this->pages_ids;
+            $currentPageId = $this->root_id;
+            $commentHeaders = $this->getHeaders();
+            $this
+                ->view
+                ->assignMultiple(compact(
+                    'csvButton',
+                    'resetButton',
+                    'commentHeaders',
+                    'stats',
+                    'comments',
+                    'pagesId',
+                    'currentPageId'
+                ));
         }
-        $pagesId = $this->pages_ids;
-        $commentHeaders = $this->getHeaders();
-        $this
-            ->view
-            ->assignMultiple(compact(
-                'csvButton',
-                'resetButton',
-                'commentHeaders',
-                'stats',
-                'comments',
-                'pagesId'
-            ));
+
+
     }
 
     /**

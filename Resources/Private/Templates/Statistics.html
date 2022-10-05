@@ -10,20 +10,28 @@
 </f:section>
 
 <f:section name="content">
-    <div class="statistic_sections">
-        <f:flashMessages/>
-        <f:render partial="Filters"
-                  arguments="{action: 'statistics', filter: filter, pagesId: pagesId, csvSettings : settings.csvExport, csvButton:csvButton, resetButton:resetButton}"/>
+    <f:if condition="{noPageSelected}">
+        <f:then>
+            <f:render partial="noPageSelected" />
+        </f:then>
+        <f:else>
+            <div class="statistic_sections">
+                <f:flashMessages/>
+                <f:render partial="Filters"
+                          arguments="{action: 'statistics', filter: filter, currentPageId : currentPageId, pagesId: pagesId, csvSettings : settings.csvExport, csvButton:csvButton, resetButton:resetButton}"/>
 
-        <f:if condition="{rows -> f:count()} == 0">
-            <f:then>
-                <div class="no-page">{f:translate(key:'no-result')}</div>
-            </f:then>
-            <f:else>
-                <f:render section="rows" arguments="{_all}"/>
-            </f:else>
-        </f:if>
-    </div>
+                <f:if condition="{rows -> f:count()} == 0">
+                    <f:then>
+                        <div class="no-page">{f:translate(key:'no-result')}</div>
+                    </f:then>
+                    <f:else>
+                        <f:render section="rows" arguments="{_all}"/>
+                    </f:else>
+                </f:if>
+            </div>
+        </f:else>
+    </f:if>
+
 </f:section>
 
 <f:section name="rows">

@@ -29,30 +29,38 @@ class StatisticsTabController extends QcBackendModuleController
      */
     public function statisticsAction(Filter $filter = null)
     {
-        if ($filter) {
-            $this->processFilter($filter);
+        if (!$this->root_id) {
+            $this->view->assign('noPageSelected', true);
         }
-        $this->pages_ids = $this->commentsRepository->getPageIdsList();
-        $maxRecords = $this->settings['statistics']['maxRecords'];
-        $resultData = $this->commentsRepository->getStatistics($this->pages_ids, $maxRecords);
-        if (count($resultData) > $maxRecords) {
-            $message = $this->localizationUtility->translate(self::QC_LANG_FILE . 'tooMuchPages', null, [$maxRecords]);
-            $this->addFlashMessage($message, null, AbstractMessage::WARNING);
-            array_pop($resultData); // last line was there to check that limit has been reached
+        else {
+            if ($filter) {
+                $this->processFilter($filter);
+            }
+            $this->pages_ids = $this->commentsRepository->getPageIdsList();
+            $currentPageId = $this->root_id;
+            $maxRecords = $this->settings['statistics']['maxRecords'];
+            $resultData = $this->commentsRepository->getStatistics($this->pages_ids, $maxRecords);
+            if (count($resultData) > $maxRecords) {
+                $message = $this->localizationUtility->translate(self::QC_LANG_FILE . 'tooMuchPages', null, [$maxRecords]);
+                $this->addFlashMessage($message, null, AbstractMessage::WARNING);
+                array_pop($resultData); // last line was there to check that limit has been reached
+            }
+            $this->view->assignMultiple([
+                'csvButton' => [
+                    'href' => $this->getUrl('exportStatistics'),
+                    'icon' => $this->icon,
+                ],
+                'resetButton' => [
+                    'href' => $this->getUrl('resetFilter'),
+                ],
+                'headers' => $this->getHeaders(),
+                'rows' => $resultData,
+                'pagesId' => $this->pages_ids,
+                'settings',
+                'currentPageId' => $currentPageId
+            ]);
         }
-        $this->view->assignMultiple([
-           'csvButton' => [
-               'href' => $this->getUrl('exportStatistics'),
-               'icon' => $this->icon,
-           ],
-            'resetButton' => [
-                'href' => $this->getUrl('resetFilter'),
-            ],
-            'headers' => $this->getHeaders(),
-            'rows' => $resultData,
-            'pagesId' => $this->pages_ids,
-            'settings'
-        ]);
+
     }
 
     /**

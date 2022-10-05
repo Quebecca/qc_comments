@@ -11,20 +11,27 @@
 </f:section>
 
 <f:section name="content">
-    <div class="comments-sections">
-        <f:flashMessages/>
-        <f:render partial="Filters"
-                  arguments="{action: 'comments', pagesId: pagesId, csvSettings : settings.csvExport, filter: filter, csvButton:csvButton, resetButton:resetButton}"/>
-        <f:if condition="{stats -> f:count()} == 0">
-            <f:then>
-                <div class="no-page">{f:translate(key:'no-result')}</div>
-            </f:then>
-            <f:else>
-                <f:render section="stats" arguments="{_all}"/>
-            </f:else>
-        </f:if>
+    <f:if condition="{noPageSelected}">
+        <f:then>
+            <f:render partial="noPageSelected" />
+        </f:then>
+        <f:else>
+            <div class="comments-sections">
+                <f:flashMessages/>
+                <f:render partial="Filters"
+                          arguments="{action: 'comments', currentPageId : currentPageId, pagesId: pagesId, csvSettings : settings.csvExport, filter: filter, csvButton:csvButton, resetButton:resetButton}"/>
+                <f:if condition="{stats -> f:count()} == 0">
+                    <f:then>
+                        <div class="no-page">{f:translate(key:'no-result')}</div>
+                    </f:then>
+                    <f:else>
+                        <f:render section="stats" arguments="{_all}"/>
+                    </f:else>
+                </f:if>
 
-    </div>
+            </div>
+        </f:else>
+    </f:if>
 
 </f:section>
 
@@ -39,4 +46,7 @@
         </div>
     </f:for>
 </f:section>
+
+
+
 
