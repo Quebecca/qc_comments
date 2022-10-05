@@ -73,10 +73,11 @@ class StatisticsTabController extends QcBackendModuleController
     public function exportStatisticsAction(ServerRequestInterface $request): Response
     {
         $backendSession = GeneralUtility::makeInstance(BackendSession::class);
-        $filter = $backendSession->get('filter');
-        $this->commentsRepository->setFilter($filter ?? new Filter());
+        $filter = $backendSession->get('filter') ?? new Filter();
+        $this->commentsRepository->setFilter($filter);
         $pagesData = $request->getQueryParams()['pagesId'];
-        $csvDateFormat = $request->getQueryParams()['csvFormat'] ?? 'YmdHi';
+        $csvSettings = $request->getQueryParams()['csvSettings'];
+        $csvDateFormat = $csvSettings['filename']['dateFormat'] ?? 'YmdHi';
 
         $fileName = $this->getCSVFilename($filter, 'stats', $csvDateFormat, $pagesData[0]);
         $data = $this->commentsRepository->getStatistics($pagesData, false);
@@ -90,7 +91,7 @@ class StatisticsTabController extends QcBackendModuleController
             }
             $i++;
         }
-        return parent::export($fileName, $headers, $mappedData);
+        return parent::export($fileName, $headers, $mappedData, $csvSettings);
     }
 
     /**

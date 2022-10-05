@@ -334,10 +334,16 @@ abstract class QcBackendModuleController extends BackendModuleActionController
      * @param string $fileName
      * @param array $headers
      * @param array $data
+     * @param array $csvSettings
      * @return Response
      */
-    public function export(string $fileName, array $headers, array $data): ResponseInterface
+    public function export(string $fileName, array $headers, array $data, array $csvSettings): ResponseInterface
     {
+
+        $separator = $csvSettings['separator'] ?? ',';
+        $enclosure = $csvSettings['enclosure'] ?? '"';
+        $escape = $csvSettings['escape'] ?? '\\';
+
         $response = new Response(
             'php://output',
             200,
@@ -350,10 +356,10 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         $fp = fopen('php://output', 'wb');
         // BOM utf-8 pour excel
         fwrite($fp, "\xEF\xBB\xBF");
-        fputcsv($fp, $headers, ',', '"', '\\');
+        fputcsv($fp, $headers, $separator, $enclosure, $escape);
         foreach ($data as $row) {
             foreach ($row as $item) {
-                fputcsv($fp, $item, ',', '"', '\\');
+                fputcsv($fp, $item, $separator, $enclosure, $escape);
             }
         }
         //  rewind($fp);
