@@ -28,7 +28,7 @@ class BackendSession
      *
      * @var BackendUserAuthentication
      */
-    public $sessionObject;
+    protected $sessionObject;
 
     /** @var string[] */
     protected $registeredKeys = [];
@@ -48,6 +48,11 @@ class BackendSession
         $this->registerFilterKey('lastAction', String_::class);
     }
 
+    /**
+     * This function is used to register keys
+     * @param string $key
+     * @param string $class
+     */
     public function registerFilterKey(string $key, string $class): void
     {
         if (!$this->isClassImplementsInterface($class, Arrayable::class) && $key != 'lastAction') {
@@ -56,6 +61,12 @@ class BackendSession
         $this->registeredKeys[$key] = $class;
     }
 
+    /**
+     * This function is used to verify if the class implements the interface Arrayable
+     * @param string $class
+     * @param string $interface
+     * @return bool
+     */
     protected function isClassImplementsInterface(string $class, string $interface): bool
     {
         $interfaces = class_implements($class);
@@ -65,6 +76,9 @@ class BackendSession
         return false;
     }
 
+    /**
+     * @param $storageKey
+     */
     public function setStorageKey($storageKey)
     {
         $this->storageKey = $storageKey;
@@ -76,21 +90,20 @@ class BackendSession
      * @param string $key
      * @param mixed $value
      */
-    public function store($key, $value)
+    public function store(string $key, $value)
     {
         if (!isset($this->registeredKeys[$key])) {
             throw new \InvalidArgumentException('Unknown key ' . $key);
         }
+
+        $sessionData = $this->sessionObject->getSessionData($this->storageKey);
         if ($key != 'lastAction') {
             $valueArray = $value->toArray();
-            $sessionData = $this->sessionObject->getSessionData($this->storageKey);
             $sessionData[$key] = $valueArray;
-            $this->sessionObject->setAndSaveSessionData($this->storageKey, $sessionData);
         } else {
-            $sessionData = $this->sessionObject->getSessionData($this->storageKey);
             $sessionData[$key] = $value;
-            $this->sessionObject->setAndSaveSessionData($this->storageKey, $sessionData);
         }
+        $this->sessionObject->setAndSaveSessionData($this->storageKey, $sessionData);
     }
 
     /**
@@ -98,7 +111,7 @@ class BackendSession
      *
      * @param string $key
      */
-    public function delete($key)
+    public function delete(string $key)
     {
         $sessionData = $this->sessionObject->getSessionData($this->storageKey);
         unset($sessionData[$key]);
