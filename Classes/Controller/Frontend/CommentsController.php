@@ -26,8 +26,8 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 // FrontEnd Controller
 class CommentsController extends ActionController
 {
-    // @Todo : Template for public part
-    // @Todo : Test on typo3 v11
+    // @Todo : Verifier si le commentaire envoyé est vide?
+    // @Todo : Update ReadMe
     // @Todo : Utilisation des Unix timestamp(Modify export task for map the date column )
 
     /**
