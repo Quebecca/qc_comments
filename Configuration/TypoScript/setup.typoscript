@@ -65,7 +65,7 @@ module.tx_qccomments {
             filename {
                 dateFormat = YmdHi
             }
-            separator = ,
+            separator = ;
             enclosure = "
             escape = \\
         }

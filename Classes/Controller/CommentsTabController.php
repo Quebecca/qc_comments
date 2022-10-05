@@ -116,12 +116,9 @@ class CommentsTabController extends QcBackendModuleController
         $filter = $backendSession->get('filter') ?? new Filter() ;
 
         $pagesData = $request->getQueryParams()['pagesId'];
-        $csvSettings = $request->getQueryParams()['csvSettings'];
-        $csvDateFormat = $csvSettings['filename']['dateFormat'] ?? 'YmdHi';
 
         $this->commentsRepository->setFilter($filter);
         $data = $this->commentsRepository->getComments($pagesData, false, self::DEFAULT_ORDER_TYPES);
-        $fileName = $this->getCSVFilename($filter, 'comments', $csvDateFormat, $pagesData[0]);
         $headers = array_keys($this->getHeaders(true));
         foreach ($data as $row) {
             array_walk($row, function (&$field) {
@@ -129,7 +126,7 @@ class CommentsTabController extends QcBackendModuleController
                 $field = str_replace("\n", ' ', $field);
             });
         }
-        return parent::export($fileName, $headers, $data,$csvSettings );
+        return parent::export($filter,$request,'comments', $headers, $data);
     }
 
     /**

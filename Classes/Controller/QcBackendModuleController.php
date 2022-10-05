@@ -14,6 +14,7 @@ namespace Qc\QcComments\Controller;
  ***/
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Domain\Repository\CommentRepository;
 use Qc\QcComments\Domain\Session\BackendSession;
@@ -330,19 +331,22 @@ abstract class QcBackendModuleController extends BackendModuleActionController
     }
 
     /**
-     * This function is used to export csv file
+     * @param Filter $filter
+     * @param ServerRequestInterface $request
      * @param string $fileName
      * @param array $headers
      * @param array $data
-     * @param array $csvSettings
-     * @return Response
+     * @return ResponseInterface
      */
-    public function export(string $fileName, array $headers, array $data, array $csvSettings): ResponseInterface
+    public function export(Filter $filter, ServerRequestInterface  $request,string $fileName,array $headers, array $data): ResponseInterface
     {
-
+        $pagesData = $request->getQueryParams()['pagesId'];
+        $csvSettings = $request->getQueryParams()['csvSettings'];
         $separator = $csvSettings['separator'] ?? ',';
         $enclosure = $csvSettings['enclosure'] ?? '"';
         $escape = $csvSettings['escape'] ?? '\\';
+        $csvDateFormat = $csvSettings['filename']['dateFormat'] ?? 'YmdHi';
+        $fileName = $this->getCSVFilename($filter, $fileName, $csvDateFormat, $pagesData[0]);
 
         $response = new Response(
             'php://output',

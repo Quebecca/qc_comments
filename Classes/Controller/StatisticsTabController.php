@@ -12,6 +12,8 @@ namespace Qc\QcComments\Controller;
  *  (c) 2022 <techno@quebec.ca>
  *
  ***/
+
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Domain\Session\BackendSession;
@@ -70,16 +72,13 @@ class StatisticsTabController extends QcBackendModuleController
      * @param ServerRequestInterface $request
      * @return Response
      */
-    public function exportStatisticsAction(ServerRequestInterface $request): Response
+    public function exportStatisticsAction(ServerRequestInterface $request): ResponseInterface
     {
         $backendSession = GeneralUtility::makeInstance(BackendSession::class);
         $filter = $backendSession->get('filter') ?? new Filter();
         $this->commentsRepository->setFilter($filter);
         $pagesData = $request->getQueryParams()['pagesId'];
-        $csvSettings = $request->getQueryParams()['csvSettings'];
-        $csvDateFormat = $csvSettings['filename']['dateFormat'] ?? 'YmdHi';
 
-        $fileName = $this->getCSVFilename($filter, 'stats', $csvDateFormat, $pagesData[0]);
         $data = $this->commentsRepository->getStatistics($pagesData, false);
         // Resort array elements for export
         $mappedData = [];
@@ -91,7 +90,7 @@ class StatisticsTabController extends QcBackendModuleController
             }
             $i++;
         }
-        return parent::export($fileName, $headers, $mappedData, $csvSettings);
+        return parent::export($filter,$request,'stats', $headers, $mappedData);
     }
 
     /**
