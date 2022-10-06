@@ -6,16 +6,11 @@ plugin.commentsForm {
         partialRootPath = {$plugin.commentsForm.view.partialRootPath}
         layoutRootPath = {$plugin.commentsForm.view.layoutRootPath}
     }
+
     settings {
         comments {
             // if empty default will be 500
-            maxCharacters = 10
-            // if empty default value will be assigned
-            formSectionTitle = X Évaluation de page
-            isThePageUseful =X L’information sur cette page vous a-t-elle été utile?
-            haveYouAComment = X Avez-vous un commentaire à nous transmettre ou un problème à signaler ?
-            haveYouACommentDescription = X Évitez d’inscrire des renseignements personnels. Notez que vous ne recevrez aucune réponse.
-            formSubmittedSuccessfully =X Votre message a été envoyé. Merci de nous aider à améliorer Québec.ca. Vos commentaires sont importants pour nous.
+            maxCharacters = 100
         }
 
         // Activate recaptcha
@@ -40,7 +35,10 @@ plugin.commentsForm {
         }
     }
 }
-
+page {
+    includeJS.commentsForm = EXT:qc_comments/Resources/Public/JavaScript/CommentForm.js
+    includeCSS.commentsFormCss = EXT:qc_comments/Resources/Public/Css/fe_qc_comments.css
+}
 
 module.tx_qccomments {
     persistence {
@@ -71,6 +69,9 @@ module.tx_qccomments {
             filename {
                 dateFormat = YmdHi
             }
+            separator = ;
+            enclosure = "
+            escape = \\
         }
     }
 }

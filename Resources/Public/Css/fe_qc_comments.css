@@ -1,26 +1,9 @@
-@import url(../../../../gabarit_pgu/Resources/Public/Css/gabarit_pgu.css);
-.form-row {
-  border-bottom: 1px solid #ccc; }
-
-.comments-form {
-  display: none !important; }
-
-.checkbox-input {
-  margin-top: 2rem; }
-
-.form-check-label {
-  padding-left: 0.2rem; }
-
-.no-page .no-comment {
-  padding: 6px; }
-
-.commentaire span {
-  display: block;
-  max-width: 500px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  height: 110%;
-  transition: max-height 1s; }
-  .commentaire span:hover {
-    white-space: normal;
-    height: 100%; }
+.useful-label {
+    font-weight : normal !important;
+}
+.submit-button {
+    height : 3rem !important;
+    margin-top: 0.5rem !important;
+    padding: 0.75rem 6rem !important;
+    font-size: 1.125rem !important;
+}

@@ -13,14 +13,14 @@ namespace Qc\QcComments\Controller;
  *
  ***/
 
-use LST\BackendModule\Controller\BackendModuleActionController;
-use LST\BackendModule\Domain\Session\BackendSession;
-use Qc\QcComments\Domain\Dto\Filter;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Domain\Repository\CommentRepository;
-use Qc\QcComments\Traits\InjectTranslation;
-use Qc\QcComments\View\CsvView;
+use Qc\QcComments\Domain\Session\BackendSession;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -28,11 +28,10 @@ use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 abstract class QcBackendModuleController extends BackendModuleActionController
 {
-    use InjectTranslation;
-
     /**
      * @var int|mixed
      */
@@ -65,19 +64,31 @@ abstract class QcBackendModuleController extends BackendModuleActionController
 
     protected array $pages_ids = [];
 
-    public function injectBackendSession(BackendSession $backendSession)
-    {
-        $this->backendSession = $backendSession;
-    }
+    /**
+     * @var LocalizationUtility
+     */
+    protected LocalizationUtility $localizationUtility;
 
     /**
      * @var CommentRepository
      */
     protected CommentRepository $commentsRepository;
 
+    const QC_LANG_FILE = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
+
+    public function injectBackendSession(BackendSession $backendSession)
+    {
+        $this->backendSession = $backendSession;
+    }
+
     public function injectCommentRepository(CommentRepository $commentsRepository)
     {
         $this->commentsRepository = $commentsRepository;
+    }
+
+    public function __construct(
+    ) {
+        $this->localizationUtility = GeneralUtility::makeInstance(LocalizationUtility::class);
     }
 
     /**
@@ -86,6 +97,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
      */
     protected function forwardToLastSelectedAction()
     {
+
         // if no menu, no forward is done
         if (!$this->menuItems) {
             return;
@@ -131,7 +143,6 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         $this->extensionName = $this->request->getControllerExtensionName();
         $this->controllerName = $this->request->getControllerName();
         $this->tsControllerKey = lcfirst($this->controllerName);
-        $this->backendSession->setStorageKey($this->extKey);
         $this->setMenu();
         $this->forwardToLastSelectedAction();
         $this->root_id = GeneralUtility::_GP('id');
@@ -148,12 +159,12 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         $this->setMenuIdentifier('commentsMenu');
         $menuItems = [
             [
-                'label' => $this->translate('menu.stats'),
+                'label' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'menu.stats'),
                 'action' => 'statistics',
                 'controller' => 'StatisticsTab'
             ],
             [
-                'label' => $this->translate('menu.list'),
+                'label' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'menu.list'),
                 'action' => 'comments',
                 'controller' => 'CommentsTab'
             ],
@@ -183,6 +194,8 @@ abstract class QcBackendModuleController extends BackendModuleActionController
     protected function initializeView(ViewInterface $view)
     {
         parent::initializeView($view);
+
+
         $moduleTemplate = $view->getModuleTemplate();
         if ($this->root_id && $moduleTemplate) {
             $record = BackendUtility::readPageAccess($this->root_id, $this->getBackendUser()->getPagePermsClause(1));
@@ -190,18 +203,14 @@ abstract class QcBackendModuleController extends BackendModuleActionController
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
             $this->pageRenderer->addCssFile('EXT:qc_comments/Resources/Public/Css/be_qc_comments.css');
         }
+        $this->processFilter();
+
     }
 
-    /**
-     * @throws StopActionException
-     */
-    public function initializeStatsAction()
-    {
-        $this->sharedPreChecks();
-    }
+
 
     /**
-     * @throws NoSuchArgumentException|StopActionException
+     * @throws NoSuchArgumentException
      */
     public function initializeListAction()
     {
@@ -213,34 +222,12 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         }
         $constraintConfiguration = $this->arguments->getArgument('filter')->getPropertyMappingConfiguration();
         $constraintConfiguration->allowAllProperties();
-        $this->sharedPreChecks();
+
     }
 
-    /**
-     * @throws StopActionException
-     */
-    protected function sharedPreChecks()
-    {
-        $this->forwardIfNoPageSelected();
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->icon = $this->iconFactory->getIcon('actions-document-export-csv', Icon::SIZE_SMALL);
-    }
 
-    public function noPageSelectedAction()
-    {
-        $this->setMenuItems([]);
-    }
 
-    /**
-     * This function will be called if there is no page selected
-     * @throws StopActionException
-     */
-    protected function forwardIfNoPageSelected()
-    {
-        if (!$this->root_id) {
-            $this->forward('noPageSelected');
-        }
-    }
+
 
     /**
      * Returns join clauses for pagetree depth levels
@@ -263,16 +250,15 @@ abstract class QcBackendModuleController extends BackendModuleActionController
     /**
      * This function is used to get the filter from the backend session
      * @param Filter|null $filter
-     * @return mixed|Filter
+     * @return Filter|null
      */
-    protected function processFilter(Filter $filter = null)
+    protected function processFilter(Filter $filter = null): ?Filter
     {
         // Add filtering to records
         if ($filter === null) {
             // Get filter from session if available
             $filter = $this->backendSession->get('filter');
-            if (!$filter instanceof Filter) {
-                // No filter available, create new one
+            if ($filter == null) {
                 $filter = new Filter();
             }
         } else {
@@ -280,6 +266,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
                 $filter->setStartDate(null);
                 $filter->setEndDate(null);
             }
+
             $this->backendSession->store('filter', $filter);
         }
         $this->view->assign('filter', $filter);
@@ -293,45 +280,71 @@ abstract class QcBackendModuleController extends BackendModuleActionController
      */
     public function resetFilterAction(string $tabName = '')
     {
-        $filter = $this->processFilter(new Filter());
-        $this->redirect($tabName, null, null, ['filter' => $filter]);
+        $this->processFilter(new Filter());
+        $this->forward($tabName);
     }
 
     /**
      * @param Filter $filter
-     * @param $base_name
+     * @param $fileName
+     * @param $csvDateFormat
+     * @param $pageId
      * @return string
      */
-    protected function getCSVFilename(Filter $filter, $base_name): string
+    protected function getCSVFilename(Filter $filter, $fileName, $csvDateFormat, $pageId): string
     {
-        $format = $this->settings['csvExport']['filename']['dateFormat'];
+        $format = $csvDateFormat;
         $now = date($format);
         $from = $filter->getDateForRange($format);
         return implode('-', array_filter([
-                $this->translate($base_name),
+                $this->localizationUtility->translate(self::QC_LANG_FILE . $fileName),
                 $filter->getLang(),
-                'uid' . $this->root_id,
+                'uid' . $pageId,
                 $from,
                 $now,
             ])) . '.csv';
     }
 
     /**
-     * This function is used to export csv file
-     * @param string $base_name
+     * @param Filter $filter
+     * @param ServerRequestInterface $request
+     * @param string $fileName
      * @param array $headers
      * @param array $data
-     * @param $filter
+     * @return ResponseInterface
      */
-    public function export(string $base_name, array $headers, array $data, $filter)
+    public function export(Filter $filter, ServerRequestInterface  $request,string $fileName,array $headers, array $data): ResponseInterface
     {
-        $filter = $this->processFilter($filter);
-        $this->view = $this->objectManager->get(CsvView::class);
-        $this->view->setFilename($this->getCSVFilename($filter, $base_name));
-        $this->view->setControllerContext($this->controllerContext);
-        $this->view->assign('headers', $headers);
-        $this->view->assign('rows', $data);
-        $filter->setIncludeEmptyPages(true);
+        $pageId = $request->getQueryParams()['currentPageId'];
+        $csvSettings = $request->getQueryParams()['csvSettings'];
+        $separator = $csvSettings['separator'] ?? ',';
+        $enclosure = $csvSettings['enclosure'] ?? '"';
+        $escape = $csvSettings['escape'] ?? '\\';
+        $csvDateFormat = $csvSettings['filename']['dateFormat'] ?? 'YmdHi';
+        $fileName = $this->getCSVFilename($filter, $fileName, $csvDateFormat, $pageId);
+
+        $response = new Response(
+            'php://output',
+            200,
+            ['Content-Type' => 'text/csv; charset=utf-8',
+                'Content-Description' => 'File transfer',
+                'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
+            ]
+        );
+
+        $fp = fopen('php://output', 'wb');
+        // BOM utf-8 pour excel
+        fwrite($fp, "\xEF\xBB\xBF");
+        fputcsv($fp, $headers, $separator, $enclosure, $escape);
+        foreach ($data as $row) {
+            foreach ($row as $item) {
+                fputcsv($fp, $item, $separator, $enclosure, $escape);
+            }
+        }
+        //  rewind($fp);
+        $str_data = rtrim(stream_get_contents($fp), "\n");
+        fclose($fp);
+        return $response;
     }
 
     abstract protected function getHeaders(): array;

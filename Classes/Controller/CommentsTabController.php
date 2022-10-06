@@ -12,11 +12,11 @@ namespace Qc\QcComments\Controller;
  *  (c) 2022 <techno@quebec.ca>
  *
  ***/
-
 use Doctrine\DBAL\Driver\Exception;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Qc\QcComments\Domain\Dto\Filter;
-use QcRedirects\Controller\BackendSession\BackendSession;
+use Qc\QcComments\Domain\Filter\Filter;
+use Qc\QcComments\Domain\Session\BackendSession;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -24,7 +24,6 @@ use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 
 class CommentsTabController extends QcBackendModuleController
 {
-
     protected const DEFAULT_ORDER_TYPES = 'DESC';
     protected const DEFAULT_MAX_RECORDS = '100';
     protected const DEFAULT_MAX_PAGES = '100';
@@ -36,54 +35,61 @@ class CommentsTabController extends QcBackendModuleController
      */
     public function commentsAction(Filter $filter = null)
     {
-        $filter = $this->processFilter($filter);
-
-        $csvButton = [
-            'href' => $this->getUrl('exportComments'),
-            'icon' => $this->icon,
-        ];
-
-        $resetButton = [
-            'href' => $this->getUrl('resetFilter')
-        ];
-
-        $this->pages_ids = $this->commentsRepository->getPageIdsList();
-
-        $maxRecords = is_numeric($this->settings['comments']['maxRecords'])
-                        ? $this->settings['comments']['maxRecords'] : self::DEFAULT_MAX_RECORDS;
-
-        $numberOfSubPages = is_numeric($this->settings['comments']['numberOfSubPages'])
-                            ? $this->settings['comments']['numberOfSubPages'] : self::DEFAULT_MAX_PAGES;
-
-        $orderType = in_array($this->settings['comments']['orderType'],  ['DESC', 'ASC'])
-                    ? $this->settings['comments']['orderType'] : self::DEFAULT_ORDER_TYPES;
-
-
-        $tooMuchPages = count($this->pages_ids) > $numberOfSubPages;
-        $this->pages_ids = array_slice(
-            $this->pages_ids,
-            0,
-            $numberOfSubPages
-        );
-        $stats = $this->commentsRepository->getStatistics($this->pages_ids, $maxRecords);
-        $comments = $this->commentsRepository->getComments($this->pages_ids, $maxRecords, $orderType);
-
-        if ($this->commentsRepository->getListCount() > $maxRecords || $tooMuchPages) {
-            $message = $this->translate('tooMuchResults', [$numberOfSubPages, $maxRecords]);
-            $this->addFlashMessage($message, null, AbstractMessage::WARNING);
+        if (!$this->root_id) {
+            $this->view->assign('noPageSelected', true);
         }
-        $pagesId = $this->pages_ids;
-        $commentHeaders = $this->getHeaders();
-        $this
-            ->view
-            ->assignMultiple(compact(
-                'csvButton',
-                'resetButton',
-                'commentHeaders',
-                'stats',
-                'comments',
-                'pagesId'
-            ));
+        else {
+            if ($filter) {
+                $this->processFilter($filter);
+            }
+            $csvButton = [
+                'href' => $this->getUrl('exportComments'),
+                'icon' => $this->icon,
+            ];
+
+            $resetButton = [
+                'href' => $this->getUrl('resetFilter')
+            ];
+
+            $this->pages_ids = $this->commentsRepository->getPageIdsList();
+            $maxRecords = is_numeric($this->settings['comments']['maxRecords'])
+                ? $this->settings['comments']['maxRecords'] : self::DEFAULT_MAX_RECORDS;
+
+            $numberOfSubPages = is_numeric($this->settings['comments']['numberOfSubPages'])
+                ? $this->settings['comments']['numberOfSubPages'] : self::DEFAULT_MAX_PAGES;
+
+            $orderType = in_array($this->settings['comments']['orderType'], ['DESC', 'ASC'])
+                ? $this->settings['comments']['orderType'] : self::DEFAULT_ORDER_TYPES;
+
+            $tooMuchPages = count($this->pages_ids) > $numberOfSubPages;
+            $this->pages_ids = array_slice(
+                $this->pages_ids,
+                0,
+                $numberOfSubPages
+            );
+            $stats = $this->commentsRepository->getStatistics($this->pages_ids, $maxRecords);
+            $comments = $this->commentsRepository->getComments($this->pages_ids, $maxRecords, $orderType);
+
+            if ($this->commentsRepository->getListCount() > $maxRecords || $tooMuchPages) {
+                $message = $this->localizationUtility->translate(self::QC_LANG_FILE . 'tooMuchResults', null, (array)[$numberOfSubPages, $maxRecords]);
+                $this->addFlashMessage($message, null, AbstractMessage::WARNING);
+            }
+            $pagesId = $this->pages_ids;
+            $currentPageId = $this->root_id;
+            $commentHeaders = $this->getHeaders();
+            $this
+                ->view
+                ->assignMultiple(compact(
+                    'csvButton',
+                    'resetButton',
+                    'commentHeaders',
+                    'stats',
+                    'comments',
+                    'pagesId',
+                    'currentPageId'
+                ));
+        }
+
 
     }
 
@@ -97,92 +103,39 @@ class CommentsTabController extends QcBackendModuleController
         $headers = [];
 
         foreach (['date_houre', 'comment', 'useful'] as $col) {
-            $headers[$col] = $this->translate('comments.h.' . $col);
+            $headers[$col] = $this->localizationUtility->translate(self::QC_LANG_FILE . 'comments.h.' . $col);
         }
         if ($include_csv_headers) {
             $headers = array_merge([
-                'page_uid' => $this->translate('csv.h.page_uid'),
-                'page_title' => $this->translate('stats.h.page_title'),
+                'page_uid' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'csv.h.page_uid'),
+                'page_title' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'stats.h.page_title'),
             ], $headers);
         }
         return $headers;
     }
 
-
     /**
      * @param ServerRequestInterface $request
      * @return Response
      */
-    public function exportCommentsAction(ServerRequestInterface  $request)
+    public function exportCommentsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $response = new Response('php://output', 200,
-            ['Content-Type' => 'text/csv; charset=utf-8',
-                'Content-Description' => 'File transfer',
-                'Content-Disposition' => 'attachment; filename="' . 'Comments' . '.csv"'
-            ]
-        );
-
-        //$filter->setIncludeEmptyPages(true);
         $backendSession = GeneralUtility::makeInstance(BackendSession::class);
-        $filter = $backendSession->sessionObject->getSessionData('qc_comments')['filter'];
-        $this->commentsRepository->setFilter($filter);
+        $filter = $backendSession->get('filter') ?? new Filter() ;
+
         $pagesData = $request->getQueryParams()['pagesId'];
+
+        $this->commentsRepository->setFilter($filter);
         $data = $this->commentsRepository->getComments($pagesData, false, self::DEFAULT_ORDER_TYPES);
-        $fp = fopen('php://output', 'wb');
-        // BOM utf-8 pour excel
-        fwrite($fp, "\xEF\xBB\xBF");
         $headers = array_keys($this->getHeaders(true));
-        fputcsv($fp, $headers, ",", '"', '\\');
         foreach ($data as $row) {
             array_walk($row, function (&$field) {
                 $field = str_replace("\r", ' ', $field);
                 $field = str_replace("\n", ' ', $field);
             });
-            foreach ($row as $item){
-                fputcsv($fp, $item, ",", '"', '\\');
-            }
         }
-        //  rewind($fp);
-        $str_data = rtrim(stream_get_contents($fp), "\n");
-        fclose($fp);
-        return $response;
+        return parent::export($filter,$request,'comments', $headers, $data);
     }
-/*
-    public function exportTest(ServerRequestInterface $request){
-        $response = new Response('php://output', 200,
-            ['Content-Type' => 'text/csv; charset=utf-8',
-                'Content-Description' => 'File transfer',
-                'Content-Disposition' => 'attachment; filename="' . 'file' . '.csv"'
-            ]
-        );
-
-        //$filter->setIncludeEmptyPages(true);
-        $backendSession = GeneralUtility::makeInstance(BackendSession::class);
-        $filter = $backendSession->sessionObject->getSessionData('qc_comments')['filter'];
-        $this->commentsRepository->setFilter($filter);
-        $pagesData = $request->getQueryParams()['pagesId'];
-        $data = $this->commentsRepository->getComments($pagesData, false, self::DEFAULT_ORDER_TYPES);
-        $fp = fopen('php://output', 'wb');
-        // BOM utf-8 pour excel
-        fwrite($fp, "\xEF\xBB\xBF");
-        $headers = array_keys($this->getHeaders(true));
-        fputcsv($fp, $headers, ",", '"', '\\');
-        foreach ($data as $row) {
-            array_walk($row, function (&$field) {
-                $field = str_replace("\r", ' ', $field);
-                $field = str_replace("\n", ' ', $field);
-            });
-            foreach ($row as $item){
-                fputcsv($fp, $item, ",", '"', '\\');
-            }
-        }
-      //  rewind($fp);
-        $str_data = rtrim(stream_get_contents($fp), "\n");
-        fclose($fp);
-        return $response;
-    }
-
-*/
 
     /**
      * This function will reset the search filter

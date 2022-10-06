@@ -13,8 +13,13 @@ namespace Qc\QcComments\Controller;
  *
  ***/
 
-use Qc\QcComments\Domain\Dto\Filter;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Qc\QcComments\Domain\Filter\Filter;
+use Qc\QcComments\Domain\Session\BackendSession;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 
 class StatisticsTabController extends QcBackendModuleController
@@ -24,25 +29,38 @@ class StatisticsTabController extends QcBackendModuleController
      */
     public function statisticsAction(Filter $filter = null)
     {
-        $filter = $this->processFilter($filter);
-        $this->pages_ids = $this->commentsRepository->getPageIdsList();
-        $maxRecords = $this->settings['statistics']['maxRecords'];
-        $resultData = $this->commentsRepository->getStatistics($this->pages_ids, $maxRecords);
-        if (count($resultData) > $maxRecords) {
-            $message = $this->translate('tooMuchPages', [$maxRecords]);
-            $this->addFlashMessage($message, null, AbstractMessage::WARNING);
-            array_pop($resultData); // last line was there to check that limit has been reached
+        if (!$this->root_id) {
+            $this->view->assign('noPageSelected', true);
         }
-        $this->view
-             ->assign('csvButton', [
-                 'href' => $this->getUrl('exportStatistics'),
-                 'icon' => $this->icon,
-             ])
-             ->assign('resetButton', [
-                 'href' => $this->getUrl('resetFilter'),
-             ])
-             ->assign('headers', $this->getHeaders())
-             ->assign('rows', $resultData);
+        else {
+            if ($filter) {
+                $this->processFilter($filter);
+            }
+            $this->pages_ids = $this->commentsRepository->getPageIdsList();
+            $currentPageId = $this->root_id;
+            $maxRecords = $this->settings['statistics']['maxRecords'];
+            $resultData = $this->commentsRepository->getStatistics($this->pages_ids, $maxRecords);
+            if (count($resultData) > $maxRecords) {
+                $message = $this->localizationUtility->translate(self::QC_LANG_FILE . 'tooMuchPages', null, [$maxRecords]);
+                $this->addFlashMessage($message, null, AbstractMessage::WARNING);
+                array_pop($resultData); // last line was there to check that limit has been reached
+            }
+            $this->view->assignMultiple([
+                'csvButton' => [
+                    'href' => $this->getUrl('exportStatistics'),
+                    'icon' => $this->icon,
+                ],
+                'resetButton' => [
+                    'href' => $this->getUrl('resetFilter'),
+                ],
+                'headers' => $this->getHeaders(),
+                'rows' => $resultData,
+                'pagesId' => $this->pages_ids,
+                'settings',
+                'currentPageId' => $currentPageId
+            ]);
+        }
+
     }
 
     /**
@@ -53,28 +71,34 @@ class StatisticsTabController extends QcBackendModuleController
     {
         $headers = [];
         foreach (['page_uid', 'page_title', 'total_pos', 'total_neg', 'total', 'avg'] as $col) {
-            $headers[$col] = $this->translate('stats.h.' . $col);
+            $headers[$col] = $this->localizationUtility->translate(self::QC_LANG_FILE . 'stats.h.' . $col);
         }
         return $headers;
     }
 
     /**
-     * @param null $filter
+     * @param ServerRequestInterface $request
+     * @return Response
      */
-    public function exportStatisticsAction($filter = null)
+    public function exportStatisticsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $filter = $this->processFilter($filter);
-        $data = $this->commentsRepository->getStatistics($this->pages_ids, false);
+        $backendSession = GeneralUtility::makeInstance(BackendSession::class);
+        $filter = $backendSession->get('filter') ?? new Filter();
+        $this->commentsRepository->setFilter($filter);
+        $pagesData = $request->getQueryParams()['pagesId'];
+
+        $data = $this->commentsRepository->getStatistics($pagesData, false);
         // Resort array elements for export
         $mappedData = [];
         $i = 0;
+        $headers = array_keys($this->getHeaders());
         foreach ($data as $record) {
             foreach ($this->getHeaders() as $headerKey => $header) {
-                $mappedData[$i][$header] = $record[$headerKey];
+                $mappedData[$record['pages_uid']][$i][$headerKey] = $record[$headerKey];
             }
             $i++;
         }
-        parent::export('statistics', $this->getHeaders(), $mappedData, $filter);
+        return parent::export($filter,$request,'stats', $headers, $mappedData);
     }
 
     /**

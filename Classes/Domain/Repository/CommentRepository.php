@@ -4,8 +4,7 @@ namespace Qc\QcComments\Domain\Repository;
 
 use Doctrine\DBAL\Connection as ConnectionAlias;
 use Doctrine\DBAL\Driver\Exception;
-use Qc\QcComments\Domain\Dto\Filter;
-use Qc\QcComments\Traits\InjectTranslation;
+use Qc\QcComments\Domain\Filter\Filter;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -14,12 +13,29 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 
 class CommentRepository extends Repository
 {
-    use  InjectTranslation;
+    /**
+     * @var int
+     */
     protected int $root_id = 0;
+    /**
+     * @var array
+     */
     protected array $settings = [];
+    /**
+     * @var string
+     */
     protected string $tableName = 'tx_qccomments_domain_model_comment';
+    /**
+     * @var Filter
+     */
     protected Filter $filter;
+    /**
+     * @var string
+     */
     protected string $lang_criteria = '';
+    /**
+     * @var string
+     */
     protected string $date_criteria = '';
 
     /**
@@ -58,7 +74,7 @@ class CommentRepository extends Repository
         $constrains['joinCond'] = " p.uid = uid_orig $this->date_criteria $this->lang_criteria";
         $constrains['whereClause'] = " p.uid in ($ids_csv)";
         $usefulCond = $this->filter->getUseful() != '' ?  'useful = ' . $this->filter->getUseful() : '';
-        if($usefulCond != ''){
+        if ($usefulCond != '') {
             $constrains['whereClause'] .= "AND $usefulCond";
         }
         return $constrains;
@@ -71,15 +87,10 @@ class CommentRepository extends Repository
      * @param string $orderType
      * @return array
      */
-    public function getComments(array $pages_ids,string $limit, string $orderType): array
+    public function getComments(array $pages_ids, string $limit, string $orderType): array
     {
         $queryBuilder = $this->generateQueryBuilder();
         $constraints = $this->getConstraints($pages_ids);
-        $tr = [
-            0 => $this->translate('negative'),
-            1 => $this->translate('positive'),
-        ];
-
         $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
 
         $data= $queryBuilder
