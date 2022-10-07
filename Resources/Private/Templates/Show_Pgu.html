@@ -26,17 +26,17 @@
                                 <f:form.hidden property="uidOrig" value="{v:page.info(field: 'uid')}"/>
                                 <div class="form-inline mt-2">
                                     <legend class="control-label">
-                                            <f:translate key="haveYouAComment" extensionName="qc_comments"/>
+                                        <f:translate key="haveYouAComment" extensionName="qc_comments"/>
                                     </legend>
                                     <div class="form-group mr-2">
                                         <f:form.radio property="useful" value="1" id="usefulY" checked="false"/>
-                                        <label for="usefulY" class="p-md-2" style="font-weight : normal;">
+                                        <label for="usefulY" class="p-md-2 useful-label">
                                             <f:translate key="yes" extensionName="qc_comments"/>
                                         </label>
                                     </div>
                                     <div class="form-group ">
                                         <f:form.radio property="useful" value="0" id="usefulN" checked="false"/>
-                                        <label for="usefulN" class="p-md-2" style="font-weight : normal;">
+                                        <label for="usefulN" class="p-md-2 useful-label">
                                             <f:translate key="no" extensionName="qc_comments"/>
                                         </label>
                                     </div>
@@ -45,7 +45,7 @@
                                 <div id="comment-section" class="form-group d-none">
 
                                     <label for="comment-textarea" class="control-label" title="">
-                                            <f:translate key="encounterAProblem" extensionName="qc_comments"/>
+                                        <f:translate key="encounterAProblem" extensionName="qc_comments"/>
                                         <span id="commentpage_complement_label" class="complementLabel">
                                                 <f:translate key="haveYouACommentDescription" extensionName="qc_comments"/>
                                         </span>
@@ -74,16 +74,16 @@
                                                     id="submitButtom"
                                                     data-sitekey="{recaptchaConfig.sitekey}"
                                                     data-callback="onCompleted"
-                                                    class="powermail_submit btn btn-primary displayBlock g-recaptcha"
-                                                    style="height : 3rem;">
+                                                    class="btn btn-primary displayBlock g-recaptcha submit-button"
+                                                    >
                                                 {f:translate(key: 'submit', extensionName:'qc_comments')}
                                             </button>
                                         </f:then>
                                         <f:else>
                                             <f:form.submit
                                                     value="{f:translate(key: 'submit', extensionName:'qc_comments')}"
-                                                    class="powermail_submit btn btn-primary displayBlock"
-                                                    style="height : 3rem;"/>
+                                                    class="btn btn-primary displayBlock submit-button"
+                                                    />
                                         </f:else>
                                     </f:if>
 
@@ -119,73 +119,7 @@
     </div>
 </f:if>
 
-<script src="https://www.google.com/recaptcha/api.js?render={recaptcha.sitekey}"></script>
-<script>
-    if (document.getElementById('commentForm') !== null) {
+<script src="https://www.google.com/recaptcha/api.js?render={recaptchaConfig.sitekey}"></script>
 
-        let siteKey = document.getElementById('sitekey').getAttribute('data-tr-label') !== null ? document.getElementById('sitekey').getAttribute('data-tr-label') : '';
-        window.addEventListener("DOMContentLoaded", function () {
-            $('#commentForm').submit(function (e) {
-                grecaptcha.ready(function (token) {
-                    grecaptcha.execute(siteKey, {action: 'submit'}).then(function (token) {
-                        return true;
-                    });
-                });
-            })
-        });
-
-        function onCompleted() {
-            $('form .powermail_submit').prop("disabled", true);
-            setTimeout(function enable() {
-                submitAmount = 0;
-                $('form .powermail_submit').prop("disabled", false);
-            }, 2000);
-            $('#commentForm').trigger('submit', [true]);
-        }
-
-        let maxCharacters = document.getElementById('maxCharacters').getAttribute('data-tr-label') != null
-            ? document.getElementById('maxCharacters').getAttribute('data-tr-label') : '';
-        let limitLabel = document.getElementById('limitLabel');
-        textareaElement = document.getElementById('comment-textarea');
-        let initialLimit = Number(maxCharacters);
-
-        var t = limitLabel.innerHTML
-        maxLabel = document.getElementById('maxLabel').getAttribute('data-tr-label')
-        charLabel = document.getElementById('charLabel').getAttribute('data-tr-label')
-
-
-        textareaElement.setAttribute("maxlength", maxCharacters);
-        textareaElement.addEventListener("keydown", (event) => {
-            var length = textareaElement.value.length
-            var x = initialLimit === length ? 0
-                : (length === 0 ? initialLimit
-                    : (initialLimit - length));
-            if (event.code !== 'Backspace' && x >= 1) {
-                    limitLabel.innerText = maxLabel + (x-1) + charLabel;
-            }
-            else{
-                if(x !== initialLimit && event.code === 'Backspace'){
-                    limitLabel.innerText = maxLabel + (x+1) + charLabel;
-                }
-                else if(initialLimit === length){
-                    limitLabel.innerText = maxLabel + "0"+ charLabel;
-                }
-
-            }
-        });
-        [
-            document.getElementById('usefulN'),
-            document.getElementById('usefulY')
-        ].map(function (element) {
-            element.addEventListener("change", function () {
-                document.getElementById('comment-section').className = 'form-group d-block';
-                document.getElementById('questionsLink-section').className = 'col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse sansBorder d-block';
-            });
-        });
-
-    }
-
-
-</script>
 
 
