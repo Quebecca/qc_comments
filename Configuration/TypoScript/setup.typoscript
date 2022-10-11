@@ -1,5 +1,3 @@
-# Module configuration
-
 plugin.commentsForm {
     view {
         templateRootPath = {$plugin.commentsForm.view.templateRootPath}
@@ -21,20 +19,6 @@ plugin.commentsForm {
 
             sitekey = 6LcKgWEiAAAAAPOAA66pUMaY1_SZfTWQuIDvZkjG
             secret = 6LcKgWEiAAAAAMESNa0JOhc2OUBsdWMMz1kZpdrg
-        }
-    }
-    persistence {
-        classes {
-            Qc\QcComments\Domain\Model\Comment {
-                mapping {
-                    columns {
-                        date_houre.mapOnProperty = dateHoure
-                        url_orig.mapOnProperty = urlOrig
-                        uid_orig.mapOnProperty = uidOrig
-                        uid_perms_group.mapOnProperty = uidPermsGroup
-                    }
-                }
-            }
         }
     }
 }
