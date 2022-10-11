@@ -170,7 +170,7 @@
                 <target>Non</target>
             </trans-unit>
             <trans-unit id="submit">
-                <source>Submit</source>
+                <source>Send</source>
                 <target>Soumettre</target>
             </trans-unit>
             <trans-unit id="formSectionTitle">
@@ -234,7 +234,7 @@
                 <target>Masquer pour cette page seulement</target>
             </trans-unit>
             <trans-unit id="max">
-                <source>Max </source>
+                <source>Limit is </source>
                 <target>Maximum </target>
             </trans-unit>
             <trans-unit id="characters">

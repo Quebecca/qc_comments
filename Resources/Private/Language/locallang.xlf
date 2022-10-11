@@ -163,7 +163,7 @@
                 <source>No</source>
             </trans-unit>
             <trans-unit id="submit">
-                <source>Submit</source>
+                <source>Send</source>
             </trans-unit>
             <trans-unit id="formSectionTitle">
                 <source>Comments</source>
@@ -211,7 +211,7 @@
                 <source>Hide for this page only</source>
             </trans-unit>
             <trans-unit id="max">
-                <source>Max </source>
+                <source>Limit is </source>
             </trans-unit>
             <trans-unit id="characters">
                 <source> characters</source>
