@@ -175,7 +175,7 @@
                 <source>Did you encounter any problems while navigating?</source>
             </trans-unit>
             <trans-unit id="haveYouACommentDescription">
-                <source>Please send us your observations and help us improve the Québec.ca website. Please do not enter any personal information in this field. Note that you will not receive a reply.</source>
+                <source>Please send us your observations and help us improve our website. Please do not enter any personal information in this field. Note that you will not receive a reply.</source>
             </trans-unit>
             <trans-unit id="limitCharacter">
                 <source>Limit is 500 characters</source>
@@ -183,11 +183,8 @@
             <trans-unit id="questionsOrHelp">
                 <source>You have questions or require additional information?</source>
             </trans-unit>
-            <trans-unit id="contactTheService">
-                <source>Please contact Services Québec</source>
-            </trans-unit>
             <trans-unit id="formSubmittedSuccessfully">
-                <source>Thank you for helping us improve Quebec.ca. Your comments are important to us.</source>
+                <source>Thank you for helping us improve our website. Your comments are important to us.</source>
             </trans-unit>
             <trans-unit id="pages.tx_select_bas_page_mode">
                 <source>Select comments section display mode</source>
@@ -211,7 +208,7 @@
                 <source>Hide for this page only</source>
             </trans-unit>
             <trans-unit id="max">
-                <source>Max </source>
+                <source>Limit is </source>
             </trans-unit>
             <trans-unit id="characters">
                 <source> characters</source>

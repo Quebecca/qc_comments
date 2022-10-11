@@ -8,10 +8,10 @@
         <h2>
             <f:translate key="formSectionTitle" extensionName="qc_comments"/>
         </h2>
-        <div class="tx-powermail">
+        <div>
             <f:if condition="{submitted}">
                 <f:then>
-                    <div class="powermail_create" role="alert">
+                    <div role="alert">
                         <p>
                             <f:translate key="formSubmittedSuccessfully" extensionName="qc_comments"/>
                         </p>
@@ -54,7 +54,7 @@
                                             cols="5"
                                             rows="10"
                                             property="comment"
-                                            class="powermail_textarea form-control"
+                                            class="form-control"
                                             data="{date-type: 'date'}"
                                             id="comment-textarea"
                                     />
@@ -76,7 +76,7 @@
                                                     id="submitButtom"
                                                     data-sitekey="{recaptchaConfig.sitekey}"
                                                     data-callback="onCompleted"
-                                                    class="powermail_submit btn btn-primary displayBlock g-recaptcha"
+                                                    class="btn btn-primary displayBlock g-recaptcha"
                                             >
                                                 {f:translate(key: 'submit', extensionName:'qc_comments')}
                                             </button>
@@ -84,7 +84,7 @@
                                         <f:else>
                                             <f:form.submit
                                                     value="{f:translate(key: 'submit', extensionName:'qc_comments')}"
-                                                    class="powermail_submit btn btn-primary displayBlock"
+                                                    class="btn btn-primary displayBlock"
                                             />
                                         </f:else>
                                     </f:if>
