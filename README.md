@@ -41,7 +41,7 @@ The extension also supports the Recaptcha verification, you can enable it and us
         settings {
             comments {
                 // by default 500
-                maxCharacters = 10
+                maxCharacters = 250
             }
             recaptcha {
                 // enabled = 1, disabled = 0
@@ -150,7 +150,7 @@ L'extension supporte également la vérification Recaptcha, vous pouvez l'active
         settings {
             comments {
                 // Par défaut 500
-                maxCharacters = 10
+                maxCharacters = 250
             }
     
             recaptcha {

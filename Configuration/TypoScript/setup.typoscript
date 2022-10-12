@@ -8,7 +8,7 @@ plugin.commentsForm {
     settings {
         comments {
             // if empty default will be 500
-            maxCharacters = 10
+            maxCharacters = 250
         }
 
         // Activate recaptcha
