@@ -7,18 +7,58 @@ This extension can be used for managing comments section for frontend pages.
 
 It comes with two important features :
 ### Frontend plugin
-A plugin that allow an administrator to add comments section as a form, where the frontend users can send their comments and opinions for each page.
-the comments component can be enabled or disabled using four different ways :
-- Comments for the selected page and all its sub-pages
-- Comments only for the selected page
-- No comments component for the selected page
+A plugin that allows an administrator to add a comments section as a form, where the frontend users can send their comments and opinions for each page.
+The comments component can be enabled or disabled using four different ways :
+- Comments for the selected page and all its sub-pages.
+- Comments only for the selected page.
+- No comments component for the selected page.
 - No comments component for the selected page and its sub-pages.
 
-Note : The option can be changed using the input that cames with the extension named "Select comments section display mode" in the 'Pages module' configuration.
-If the option isn't override in a page by administrator, the option will be inheritance from the parent page.
+Note : The option can be changed using the input that cames with the extension named "Select comments section display mode" in the 'Pages module' configuration in the 'Extended' tab.
+If the option isn't specified in a page by the administrator, the option will be inherited from the parent page.
+
+Note : To add the comments form component to your frontend pages, you will have to add the current component to your TypoScript configuration:
+    
+    lib.commentForm = COA
+    lib.commentForm {
+        10 = USER
+        10 {
+            userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+            extensionName = QcComments
+            pluginName = commentsForm
+        }
+    }
+
+In the Fluid pages:
+
+    <f:cObject typoscriptObjectPath="lib.commentForm" />
+
+
+You can set the limit number of characters  by using the option 'maxCharacters'.
+The extension also supports the Recaptcha verification, you can enable it and used it by using the Typoscript configuration:
+
+    plugin.commentsForm {
+        settings {
+            comments {
+                // by default 500
+                maxCharacters = 10
+            }
+            recaptcha {
+                // enabled = 1, disabled = 0
+                enabled = 1
+                sitekey =
+                secret =
+            }
+        }
+    }
+
+#### Screenshot of the comments form in a front end page
+
+![FE comments form](Documentation/Images/commentsFormFE.PNG)
+
 
 ### Backend module
-This module contains two different tabs :
+This module contains two different tabs:
 
 #### Statistics tab
 
@@ -38,26 +78,33 @@ By using this tab, the administrator can list the comments records that are sent
 ![Comments tab](Documentation/Images/comments.PNG)
 
 
-Note : All the rendering data for each tab can be filtered and exported as csv file.
-The rendering result can be controlled by Typoscript configuration :
+Note : All the rendering data for each tab can be filtered and exported as a csv file.
+The rendering result can be controlled by Typoscript configuration:
 
-    settings {
-        comments {
-            // Maximum number of records that will be display in comments tab
-            maxRecords = 100
-            
-            // Number of subpages used for rendering comments
-            numberOfSubPages = 50
-        }
-        statistics {
-            // Maximum number of records that will be display in statistics tab
-            maxRecords = 30
-        }
-        
-        // Specify the date format for the exported csv file name
-        csvExport {
-            filename {
-                dateFormat = YmdHi
+    module.tx_qccomments {
+        settings {
+            comments {
+                // Order by comment date field
+                orderType = DESC
+                // Max records that will be shown in the comments table
+                maxRecords = 100
+                // Number of subpages that will be parsed
+                numberOfSubPages = 50
+            }
+            statistics {
+                // Max records that will be showed in the statistics table
+                maxRecords = 30
+            }
+    
+            csvExport {
+                filename {
+                    // This date will added to the exported file name
+                    dateFormat = YmdHi
+                }
+                // Csv parameters
+                separator = ;
+                enclosure = "
+                escape = \\
             }
         }
     }
@@ -80,6 +127,42 @@ par quatre différents choix:
 NB : Le choix de mode d'affichage peut être sélectionner à partir d'un champ nommé "Sélectionner le mode d'affichage de la section commentaires" dans le module "Page".
 Si le choix d'affichage n'est pas choisie manuellement par l'administrateur le choix de la page parent sera hérité.
 
+NB : Pour intégrer le composant dans vos pages front end, il faut ajouter l'élément suivant dans votre configuration TypoScript :
+
+    lib.commentForm = COA
+    lib.commentForm {
+        10 = USER
+        10 {
+            userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+            extensionName = QcComments
+            pluginName = commentsForm
+        }
+    }
+
+Dans les pages Fluid pages fluid :
+
+    <f:cObject typoscriptObjectPath="lib.commentForm" />
+
+Vous pouvez définir le nombre de caractères autorisé dans un commentaire en utilisant l'option 'maxCharacters'.
+L'extension supporte également la vérification Recaptcha, vous pouvez l'activer et l'utiliser en utilisant la configuration Typoscript :
+
+    plugin.commentsForm {
+        settings {
+            comments {
+                // Par défaut 500
+                maxCharacters = 10
+            }
+    
+            recaptcha {
+                // Activer = 1, Désactiver = 0
+                enabled = 1
+                // Votre clé de site
+                sitekey =
+                // Votre clé de site
+                secret =
+            }
+        }
+    }
 
 ### Backend module
 Ce module vient avec deux tabulations :
@@ -94,23 +177,30 @@ En utilisant cette tabulation, l'administrateur peut lister les commentaires env
 NB : Tous les données listés dans les deux tabulations peuvent être filtré or exporter sous format csv.
 L'affichage dans deux tabulations peut être controller en utilisant la configuration typiscript ce dessous :
 
-    settings {
-        comments {
-            // Nombre maximum des commentaires affiché dans la tabulation des commentaires
-            maxRecords = 100
-            
-            // Nombre maximum des sous pages utilisées pour récupérer les commentaires
-            numberOfSubPages = 50
-        }
-        statistics {
-            // Nombre maximum des résultat calculés dans la tabulation des statistiques 
-            maxRecords = 30
-        }
-        
-        // Format de date utilisé pour le nom csv exporté
-        csvExport {
-            filename {
-                dateFormat = YmdHi
+    module.tx_qccomments {
+        settings {
+            comments {
+                // Trier par champ de date de commentaire
+                orderType = DESC
+                // Nombre d'enregistrements qui seront affichés dans le tableau de commentaires
+                maxRecords = 100
+                // Nombre de sous-pages qui seront analysées
+                numberOfSubPages = 50
+            }
+            statistics {
+                // Nombre d'enregistrements qui seront affichés dans le tableau de statistiques
+                maxRecords = 30
+            }
+
+            csvExport {
+                filename {
+                    // Cette date sera ajoutée au nom du fichier exporté
+                    dateFormat = YmdHi
+                }
+                // Les Paramètres CSV
+                separator = ;
+                enclosure = "
+                escape = \\
             }
         }
     }

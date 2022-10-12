@@ -1,5 +1,14 @@
 <?php
-
+/***
+ *
+ * This file is part of Qc Comments project.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ *  (c) 2022 <techno@quebec.ca>
+ *
+ ***/
 namespace Qc\QcComments\ViewHelpers;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;

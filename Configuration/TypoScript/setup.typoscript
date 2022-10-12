@@ -27,10 +27,6 @@ page {
 }
 
 module.tx_qccomments {
-    persistence {
-        storagePid =
-    }
-
     view {
         templateRootPaths.0 = EXT:qc_comments/Resources/Private/Templates/
         templateRootPaths.1 = {$module.tx_qccomments.view.templateRootPath}
@@ -45,7 +41,6 @@ module.tx_qccomments {
             orderType = DESC
             maxRecords = 100
             numberOfSubPages = 50
-            maxCharacters = 10
         }
         statistics {
             maxRecords = 30
@@ -53,8 +48,10 @@ module.tx_qccomments {
 
         csvExport {
             filename {
+                // This date will added to the exported file name
                 dateFormat = YmdHi
             }
+            // Csv parameters
             separator = ;
             enclosure = "
             escape = \\
