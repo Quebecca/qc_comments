@@ -5,7 +5,6 @@
   "authors": [],
   "require": {
     "typo3/cms-core": "^10.4.30 || ^11.5.0",
-    "lst/backend-module": "2.2.1",
     "fluidtypo3/vhs" : "^6.0"
   },
   "autoload": {

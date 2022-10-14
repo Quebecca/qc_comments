@@ -1,17 +1,8 @@
 <?php
 
-/***************************************************************
- * Extension Manager/Repository config file for ext: "qc_comments"
- *
- *
- * Manual updates:
- * Only the data in the array - anything else is removed by next write.
- * "version" and "dependencies" must not be touched!
- ***************************************************************/
-
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Qc Comments',
-    'description' => 'Add comments for FE pages',
+    'description' => 'Comments form plugin for frontend pages',
     'category' => 'plugin',
     'author' => 'Quebec.ca',
     'author_email' => '',
@@ -19,7 +10,7 @@ $EM_CONF[$_EXTKEY] = [
     'version' => '1.0.0',
     'constraints' => [
         'depends' => [
-            'typo3' => '8.7.0-10.4.99',
+            'typo3' => '10.4.14-11.9.99',
         ],
         'conflicts' => [],
         'suggests' => [],
