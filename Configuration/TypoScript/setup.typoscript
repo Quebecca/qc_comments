@@ -14,15 +14,15 @@ plugin.commentsForm {
         // Activate recaptcha
         recaptcha {
             enabled = 1
-            sitekey = 6LcKgWEiAAAAAPOAA66pUMaY1_SZfTWQuIDvZkjG
-            secret = 6LcKgWEiAAAAAMESNa0JOhc2OUBsdWMMz1kZpdrg
+            sitekey =6LdTg34iAAAAAIMl6ySOJmCn3_4b82n8fx_BA9_0
+            secret =6LdTg34iAAAAAI_jQEi3KugpTVIy4aOJlIGBTwUB
         }
     }
 }
 page {
-   includeJS.commentsForm = EXT:qc_comments/Resources/Public/JavaScript/Qc/CommentForm.js
-   includeJS.recaptcha = https://www.google.com/recaptcha/api.js?render=6LcKgWEiAAAAAPOAA66pUMaY1_SZfTWQuIDvZkjG
-   includeJSLibs.jquery = https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js
+    includeJSLibs.jquery = https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js
+    includeJS.recaptcha = https://www.google.com/recaptcha/api.js?render=6LcKgWEiAAAAAPOAA66pUMaY1_SZfTWQuIDvZkjG
+    includeJS.commentsForm = EXT:qc_comments/Resources/Public/JavaScript/Qc/CommentForm.js
    includeCSS.commentsFormCss = EXT:qc_comments/Resources/Public/Css/Qc/fe_qc_comments.css
 }
 

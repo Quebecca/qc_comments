@@ -12,8 +12,6 @@ $(document).ready(function(){
             })
         });
 
-
-
         let maxCharacters = document.getElementById('maxCharacters').getAttribute('data-tr-label') != null
             ? document.getElementById('maxCharacters').getAttribute('data-tr-label') : '';
         let limitLabel = document.getElementById('limitLabel');
