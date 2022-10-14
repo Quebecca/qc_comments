@@ -26,8 +26,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 // FrontEnd Controller
 class CommentsController extends ActionController
 {
-    // @Todo : Update ReadMe
-    // @Todo : Utilisation des Unix timestamp(Modify export task for map the date column )
 
     /**
      * @var CommentRepository
