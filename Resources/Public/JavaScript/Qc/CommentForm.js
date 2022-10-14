@@ -18,7 +18,6 @@ $(document).ready(function(){
         textareaElement = document.getElementById('comment-textarea');
         let initialLimit = Number(maxCharacters);
 
-        var t = limitLabel.innerHTML
         maxLabel = document.getElementById('maxLabel').getAttribute('data-tr-label')
         charLabel = document.getElementById('charLabel').getAttribute('data-tr-label')
 
