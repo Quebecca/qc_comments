@@ -42,6 +42,7 @@ $(document).ready(function(){
             }
         });
 
+
         [
             document.getElementById('usefulN'),
             document.getElementById('usefulY')
@@ -56,6 +57,9 @@ $(document).ready(function(){
 
 function onCompleted() {
     $('form .powermail_submit').prop("disabled", true);
+    $( "#usefulN" ).prop( "checked", false);
+    $( "#usefulY" ).prop( "checked", false);
+    $("#comment-textarea").val("");
     setTimeout(function enable() {
         submitAmount = 0;
         $('form .powermail_submit').prop("disabled", false);
