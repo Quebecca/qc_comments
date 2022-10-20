@@ -17,7 +17,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Domain\Session\BackendSession;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
@@ -27,6 +29,7 @@ class CommentsTabController extends QcBackendModuleController
     protected const DEFAULT_ORDER_TYPES = 'DESC';
     protected const DEFAULT_MAX_RECORDS = '100';
     protected const DEFAULT_MAX_PAGES = '100';
+
 
     /**
      * This function is used to get the list of comments in BE module
@@ -114,6 +117,12 @@ class CommentsTabController extends QcBackendModuleController
         return $headers;
     }
 
+
+
+    public function setFilterForExport(ServerRequest  $request){
+        return $this->exportCommentsAction($request);
+    }
+
     /**
      * @param ServerRequestInterface $request
      * @return Response
@@ -122,9 +131,16 @@ class CommentsTabController extends QcBackendModuleController
     {
         $backendSession = GeneralUtility::makeInstance(BackendSession::class);
         $filter = $backendSession->get('filter') ?? new Filter() ;
-
-        $pagesData = $request->getQueryParams()['pagesId'];
-
+        $filter = new Filter();
+        $filter->setLang($request->getQueryParams()['parameters']['lang']);
+        $filter->setDepth(intval($request->getQueryParams()['parameters']['depth']));
+        $filter->setDateRange($request->getQueryParams()['parameters']['selectDateRange']);
+        $filter->setStartDate($request->getQueryParams()['parameters']['startDate']);
+        $filter->setEndDate($request->getQueryParams()['parameters']['endDate']);
+        $filter->setUseful($request->getQueryParams()['parameters']['useful']);
+        $pagesData = $request->getQueryParams()['parameters']['pagesId'];
+        $this->commentsRepository->setFilter($filter);
+        $data = $this->commentsRepository->getComments($pagesData, false, self::DEFAULT_ORDER_TYPES);
         $this->commentsRepository->setFilter($filter);
         $data = $this->commentsRepository->getComments($pagesData, false, self::DEFAULT_ORDER_TYPES);
         $headers = array_keys($this->getHeaders(true));

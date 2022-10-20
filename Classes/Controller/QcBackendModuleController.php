@@ -202,6 +202,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
             $moduleTemplate->getDocHeaderComponent()->setMetaInformation($record);
             $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
             $this->pageRenderer->addCssFile('EXT:qc_comments/Resources/Public/Css/be_qc_comments.css');
+            $this->pageRenderer->addJsFile('EXT:qc_comments/Resources/Public/JavaScript/AdministrationModule.js');
         }
         $this->processFilter();
 
@@ -294,8 +295,13 @@ abstract class QcBackendModuleController extends BackendModuleActionController
     protected function getCSVFilename(Filter $filter, $fileName, $csvDateFormat, $pageId): string
     {
         $format = $csvDateFormat;
-        $now = date($format);
-        $from = $filter->getDateForRange($format);
+        if($filter->getDateRange() == 'userDefined'){
+            $from = $filter->getStartDate();
+            $now = $filter->getEndDate();
+        }
+        else
+            $now = date($format, strtotime('-'.$filter->getDateRange(), strtotime(date($format))));
+
         return implode('-', array_filter([
                 $this->localizationUtility->translate(self::QC_LANG_FILE . $fileName),
                 $filter->getLang(),
@@ -315,8 +321,8 @@ abstract class QcBackendModuleController extends BackendModuleActionController
      */
     public function export(Filter $filter, ServerRequestInterface  $request,string $fileName,array $headers, array $data): ResponseInterface
     {
-        $pageId = $request->getQueryParams()['currentPageId'];
-        $csvSettings = $request->getQueryParams()['csvSettings'];
+        $pageId = $request->getQueryParams()['parameters']['currentPageId'];
+        $csvSettings = $request->getQueryParams()['parameters']['csvSettings'];
         $separator = $csvSettings['separator'] ?? ',';
         $enclosure = $csvSettings['enclosure'] ?? '"';
         $escape = $csvSettings['escape'] ?? '\\';
