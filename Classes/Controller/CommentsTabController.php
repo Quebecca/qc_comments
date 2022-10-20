@@ -117,12 +117,6 @@ class CommentsTabController extends QcBackendModuleController
         return $headers;
     }
 
-
-
-    public function setFilterForExport(ServerRequest  $request){
-        return $this->exportCommentsAction($request);
-    }
-
     /**
      * @param ServerRequestInterface $request
      * @return Response
