@@ -17,7 +17,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Domain\Session\BackendSession;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
@@ -27,6 +29,7 @@ class CommentsTabController extends QcBackendModuleController
     protected const DEFAULT_ORDER_TYPES = 'DESC';
     protected const DEFAULT_MAX_RECORDS = '100';
     protected const DEFAULT_MAX_PAGES = '100';
+
 
     /**
      * This function is used to get the list of comments in BE module
@@ -120,12 +123,23 @@ class CommentsTabController extends QcBackendModuleController
      */
     public function exportCommentsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $backendSession = GeneralUtility::makeInstance(BackendSession::class);
-        $filter = $backendSession->get('filter') ?? new Filter() ;
+       // $backendSession = GeneralUtility::makeInstance(BackendSession::class);
+       // $filter = $backendSession->get('filter') ?? new Filter() ;
+        $filter = new Filter();
+        $filter->setLang($request->getQueryParams()['parameters']['lang']);
+        $filter->setDepth(intval($request->getQueryParams()['parameters']['depth']));
+        $filter->setDateRange($request->getQueryParams()['parameters']['selectDateRange']);
+        $filter->setStartDate($request->getQueryParams()['parameters']['startDate']);
+        $filter->setEndDate($request->getQueryParams()['parameters']['endDate']);
+        $filter->setUseful($request->getQueryParams()['parameters']['useful']);
 
-        $pagesData = $request->getQueryParams()['pagesId'];
-
+        $this->commentsRepository->setRootId($request->getQueryParams()['parameters']['currentPageId']);
         $this->commentsRepository->setFilter($filter);
+
+        $pagesData = $this->commentsRepository->getPageIdsList();
+        if(intval($request->getQueryParams()['parameters']['depth']) == 0)
+            $pagesData = [$request->getQueryParams()['parameters']['currentPageId']];
+
         $data = $this->commentsRepository->getComments($pagesData, false, self::DEFAULT_ORDER_TYPES);
         $headers = array_keys($this->getHeaders(true));
         foreach ($data as $row) {

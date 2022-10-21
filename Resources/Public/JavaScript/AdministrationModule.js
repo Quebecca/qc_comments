@@ -1,64 +1,43 @@
-define(['jquery', 'TYPO3/CMS/Backend/Tooltip'], function ($) {
-
-    var filterName = 'qcComments'
-    if ($('.t3js-clearable').length) {
-        require(['TYPO3/CMS/Backend/jquery.clearable'], function () {
-            $('.t3js-clearable').clearable();
-        });
-    }
-
-    $(document).ready(function () {
-
-        if (getCookie(filterName) == '') {
-            setCookie(filterName, 1, 365);
-        }
-
-        if (getCookie(filterName) == 1) {
-            $('#filter-container').css('display', 'block');
-        } else {
-            $('#filter-container').css('display', 'none');
-        }
-
-        $('a[data-togglelink="1"]').click(function (e) {
-            e.preventDefault();
-            toggleTeaserManagerCategoryFilter();
-        });
+function exportFunction(event, actionName){
+    event.preventDefault();
+    let pageIdsElements = $('.pageId')
+    let  pageIds = [];
+    pageIdsElements.toArray().forEach(function (item) {
+        pageIds.push($(item).attr('data-tr-label'))
     });
 
-    function toggleTeaserManagerCategoryFilter() {
-        var display, cookieval
-        if (getCookie(filterName) == 1) {
-            display = 'none'
-            cookieval = 0
-        } else {
-            display = 'block'
-            cookieval = 1
-        }
-        $('#filter-container').css('display', display);
-        setCookie(filterName, cookieval, 365);
+    let csvSettings = {
+        'separator' : $('#separator').attr('data-tr-label'),
+        'enclosure' : $('#enclosure').attr('data-tr-label'),
+        'escape' : $('#escape').attr('data-tr-label'),
+        'dateFormat' : $('#dateFormat').attr('data-tr-label'),
+    };
+    let parameters = {
+        'lang' : $('#lang option:selected').val(),
+        'depth' : $('#depth option:selected').val(),
+        'useful' : $('#useful option:selected').val(),
+        'selectDateRange' : $('#selectDateRange option:selected').val(),
+        'pagesId' : pageIds,
+        'csvSettings' : csvSettings,
+        'currentPageId' : $('#currentPageId').attr('data-tr-label'),
+        'startDate' : $('#startDate').val(),
+        'endDate' : $('#endDate').val(),
     }
+    let url = actionName === 'comments' ? TYPO3.settings.ajaxUrls.export_comments : TYPO3.settings.ajaxUrls.export_statistics
+    require(['TYPO3/CMS/Core/Ajax/AjaxRequest'], function (AjaxRequest) {
+        new AjaxRequest(url)
+            .withQueryArguments({parameters: parameters})
+            .get()
+            .then(async function (response) {
+                response.resolve().then(function (result){
+                    if(result != null){
+                        var blob=new Blob([result]);
+                        var link=document.createElement('a');
+                        link.href=response.response.url
+                        link.click();
+                    }
+                });
+            });
+    })
 
-    function getCookie(cname) {
-        var name = cname + "=";
-        var decodedCookie = decodeURIComponent(document.cookie);
-        var ca = decodedCookie.split(';');
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
-    }
-
-    function setCookie(cname, cvalue, exdays) {
-        var d = new Date();
-        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-        var expires = "expires=" + d.toUTCString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-    }
-
-});
+}

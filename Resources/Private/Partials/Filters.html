@@ -1,4 +1,4 @@
-<f:form action="{action}" object="{filter}" objectName="filter">
+<f:form action="{action}" object="{filter}" objectName="filter" id="filter-form">
     <div class="row">
         <div class="col-md-2">
             <label>{f:translate(key: 'filter.lang')}</label>
@@ -6,6 +6,7 @@
                            options="{filter.langOptions}"
                            optionLabelField="title"
                            class="form-control"
+                           id="lang"
             />
         </div>
         <div class="col-md-2">
@@ -13,7 +14,9 @@
             <f:form.select property="depth"
                            options="{filter.depthOptions}"
                            optionLabelField="title"
-                           class="form-control"/>
+                           class="form-control"
+                           id="depth"
+            />
         </div>
         <f:if condition="{action} == 'comments'">
             <div class="col-md-2">
@@ -22,6 +25,7 @@
                                options="{filter.commentsUtility}"
                                optionLabelField="title"
                                class="form-control"
+                               id="useful"
                 />
             </div>
         </f:if>
@@ -87,15 +91,30 @@
             <f:render section="buttons" arguments="{_all}"/>
         </div>
     </div>
-</f:form>
 
+    <div class="d-none" id="pagesId"></div>
+    <f:for each="{pagesId}" as="id">
+        <div class="d-none pageId"  data-tr-label="{id}"></div>
+    </f:for>
+    <div class="d-none" id="csvSettings" data-tr-label="{csvSettings}"></div>
+    <f:for each="{csvSettings}" key="key"  as="prop">
+        <f:if condition="{key} == filename">
+            <f:then>
+                <div class="d-none" id="dateFormat" data-tr-label="{prop.dateFormat}"></div>
+            </f:then>
+            <f:else>
+                <div class="d-none" id="{key}" data-tr-label="{prop}"></div>
+            </f:else>
+        </f:if>
+    </f:for>
+    <div class="d-none" id="currentPageId" data-tr-label="{currentPageId}"></div>
+
+</f:form>
 <f:section name="buttons">
     <f:form.submit value="{f:translate(key: 'filter.submit')}" class="btn btn-default"/>
     <a href="{resetButton.href}" class="btn btn-default">{f:translate(key:'filter.reset')}</a>
-
-    <a class="btn btn-default" href="{f:be.uri(route: 'export_{action}',  parameters: '{_all}')}">  {csvButton.icon -> f:format.raw()}
-        {f:translate(key:'links.exportCsv')} </a>
-
+   <button class="btn btn-default" onclick="exportFunction(event, '{action}')">{csvButton.icon -> f:format.raw()} {f:translate(key:'links.exportCsv')}</button>
 </f:section>
+
 
 
