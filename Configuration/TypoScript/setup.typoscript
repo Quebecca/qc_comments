@@ -53,7 +53,7 @@ module.tx_qccomments {
 
         csvExport {
             filename {
-                dateFormat = YmdHi
+                dateFormat = Ymd
             }
             separator = ;
             enclosure = "

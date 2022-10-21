@@ -296,8 +296,8 @@ abstract class QcBackendModuleController extends BackendModuleActionController
     {
         $format = $csvDateFormat;
         if($filter->getDateRange() == 'userDefined'){
-            $from = $filter->getStartDate();
-            $now = $filter->getEndDate();
+            $from = date($format,strtotime($filter->getStartDate()));
+            $now = date($format,strtotime($filter->getEndDate()));
         }
         else
             $now = date($format, strtotime('-'.$filter->getDateRange(), strtotime(date($format))));
@@ -326,7 +326,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         $separator = $csvSettings['separator'] ?? ',';
         $enclosure = $csvSettings['enclosure'] ?? '"';
         $escape = $csvSettings['escape'] ?? '\\';
-        $csvDateFormat = $csvSettings['filename']['dateFormat'] ?? 'YmdHi';
+        $csvDateFormat = $csvSettings['dateFormat'] ?? 'YmdHi';
         $fileName = $this->getCSVFilename($filter, $fileName, $csvDateFormat, $pageId);
 
         $response = new Response(
