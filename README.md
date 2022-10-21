@@ -78,7 +78,8 @@ By using this tab, the administrator can list the comments records that are sent
 ![Comments tab](Documentation/Images/comments.PNG)
 
 
-Note : All the rendering data for each tab can be filtered and exported as a csv file.
+The extension also came with an export function that allow user to export comment or statistiques based on the filter options.
+
 The rendering result can be controlled by Typoscript configuration:
 
     module.tx_qccomments {
@@ -175,7 +176,9 @@ négatifs.
 En utilisant cette tabulation, l'administrateur peut lister les commentaires envoyés par page.
 
 NB : Tous les données listés dans les deux tabulations peuvent être filtré or exporter sous format csv.
-L'affichage dans deux tabulations peut être controller en utilisant la configuration typiscript ce dessous :
+NB : L'extension support aussi une fonctionnalité qui permet d'exporter les commentaires ou les résultats des statistiques en se basant sur les options de filtres sélectionnées.
+
+L'affichage dans deux tabulations peut être controller en utilisant la configuration typoscript ce dessous :
 
     module.tx_qccomments {
         settings {
