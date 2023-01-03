@@ -56,11 +56,14 @@
                                             data="{date-type: 'date'}"
                                             id="comment-textarea"
                                     />
+                                    <span id="error-message-to-short" class="d-none">La valeur entrée est trop courte.</span>
+                                    <span id="error-message-empty" class="d-none">Le champ de commentaire est vide.</span>
 
                                     <div class="d-none" id="maxLabel" data-tr-label="{f:translate(key: 'max', extensionName:'qc_comments')}"></div>
                                     <div class="d-none" id="charLabel" data-tr-label="{f:translate(key='characters', extensionName='qc_comments')}"></div>
                                     <div class="d-none" id="sitekey" data-tr-label="{recaptchaConfig.sitekey}"></div>
                                     <div class="d-none" id="maxCharacters" data-tr-label="{config.maxCharacters}"></div>
+                                    <div class="d-none" id="minCharacters" data-tr-label="{config.minCharacters}"></div>
 
                                     <div id="infoMaxCaracteres" class="infoSupplJs" aria-hidden="true">
                                         <span id="limitLabel">
@@ -82,7 +85,7 @@
                                         <f:else>
                                             <f:form.submit
                                                     value="{f:translate(key: 'submit', extensionName:'qc_comments')}"
-                                                    class="btn btn-primary displayBlock submit-button"
+                                                    class="btn btn-primary displayBlock submit-button" id="submitButton"
                                                     />
                                         </f:else>
                                     </f:if>
