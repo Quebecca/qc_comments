@@ -4,35 +4,33 @@
 // if true disable submit button
 // Il faut vérifier que usefull or non is checked
 
+function commentValidation() {
+    let maxCharacters = document.getElementById('maxCharacters').getAttribute('data-tr-label') ?? '';
+    let minCharacters = document.getElementById('minCharacters').getAttribute('data-tr-label') ?? '';
+    let textareaElement = $('#comment-textarea');
+    var commentLength = textareaElement.val().length;
+
+    return ( minCharacters < commentLength && commentLength < maxCharacters ) || commentLength === 0;
+
+}
 if (document.getElementById('commentForm') !== null) {
     let siteKeyElement = document.getElementById('sitekey');
     let siteKey = siteKeyElement.getAttribute('data-tr-label') ?? '';
     window.addEventListener("DOMContentLoaded", function () {
 
-        let maxCharacters = document.getElementById('maxCharacters').getAttribute('data-tr-label') ?? '';
-        let minCharacters = document.getElementById('minCharacters').getAttribute('data-tr-label') ?? '';
-
         $('#commentForm').submit(function (e) {
-            let textareaElement = $('#comment-textarea')
-            var commentLenght = textareaElement.val().length;
-            let condition = commentLenght < minCharacters || commentLenght > maxCharacters ;
-            textareaElement.toggleClass('error-textarea',condition )
-            $('#submitButton').attr('disabled', condition)
-            $('#error-message-empty').toggleClass('d-none', (!condition && commentLenght !== 0))
-            $('#error-message-to-short').toggleClass('d-none', (!condition && commentLenght === 0))
-
-            if(condition)
+            let validComment = commentValidation();
+            if(!validComment)
                 e.preventDefault()
+            $('#submitButton').attr('disabled', validComment)
+            $('#error-message-to-short').toggleClass('d-none', validComment)
 
-            textareaElement.on('keyup', function () {
-                commentLenght = $(this).val().length;
-                let condition = commentLenght < minCharacters || commentLenght > maxCharacters;
-                $(this).toggleClass('error-textarea',condition )
-                $('#submitButton').attr('disabled', condition)
-                $('#error-message-empty').toggleClass('d-none', (!condition && commentLenght !== 0))
-                $('#error-message-to-short').toggleClass('d-none', (!condition && commentLenght === 0))
-
+            $('#comment-textarea').on('keyup', function () {
+                $(this).toggleClass('error-textarea',commentValidation() )
+                $('#submitButton').attr('disabled', commentValidation())
+                $('#error-message-to-short').toggleClass('d-none',commentValidation())
             })
+
             grecaptcha.ready(function (token) {
                 grecaptcha.execute(siteKey, {action: 'submit'}).then(function (token) {
                     return true;
@@ -41,6 +39,8 @@ if (document.getElementById('commentForm') !== null) {
         })
     });
 
+
+    // Recaptcha
     function onCompleted() {
         $('form .powermail_submit').prop("disabled", true);
         document.getElementById('comment-section').className = 'form-group d-block';
@@ -52,7 +52,10 @@ if (document.getElementById('commentForm') !== null) {
         $('#commentForm').trigger('submit', [true]);
     }
 
+
+
     // Comment content validation
+    // Controller le commentaire au moment de saisi
 
     let maxCharacters = document.getElementById('maxCharacters').getAttribute('data-tr-label') ?? '';
     let minCharacters = document.getElementById('minCharacters').getAttribute('data-tr-label') ?? '';
@@ -63,8 +66,6 @@ if (document.getElementById('commentForm') !== null) {
 
     maxLabel = document.getElementById('maxLabel').getAttribute('data-tr-label')
     charLabel = document.getElementById('charLabel').getAttribute('data-tr-label')
-
-
     textareaElement.setAttribute("maxlength", maxCharacters);
     textareaElement.addEventListener("keydown", (event) => {
         var length = textareaElement.value.length
@@ -85,6 +86,7 @@ if (document.getElementById('commentForm') !== null) {
         }
     });
 
+    // Afficher le text-area quand on selectionne "Oui" ou "Non"
     [
         document.getElementById('usefulN'),
         document.getElementById('usefulY')
