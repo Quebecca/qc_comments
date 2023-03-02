@@ -42,11 +42,11 @@ if (document.getElementById('commentForm') !== null) {
         $('submitButton').prop("disabled", true);
         document.getElementById('comment-section').className = 'form-group d-block';
         document.getElementById('questionsLink-section').className = 'col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse sansBorder d-block';
-        setTimeout(function enable() {
+     /*   setTimeout(function enable() {
             submitAmount = 0;
             $('#submitButton').prop("disabled", false);
-        }, 2000);
-        $('#commentForm').trigger('submit', [true]);
+        }, 2000);*/
+        //$('#commentForm').trigger('submit', [true]);
     }
 
     function commentValidation() {

@@ -14,7 +14,7 @@ plugin.commentsForm {
 
         // Activate recaptcha
         recaptcha {
-            enabled = 1
+            enabled = 0
             sitekey = {$plugin.tx_invisiblerecaptcha.sitekey}
             secret = {$plugin.tx_invisiblerecaptcha.secretkey}
         }
