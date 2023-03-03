@@ -104,7 +104,7 @@ class StatisticsTabController extends QcBackendModuleController
         // Resort array elements for export
         $mappedData = [];
         $i = 0;
-        $headers = array_keys($this->getHeaders());
+        $headers = $this->getHeaders();
         foreach ($data as $record) {
             foreach ($this->getHeaders() as $headerKey => $header) {
                 $mappedData[$record['pages_uid']][$i][$headerKey] = $record[$headerKey];

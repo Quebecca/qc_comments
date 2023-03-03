@@ -141,7 +141,7 @@ class CommentsTabController extends QcBackendModuleController
             $pagesData = [$request->getQueryParams()['parameters']['currentPageId']];
 
         $data = $this->commentsRepository->getComments($pagesData, false, self::DEFAULT_ORDER_TYPES);
-        $headers = array_keys($this->getHeaders(true));
+        $headers = $this->getHeaders(true);
         foreach ($data as $row) {
             array_walk($row, function (&$field) {
                 $field = str_replace("\r", ' ', $field);
