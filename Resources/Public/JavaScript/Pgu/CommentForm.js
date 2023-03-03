@@ -38,10 +38,20 @@ if (document.getElementById('commentForm') !== null) {
 
 
         var submitAmount = 0;
+        $('#comment-textarea').on('keyup', function () {
+            checkCommentLength();
+        });
         $('#commentForm').submit(function (event) {
-                if (skipRecaptcha === '0') {
+                if (skipRecaptcha === '0' && commentValidation()) {
                     return true;
                 }
+                if(!commentValidation()){
+                    event.preventDefault()
+                }
+                $('#comment-textarea').on('keyup', function () {
+                    commentValidation();
+                });
+
                 if (typeof grecaptcha == 'object') {
                     if (!grecaptcha.getResponse()) {
                         event.preventDefault();
