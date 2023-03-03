@@ -54,11 +54,9 @@
                                         <f:form.textarea
                                                 property="comment"
                                                 class="powermail_textarea form-control"
-                                                data="{date-type: 'date'}"
                                                 id="comment-textarea"
                                         />
-                                        <span id="error-message-to-short" class="d-none">La valeur entrée est trop courte.</span>
-                                        <span id="error-message-empty" class="d-none">Le champ de commentaire est vide.</span>
+                                        <span id="error-message-too-short" class="d-none"><f:translate key="too-short-comment"/></span>
 
                                         <div class="d-none" id="maxLabel" data-tr-label="{f:translate(key: 'max')}"></div>
                                         <div class="d-none" id="charLabel" data-tr-label="{f:translate(key='characters')}"></div>
@@ -75,14 +73,8 @@
                                         <br>
                                         <f:if condition="{recaptchaConfig.enabled} == '1'">
                                             <f:then>
-                                                <button
-                                                        id="submitButton"
-                                                        data-sitekey="{recaptchaConfig.sitekey}"
-                                                        data-callback="onCompleted"
-                                                        class="btn btn-primary displayBlock g-recaptcha submit-button"
-                                                >
-                                                    {f:translate(key: 'submit')}
-                                                </button>
+                                                <div id="recaptcha" class="g-recaptcha" data-sitekey="{recaptchaConfig.sitekey}" data-size="invisible" data-callback="onCompleted"></div>
+                                                <input id="submitButton" class="btn btn-primary displayBlock g-recaptcha submit-button" type="submit" value="{f:translate(key: 'submit')}"/>
                                             </f:then>
                                             <f:else>
                                                 <f:form.submit

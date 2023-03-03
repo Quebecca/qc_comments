@@ -17,26 +17,6 @@ if (document.getElementById('commentForm') !== null) {
     });
 
     window.addEventListener("DOMContentLoaded", function () {
-
- /*       $('#comment-textarea').on('keyup', function () {
-            checkCommentLength();
-        });
-
-        $('#commentForm').submit(function (e) {
-            if(!commentValidation())
-                e.preventDefault()
-            $('#comment-textarea').on('keyup', function () {
-                commentValidation();
-            })
-
-            grecaptcha.ready(function (token) {
-                grecaptcha.execute(siteKey, {action: 'submit'}).then(function (token) {
-                    return true;
-                });
-            })
-        })*/
-
-
         var submitAmount = 0;
         $('#comment-textarea').on('keyup', function () {
             checkCommentLength();
@@ -92,7 +72,7 @@ if (document.getElementById('commentForm') !== null) {
         var commentLength = textareaElement.val().length;
         let validComment = ( minCharacters <= commentLength && commentLength <= maxCharacters ) || commentLength === 0;
         $('#submitButton').attr('disabled', !validComment)
-        $('#error-message-to-short').toggleClass('d-none', validComment)
+        $('#error-message-too-short').toggleClass('d-none', validComment)
         $(textareaElement).toggleClass('error-textarea',!validComment)
         return validComment;
     }
@@ -100,7 +80,12 @@ if (document.getElementById('commentForm') !== null) {
     function checkCommentLength(){
         maxLabel = document.getElementById('maxLabel').getAttribute('data-tr-label')
         charLabel = document.getElementById('charLabel').getAttribute('data-tr-label')
-        document.getElementById('limitLabel').innerHTML = maxLabel + (maxCharacters -  $('#comment-textarea').val().length) + charLabel
-
+        var currentLength = maxCharacters -  $('#comment-textarea').val().length
+        if(currentLength >= 0){
+            document.getElementById('limitLabel').innerHTML = maxLabel + currentLength + charLabel
+        }
+        /*if(currentLength <= 0){
+            $('#comment-textarea').attr("maxlength",0);
+        }*/
     }
 }
