@@ -4,120 +4,123 @@
 <f:variable name="pageUid" value="{v:page.info(field: 'uid')}"/>
 <f:variable name="checkBasPageMode" value="{modeBasPage -> qcComments:CheckBasPageMode(pageUid: pageUid)}"/>
 <f:if condition="{checkBasPageMode} || {settings.activeModeBasPage} = 'true'">
-    <div class="frame frame-default frame-type-list frame-layout-0">
-        <h2>
-            <f:translate key="formSectionTitle"/>
-        </h2>
-        <div class="tx-powermail">
-            <f:if condition="{submitted}">
-                <f:then>
-                    <div class="powermail_create" role="alert">
-                        <p>
-                            <f:translate key="isThePageUseful"/>
-                        </p>
-                    </div>
-                </f:then>
-                <f:else>
-                    <f:variable name="absUrl" value="{v:page.absoluteUrl()}"/>
-                    <div class="row">
-                        <div class="comments-form col-12 col-lg-8 sansBorder ">
-                            <f:form action="saveComment" object="{comment}" objectName="comment" id="commentForm">
-                                <f:form.hidden property="urlOrig" value="{absUrl}"/>
-                                <f:form.hidden property="uidOrig" value="{v:page.info(field: 'uid')}"/>
-                                <div class="form-inline powermail_fieldwrap powermail_fieldwrap_type_radio powermail_fieldwrap_pageutile  form-group col-md-12">
-                                    <legend class="control-label">
-                                        <f:translate key="isThePageUseful"/>
-                                    </legend>
-                                    <div class="form-group radio mt-1 flex-row useful-block" >
-                                        <f:form.radio property="useful" value="1" id="usefulY" checked="false"/>
-                                        <label for="usefulY" class="useful-label powermail_field_pageutile_1">
-                                            <f:translate key="yes"/>
-                                        </label>
+    <div class="col-12 formBasPage" id="formBasPageCommentaire">
+        <div class="frame frame-default frame-type-list frame-layout-0">
+            <h2>
+                <f:translate key="formSectionTitle"/>
+            </h2>
+            <div class="tx-powermail">
+                <f:if condition="{submitted}">
+                    <f:then>
+                        <div class="powermail_create" role="alert">
+                            <p>
+                                <f:translate key="isThePageUseful"/>
+                            </p>
+                        </div>
+                    </f:then>
+                    <f:else>
+                        <f:variable name="absUrl" value="{v:page.absoluteUrl()}"/>
+                        <div class="row">
+                            <div class="comments-form col-12 col-lg-8 sansBorder ">
+                                <f:form action="saveComment" object="{comment}" objectName="comment" id="commentForm">
+                                    <f:form.hidden property="urlOrig" value="{absUrl}"/>
+                                    <f:form.hidden property="uidOrig" value="{v:page.info(field: 'uid')}"/>
+                                    <div class="form-inline powermail_fieldwrap powermail_fieldwrap_type_radio powermail_fieldwrap_pageutile  form-group col-md-12">
+                                        <legend class="control-label">
+                                            <f:translate key="isThePageUseful"/>
+                                        </legend>
+                                        <div class="form-group radio mt-1 flex-row useful-block" >
+                                            <f:form.radio property="useful" value="1" id="usefulY" checked="false"/>
+                                            <label for="usefulY" class="useful-label powermail_field_pageutile_1">
+                                                <f:translate key="yes"/>
+                                            </label>
+                                        </div>
+                                        <div class="form-group radio mt-1 flex-row useful-block">
+                                            <f:form.radio property="useful" value="0" id="usefulN" checked="false"/>
+                                            <label for="usefulN" class="useful-label">
+                                                <f:translate key="no"/>
+                                            </label>
+                                        </div>
                                     </div>
-                                    <div class="form-group radio mt-1 flex-row useful-block">
-                                        <f:form.radio property="useful" value="0" id="usefulN" checked="false"/>
-                                        <label for="usefulN" class="useful-label">
-                                            <f:translate key="no"/>
-                                        </label>
-                                    </div>
-                                </div>
 
-                                <div id="comment-section" class="form-group d-none">
+                                    <div id="comment-section" class="form-group d-none">
 
-                                    <label for="comment-textarea" class="control-label" title="">
-                                        <f:translate key="haveYouAComment" />
-                                        <span id="commentpage_complement_label" class="complementLabel">
+                                        <label for="comment-textarea" class="control-label" title="">
+                                            <f:translate key="haveYouAComment" />
+                                            <span id="commentpage_complement_label" class="complementLabel">
                                                 <f:translate key="haveYouACommentDescription" />
                                         </span>
-                                    </label>
-                                    <f:form.textarea
-                                            property="comment"
-                                            class="powermail_textarea form-control"
-                                            data="{date-type: 'date'}"
-                                            id="comment-textarea"
-                                    />
-                                    <span id="error-message-to-short" class="d-none">La valeur entrée est trop courte.</span>
-                                    <span id="error-message-empty" class="d-none">Le champ de commentaire est vide.</span>
+                                        </label>
+                                        <f:form.textarea
+                                                property="comment"
+                                                class="powermail_textarea form-control"
+                                                data="{date-type: 'date'}"
+                                                id="comment-textarea"
+                                        />
+                                        <span id="error-message-to-short" class="d-none">La valeur entrée est trop courte.</span>
+                                        <span id="error-message-empty" class="d-none">Le champ de commentaire est vide.</span>
 
-                                    <div class="d-none" id="maxLabel" data-tr-label="{f:translate(key: 'max')}"></div>
-                                    <div class="d-none" id="charLabel" data-tr-label="{f:translate(key='characters')}"></div>
-                                    <div class="d-none" id="sitekey" data-tr-label="{recaptchaConfig.sitekey}"></div>
-                                    <div class="d-none" id="maxCharacters" data-tr-label="{config.maxCharacters}"></div>
-                                    <div class="d-none" id="minCharacters" data-tr-label="{config.minCharacters}"></div>
+                                        <div class="d-none" id="maxLabel" data-tr-label="{f:translate(key: 'max')}"></div>
+                                        <div class="d-none" id="charLabel" data-tr-label="{f:translate(key='characters')}"></div>
+                                        <div class="d-none" id="sitekey" data-tr-label="{recaptchaConfig.sitekey}"></div>
+                                        <div class="d-none" id="maxCharacters" data-tr-label="{config.maxCharacters}"></div>
+                                        <div class="d-none" id="minCharacters" data-tr-label="{config.minCharacters}"></div>
 
-                                    <div id="infoMaxCaracteres" class="infoSupplJs" aria-hidden="true">
+                                        <div id="infoMaxCaracteres" class="infoSupplJs" aria-hidden="true">
                                         <span id="limitLabel">
                                           <f:translate key="max"/> {config.maxCharacters} <f:translate key="characters"/>
                                         </span>
+                                        </div>
+                                        <br>
+                                        <f:if condition="{recaptchaConfig.enabled} == '1'">
+                                            <f:then>
+                                                <button
+                                                        id="submitButton"
+                                                        data-sitekey="{recaptchaConfig.sitekey}"
+                                                        data-callback="onCompleted"
+                                                        class="btn btn-primary displayBlock g-recaptcha submit-button"
+                                                >
+                                                    {f:translate(key: 'submit')}
+                                                </button>
+                                            </f:then>
+                                            <f:else>
+                                                <f:form.submit
+                                                        id="submitButton"
+                                                        value="{f:translate(key: 'submit')}"
+                                                        class="btn btn-primary displayBlock submit-button"
+                                                />
+                                            </f:else>
+                                        </f:if>
                                     </div>
-                                    <br>
-                                    <f:if condition="{recaptchaConfig.enabled} == '1'">
-                                        <f:then>
-                                            <button
-                                                    id="submitButton"
-                                                    data-sitekey="{recaptchaConfig.sitekey}"
-                                                    data-callback="onCompleted"
-                                                    class="btn btn-primary displayBlock g-recaptcha submit-button"
-                                                    >
-                                                {f:translate(key: 'submit')}
-                                            </button>
-                                        </f:then>
-                                        <f:else>
-                                            <f:form.submit
-                                                    id="submitButton"
-                                                    value="{f:translate(key: 'submit')}"
-                                                    class="btn btn-primary displayBlock submit-button"
-                                                    />
-                                        </f:else>
-                                    </f:if>
-                                </div>
-                            </f:form>
-                        </div>
-                        <div class="col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse sansBorder d-none"
-                             id="questionsLink-section">
-                            <div class="powermail_fieldwrap powermail_fieldwrap_type_content powermail_fieldwrap_servicesquebecform form-group col-md-12 displayFlex">
-                                <div class=" col-sm-offset-2">
-                                    <div id="c34335"
-                                         class=" frame frame-avisInterr frame-type-textmedia frame-layout-0">
-                                        <div class="ce-textpic ce-left ce-above">
-                                            <div class="ce-bodytext">
-                                                <h3>
-                                                    <f:translate key="questionsOrHelp" />
-                                                </h3>
-                                                <p><a href="/nous-joindre">
-                                                    <f:translate key="contactTheService"/>
-                                                </a></p>
+                                </f:form>
+                            </div>
+                            <div class="col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse sansBorder d-none"
+                                 id="questionsLink-section">
+                                <div class="powermail_fieldwrap powermail_fieldwrap_type_content powermail_fieldwrap_servicesquebecform form-group col-md-12 displayFlex">
+                                    <div class=" col-sm-offset-2">
+                                        <div id="c34335"
+                                             class=" frame frame-avisInterr frame-type-textmedia frame-layout-0">
+                                            <div class="ce-textpic ce-left ce-above">
+                                                <div class="ce-bodytext">
+                                                    <h3>
+                                                        <f:translate key="questionsOrHelp" />
+                                                    </h3>
+                                                    <p><a href="/nous-joindre">
+                                                        <f:translate key="contactTheService"/>
+                                                    </a></p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                    </div>
-                </f:else>
-            </f:if>
+                        </div>
+                    </f:else>
+                </f:if>
+            </div>
         </div>
+
 
     </div>
 </f:if>

@@ -1,8 +1,7 @@
 
 if (document.getElementById('commentForm') !== null) {
 
-    let siteKeyElement = document.getElementById('sitekey');
-    let siteKey = siteKeyElement.getAttribute('data-tr-label') ?? '';
+    let siteKey = document.getElementById('sitekey').getAttribute('data-tr-label') ?? '';
     let maxCharacters = document.getElementById('maxCharacters').getAttribute('data-tr-label') ?? '';
     let minCharacters = document.getElementById('minCharacters').getAttribute('data-tr-label') ?? '';
 
@@ -19,7 +18,7 @@ if (document.getElementById('commentForm') !== null) {
 
     window.addEventListener("DOMContentLoaded", function () {
 
-        $('#comment-textarea').on('keyup', function () {
+ /*       $('#comment-textarea').on('keyup', function () {
             checkCommentLength();
         });
 
@@ -35,18 +34,47 @@ if (document.getElementById('commentForm') !== null) {
                     return true;
                 });
             })
-        })
+        })*/
+
+
+        var submitAmount = 0;
+        $('#commentForm').submit(function (event, skipRecaptcha) {
+                if (skipRecaptcha) {
+                    return true;
+                }
+                if (typeof grecaptcha == 'object') {
+                    if (!grecaptcha.getResponse()) {
+                        event.preventDefault();
+                        grecaptcha.execute();
+                    }
+                } else {
+                    event.preventDefault();
+                }
+            });
+           $('#commentForm #submitButton').mousedown(function (event) {
+                var field = this;
+                if (submitAmount === 0) {
+                    submitAmount++;
+                    field.disabled = true;
+                    setTimeout(function enable() {
+                        submitAmount = 0;
+                        field.disabled = false;
+                    }, 6000);
+                    $('#commentForm').trigger('submit');
+                }
+            });
+
     });
 
     function onCompleted() {
-        $('submitButton').prop("disabled", true);
-        document.getElementById('comment-section').className = 'form-group d-block';
-        document.getElementById('questionsLink-section').className = 'col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse sansBorder d-block';
-     /*   setTimeout(function enable() {
+        $('#submitButton').prop("disabled", true);
+       // document.getElementById('comment-section').className = 'form-group d-block';
+       // document.getElementById('questionsLink-section').className = 'col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse sansBorder d-block';
+       setTimeout(function enable() {
             submitAmount = 0;
             $('#submitButton').prop("disabled", false);
-        }, 2000);*/
-        //$('#commentForm').trigger('submit', [true]);
+        }, 2000);
+        $('#commentForm').trigger('submit', [true]);
     }
 
     function commentValidation() {
