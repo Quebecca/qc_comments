@@ -4,7 +4,7 @@ if (document.getElementById('commentForm') !== null) {
     let siteKey = document.getElementById('sitekey').getAttribute('data-tr-label') ?? '';
     let maxCharacters = document.getElementById('maxCharacters').getAttribute('data-tr-label') ?? '';
     let minCharacters = document.getElementById('minCharacters').getAttribute('data-tr-label') ?? '';
-
+    let skipRecaptcha = document.getElementById('skipRecaptcha').getAttribute('data-tr-label') ?? '';
     // Afficher le text-area quand on sélectionne "Oui" ou "Non"
     [
         document.getElementById('usefulN'),
@@ -38,8 +38,8 @@ if (document.getElementById('commentForm') !== null) {
 
 
         var submitAmount = 0;
-        $('#commentForm').submit(function (event, skipRecaptcha) {
-                if (skipRecaptcha) {
+        $('#commentForm').submit(function (event) {
+                if (skipRecaptcha === '0') {
                     return true;
                 }
                 if (typeof grecaptcha == 'object') {
