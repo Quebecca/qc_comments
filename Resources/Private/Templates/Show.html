@@ -3,6 +3,7 @@
 
 <f:variable name="pageUid" value="{v:page.info(field: 'uid')}"/>
 <f:variable name="checkBasPageMode" value="{modeBasPage -> qcComments:CheckBasPageMode(pageUid: pageUid)}"/>
+<div class="d-none" id="lang" data-tr-label="{v:page.language(languages: 'fr,en', pageUid: '0', normalWhenNoLanguage: 'fr')}"></div>
 <f:if condition="{checkBasPageMode} || {settings.activeModeBasPage} = 'true'">
     <div class="col-12 formBasPage" id="formBasPageCommentaire">
         <div class="frame frame-default frame-type-list frame-layout-0">
@@ -73,8 +74,16 @@
                                         <br>
                                         <f:if condition="{recaptchaConfig.enabled} == '1'">
                                             <f:then>
-                                                <div id="recaptcha" class="g-recaptcha" data-sitekey="{recaptchaConfig.sitekey}" data-size="invisible" data-callback="onCompleted"></div>
-                                                <input id="submitButton" class="btn btn-primary displayBlock g-recaptcha submit-button" type="submit" value="{f:translate(key: 'submit')}"/>
+                                                <div id="recaptcha"
+                                                     class="g-recaptcha"
+                                                     data-sitekey="{recaptchaConfig.sitekey}"
+                                                     data-size="invisible"
+                                                     data-callback="onCompleted">
+                                                </div>
+                                                <input id="submitButton"
+                                                       class="btn btn-primary displayBlock g-recaptcha submit-button"
+                                                       type="submit"
+                                                       value="{f:translate(key: 'submit')}"/>
                                             </f:then>
                                             <f:else>
                                                 <f:form.submit
@@ -113,9 +122,5 @@
                 </f:if>
             </div>
         </div>
-
-
     </div>
 </f:if>
-
-<script src="https://www.google.com/recaptcha/api.js?render={recaptchaConfig.sitekey}"></script>

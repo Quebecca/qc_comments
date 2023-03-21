@@ -1,6 +1,5 @@
 
 if (document.getElementById('commentForm') !== null) {
-
     let siteKey = document.getElementById('sitekey').getAttribute('data-tr-label') ?? '';
     let maxCharacters = document.getElementById('maxCharacters').getAttribute('data-tr-label') ?? '';
     let minCharacters = document.getElementById('minCharacters').getAttribute('data-tr-label') ?? '';
@@ -18,6 +17,21 @@ if (document.getElementById('commentForm') !== null) {
 
     window.addEventListener("DOMContentLoaded", function () {
         var submitAmount = 0;
+        var isRecaptchaLoaded = false;
+        $('#commentForm :input').on('click',function (){
+            if(!isRecaptchaLoaded){
+                var lang = $('#lang').attr('data-tr-label')
+                // trigger loading api.js (recaptcha.js) script
+                var head = document.getElementsByTagName('head')[0];
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = 'https://www.google.com/recaptcha/api.js?render='+siteKey+'&hl='+lang;
+                head.appendChild(script);
+                isRecaptchaLoaded = true
+            }
+        })
+
+
         $('#comment-textarea').on('keyup', function () {
             checkCommentLength();
         });
