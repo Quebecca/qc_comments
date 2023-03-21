@@ -31,31 +31,35 @@ if (document.getElementById('commentForm') !== null) {
             }
         })
 
-
         $('#comment-textarea').on('keyup', function () {
             checkCommentLength();
         });
         $('#commentForm').submit(function (event) {
-                if (skipRecaptcha === '0' && commentValidation()) {
-                    return true;
+
+            if (skipRecaptcha === '0' && commentValidation()) {
+                $('#submitButton').prop("disabled", true);
+                return true;
                 }
-                if(!commentValidation()){
+            if(!commentValidation()){
                     event.preventDefault()
                 }
-                $('#comment-textarea').on('keyup', function () {
+            $('#comment-textarea').on('keyup', function () {
                     commentValidation();
                 });
 
-                if (typeof grecaptcha == 'object') {
-                    if (!grecaptcha.getResponse()) {
-                        event.preventDefault();
-                        grecaptcha.execute();
-                    }
-                } else {
+            if (typeof grecaptcha == 'object') {
+                if (!grecaptcha.getResponse()) {
                     event.preventDefault();
+                    grecaptcha.execute();
                 }
-            });
-           $('#commentForm #submitButton').mousedown(function (event) {
+            } else {
+                event.preventDefault();
+            }
+            $('#submitButton').prop("disabled", true);
+
+        });
+
+       $('#commentForm #submitButton').mousedown(function (event) {
                 var field = this;
                 if (submitAmount === 0) {
                     submitAmount++;
@@ -74,10 +78,10 @@ if (document.getElementById('commentForm') !== null) {
         $('#submitButton').prop("disabled", true);
        // document.getElementById('comment-section').className = 'form-group d-block';
        // document.getElementById('questionsLink-section').className = 'col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse sansBorder d-block';
-       setTimeout(function enable() {
+  /*     setTimeout(function enable() {
             submitAmount = 0;
             $('#submitButton').prop("disabled", false);
-        }, 2000);
+        }, 2000);*/
         $('#commentForm').trigger('submit', [true]);
     }
 
