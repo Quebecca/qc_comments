@@ -5,7 +5,7 @@
             <f:form.select property="lang"
                            options="{filter.langOptions}"
                            optionLabelField="title"
-                           class="form-control"
+                           class="form-control form-select"
                            id="lang"
             />
         </div>
@@ -14,7 +14,7 @@
             <f:form.select property="depth"
                            options="{filter.depthOptions}"
                            optionLabelField="title"
-                           class="form-control"
+                           class="form-control form-select"
                            id="depth"
             />
         </div>
@@ -24,7 +24,7 @@
                 <f:form.select property="useful"
                                options="{filter.commentsUtility}"
                                optionLabelField="title"
-                               class="form-control"
+                               class="form-control form-select"
                                id="useful"
                 />
             </div>
@@ -35,7 +35,7 @@
                            options="{filter.dateRangeOptions}"
                            optionLabelField="title"
                            additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
-                           class="form-control"
+                           class="form-control form-select"
                            id="selectDateRange"
             />
         </div>
