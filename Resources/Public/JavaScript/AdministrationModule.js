@@ -16,6 +16,7 @@ function exportFunction(event, actionName){
         'lang' : $('#lang option:selected').val(),
         'depth' : $('#depth option:selected').val(),
         'useful' : $('#useful option:selected').val(),
+        'includeEmptyPages' : $('#includeEmptyPages').is(":checked"),
         'selectDateRange' : $('#selectDateRange option:selected').val(),
         'pagesId' : pageIds,
         'csvSettings' : csvSettings,
