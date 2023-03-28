@@ -1,25 +1,24 @@
-
-if (document.getElementById('commentForm') !== null) {
-    let siteKey = document.getElementById('sitekey').getAttribute('data-tr-label') ?? '';
-    let maxCharacters = document.getElementById('maxCharacters').getAttribute('data-tr-label') ?? '';
-    let minCharacters = document.getElementById('minCharacters').getAttribute('data-tr-label') ?? '';
-    let skipRecaptcha = document.getElementById('skipRecaptcha').getAttribute('data-tr-label') ?? '';
-    // Afficher le text-area quand on sélectionne "Oui" ou "Non"
-    [
-        document.getElementById('usefulN'),
-        document.getElementById('usefulY')
-    ].map(function (element) {
-        element.addEventListener("change", function () {
-            document.getElementById('comment-section').className = 'form-group d-block';
-            document.getElementById('questionsLink-section').className = 'col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse sansBorder d-block';
+$(document).ready(function(){
+    if (document.getElementById('commentForm') !== null) {
+        let siteKey = document.getElementById('sitekey').getAttribute('data-tr-label') ?? '';
+        let maxCharacters = document.getElementById('maxCharacters').getAttribute('data-tr-label') ?? '';
+        let minCharacters = document.getElementById('minCharacters').getAttribute('data-tr-label') ?? '';
+        let skipRecaptcha = document.getElementById('skipRecaptcha').getAttribute('data-tr-label') ?? '';
+        // Afficher le text-area quand on sélectionne "Oui" ou "Non"
+        [
+            document.getElementById('usefulN'),
+            document.getElementById('usefulY')
+        ].map(function (element) {
+            element.addEventListener("change", function () {
+                document.getElementById('comment-section').className = 'form-group d-block';
+                document.getElementById('questionsLink-section').className = 'col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse sansBorder d-block';
+            });
         });
-    });
 
-    window.addEventListener("DOMContentLoaded", function () {
         var submitAmount = 0;
         var isRecaptchaLoaded = false;
         $('#commentForm :input').on('click',function (){
-            if(!isRecaptchaLoaded){
+            if(!isRecaptchaLoaded && skipRecaptcha === '1'){
                 var lang = $('#lang').attr('data-tr-label')
                 // trigger loading api.js (recaptcha.js) script
                 var head = document.getElementsByTagName('head')[0];
@@ -39,13 +38,13 @@ if (document.getElementById('commentForm') !== null) {
             if (skipRecaptcha === '0' && commentValidation()) {
                 $('#submitButton').prop("disabled", true);
                 return true;
-                }
+            }
             if(!commentValidation()){
-                    event.preventDefault()
-                }
+                event.preventDefault()
+            }
             $('#comment-textarea').on('keyup', function () {
-                    commentValidation();
-                });
+                commentValidation();
+            });
 
             if (typeof grecaptcha == 'object') {
                 if (!grecaptcha.getResponse()) {
@@ -59,51 +58,51 @@ if (document.getElementById('commentForm') !== null) {
 
         });
 
-       $('#commentForm #submitButton').mousedown(function (event) {
-                var field = this;
-                if (submitAmount === 0) {
-                    submitAmount++;
-                    field.disabled = true;
-                    setTimeout(function enable() {
-                        submitAmount = 0;
-                        field.disabled = false;
-                    }, 6000);
-                    $('#commentForm').trigger('submit');
-                }
-            });
+        $('#commentForm #submitButton').mousedown(function (event) {
+            var field = this;
+            if (submitAmount === 0) {
+                submitAmount++;
+                field.disabled = true;
+                setTimeout(function enable() {
+                    submitAmount = 0;
+                    field.disabled = false;
+                }, 6000);
+                $('#commentForm').trigger('submit');
+            }
+        });
 
-    });
 
-    function onCompleted() {
-        $('#submitButton').prop("disabled", true);
-       // document.getElementById('comment-section').className = 'form-group d-block';
-       // document.getElementById('questionsLink-section').className = 'col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse sansBorder d-block';
-  /*     setTimeout(function enable() {
-            submitAmount = 0;
-            $('#submitButton').prop("disabled", false);
-        }, 2000);*/
-        $('#commentForm').trigger('submit', [true]);
-    }
-
-    function commentValidation() {
-        let textareaElement = $('#comment-textarea');
-        var commentLength = textareaElement.val().length;
-        let validComment = ( minCharacters <= commentLength && commentLength <= maxCharacters ) || commentLength === 0;
-        $('#submitButton').attr('disabled', !validComment)
-        $('#error-message-too-short').toggleClass('d-none', validComment)
-        $(textareaElement).toggleClass('error-textarea',!validComment)
-        return validComment;
-    }
-
-    function checkCommentLength(){
-        maxLabel = document.getElementById('maxLabel').getAttribute('data-tr-label')
-        charLabel = document.getElementById('charLabel').getAttribute('data-tr-label')
-        var currentLength = maxCharacters -  $('#comment-textarea').val().length
-        if(currentLength >= 0){
-            document.getElementById('limitLabel').innerHTML = maxLabel + currentLength + charLabel
+        function onCompleted() {
+            $('#submitButton').prop("disabled", true);
+            // document.getElementById('comment-section').className = 'form-group d-block';
+            // document.getElementById('questionsLink-section').className = 'col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse sansBorder d-block';
+            /*     setTimeout(function enable() {
+                      submitAmount = 0;
+                      $('#submitButton').prop("disabled", false);
+                  }, 2000);*/
+            $('#commentForm').trigger('submit', [true]);
         }
-        /*if(currentLength <= 0){
-            $('#comment-textarea').attr("maxlength",0);
-        }*/
+
+        function commentValidation() {
+            let textareaElement = $('#comment-textarea');
+            var commentLength = textareaElement.val().length;
+            let validComment = ( minCharacters <= commentLength && commentLength <= maxCharacters ) || commentLength === 0;
+            $('#submitButton').attr('disabled', !validComment)
+            $('#error-message-too-short').toggleClass('d-none', validComment)
+            $(textareaElement).toggleClass('error-textarea',!validComment)
+            return validComment;
+        }
+
+        function checkCommentLength(){
+            maxLabel = document.getElementById('maxLabel').getAttribute('data-tr-label')
+            charLabel = document.getElementById('charLabel').getAttribute('data-tr-label')
+            var currentLength = maxCharacters -  $('#comment-textarea').val().length
+            if(currentLength >= 0){
+                document.getElementById('limitLabel').innerHTML = maxLabel + currentLength + charLabel
+            }
+            /*if(currentLength <= 0){
+                $('#comment-textarea').attr("maxlength",0);
+            }*/
+        }
     }
-}
+})

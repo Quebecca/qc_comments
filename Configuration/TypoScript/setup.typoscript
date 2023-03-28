@@ -1,8 +1,8 @@
-plugin.commentsForm {
+plugin.tx_qccomments {
     view {
-        templateRootPath = {$plugin.commentsForm.view.templateRootPath}
-        partialRootPath = {$plugin.commentsForm.view.partialRootPath}
-        layoutRootPath = {$plugin.commentsForm.view.layoutRootPath}
+        templateRootPaths = {$plugin.tx_qccomments.view.templateRootPath}
+        partialRootPaths = {$plugin.tx_qccomments.view.partialRootPath}
+        layoutRootPath = {$plugin.tx_qccomments.view.layoutRootPath}
     }
 
     settings {

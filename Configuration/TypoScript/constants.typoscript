@@ -1,5 +1,5 @@
 
-plugin.commentsForm {
+plugin.tx_qccomments {
     view {
         templateRootPath = EXT:qc_comments/Resources/Private/Templates/
         partialRootPath = EXT:qc_comments/Resources/Private/Partials/

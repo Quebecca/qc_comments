@@ -5,7 +5,7 @@ namespace Qc\QcComments\ViewHelpers;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
-class CheckBasPageModeViewHelper extends AbstractViewHelper
+class CheckPageModeViewHelper extends AbstractViewHelper
 {
 
     public function initializeArguments()

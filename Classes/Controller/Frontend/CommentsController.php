@@ -57,7 +57,7 @@ class CommentsController extends ActionController
         parent::initializeAction();
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         $typoScriptSettings = $typoScriptService->convertTypoScriptArrayToPlainArray($GLOBALS['TSFE']->tmpl->setup);
-        $this->tsConfig =$typoScriptSettings['plugin']['commentsForm']['settings'];
+        $this->tsConfig =$typoScriptSettings['plugin']['tx_qccomments']['settings'];
         $this->tsConfig['comments']['maxCharacters'] = (int)($this->tsConfig['comments']['maxCharacters']) > 0
             ? (int)($this->tsConfig['comments']['maxCharacters'])
             : self::DEFAULT_MAX_CHARACTERS;

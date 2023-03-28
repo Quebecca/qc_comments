@@ -2,18 +2,18 @@
 {namespace qcComments=Qc\QcComments\ViewHelpers}
 
 <f:variable name="pageUid" value="{v:page.info(field: 'uid')}"/>
-<f:variable name="checkBasPageMode" value="{modeBasPage -> qcComments:CheckBasPageMode(pageUid: pageUid)}"/>
+<f:variable name="checkPageMode" value="{modePage -> qcComments:CheckPageMode(pageUid: pageUid)}"/>
 <div class="d-none" id="lang" data-tr-label="{v:page.language(languages: 'fr,en', pageUid: '0', normalWhenNoLanguage: 'fr')}"></div>
-<f:if condition="{checkBasPageMode} || {settings.activeModeBasPage} = 'true'">
-    <div class="col-12 formBasPage" id="formBasPageCommentaire">
+<f:if condition="{checkPageMode}">
+    <div class="col-12">
         <div class="frame frame-default frame-type-list frame-layout-0">
             <h2>
                 <f:translate key="formSectionTitle"/>
             </h2>
-            <div class="tx-powermail">
+            <div>
                 <f:if condition="{submitted}">
                     <f:then>
-                        <div class="powermail_create" role="alert">
+                        <div role="alert">
                             <p>
                                 <f:translate key="formSubmittedSuccessfully"/>
                             </p>
@@ -26,13 +26,13 @@
                                 <f:form action="saveComment" object="{comment}" objectName="comment" id="commentForm">
                                     <f:form.hidden property="urlOrig" value="{absUrl}"/>
                                     <f:form.hidden property="uidOrig" value="{v:page.info(field: 'uid')}"/>
-                                    <div class="form-inline powermail_fieldwrap powermail_fieldwrap_type_radio powermail_fieldwrap_pageutile  form-group col-md-12">
+                                    <div class="form-inline form-group col-md-12">
                                         <legend class="control-label">
                                             <f:translate key="isThePageUseful"/>
                                         </legend>
                                         <div class="form-group radio mt-1 flex-row useful-block" >
                                             <f:form.radio property="useful" value="1" id="usefulY" checked="false"/>
-                                            <label for="usefulY" class="useful-label powermail_field_pageutile_1">
+                                            <label for="usefulY" class="useful-label">
                                                 <f:translate key="yes"/>
                                             </label>
                                         </div>
@@ -54,7 +54,7 @@
                                         </label>
                                         <f:form.textarea
                                                 property="comment"
-                                                class="powermail_textarea form-control"
+                                                class="form-control"
                                                 id="comment-textarea"
                                         />
                                         <span id="error-message-too-short" class="d-none"><f:translate key="too-short-comment"/></span>
@@ -98,7 +98,7 @@
                             </div>
                             <div class="col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse sansBorder d-none"
                                  id="questionsLink-section">
-                                <div class="powermail_fieldwrap powermail_fieldwrap_type_content powermail_fieldwrap_servicesquebecform form-group col-md-12 displayFlex">
+                                <div class="form-group col-md-12 displayFlex">
                                     <div class=" col-sm-offset-2">
                                         <div id="c34335"
                                              class=" frame frame-avisInterr frame-type-textmedia frame-layout-0">
