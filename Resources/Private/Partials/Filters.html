@@ -5,7 +5,7 @@
             <f:form.select property="lang"
                            options="{filter.langOptions}"
                            optionLabelField="title"
-                           class="form-control"
+                           class="form-control form-select"
                            id="lang"
             />
         </div>
@@ -14,7 +14,7 @@
             <f:form.select property="depth"
                            options="{filter.depthOptions}"
                            optionLabelField="title"
-                           class="form-control"
+                           class="form-control form-select"
                            id="depth"
             />
         </div>
@@ -24,7 +24,7 @@
                 <f:form.select property="useful"
                                options="{filter.commentsUtility}"
                                optionLabelField="title"
-                               class="form-control"
+                               class="form-control form-select"
                                id="useful"
                 />
             </div>
@@ -35,7 +35,7 @@
                            options="{filter.dateRangeOptions}"
                            optionLabelField="title"
                            additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
-                           class="form-control"
+                           class="form-control form-select"
                            id="selectDateRange"
             />
         </div>
@@ -82,9 +82,9 @@
         <div class="col-md-3">
             <f:form.checkbox property="includeEmptyPages"
                              value="1"
-                             id="emptyPage"
+                             id="includeEmptyPages"
             />
-            <label class="form-check-label" for="emptyPage">{f:translate(key: 'filter.includeEmptyPages')}</label>
+            <label class="form-check-label" for="includeEmptyPages">{f:translate(key: 'filter.includeEmptyPages')}</label>
 
         </div>
         <div class="col-md-4">
@@ -113,7 +113,7 @@
 <f:section name="buttons">
     <f:form.submit value="{f:translate(key: 'filter.submit')}" class="btn btn-default"/>
     <a href="{resetButton.href}" class="btn btn-default">{f:translate(key:'filter.reset')}</a>
-   <button class="btn btn-default" onclick="exportFunction(event, '{action}')">{csvButton.icon -> f:format.raw()} {f:translate(key:'links.exportCsv')}</button>
+   <button class="btn btn-default" onclick="exportFunction(event, '{action}')" id="cc">{csvButton.icon -> f:format.raw()} {f:translate(key:'links.exportCsv')}</button>
 </f:section>
 
 

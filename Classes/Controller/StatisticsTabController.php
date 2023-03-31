@@ -16,11 +16,8 @@ namespace Qc\QcComments\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Domain\Filter\Filter;
-use Qc\QcComments\Domain\Session\BackendSession;
-use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 
 class StatisticsTabController extends QcBackendModuleController
@@ -83,28 +80,25 @@ class StatisticsTabController extends QcBackendModuleController
      */
     public function exportStatisticsAction(ServerRequestInterface $request): ResponseInterface
     {
-        //$backendSession = GeneralUtility::makeInstance(BackendSession::class);
-        //$filter = $backendSession->get('filter') ?? new Filter();
-
         $filter = new Filter();
         $filter->setLang($request->getQueryParams()['parameters']['lang']);
         $filter->setDepth(intval($request->getQueryParams()['parameters']['depth']));
         $filter->setDateRange($request->getQueryParams()['parameters']['selectDateRange']);
         $filter->setStartDate($request->getQueryParams()['parameters']['startDate']);
         $filter->setEndDate($request->getQueryParams()['parameters']['endDate']);
-
+        $filter->setIncludeEmptyPages($request->getQueryParams()['parameters']['includeEmptyPages'] === 'true');
         $this->commentsRepository->setRootId(intval($request->getQueryParams()['parameters']['currentPageId']));
         $this->commentsRepository->setFilter($filter);
         $pagesData = $this->commentsRepository->getPageIdsList();
-        if(intval($request->getQueryParams()['parameters']['depth']) == 0)
+        if(intval($request->getQueryParams()['parameters']['depth']) == 0){
             $pagesData = [$request->getQueryParams()['parameters']['currentPageId']];
-
+        }
 
         $data = $this->commentsRepository->getStatistics($pagesData, false);
         // Resort array elements for export
         $mappedData = [];
         $i = 0;
-        $headers = array_keys($this->getHeaders());
+        $headers = $this->getHeaders();
         foreach ($data as $record) {
             foreach ($this->getHeaders() as $headerKey => $header) {
                 $mappedData[$record['pages_uid']][$i][$headerKey] = $record[$headerKey];

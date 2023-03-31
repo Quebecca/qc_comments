@@ -22,7 +22,6 @@ use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
@@ -227,9 +226,6 @@ abstract class QcBackendModuleController extends BackendModuleActionController
     }
 
 
-
-
-
     /**
      * Returns join clauses for pagetree depth levels
      * @param $depth
@@ -299,8 +295,9 @@ abstract class QcBackendModuleController extends BackendModuleActionController
             $from = date($format,strtotime($filter->getStartDate()));
             $now = date($format,strtotime($filter->getEndDate()));
         }
-        else
+        else{
             $now = date($format, strtotime('-'.$filter->getDateRange(), strtotime(date($format))));
+        }
 
         return implode('-', array_filter([
                 $this->localizationUtility->translate(self::QC_LANG_FILE . $fileName),

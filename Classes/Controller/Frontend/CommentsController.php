@@ -26,13 +26,13 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 // FrontEnd Controller
 class CommentsController extends ActionController
 {
-
     /**
      * @var CommentRepository
      */
     protected CommentRepository $commentsRepository;
 
     private const DEFAULT_MAX_CHARACTERS = 500;
+    private const DEFAULT_MIN_CHARACTERS = 3;
 
     const QC_LANG_FILE = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
 
@@ -57,10 +57,15 @@ class CommentsController extends ActionController
         parent::initializeAction();
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         $typoScriptSettings = $typoScriptService->convertTypoScriptArrayToPlainArray($GLOBALS['TSFE']->tmpl->setup);
-        $this->tsConfig =$typoScriptSettings['plugin']['commentsForm']['settings'];
+        $this->tsConfig =$typoScriptSettings['plugin']['tx_qccomments']['settings'];
         $this->tsConfig['comments']['maxCharacters'] = (int)($this->tsConfig['comments']['maxCharacters']) > 0
             ? (int)($this->tsConfig['comments']['maxCharacters'])
             : self::DEFAULT_MAX_CHARACTERS;
+
+        $this->tsConfig['comments']['minCharacters'] = (int)($this->tsConfig['comments']['minCharacters']) > 0
+            ? (int)($this->tsConfig['comments']['minCharacters'])
+            : self::DEFAULT_MIN_CHARACTERS;
+
     }
 
     /**
@@ -71,7 +76,7 @@ class CommentsController extends ActionController
     {
         $config = [];
         foreach ($this->tsConfig['comments'] as $key => $val) {
-            if ($key != 'maxCharacters') {
+            if ($key != 'maxCharacters' && $key != "minCharacters") {
                 $config[$key] = $val !== '' ? $val : $this->localizationUtility->translate(self::QC_LANG_FILE . $key);
             } else {
                 $config[$key] = $val;

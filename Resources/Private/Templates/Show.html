@@ -2,105 +2,108 @@
 {namespace qcComments=Qc\QcComments\ViewHelpers}
 
 <f:variable name="pageUid" value="{v:page.info(field: 'uid')}"/>
-<f:variable name="checkBasPageMode" value="{modeBasPage -> qcComments:CheckBasPageMode(pageUid: pageUid)}"/>
-<f:if condition="{checkBasPageMode} || {settings.activeModeBasPage} = 'true'">
-    <div class="frame frame-default frame-type-list frame-layout-0">
-        <h2>
-            <f:translate key="formSectionTitle" extensionName="qc_comments"/>
-        </h2>
-        <div>
-            <f:if condition="{submitted}">
-                <f:then>
-                    <div role="alert">
-                        <p>
-                            <f:translate key="formSubmittedSuccessfully" extensionName="qc_comments"/>
-                        </p>
-                    </div>
-                </f:then>
-                <f:else>
-                    <f:variable name="absUrl" value="{v:page.absoluteUrl()}"/>
-                    <div class="row">
-                        <div class="comments-form col-12 col-lg-8 sansBorder ">
-                            <f:form action="saveComment" object="{comment}" objectName="comment" id="commentForm">
-                                <f:form.hidden property="urlOrig" value="{absUrl}"/>
-                                <f:form.hidden property="uidOrig" value="{v:page.info(field: 'uid')}"/>
-                                <div class="form-inline mt-2">
-                                    <legend class="control-label">
-                                            <f:translate key="haveYouAComment" extensionName="qc_comments"/>
-                                    </legend>
-                                    <div class="radioOptions">
-                                        <f:form.radio property="useful" value="1" id="usefulY" checked="false"/>
-                                        <label for="usefulY" class="p-md-2">
-                                            <f:translate key="yes" extensionName="qc_comments"/>
-                                        </label>
-                                    </div>
-                                    <div class="radioOptions">
-                                        <f:form.radio property="useful" value="0" id="usefulN" checked="false"/>
-                                        <label for="usefulN" class="p-md-2">
-                                            <f:translate key="no" extensionName="qc_comments"/>
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div id="comment-section" class="form-group d-none">
-
-                                    <label for="comment-textarea" class="control-label" title="">
-                                            <f:translate key="encounterAProblem" extensionName="qc_comments"/>
-                                        <span id="commentpage_complement_label" class="complementLabel">
-                                                <f:translate key="haveYouACommentDescription" extensionName="qc_comments"/>
-                                        </span>
-                                    </label>
-                                    <f:form.textarea
-                                            cols="5"
-                                            rows="10"
-                                            property="comment"
-                                            class="form-control"
-                                            data="{date-type: 'date'}"
-                                            id="comment-textarea"
-                                    />
-
-                                    <div class="d-none" id="maxLabel" data-tr-label="{f:translate(key: 'max', extensionName:'qc_comments')}"></div>
-                                    <div class="d-none" id="charLabel" data-tr-label="{f:translate(key='characters', extensionName='qc_comments')}"></div>
-                                    <div class="d-none" id="sitekey" data-tr-label="{recaptchaConfig.sitekey}"></div>
-                                    <div class="d-none" id="maxCharacters" data-tr-label="{config.maxCharacters}"></div>
-
-                                    <div id="infoMaxCaracteres" class="infoSupplJs" aria-hidden="true">
-                                        <span id="limitLabel">
-                                          <f:translate key="max" extensionName="qc_comments"/> {config.maxCharacters} <f:translate key="characters" extensionName="qc_comments"/>
-                                        </span>
-                                    </div>
-                                    <br>
-                                    <f:if condition="{recaptchaConfig.enabled} == '1'">
-                                        <f:then>
-                                            <button
-                                                    id="submitButtom"
-                                                    data-sitekey="{recaptchaConfig.sitekey}"
-                                                    data-callback="onCompleted"
-                                                    class="btn btn-primary displayBlock g-recaptcha"
-                                            >
-                                                {f:translate(key: 'submit', extensionName:'qc_comments')}
-                                            </button>
-                                        </f:then>
-                                        <f:else>
-                                            <f:form.submit
-                                                    value="{f:translate(key: 'submit', extensionName:'qc_comments')}"
-                                                    class="btn btn-primary displayBlock"
-                                            />
-                                        </f:else>
-                                    </f:if>
-
-                                </div>
-                            </f:form>
+<f:variable name="checkPageMode" value="{modePage -> qcComments:CheckPageMode(pageUid: pageUid)}"/>
+<div class="d-none" id="lang" data-tr-label="{v:page.language(languages: 'fr,en', pageUid: '0', normalWhenNoLanguage: 'fr')}"></div>
+<f:if condition="{checkPageMode}">
+    <div class="col-12">
+        <div class="frame frame-default frame-type-list frame-layout-0">
+            <h2>
+                <f:translate key="formSectionTitle"/>
+            </h2>
+            <div>
+                <f:if condition="{submitted}">
+                    <f:then>
+                        <div role="alert">
+                            <p>
+                                <f:translate key="formSubmittedSuccessfully"/>
+                            </p>
                         </div>
+                    </f:then>
+                    <f:else>
+                        <f:variable name="absUrl" value="{v:page.absoluteUrl()}"/>
+                        <div class="row">
+                            <div class="comments-form col-12 col-lg-8 sansBorder ">
+                                <f:form action="saveComment" object="{comment}" objectName="comment" id="commentForm">
+                                    <f:form.hidden property="urlOrig" value="{absUrl}"/>
+                                    <f:form.hidden property="uidOrig" value="{v:page.info(field: 'uid')}"/>
+                                    <div class="form-inline form-group col-md-12">
+                                        <legend class="control-label">
+                                            <f:translate key="isThePageUseful"/>
+                                        </legend>
+                                        <div class="form-group radio mt-1 flex-row useful-block" >
+                                            <f:form.radio property="useful" value="1" id="usefulY" checked="false"/>
+                                            <label for="usefulY" class="useful-label">
+                                                <f:translate key="yes"/>
+                                            </label>
+                                        </div>
+                                        <div class="form-group radio mt-1 flex-row useful-block">
+                                            <f:form.radio property="useful" value="0" id="usefulN" checked="false"/>
+                                            <label for="usefulN" class="useful-label">
+                                                <f:translate key="no"/>
+                                            </label>
+                                        </div>
+                                    </div>
 
-                    </div>
-                </f:else>
-            </f:if>
+                                    <div id="comment-section" class="form-group d-none">
+
+                                        <label for="comment-textarea" class="control-label" title="">
+                                            <f:translate key="haveYouAComment" />
+                                            <span id="commentpage_complement_label" class="complementLabel">
+                                                <f:translate key="haveYouACommentDescription" />
+                                        </span>
+                                        </label>
+                                        <f:form.textarea
+                                                property="comment"
+                                                class="form-control"
+                                                id="comment-textarea"
+                                        />
+                                        <span id="error-message-too-short" class="d-none"><f:translate key="too-short-comment"/></span>
+
+                                        <div class="d-none" id="maxLabel" data-tr-label="{f:translate(key: 'max')}"></div>
+                                        <div class="d-none" id="charLabel" data-tr-label="{f:translate(key='characters')}"></div>
+                                        <div class="d-none" id="sitekey" data-tr-label="{recaptchaConfig.sitekey}"></div>
+                                        <div class="d-none" id="maxCharacters" data-tr-label="{config.maxCharacters}"></div>
+                                        <div class="d-none" id="minCharacters" data-tr-label="{config.minCharacters}"></div>
+                                        <div class="d-none" id="skipRecaptcha" data-tr-label="{recaptchaConfig.enabled}"></div>
+
+                                        <div id="infoMaxCaracteres" class="infoSupplJs" aria-hidden="true">
+                                        <span id="limitLabel">
+                                          <f:translate key="max"/> {config.maxCharacters} <f:translate key="characters"/>
+                                        </span>
+                                        </div>
+                                        <br>
+                                        <f:if condition="{recaptchaConfig.enabled} == '1'">
+                                            <f:then>
+                                                <div id="recaptcha"
+                                                     class="g-recaptcha"
+                                                     data-sitekey="{recaptchaConfig.sitekey}"
+                                                     data-size="invisible"
+                                                     data-callback="onCompleted">
+                                                </div>
+                                                <input id="submitButton"
+                                                       class="btn btn-primary displayBlock g-recaptcha submit-button"
+                                                       type="submit"
+                                                       value="{f:translate(key: 'submit')}"/>
+                                            </f:then>
+                                            <f:else>
+                                                <f:form.submit
+                                                        id="submitButton"
+                                                        value="{f:translate(key: 'submit')}"
+                                                        class="btn btn-primary displayBlock submit-button"
+                                                />
+                                            </f:else>
+                                        </f:if>
+                                    </div>
+                                </f:form>
+                            </div>
+                            <div class="col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse sansBorder d-none" id="questionsLink-section">
+                                <f:cObject typoscriptObjectPath="lib.qcCommentsAvisPage" />
+                            </div>
+
+                        </div>
+                    </f:else>
+                </f:if>
+            </div>
         </div>
-
     </div>
 </f:if>
-
-<script src="https://www.google.com/recaptcha/api.js?render={recaptcha.sitekey}"></script>
-
-

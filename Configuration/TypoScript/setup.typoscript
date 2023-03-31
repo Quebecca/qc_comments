@@ -1,32 +1,42 @@
-plugin.commentsForm {
+plugin.tx_qccomments {
     view {
-        templateRootPath = {$plugin.commentsForm.view.templateRootPath}
-        partialRootPath = {$plugin.commentsForm.view.partialRootPath}
-        layoutRootPath = {$plugin.commentsForm.view.layoutRootPath}
+        templateRootPaths = {$plugin.tx_qccomments.view.templateRootPath}
+        partialRootPaths = {$plugin.tx_qccomments.view.partialRootPath}
+        layoutRootPath = {$plugin.tx_qccomments.view.layoutRootPath}
     }
 
     settings {
         comments {
             // if empty default will be 500
-            maxCharacters = 250
+            maxCharacters = 500
+            minCharacters = 5
         }
 
         // Activate recaptcha
         recaptcha {
             enabled = 1
-            sitekey =6LdTg34iAAAAAIMl6ySOJmCn3_4b82n8fx_BA9_0
-            secret =6LdTg34iAAAAAI_jQEi3KugpTVIy4aOJlIGBTwUB
+            sitekey = {$plugin.tx_invisiblerecaptcha.sitekey}
+            secret = {$plugin.tx_invisiblerecaptcha.secretkey}
         }
     }
 }
+lib.qcCommentsAvisPage = COA
+lib.qcCommentsAvisPage {
+
+}
+
 page {
     includeJSLibs.jquery = https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js
-    includeJS.recaptcha = https://www.google.com/recaptcha/api.js?render=6LdTg34iAAAAAIMl6ySOJmCn3_4b82n8fx_BA9_0
-    includeJS.commentsForm = EXT:qc_comments/Resources/Public/JavaScript/Qc/CommentForm.js
-   includeCSS.commentsFormCss = EXT:qc_comments/Resources/Public/Css/Qc/fe_qc_comments.css
+    includeJS.commentsForm = EXT:qc_comments/Resources/Public/JavaScript/Pgu/CommentForm.js
+    includeCSS.commentsFormCss = EXT:qc_comments/Resources/Public/Css/Pgu/fe_qc_comments.css
+    includeCSS.commentsFormCssd = EXT:gabarit_pgu/Resources/Public/Css/gabarit_pgu.css
 }
 
 module.tx_qccomments {
+    persistence {
+        storagePid =
+    }
+
     view {
         templateRootPaths.0 = EXT:qc_comments/Resources/Private/Templates/
         templateRootPaths.1 = {$module.tx_qccomments.view.templateRootPath}
@@ -41,6 +51,7 @@ module.tx_qccomments {
             orderType = DESC
             maxRecords = 100
             numberOfSubPages = 50
+            maxCharacters = 10
         }
         statistics {
             maxRecords = 30
@@ -48,10 +59,8 @@ module.tx_qccomments {
 
         csvExport {
             filename {
-                // This date will added to the exported file name
-                dateFormat = YmdHi
+                dateFormat = Ymd
             }
-            // Csv parameters
             separator = ;
             enclosure = "
             escape = \\

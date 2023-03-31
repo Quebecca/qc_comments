@@ -163,7 +163,7 @@
                 <source>No</source>
             </trans-unit>
             <trans-unit id="submit">
-                <source>Submit</source>
+                <source>Send</source>
             </trans-unit>
             <trans-unit id="formSectionTitle">
                 <source>Comments</source>
@@ -212,6 +212,9 @@
             </trans-unit>
             <trans-unit id="characters">
                 <source> characters</source>
+            </trans-unit>
+            <trans-unit id="too-short-comment">
+                <source>The value entered is either too short or too long.</source>
             </trans-unit>
 		</body>
 	</file>
