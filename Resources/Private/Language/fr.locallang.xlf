@@ -182,11 +182,8 @@
             <trans-unit id="questionsOrHelp">
                 <target>Des questions ou besoin de renseignements ?</target>
             </trans-unit>
-            <trans-unit id="contactTheService">
-                <target>Communiquez avec Services Québec</target>
-            </trans-unit>
             <trans-unit id="formSubmittedSuccessfully">
-                <target>Votre message a été envoyé. Merci de nous aider à améliorer Québec.ca. Vos commentaires sont importants pour nous.</target>
+                <target>Votre message a été envoyé. Merci de nous aider à améliorer notre site. Vos commentaires sont importants pour nous.</target>
             </trans-unit>
             <trans-unit id="pages.tx_select_bas_page_mode">
                 <target>Sélectionner le mode d'affichage de la section des commentaires</target>

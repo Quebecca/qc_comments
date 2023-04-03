@@ -45,17 +45,22 @@
                                     </div>
 
                                     <div id="comment-section" class="form-group d-none">
-
-                                        <label for="comment-textarea" class="control-label" title="">
-                                            <f:translate key="haveYouAComment" />
+                                        <p>
+                                            <label for="comment-textarea" class="control-label" style="font-weight : bold;">
+                                                <f:translate key="haveYouAComment" />
+                                            </label>
+                                            <br>
                                             <span id="commentpage_complement_label" class="complementLabel">
                                                 <f:translate key="haveYouACommentDescription" />
-                                        </span>
-                                        </label>
+                                            </span>
+                                        </p>
+
                                         <f:form.textarea
                                                 property="comment"
                                                 class="form-control"
                                                 id="comment-textarea"
+                                                rows="10"
+                                                cols="10"
                                         />
                                         <span id="error-message-too-short" class="d-none"><f:translate key="too-short-comment"/></span>
 
