@@ -3,7 +3,7 @@
 
 <f:variable name="pageUid" value="{v:page.info(field: 'uid')}"/>
 <f:variable name="checkPageMode" value="{modePage -> qcComments:CheckPageMode(pageUid: pageUid)}"/>
-<div class="d-none" id="lang" data-tr-label="{v:page.language(languages: 'fr,en', pageUid: '0', normalWhenNoLanguage: 'fr')}"></div>
+<div class="d-none" id="lang" data-tr-label="{v:page.language(languages: 'en', pageUid: '0', normalWhenNoLanguage: 'en')}"></div>
 <f:if condition="{checkPageMode}">
     <div class="col-12">
         <div class="frame frame-default frame-type-list frame-layout-0">
@@ -101,8 +101,8 @@
                                     </div>
                                 </f:form>
                             </div>
-                            <div class="col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse sansBorder d-none" id="questionsLink-section">
-                                <f:cObject typoscriptObjectPath="lib.qcCommentsAvisPage" />
+                            <div class="col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse d-none" id="questionsLink-section">
+                                <f:cObject typoscriptObjectPath="lib.qcCommentsAdditionalContent" />
                             </div>
 
                         </div>

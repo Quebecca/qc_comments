@@ -11,7 +11,7 @@ $( document ).ready(function() {
         ].map(function (element) {
             element.addEventListener("change", function () {
                 document.getElementById('comment-section').className = 'form-group d-block';
-                document.getElementById('questionsLink-section').className = 'col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse sansBorder d-block';
+                document.getElementById('questionsLink-section').className = 'col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse d-block';
             });
         });
 

@@ -20,8 +20,8 @@ plugin.tx_qccomments {
         }
     }
 }
-lib.qcCommentsAvisPage = COA
-lib.qcCommentsAvisPage {
+lib.qcCommentsAdditionalContent = COA
+lib.qcCommentsAdditionalContent {
     20 = CONTENT
     20{
         table = tt_content
@@ -31,13 +31,12 @@ lib.qcCommentsAvisPage {
             where = (uid = 8)
         }
     }
-
 }
 
 page {
     includeJSLibs.jquery = https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js
     includeJS.commentsForm = EXT:qc_comments/Resources/Public/JavaScript/CommentForm.js
-    includeCSS.commentsFormCss = EXT:qc_comments/Resources/Public/Css/Qc/fe_qc_comments.css
+    includeCSS.commentsFormCss = EXT:qc_comments/Resources/Public/Css/fe_qc_comments.css
 }
 
 module.tx_qccomments {
