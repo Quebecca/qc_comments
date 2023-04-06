@@ -25,6 +25,8 @@ $( document ).ready(function() {
                 var script = document.createElement('script');
                 script.type = 'text/javascript';
                 script.src = 'https://www.google.com/recaptcha/api.js?render='+siteKey+'&hl='+lang;
+                script.defer = true
+                script.async = true
                 head.appendChild(script);
                 isRecaptchaLoaded = true
             }
