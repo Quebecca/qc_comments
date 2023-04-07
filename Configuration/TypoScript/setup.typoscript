@@ -22,15 +22,6 @@ plugin.tx_qccomments {
 }
 lib.qcCommentsAdditionalContent = COA
 lib.qcCommentsAdditionalContent {
-    20 = CONTENT
-    20{
-        table = tt_content
-        select{
-            max = 1
-            pidInList = 12
-            where = (uid = 8)
-        }
-    }
 }
 
 page {

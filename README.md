@@ -164,6 +164,34 @@ L'extension supporte également la vérification Recaptcha, vous pouvez l'active
             }
         }
     }
+### Additional content element
+L'affichage de plugin qc_comment porte deux section sepéarées, une pour afficher le formulaire de commentaire,
+la deuxième est optionnelle, vous pouvez choisir un tt_content pour l'affiché à coté de commentaire, la capture d'écran montre 
+un exemple d'affichage de cette section : 
+
+![Additional content element](Documentation/Images/additionalTtContent.PNG)
+
+Pour faire référencer à un tt_content (text, titre, etc.), vous pouvez ajouter la configuration Typoscript suivante :
+
+
+    lib.qcCommentsAdditionalContent = COA
+    lib.qcCommentsAdditionalContent {
+        20 = CONTENT
+        20 {
+            table = tt_content
+            select {
+                max = 1
+                # L'UID de la page ou de repertoir parent qui pourte le tt_content à afficher
+                pidInList = 12
+                # L'UID de tt_content à afficher
+                where = (uid = 8)
+            }
+        }
+    }
+
+La configuration Typoscript ce-dessus montre un exemple d'integration d'un elemente tt_content pour l'afficher dans la partie optionnelle de pluguin.
+
+Note : Il est important de garder le nom de définition 'lib.qcCommentsAdditionalContent'.
 
 ### Backend module
 Ce module vient avec deux tabulations :
