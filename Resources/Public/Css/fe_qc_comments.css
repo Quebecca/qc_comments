@@ -1,6 +1,9 @@
 .useful-label {
     font-weight : normal !important;
 }
+.useful-block {
+    margin-bottom : 4px !important;
+}
 .submit-button {
     height : 3rem !important;
     margin-top: 0.5rem !important;
