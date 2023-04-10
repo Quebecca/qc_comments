@@ -4,6 +4,9 @@
 .useful-block {
     margin-bottom : 4px !important;
 }
+.radio {
+    padding-right : 1rem;
+}
 .submit-button {
     height : 3rem !important;
     margin-top: 0.5rem !important;
@@ -17,9 +20,9 @@
 #error-message-too-short {
     font-size: 0.875rem;
     font-family : 'Open Sans',sans-serif;
-    margin: 0;
     line-height: 1.14;
     font-weight: 600;
     color: #d6330b;
     padding: 5px 10px 0 0;
+    margin : 5px 0 25px 0;
 }
