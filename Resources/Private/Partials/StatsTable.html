@@ -11,27 +11,16 @@
         <f:for as="row" each="{rows}" iteration="iterator">
             <tr class="t3js-entity{f:if(condition:iterator.isFirst, then:' firstcol', else:'')}"
                 data-table="{tableName}" data-uid="{fiche.uid}">
-                <td>
-                    {row.page_uid}
-                </td>
+                <td>{row.page_uid}</td>
                 <td>
                     <div class="text-hover">
                         {row.page_title}
                     </div>
                 </td>
-                <td>
-                    {row.total_pos}
-                </td>
-                <td>
-                    {row.total_neg}
-                </td>
-                <td>
-                    {row.total}
-                </td>
-                <td>
-                    {row.avg}
-                </td>
-
+                <td>{row.total_pos}</td>
+                <td>{row.total_neg}</td>
+                <td>{row.total}</td>
+                <td>{row.avg}</td>
             </tr>
         </f:for>
         </tbody>

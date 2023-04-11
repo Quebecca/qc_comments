@@ -9,7 +9,7 @@ namespace Qc\QcComments\Controller;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2022 <techno@quebec.ca>
+ *  (c) 2023 <techno@quebec.ca>
  *
  ***/
 
@@ -351,4 +351,22 @@ abstract class QcBackendModuleController extends BackendModuleActionController
     }
 
     abstract protected function getHeaders(): array;
+
+
+    /**
+     * This function is used to generate a filter object from the ServerRequest
+     * @param ServerRequestInterface $request
+     * @return Filter
+     */
+    public function getFilterFromRequest(ServerRequestInterface $request): Filter
+    {
+        $filter = new Filter();
+        $filter->setLang($request->getQueryParams()['parameters']['lang']);
+        $filter->setDepth(intval($request->getQueryParams()['parameters']['depth']));
+        $filter->setDateRange($request->getQueryParams()['parameters']['selectDateRange']);
+        $filter->setStartDate($request->getQueryParams()['parameters']['startDate']);
+        $filter->setEndDate($request->getQueryParams()['parameters']['endDate']);
+        $filter->setIncludeEmptyPages($request->getQueryParams()['parameters']['includeEmptyPages'] === 'true');
+        return $filter;
+    }
 }

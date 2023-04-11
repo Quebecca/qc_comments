@@ -215,6 +215,12 @@
             <trans-unit id="too-short-comment">
                 <target>La valeur entrée est trop courte ou trop longue.</target>
             </trans-unit>
+            <trans-unit id="select-page">
+                <target>Veuillez cliquer sur le titre de la page dans l'arborescence à gauche pour voir les commentaires sur la page.</target>
+            </trans-unit>
+            <trans-unit id="comments-module">
+                <target>Module des commentaires</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -216,6 +216,15 @@
             <trans-unit id="too-short-comment">
                 <source>The value entered is either too short or too long.</source>
             </trans-unit>
+            <trans-unit id="select-page">
+                <source>Please click on the page title in the tree on the left to see the comments on the page.</source>
+            </trans-unit>
+            <trans-unit id="comments-module">
+                <source>Comments module</source>
+            </trans-unit>
+            <trans-unit id="configuration.pid.title">
+                <source>No storage folder defined</source>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>

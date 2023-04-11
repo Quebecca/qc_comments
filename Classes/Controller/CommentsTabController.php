@@ -9,7 +9,7 @@ namespace Qc\QcComments\Controller;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2022 <techno@quebec.ca>
+ *  (c) 2023 <techno@quebec.ca>
  *
  ***/
 use Doctrine\DBAL\Driver\Exception;
@@ -70,7 +70,9 @@ class CommentsTabController extends QcBackendModuleController
             $comments = $this->commentsRepository->getComments($this->pages_ids, $maxRecords, $orderType);
 
             if ($this->commentsRepository->getListCount() > $maxRecords || $tooMuchPages) {
-                $message = $this->localizationUtility->translate(self::QC_LANG_FILE . 'tooMuchResults', null, (array)[$numberOfSubPages, $maxRecords]);
+                $message = $this->localizationUtility
+                    ->translate(self::QC_LANG_FILE . 'tooMuchResults', 
+                        null, (array)[$numberOfSubPages, $maxRecords]);
                 $this->addFlashMessage($message, null, AbstractMessage::WARNING);
             }
             $pagesId = $this->pages_ids;
@@ -117,14 +119,8 @@ class CommentsTabController extends QcBackendModuleController
      */
     public function exportCommentsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $filter = new Filter();
-        $filter->setLang($request->getQueryParams()['parameters']['lang']);
-        $filter->setDepth(intval($request->getQueryParams()['parameters']['depth']));
-        $filter->setDateRange($request->getQueryParams()['parameters']['selectDateRange']);
-        $filter->setStartDate($request->getQueryParams()['parameters']['startDate']);
-        $filter->setEndDate($request->getQueryParams()['parameters']['endDate']);
+        $filter = parent::getFilterFromRequest($request);
         $filter->setUseful($request->getQueryParams()['parameters']['useful']);
-        $filter->setIncludeEmptyPages($request->getQueryParams()['parameters']['includeEmptyPages'] === 'true');
 
         $this->commentsRepository->setRootId($request->getQueryParams()['parameters']['currentPageId']);
         $this->commentsRepository->setFilter($filter);

@@ -9,7 +9,7 @@ namespace Qc\QcComments\Controller;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2022 <techno@quebec.ca>
+ *  (c) 2023 <techno@quebec.ca>
  *
  ***/
 
@@ -80,13 +80,8 @@ class StatisticsTabController extends QcBackendModuleController
      */
     public function exportStatisticsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $filter = new Filter();
-        $filter->setLang($request->getQueryParams()['parameters']['lang']);
-        $filter->setDepth(intval($request->getQueryParams()['parameters']['depth']));
-        $filter->setDateRange($request->getQueryParams()['parameters']['selectDateRange']);
-        $filter->setStartDate($request->getQueryParams()['parameters']['startDate']);
-        $filter->setEndDate($request->getQueryParams()['parameters']['endDate']);
-        $filter->setIncludeEmptyPages($request->getQueryParams()['parameters']['includeEmptyPages'] === 'true');
+        $filter = parent::getFilterFromRequest($request);
+        
         $this->commentsRepository->setRootId(intval($request->getQueryParams()['parameters']['currentPageId']));
         $this->commentsRepository->setFilter($filter);
         $pagesData = $this->commentsRepository->getPageIdsList();
