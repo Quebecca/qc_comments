@@ -6,10 +6,10 @@ $lll = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
     'pages',
     [
-        'tx_select_bas_page_mode' => [
+        'tx_select_comments_form_page_mode' => [
             'exclude' => 1,
-            'label' => $lll . 'pages.tx_select_bas_page_mode',
-            'description' => $lll . 'pages.tx_select_bas_page_mode.desc',
+            'label' => $lll . 'pages.tx_select_comments_form_page_mode',
+            'description' => $lll . 'pages.tx_select_comments_form_page_mode.desc',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -28,12 +28,12 @@ $lll = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette(
     'pages',
     'commentsSection',
-    'tx_select_bas_page_mode'
+    'tx_select_comments_form_page_mode'
 );
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
     'pages',
     '--palette--;;commentsSection',
     '',
-    'after:tx_pgu_description_navigation'
+    'after:pid_navigation_administratif'
 );

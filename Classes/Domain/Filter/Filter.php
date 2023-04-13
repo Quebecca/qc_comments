@@ -57,7 +57,15 @@ class Filter implements Arrayable
      */
     public int $depth = 0;
 
+    /**
+     * @var string
+     */
     public string $useful = '';
+
+    /**
+     * @var string
+     */
+    public string $extKey;
 
     const QC_LANG_FILE = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
 
@@ -69,7 +77,6 @@ class Filter implements Arrayable
      * @param bool $includeEmptyPages
      * @param int $depth
      * @param string $useful
-     * @param LocalizationUtility|null $localizationUtility
      */
     public function __construct(
         string $lang = '',
@@ -298,14 +305,14 @@ class Filter implements Arrayable
             if ($this->startDate != '') {
                 // delete minutes seconds
                 $formatedStartDate = explode(' ', $this->startDate);
-                $criteria = " and date_houre >= '" . date('Y-m-d H:i:s', strtotime($formatedStartDate[0])) . "'";
+                $criteria = " and date_hour >= '" . date('Y-m-d H:i:s', strtotime($formatedStartDate[0])) . "'";
             }
             if ($this->endDate != '') {
                 $formatedEndDate = explode(' ', $this->endDate);
-                $criteria .= " and date_houre <= '" . date('Y-m-d H:i:s', strtotime($formatedEndDate[0])) . "'";
+                $criteria .= " and date_hour <= '" . date('Y-m-d H:i:s', strtotime($formatedEndDate[0])) . "'";
             }
         } else {
-            $criteria = " and date_houre >= '" . $this->getDateForRange() . "'";
+            $criteria = " and date_hour >= '" . $this->getDateForRange() . "'";
         }
         return $criteria;
     }

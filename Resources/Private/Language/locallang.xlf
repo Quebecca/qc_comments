@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2016-11-15T23:55:33Z"
-		  product-name="qc_comments">
+	<file source-language="en" datatype="plaintext" original="messages" product-name="qc_comments">
 		<header/>
 		<body>
 			<trans-unit id="qc_comments">
@@ -110,7 +109,7 @@
 			<trans-unit id="comments.h.comment_uid">
 				<source>Uid</source>
 			</trans-unit>
-			<trans-unit id="comments.h.date_houre">
+			<trans-unit id="comments.h.date_hour">
 				<source>Date/Time</source>
 			</trans-unit>
 			<trans-unit id="comments.h.comment">
@@ -186,10 +185,10 @@
             <trans-unit id="formSubmittedSuccessfully">
                 <source>Thank you for helping us improve our website. Your comments are important to us.</source>
             </trans-unit>
-            <trans-unit id="pages.tx_select_bas_page_mode">
+            <trans-unit id="pages.tx_select_comments_form_page_mode">
                 <source>Select comments section display mode</source>
             </trans-unit>
-            <trans-unit id="pages.tx_select_bas_page_mode.desc">
+            <trans-unit id="pages.tx_select_comments_form_page_mode.desc">
                 <source>By default, if the mode is not specified, the page inherits the mode from its parent page.</source>
             </trans-unit>
     <trans-unit id="pages.notSpecified">

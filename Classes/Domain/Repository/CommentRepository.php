@@ -12,6 +12,7 @@
 namespace Qc\QcComments\Domain\Repository;
 
 use Doctrine\DBAL\Connection as ConnectionAlias;
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Exception;
 use Qc\QcComments\Domain\Filter\Filter;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
@@ -26,22 +27,27 @@ class CommentRepository extends Repository
      * @var int
      */
     protected int $root_id = 0;
+
     /**
      * @var array
      */
     protected array $settings = [];
+
     /**
      * @var string
      */
     protected string $tableName = 'tx_qccomments_domain_model_comment';
+
     /**
      * @var Filter
      */
     protected Filter $filter;
+
     /**
      * @var string
      */
     protected string $lang_criteria = '';
+
     /**
      * @var string
      */
@@ -67,7 +73,7 @@ class CommentRepository extends Repository
     }
 
     /**
-     * This function is used to get SQL constraints comments and statistics queries
+     * This function is used to get the SQL constraints for the comments and statistics queries
      * @param array $page_ids
      * @return string[]
      */
@@ -103,7 +109,7 @@ class CommentRepository extends Repository
         $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
 
         $data= $queryBuilder
-                ->select('p.uid', 'p.title', 'date_houre', 'comment', 'useful')
+                ->select('p.uid', 'p.title', 'date_hour', 'comment', 'useful')
                 ->from($this->tableName)
                 ->$joinMethod(
                     $this->tableName,
@@ -119,7 +125,7 @@ class CommentRepository extends Repository
             $data = $data->setMaxResults($limit);
         }
         $data = $data
-                ->orderBy('date_houre', $orderType)
+                ->orderBy('date_hour', $orderType)
                 ->execute()
                 ->fetchAllAssociative();
 
@@ -131,9 +137,10 @@ class CommentRepository extends Repository
     }
 
     /**
-     * This function is used to get the number of records by page depth for BE rendering verification
+     * This function is used to get the number of records by the depth for BE rendering verification
      * @return int
      * @throws Exception
+     * @throws DBALException
      */
     public function getListCount(): int
     {
@@ -153,7 +160,6 @@ class CommentRepository extends Repository
 
     /**
      * This function is used to get pages statistics for BE rendering and for export as well
-     * QueryBuilder
      * @param $page_ids
      * @param int|bool $limit
      * @return array
@@ -183,7 +189,7 @@ class CommentRepository extends Repository
             ->groupBy('p.uid', 'p.title');
 
         if ($limit != false) {
-            // we add one record to limit to verify if there are more than limit results
+            // we add one more record to check if there are more than rendering results
             $data = $data->setMaxResults($limit + 1);
         }
         $data = $data
@@ -193,18 +199,25 @@ class CommentRepository extends Repository
         $rows = [];
         foreach ($data as $item) {
             $item['total_neg'] = $item['total'] - $item['total_pos'];
-            $x =  $item['total_neg'] >  $item['total_pos'] ? - ((int)($item['total_neg']) - (int)($item['total_pos'])) :  $item['total_pos'];
+
+            $total =  $item['total_neg'] >  $item['total_pos']
+                ? - ((int)($item['total_neg']) - (int)($item['total_pos']))
+                :  $item['total_pos'];
+
             $item['avg'] = $item['total'] > 0 ?
-                ' ' . number_format((($x) / $item['total']), 3) * 100 . ' %'
+                ' ' . number_format((($total) / $item['total']), 3) * 100 . ' %'
             : '0 %';
+
             $item['total_pos'] = $item['total_pos'] ?: '0';
+
             $rows[] = $item;
+
         }
         return $rows;
     }
 
     /**
-     * Getting pages uid based on selected page depth
+     * Getting pages uid based on the selected depth
      * @return array
      */
     public function getPageIdsList(): array

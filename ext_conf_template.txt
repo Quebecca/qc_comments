@@ -1,8 +1,0 @@
-# customsubcategory=storage=LLL:EXT:teaser_manager/Resources/Private/Language/locallang_db.xlf:extmng.subcategory.storage
-
-# cat=basic/storage/10; type=int+; label=LLL:EXT:teaser_manager/Resources/Private/Language/locallang_db.xlf:extmng.globalStoragePid
-globalStoragePid =
-
-# cat=backend module/enable/10; type=boolean; label=LLL:EXT:teaser_manager/Resources/Private/Language/locallang_db.xlf:extmng.showAdministrationModule
-showAdministrationModule = 1
-

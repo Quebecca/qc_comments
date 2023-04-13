@@ -18,7 +18,7 @@
         <uid>1</uid>
         <pid>1</pid>
         <useful>1</useful>
-        <date_houre>2022-07-08 00:00:00</date_houre>
+        <date_hour>2022-07-08 00:00:00</date_hour>
         <comment>Positif comment</comment>
         <uid_orig>1</uid_orig>
         <url_orig>1</url_orig>
@@ -31,7 +31,7 @@
         <uid>2</uid>
         <pid>1</pid>
         <useful>0</useful>
-        <date_houre>2022-07-08 00:00:00</date_houre>
+        <date_hour>2022-07-08 00:00:00</date_hour>
         <comment>Negatif comment</comment>
         <uid_orig>2</uid_orig>
         <url_orig>2</url_orig>

@@ -4,7 +4,7 @@ CREATE TABLE tx_qccomments_domain_model_comment (
        uid int(11) NOT NULL auto_increment,
        pid int(11) DEFAULT '0' NOT NULL,
 
-       date_houre varchar(20) DEFAULT '' NOT NULL,
+       date_hour varchar(20) DEFAULT '' NOT NULL,
        useful tinyint(1) DEFAULT '0' NOT NULL,
        comment text,
        uid_orig int(11) UNSIGNED DEFAULT '0' NOT NULL,
@@ -30,5 +30,5 @@ CREATE TABLE tx_qccomments_domain_model_comment (
 );
 
 CREATE TABLE pages (
-    tx_select_bas_page_mode varchar(50) DEFAULT ''
+    tx_select_comments_form_page_mode varchar(50) DEFAULT ''
 );

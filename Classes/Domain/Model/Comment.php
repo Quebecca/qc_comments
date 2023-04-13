@@ -33,7 +33,7 @@ class Comment extends AbstractEntity
 
     protected int $uidPermsGroup = 0;
 
-    protected string $dateHoure = '';
+    protected string $dateHour = '';
 
     /**
      * @return int
@@ -118,16 +118,16 @@ class Comment extends AbstractEntity
     /**
      * @return string
      */
-    public function getDateHoure(): string
+    public function getDateHour(): string
     {
-        return $this->dateHoure;
+        return $this->dateHour;
     }
 
     /**
-     * @param string $dateHoure
+     * @param string $dateHour
      */
-    public function setDateHoure(string $dateHoure): void
+    public function setDateHour(string $dateHour): void
     {
-        $this->dateHoure = $dateHoure;
+        $this->dateHour = $dateHour;
     }
 }

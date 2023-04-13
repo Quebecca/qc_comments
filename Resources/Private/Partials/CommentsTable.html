@@ -1,4 +1,4 @@
-<f:if condition="{rows -> f:count()} == 1 and !{rows.0.date_houre} ">
+<f:if condition="{rows -> f:count()} == 1 and !{rows.0.date_hour} ">
     <f:then>
         <div class="no-comment">
             {f:translate(key:'no-result')}
@@ -23,7 +23,7 @@
                 <tbody>
                 <f:for as="row" each="{rows}" iteration="iterator">
                     <tr class="t3js-entity{f:if(condition:iterator.isFirst, then:' firstcol', else:'')}">
-                        <td>{row.date_houre}</td>
+                        <td>{row.date_hour}</td>
                         <td>
                             <div class="text-hover">
                                 {row.comment}

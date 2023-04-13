@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Qc\QcCommentsTest\Tests\Functional\Comments;
 
+use Doctrine\DBAL\DBALException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Qc\QcComments\Domain\Filter\Filter;
@@ -55,7 +56,7 @@ class QcCommentsRepositoryFunctionalTest extends FunctionalTestCase
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @throws Exception
+     * @throws DBALException
      */
     protected function setUp(): void
     {
@@ -66,9 +67,7 @@ class QcCommentsRepositoryFunctionalTest extends FunctionalTestCase
         if ($versionInformation->getMajorVersion() >= 11) {
             $this->commentRepository = $this->getContainer()->get(CommentRepository::class);
         } else {
-            /** @var ObjectManager $objectManager */
-            $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-            $this->commentRepository = $objectManager->get(CommentRepository::class);
+            $this->commentRepository = GeneralUtility::makeInstance(CommentRepository::class);
         }
         $filter = new Filter();
         $filter->setDepth(10);
@@ -80,7 +79,7 @@ class QcCommentsRepositoryFunctionalTest extends FunctionalTestCase
 
     /**
      * @test
-     * @throws \Doctrine\DBAL\Driver\Exception|\TYPO3\TestingFramework\Core\Exception
+     * @throws \TYPO3\TestingFramework\Core\Exception
      */
     public function getComments(): void
     {
@@ -88,14 +87,14 @@ class QcCommentsRepositoryFunctionalTest extends FunctionalTestCase
         $row = $this->commentRepository->getComments([1, 2], true);
         self::assertNotNull($row);
         self::assertSame('Positif comment', $row[1][0]['comment']);
-        self::assertSame('2022-07-08 00:00:00', $row[1][0]['date_houre']);
+        self::assertSame('2022-07-08 00:00:00', $row[1][0]['date_hour']);
         self::assertSame(1, $row[1][0]['useful']);
         self::assertSame('Page 1', $row[1][0]['title']);
     }
 
     /**
     * @test
-    * @throws \Doctrine\DBAL\Driver\Exception|\TYPO3\TestingFramework\Core\Exception
+    * @throws \TYPO3\TestingFramework\Core\Exception
     */
     public function getStatistics(): void
     {

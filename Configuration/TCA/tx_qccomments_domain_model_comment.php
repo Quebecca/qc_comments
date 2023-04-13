@@ -132,9 +132,9 @@ return [
                 'type' => 'input',
             ],
         ],
-        'date_houre' => [
+        'date_hour' => [
             'exclude' => true,
-            'label' => 'date_houre',
+            'label' => 'date_hour',
             'config' => [
                 'type' => 'input',
             ],

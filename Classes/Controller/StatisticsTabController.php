@@ -39,7 +39,8 @@ class StatisticsTabController extends QcBackendModuleController
             $maxRecords = $this->settings['statistics']['maxRecords'];
             $resultData = $this->commentsRepository->getStatistics($this->pages_ids, $maxRecords);
             if (count($resultData) > $maxRecords) {
-                $message = $this->localizationUtility->translate(self::QC_LANG_FILE . 'tooMuchPages', null, [$maxRecords]);
+                $message = $this->localizationUtility->translate(self::QC_LANG_FILE . 'tooMuchPages',
+                    null, [$maxRecords]);
                 $this->addFlashMessage($message, null, AbstractMessage::WARNING);
                 array_pop($resultData); // last line was there to check that limit has been reached
             }
@@ -90,7 +91,7 @@ class StatisticsTabController extends QcBackendModuleController
         }
 
         $data = $this->commentsRepository->getStatistics($pagesData, false);
-        // Resort array elements for export
+        // Resort the array elements for export
         $mappedData = [];
         $i = 0;
         $headers = $this->getHeaders();

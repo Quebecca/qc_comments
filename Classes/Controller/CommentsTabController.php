@@ -31,6 +31,7 @@ class CommentsTabController extends QcBackendModuleController
      * This function is used to get the list of comments in BE module
      * @param Filter|null $filter
      * @throws Exception
+     * @throws \Doctrine\DBAL\DBALException
      */
     public function commentsAction(Filter $filter = null)
     {
@@ -101,7 +102,7 @@ class CommentsTabController extends QcBackendModuleController
     {
         $headers = [];
 
-        foreach (['date_houre', 'comment', 'useful'] as $col) {
+        foreach (['date_hour', 'comment', 'useful'] as $col) {
             $headers[$col] = $this->localizationUtility->translate(self::QC_LANG_FILE . 'comments.h.' . $col);
         }
         if ($include_csv_headers) {

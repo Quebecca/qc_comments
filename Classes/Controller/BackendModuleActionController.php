@@ -79,7 +79,6 @@ class BackendModuleActionController extends ActionController
      */
     protected string $extKey;
 
-
     /**
      * @var PageRenderer
      */
@@ -144,11 +143,4 @@ class BackendModuleActionController extends ActionController
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * @return LanguageService
-     */
-    protected function getLanguageService()
-    {
-        return $GLOBALS['LANG'];
-    }
 }

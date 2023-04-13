@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-    <file target-language="en" datatype="plaintext" original="messages" date="2016-11-15T23:55:33Z"
-          product-name="qc_comments">
+    <file target-language="en" datatype="plaintext" original="messages" product-name="qc_comments">
         <header/>
         <body>
             <trans-unit id="qc_comments">
@@ -116,7 +115,7 @@
             <trans-unit id="csv.h.comment_uid">
                 <target>Id du commentaire</target>
             </trans-unit>
-            <trans-unit id="comments.h.date_houre">
+            <trans-unit id="comments.h.date_hour">
                 <target>Date et heure</target>
             </trans-unit>
             <trans-unit id="comments.h.comment">
@@ -185,10 +184,10 @@
             <trans-unit id="formSubmittedSuccessfully">
                 <target>Votre message a été envoyé. Merci de nous aider à améliorer notre site. Vos commentaires sont importants pour nous.</target>
             </trans-unit>
-            <trans-unit id="pages.tx_select_bas_page_mode">
+            <trans-unit id="pages.tx_select_comments_form_page_mode">
                 <target>Sélectionner le mode d'affichage de la section des commentaires</target>
             </trans-unit>
-            <trans-unit id="pages.tx_select_bas_page_mode.desc">
+            <trans-unit id="pages.tx_select_comments_form_page_mode.desc">
                 <target>Par défaut si le mode n'est pas précisé la page hérite du mode de sa page parente.</target>
             </trans-unit>
             <trans-unit id="pages.notSpecified">

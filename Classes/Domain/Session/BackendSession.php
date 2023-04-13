@@ -30,8 +30,10 @@ class BackendSession
      */
     protected $sessionObject;
 
-    /** @var string[] */
-    protected $registeredKeys = [];
+    /**
+     * @var array
+     */
+    protected array $registeredKeys = [];
 
     /**
      * Unique key to store data in the session.
@@ -39,7 +41,7 @@ class BackendSession
      *
      * @var string
      */
-    protected $storageKey = 'qc_comments';
+    protected string $storageKey = 'qc_comments';
 
     public function __construct()
     {
@@ -119,6 +121,7 @@ class BackendSession
     }
 
     /**
+     * Getting filter from the session
      * @param string $key
      * @return false|mixed|Arrayable|null
      */

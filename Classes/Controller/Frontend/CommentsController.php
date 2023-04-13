@@ -31,12 +31,16 @@ class CommentsController extends ActionController
      */
     protected CommentRepository $commentsRepository;
 
+    /**
+     * @var array
+     */
+    private array $tsConfig = [];
+
     private const DEFAULT_MAX_CHARACTERS = 500;
+
     private const DEFAULT_MIN_CHARACTERS = 3;
 
-    const QC_LANG_FILE = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
-
-    private array $tsConfig = [];
+    private const QC_LANG_FILE = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
 
     /**
      * @var LocalizationUtility
@@ -52,6 +56,7 @@ class CommentsController extends ActionController
     ) {
         $this->localizationUtility = GeneralUtility::makeInstance(LocalizationUtility::class);
     }
+
     protected function initializeAction()
     {
         parent::initializeAction();
@@ -69,7 +74,7 @@ class CommentsController extends ActionController
     }
 
     /**
-     * This function is used to render comments form
+     * This function is used to render the comments form
      * @param array $args
      */
     public function showAction(array $args = [])
@@ -91,7 +96,7 @@ class CommentsController extends ActionController
     }
 
     /**
-     * This function is used to save user comment
+     * This function is used to save comment
      * @param Comment|null $comment
      * @throws IllegalObjectTypeException
      * @throws StopActionException
@@ -103,9 +108,8 @@ class CommentsController extends ActionController
             $comment->setUidPermsGroup(
                 BackendUtility::getRecord('pages', $pageUid, 'perms_groupid', "uid = $pageUid")['perms_groupid']
             );
-            // set limit for 500 characters
             $comment->setComment(substr($comment->getComment(), 0, $this->tsConfig['comments']['maxCharacters']));
-            $comment->setDateHoure(date('Y-m-d H:i:s'));
+            $comment->setDateHour(date('Y-m-d H:i:s'));
             $this->commentsRepository->add($comment);
         }
         $this->forward('show', null, null, ['submitted' => true]);

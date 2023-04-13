@@ -44,23 +44,16 @@ abstract class QcBackendModuleController extends BackendModuleActionController
     /**
      * @var BackendSession
      */
-    protected $backendSession;
-
-    /**
-     * @var string
-     */
-    protected $tsControllerKey = '';
-
-    /**
-     * @var string
-     */
-    protected $extensionName = '';
+    protected BackendSession $backendSession;
 
     /**
      * @var string
      */
     protected string $controllerName = '';
 
+    /**
+     * @var array
+     */
     protected array $pages_ids = [];
 
     /**
@@ -138,10 +131,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
     public function initializeAction()
     {
         $this->extKey = $this->request->getControllerExtensionKey();
-        $this->moduleName = $this->request->getPluginName();
-        $this->extensionName = $this->request->getControllerExtensionName();
         $this->controllerName = $this->request->getControllerName();
-        $this->tsControllerKey = lcfirst($this->controllerName);
         $this->setMenu();
         $this->forwardToLastSelectedAction();
         $this->root_id = GeneralUtility::_GP('id');
@@ -181,20 +171,17 @@ abstract class QcBackendModuleController extends BackendModuleActionController
     protected function getUrl($action, array $arguments = [], $controller = null): string
     {
         /** @var UriBuilder $uriBuilder */
-        $uriBuilder = $this->objectManager->get(UriBuilder::class);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uriBuilder->setRequest($this->request);
         return $uriBuilder->uriFor($action, $arguments, $controller);
     }
 
     /**
      * @param ViewInterface $view
-     * @throws RouteNotFoundException
      */
     protected function initializeView(ViewInterface $view)
     {
         parent::initializeView($view);
-
-
         $moduleTemplate = $view->getModuleTemplate();
         if ($this->root_id && $moduleTemplate) {
             $record = BackendUtility::readPageAccess($this->root_id, $this->getBackendUser()->getPagePermsClause(1));
@@ -206,8 +193,6 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         $this->processFilter();
 
     }
-
-
 
     /**
      * @throws NoSuchArgumentException
@@ -225,24 +210,6 @@ abstract class QcBackendModuleController extends BackendModuleActionController
 
     }
 
-
-    /**
-     * Returns join clauses for pagetree depth levels
-     * @param $depth
-     * @return string
-     */
-    protected function getPageTreeView($depth): string
-    {
-        $child = $parent = 'lvl_0';
-        $clauses = [];
-        for ($i = 1; $i <= $depth; $i++) {
-            $child = 'lvl_' . $i;
-            $clauses[] = "left join pages $child on $parent.uid in ($child.uid, $child.pid) and !$child.deleted";
-            $parent = $child;
-        }
-        $joins = implode("\n", $clauses);
-        return "select distinct $child.* from pages lvl_0 $joins where lvl_0.uid = $this->root_id";
-    }
 
     /**
      * This function is used to get the filter from the backend session
@@ -302,7 +269,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         return implode('-', array_filter([
                 $this->localizationUtility->translate(self::QC_LANG_FILE . $fileName),
                 $filter->getLang(),
-                'uid' . $pageId,
+                'uid-' . $pageId,
                 $from,
                 $now,
             ])) . '.csv';
@@ -345,13 +312,10 @@ abstract class QcBackendModuleController extends BackendModuleActionController
             }
         }
         //  rewind($fp);
-        $str_data = rtrim(stream_get_contents($fp), "\n");
+        rtrim(stream_get_contents($fp), "\n");
         fclose($fp);
         return $response;
     }
-
-    abstract protected function getHeaders(): array;
-
 
     /**
      * This function is used to generate a filter object from the ServerRequest
@@ -369,4 +333,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         $filter->setIncludeEmptyPages($request->getQueryParams()['parameters']['includeEmptyPages'] === 'true');
         return $filter;
     }
+
+    abstract protected function getHeaders(): array;
+
 }

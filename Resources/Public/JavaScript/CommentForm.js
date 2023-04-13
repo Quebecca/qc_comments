@@ -4,7 +4,6 @@ $( document ).ready(function() {
         let maxCharacters = document.getElementById('maxCharacters').getAttribute('data-tr-label') ?? '';
         let minCharacters = document.getElementById('minCharacters').getAttribute('data-tr-label') ?? '';
         let skipRecaptcha = document.getElementById('skipRecaptcha').getAttribute('data-tr-label') ?? '';
-        // Afficher le text-area quand on sélectionne "Oui" ou "Non"
         [
             document.getElementById('usefulN'),
             document.getElementById('usefulY')
@@ -20,7 +19,6 @@ $( document ).ready(function() {
         $('#commentForm :input').on('click',function (){
             if(!isRecaptchaLoaded && skipRecaptcha === '1'){
                 var lang = $('#lang').attr('data-tr-label')
-                // trigger loading api.js (recaptcha.js) script
                 var head = document.getElementsByTagName('head')[0];
                 var script = document.createElement('script');
                 script.type = 'text/javascript';
