@@ -9,7 +9,8 @@ call_user_func(
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
             'QcComments',
             'commentsForm',
-            [Qc\QcComments\Controller\Frontend\CommentsController::class => 'show,saveComment']
+            [Qc\QcComments\Controller\Frontend\CommentsController::class => 'show,saveComment'], //With cash - prevent storing cashed data
+            [Qc\QcComments\Controller\Frontend\CommentsController::class  => 'show,saveComment'] // storing without using cash
         );
     }
 );
