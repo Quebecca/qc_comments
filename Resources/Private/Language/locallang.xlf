@@ -94,10 +94,10 @@
 				<source>Page title</source>
 			</trans-unit>
 			<trans-unit id="stats.h.total_pos">
-				<source>Total positive</source>
+				<source>Number of positive comments</source>
 			</trans-unit>
 			<trans-unit id="stats.h.total_neg">
-				<source>Total negative</source>
+				<source>Number of negative comments</source>
 			</trans-unit>
 			<trans-unit id="stats.h.total">
 				<source>Total</source>

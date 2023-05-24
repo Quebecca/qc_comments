@@ -82,14 +82,7 @@ class StatisticsTabController extends QcBackendModuleController
     public function exportStatisticsAction(ServerRequestInterface $request): ResponseInterface
     {
         $filter = parent::getFilterFromRequest($request);
-        
-        $this->commentsRepository->setRootId(intval($request->getQueryParams()['parameters']['currentPageId']));
-        $this->commentsRepository->setFilter($filter);
-        $pagesData = $this->commentsRepository->getPageIdsList();
-        if(intval($request->getQueryParams()['parameters']['depth']) == 0){
-            $pagesData = [$request->getQueryParams()['parameters']['currentPageId']];
-        }
-
+        $pagesData = $this->getPagesIds($request, $filter);
         $data = $this->commentsRepository->getStatistics($pagesData, false);
         // Resort the array elements for export
         $mappedData = [];

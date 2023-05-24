@@ -122,15 +122,7 @@ class CommentsTabController extends QcBackendModuleController
     {
         $filter = parent::getFilterFromRequest($request);
         $filter->setUseful($request->getQueryParams()['parameters']['useful']);
-
-        $this->commentsRepository->setRootId($request->getQueryParams()['parameters']['currentPageId']);
-        $this->commentsRepository->setFilter($filter);
-
-        $pagesData = $this->commentsRepository->getPageIdsList();
-        if(intval($request->getQueryParams()['parameters']['depth']) == 0){
-            $pagesData = [$request->getQueryParams()['parameters']['currentPageId']];
-        }
-
+        $pagesData = $this->getPagesIds($request, $filter);
         $data = $this->commentsRepository->getComments($pagesData, false, self::DEFAULT_ORDER_TYPES);
         $headers = $this->getHeaders(true);
         foreach ($data as $row) {

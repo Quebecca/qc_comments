@@ -334,6 +334,25 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         return $filter;
     }
 
+    /**
+     * This function is used to get the pages IDs
+     * @param ServerRequestInterface $request
+     * @param Filter $filter
+     * @return array
+     */
+    public function getPagesIds(ServerRequestInterface $request, Filter $filter): array
+    {
+        $this->commentsRepository->setRootId(intval($request->getQueryParams()['parameters']['currentPageId']));
+        $this->commentsRepository->setFilter($filter);
+
+        $pagesData = $this->commentsRepository->getPageIdsList();
+        if(intval($request->getQueryParams()['parameters']['depth']) == 0){
+            $pagesData = [$request->getQueryParams()['parameters']['currentPageId']];
+        }
+        return $pagesData;
+    }
+
+
     abstract protected function getHeaders(): array;
 
 }
