@@ -15,6 +15,7 @@ namespace Qc\QcComments\Controller\Frontend;
 
 use Qc\QcComments\Domain\Model\Comment;
 use Qc\QcComments\Domain\Repository\CommentRepository;
+use Qc\QcComments\SpamValidator\SpamShieldValidator;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -22,6 +23,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 
 // FrontEnd Controller
 class CommentsController extends ActionController
@@ -59,7 +61,9 @@ class CommentsController extends ActionController
 
     protected function initializeAction()
     {
+
         parent::initializeAction();
+
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         $typoScriptSettings = $typoScriptService->convertTypoScriptArrayToPlainArray($GLOBALS['TSFE']->tmpl->setup);
         $this->tsConfig =$typoScriptSettings['plugin']['tx_qccomments']['settings'];
@@ -89,6 +93,7 @@ class CommentsController extends ActionController
         }
         $this->view->assignMultiple([
             'submitted' => $this->request->getArguments()['submitted'],
+            'validationResults' => $this->request->getArguments()['validationResults'],
             'comment' => new Comment(),
             'config' => $config,
             'recaptchaConfig' => $this->tsConfig['recaptcha']
@@ -103,6 +108,13 @@ class CommentsController extends ActionController
      */
     public function saveCommentAction(Comment $comment = null)
     {
+/*        $validationResults = $this->request->getOriginalRequestMappingResults();
+        $errors = $validationResults->getFlattenedErrors();
+        debug($errors);
+
+
+
+
         if ($comment) {
             $pageUid = $comment->getUidOrig();
             $comment->setUidPermsGroup(
@@ -112,6 +124,29 @@ class CommentsController extends ActionController
             $comment->setDateHour(date('Y-m-d H:i:s'));
             $this->commentsRepository->add($comment);
         }
-        $this->forward('show', null, null, ['submitted' => true]);
+        $this->forward('show', null, null, ['submitted' => true]);*/
+
+
+        $validator = GeneralUtility::makeInstance(SpamShieldValidator::class);
+        $validationResults = $validator->validate($comment);
+        if($validationResults->hasErrors()){
+            $this->forward('show', null, null, ['submitted' => false,'validationResults' => $validationResults ]);
+        }
+        else{
+            if ($comment) {
+                $pageUid = $comment->getUidOrig();
+                $comment->setUidPermsGroup(
+                    BackendUtility::getRecord('pages', $pageUid, 'perms_groupid', "uid = $pageUid")['perms_groupid']
+                );
+                $comment->setComment(substr($comment->getComment(), 0, $this->tsConfig['comments']['maxCharacters']));
+                $comment->setDateHour(date('Y-m-d H:i:s'));
+                $this->commentsRepository->add($comment);
+            }
+            $this->forward('show', null, null, ['submitted' => true]);
+        }
+
+
     }
+
+
 }
