@@ -84,6 +84,9 @@ class SpamShieldValidator extends AbstractValidator
                $this->sendSpamNotificationMail($mail);
                $this->logSpamNotification($mail);
            }*/
+           if(!empty($this->messages)){
+               $this->addError('spam_details', 1580681599);
+           }
         }
         return $this->isValidState();
     }
@@ -140,11 +143,7 @@ class SpamShieldValidator extends AbstractValidator
                 $methodInstance->initialize();
                 $methodInstance->initializeSpamCheck();
                 if ((int)$method['indication'] > 0 && $methodInstance->spamCheck($comment)) {
-                    //$this->increaseSpamIndicator((int)$method['indication']);
-                    // @extensionScannerIgnoreLine False positive alert in TYPO3 9.5
-                    //$this->addMessage($method['name'] . ' failed');
-                    $this->addError('spam_details', 1580681599);
-
+                    $this->addMessage($method['name'] . ' failed');
                 }
             } else {
                 throw new InterfaceNotImplementedException(

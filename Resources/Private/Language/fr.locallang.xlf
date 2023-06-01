@@ -220,7 +220,7 @@
             <trans-unit id="comments-module">
                 <target>Module des commentaires</target>
             </trans-unit>
-            <trans-unit id="spam_details_7">
+            <trans-unit id="spam_details">
                 <target>Spam détecté : X de chance de spam dans ce commentaire</target>
             </trans-unit>
         </body>

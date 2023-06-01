@@ -117,30 +117,13 @@ class CommentsController extends ActionController
      */
     public function saveCommentAction(Comment $comment = null)
     {
-/*        $validationResults = $this->request->getOriginalRequestMappingResults();
-        $errors = $validationResults->getFlattenedErrors();
-        debug($errors);
-
-
-
-
-        if ($comment) {
-            $pageUid = $comment->getUidOrig();
-            $comment->setUidPermsGroup(
-                BackendUtility::getRecord('pages', $pageUid, 'perms_groupid', "uid = $pageUid")['perms_groupid']
-            );
-            $comment->setComment(substr($comment->getComment(), 0, $this->tsConfig['comments']['maxCharacters']));
-            $comment->setDateHour(date('Y-m-d H:i:s'));
-            $this->commentsRepository->add($comment);
-        }
-        $this->forward('show', null, null, ['submitted' => true]);*/
         $spamErrors = false;
         if($this->isSpamShieldEnabled){
             $validator = GeneralUtility::makeInstance(SpamShieldValidator::class);
             $validationResults = $validator->validate($comment);
             $spamErrors = $validationResults->hasErrors();
             if($spamErrors){
-                $this->forward('show', null, null, ['submitted' => false,'validationResults' => $validationResults ]);
+                $this->forward('show', null, null, ['submitted' => false,'validationResults' => $validationResults]);
             }
         }
         if(!$spamErrors){
