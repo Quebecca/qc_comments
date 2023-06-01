@@ -191,7 +191,7 @@
             <trans-unit id="pages.tx_select_comments_form_page_mode.desc">
                 <source>By default, if the mode is not specified, the page inherits the mode from its parent page.</source>
             </trans-unit>
-    <trans-unit id="pages.notSpecified">
+            <trans-unit id="pages.notSpecified">
                 <source>Not specified</source>
             </trans-unit>
              <trans-unit id="pages.mode1">
@@ -224,13 +224,15 @@
             <trans-unit id="configuration.pid.title">
                 <source>No storage folder defined</source>
             </trans-unit>
-
             <trans-unit id="spam_details">
-                <source>X Spam chance in this comment!</source>
+                <source>(X) Spam chance in this comment!</source>
             </trans-unit>
             <trans-unit id="honeypodLabel">
 				<source>Don't fill this field!</source>
 			</trans-unit>
+            <trans-unit id="spam-message">
+                <source>Warning: There are fields in the form containing errors. Please correct these errors.</source>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>

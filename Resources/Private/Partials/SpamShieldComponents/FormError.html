@@ -1,14 +1,16 @@
 {namespace v=FluidTYPO3\Vhs\ViewHelpers}
 
 <f:if condition="{validationResults.flattenedErrors -> f:count()} > 0">
-    <p style="color :red">
-        Avertissement : Le formulaire comporte 1 champ(s) en erreur. Veuillez s'il vous plaît les corriger.
-    </p>
-    <ul class="errors">
-        <f:for each="{validationResults.flattenedErrors}" as="errors">
-            <f:for each="{errors}" as="error">
-                <li><span style="color : red;"><f:translate key="{error}"/></span></li>
+    <div>
+        <p class="spam-details">
+            <f:translate key="spam-message"/>
+        </p>
+        <ul class="errors">
+            <f:for each="{validationResults.flattenedErrors}" as="errors">
+                <f:for each="{errors}" as="error">
+                    <li><span class="spam-details"><f:translate key="{error}"/></span></li>
+                </f:for>
             </f:for>
-        </f:for>
-    </ul>
+        </ul>
+    </div>
 </f:if>
