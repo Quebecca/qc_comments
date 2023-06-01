@@ -5,6 +5,7 @@ namespace Qc\QcComments\SpamValidator\Service;
 
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\ArrayUtility as CoreArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
@@ -34,11 +35,6 @@ class ConfigurationService implements SingletonInterface
             ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
             'QcComments',
         );
-
-        /*if (empty($this->settings[$pluginName])) {
-            $this->settings[$pluginName] = $this->getTypoScriptSettingsFromOverallConfiguration($pluginName);
-        }
-        return $this->settings[$pluginName];*/
     }
 
     /**
@@ -87,5 +83,30 @@ class ConfigurationService implements SingletonInterface
             return (array)$configuration['plugin.']['tx_qccomments.']['settings.']['setup.'];
         }
         return [];
+    }
+
+    /**
+     * Check if a given validation is turned on generally
+     * and if there is a given spamshield method enabled
+     *
+     * @param array $settings
+     * @param string $className
+     * @return bool
+     */
+    public function isValidationEnabled(array $settings, string $className): bool
+    {
+        $validationActivated = false;
+        if (CoreArrayUtility::isValidPath($settings, 'spamshield/methods')) {
+            foreach ((array)$settings['spamshield']['methods'] as $method) {
+                if (!empty($method['class'])
+                    && !empty($method['_enable'])
+                    && $method['class'] === $className
+                    && $method['_enable'] === '1') {
+                    $validationActivated = true;
+                    break;
+                }
+            }
+        }
+        return !empty($settings['spamshield']['_enable']) && $validationActivated;
     }
 }

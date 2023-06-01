@@ -24,6 +24,9 @@
                         <div class="row">
                             <div class="comments-form col-12 col-lg-8 sansBorder ">
                                 <f:form action="saveComment" object="{comment}" objectName="comment" id="commentForm">
+
+                                    <f:render partial="SpamShieldComponents/FormError" arguments="{_all}"/>
+
                                     <f:form.hidden property="urlOrig" value="{absUrl}"/>
                                     <f:form.hidden property="uidOrig" value="{v:page.info(field: 'uid')}"/>
                                     <div class="form-inline form-group col-md-12">
@@ -54,13 +57,13 @@
                                                 <f:translate key="haveYouACommentDescription" />
                                             </span>
                                         </p>
-
                                         <f:form.textarea
                                                 property="comment"
-                                                class="form-control"
+                                                class="form-control {qcComments:errorClass(class:'my_error_class')}"
                                                 id="comment-textarea"
                                                 rows="10"
                                                 cols="10"
+                                                name="qc_comments_comment"
                                         />
                                         <span id="error-message-too-short" class="d-none"><f:translate key="too-short-comment"/></span>
 
@@ -70,6 +73,7 @@
                                         <div class="d-none" id="maxCharacters" data-tr-label="{config.maxCharacters}"></div>
                                         <div class="d-none" id="minCharacters" data-tr-label="{config.minCharacters}"></div>
                                         <div class="d-none" id="skipRecaptcha" data-tr-label="{recaptchaConfig.enabled}"></div>
+                                        <f:render partial="SpamShieldComponents/HoneyPod" arguments="{_all}"/>
 
                                         <div id="infoMaxCaracteres" class="infoSupplJs" aria-hidden="true">
                                         <span id="limitLabel">
@@ -99,6 +103,7 @@
                                             </f:else>
                                         </f:if>
                                     </div>
+
                                 </f:form>
                             </div>
                             <div class="col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse d-none" id="questionsLink-section">

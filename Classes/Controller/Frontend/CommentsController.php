@@ -15,6 +15,7 @@ namespace Qc\QcComments\Controller\Frontend;
 
 use Qc\QcComments\Domain\Model\Comment;
 use Qc\QcComments\Domain\Repository\CommentRepository;
+use Qc\QcComments\SpamValidator\Service\ConfigurationService;
 use Qc\QcComments\SpamValidator\SpamShieldValidator;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
@@ -49,6 +50,11 @@ class CommentsController extends ActionController
      */
     protected LocalizationUtility $localizationUtility;
 
+    /**
+     * @var bool
+     */
+    protected bool $isSpamShieldEnabled = false;
+
     public function injectCommentsRepository(CommentRepository $commentsRepository)
     {
         $this->commentsRepository = $commentsRepository;
@@ -57,6 +63,8 @@ class CommentsController extends ActionController
     public function __construct(
     ) {
         $this->localizationUtility = GeneralUtility::makeInstance(LocalizationUtility::class);
+        $confService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $this->isSpamShieldEnabled = $confService->getTypoScriptSettings()['spamshield']['_enable'] == '1';
     }
 
     protected function initializeAction()
@@ -96,7 +104,8 @@ class CommentsController extends ActionController
             'validationResults' => $this->request->getArguments()['validationResults'],
             'comment' => new Comment(),
             'config' => $config,
-            'recaptchaConfig' => $this->tsConfig['recaptcha']
+            'recaptchaConfig' => $this->tsConfig['recaptcha'],
+            'isSpamShieldEnabled' => $this->isSpamShieldEnabled
         ]);
     }
 
@@ -125,14 +134,16 @@ class CommentsController extends ActionController
             $this->commentsRepository->add($comment);
         }
         $this->forward('show', null, null, ['submitted' => true]);*/
-
-
-        $validator = GeneralUtility::makeInstance(SpamShieldValidator::class);
-        $validationResults = $validator->validate($comment);
-        if($validationResults->hasErrors()){
-            $this->forward('show', null, null, ['submitted' => false,'validationResults' => $validationResults ]);
+        $spamErrors = false;
+        if($this->isSpamShieldEnabled){
+            $validator = GeneralUtility::makeInstance(SpamShieldValidator::class);
+            $validationResults = $validator->validate($comment);
+            $spamErrors = $validationResults->hasErrors();
+            if($spamErrors){
+                $this->forward('show', null, null, ['submitted' => false,'validationResults' => $validationResults ]);
+            }
         }
-        else{
+        if(!$spamErrors){
             if ($comment) {
                 $pageUid = $comment->getUidOrig();
                 $comment->setUidPermsGroup(
@@ -144,9 +155,6 @@ class CommentsController extends ActionController
             }
             $this->forward('show', null, null, ['submitted' => true]);
         }
-
-
     }
-
 
 }

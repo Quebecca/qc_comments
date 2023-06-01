@@ -30,5 +30,5 @@ interface MethodInterface
     /**
      * @return bool
      */
-    public function spamCheck(): bool;
+    public function spamCheck(Comment $comment): bool;
 }

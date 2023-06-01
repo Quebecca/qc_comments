@@ -1,4 +1,8 @@
 $( document ).ready(function() {
+
+    // @todo : vider le champ de commentaire après l'envoie
+
+
     if (document.getElementById('commentForm') !== null) {
         let siteKey = document.getElementById('sitekey').getAttribute('data-tr-label') ?? '';
         let maxCharacters = document.getElementById('maxCharacters').getAttribute('data-tr-label') ?? '';

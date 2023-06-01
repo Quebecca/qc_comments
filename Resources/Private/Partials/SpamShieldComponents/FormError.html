@@ -1,0 +1,39 @@
+{namespace vh=In2code\Powermail\ViewHelpers}
+<f:if condition="{validationResults.flattenedErrors}">
+    <ul class="errors">
+        <f:debug>{validationResults.flattenedErrors}</f:debug>
+        <f:for each="{validationResults.flattenedErrors}" as="errors" key="propertyPath">
+            <f:for each="{errors}" as="error">
+                <li style="color : red;"> {error}<f:translate key="{error}"/> </li>
+            </f:for>
+        </f:for>
+    </ul>
+</f:if>
+
+<f:comment>
+    <f:form.validationResults>
+        <f:if condition="{validationResults.flattenedErrors}">
+            <ul class="powermail_message powermail_message_error">
+                <f:for each="{validationResults.flattenedErrors}" as="errors">
+                    <f:for each="{errors}" as="singleError">
+                        <li>
+                            <f:if condition="{singleError.message} == 'spam_details'">
+                                <f:then>
+                                    <f:translate key="validationerror_spam" /> {singleError.arguments.spamfactor}
+                                </f:then>
+                                <f:else>
+                                    <f:if condition="{singleError.arguments.marker}">
+                                        <vh:getter.getFieldPropertyFromMarkerAndForm marker="{singleError.arguments.marker}" form="{form}" property="title"/>:
+                                    </f:if>
+                                </f:else>
+                            </f:if>
+
+                            <f:translate key="validationerror_{singleError.message}">{singleError.message}</f:translate>
+                        </li>
+                    </f:for>
+                </f:for>
+            </ul>
+        </f:if>
+    </f:form.validationResults>
+
+</f:comment>

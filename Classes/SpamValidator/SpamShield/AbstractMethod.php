@@ -65,7 +65,7 @@ abstract class AbstractMethod implements MethodInterface
      *
      * @return bool
      */
-    public function spamCheck(): bool
+    public function spamCheck(Comment $comment): bool
     {
         return false;
     }

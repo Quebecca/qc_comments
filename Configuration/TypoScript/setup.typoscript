@@ -20,10 +20,29 @@ plugin.tx_qccomments {
         }
 
         spamshield {
-            _enable = 0
+            _enable = 1
             methods{
+                # Honeypot check
+                1 {
+                    _enable = 1
+
+                    # Spamcheck name
+                    name = Honey Pot
+
+                    # Class
+                    class = Qc\QcComments\SpamValidator\SpamShield\HoneyPodMethod
+
+                    # if this check failes - add this indication value to indicator (0 disables this check completely)
+                    indication = 5
+
+                    # method configuration
+                    configuration {
+
+                    }
+                }
+
                 # Value blacklist check
-                6 {
+                2 {
                     _enable = 1
 
                     # Spamcheck name
@@ -40,6 +59,26 @@ plugin.tx_qccomments {
                         # Blacklisted values (could also get read from a file - simply with FLUIDTEMPLATE)
                         values = TEXT
                         values.value = toto,viagra,sex,porn,p0rn
+                    }
+                }
+
+                # Link check : Check the number of allowed links
+                3 {
+                    _enable = 1
+
+                    # Spamcheck name
+                    name = Link check
+
+                    # Class
+                    class = Qc\QcComments\SpamValidator\SpamShield\LinkMethod
+
+                    # if this check failes - add this indication value to indicator (0 disables this check completely)
+                    indication = 3
+
+                    # method configuration
+                    configuration {
+                        # number of allowed links
+                        linkLimit = 2
                     }
                 }
             }
