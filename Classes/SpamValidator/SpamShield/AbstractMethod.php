@@ -38,7 +38,7 @@ abstract class AbstractMethod implements MethodInterface
      * @param array $settings
      * @param array $configuration
      */
-    public function __construct(Comment $comment, array $settings, array $configuration = [])
+    public function __construct(Comment $comment, array $settings = [], array $configuration = [])
     {
         $this->comment = $comment;
         $this->settings = $settings;

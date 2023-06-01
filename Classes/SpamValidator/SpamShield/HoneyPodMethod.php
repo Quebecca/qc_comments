@@ -22,9 +22,8 @@ class HoneyPodMethod extends AbstractMethod
     }
     /**
      * @param string $key
-     * @return string
      */
-    protected function getArgumentsFromGetOrPostRequest(string $key): string
+    protected function getArgumentsFromGetOrPostRequest(string $key)
     {
         $args = (array)GeneralUtility::_GP('tx_qccomments_commentsform');
         return $args['field']['__hp'];
