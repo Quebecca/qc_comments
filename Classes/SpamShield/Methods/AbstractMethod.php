@@ -1,11 +1,9 @@
 <?php
 
 declare(strict_types=1);
-namespace Qc\QcComments\SpamValidator\SpamShield;
+namespace Qc\QcComments\SpamShield\Methods;
 
-use In2code\Powermail\Utility\FrontendUtility;
 use Qc\QcComments\Domain\Model\Comment;
-use Qc\QcComments\SpamValidator\SpamValidator\Mail;
 
 /**
  * Class AbstractMethod
@@ -43,27 +41,11 @@ abstract class AbstractMethod implements MethodInterface
         $this->comment = $comment;
         $this->settings = $settings;
         $this->configuration = $configuration;
-        $this->arguments = FrontendUtility::getArguments();
     }
 
     /**
-     * @return void
-     */
-    public function initialize(): void
-    {
-    }
-
-    /**
-     * @return void
-     */
-    public function initializeSpamCheck(): void
-    {
-    }
-
-    /**
-     * Example spamcheck, return true if spam recocnized
-     *
-     * @return bool
+     * @param Comment $comment
+     * @return bool*
      */
     public function spamCheck(Comment $comment): bool
     {

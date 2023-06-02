@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-namespace Qc\QcComments\SpamValidator\SpamShield;
+namespace Qc\QcComments\SpamShield\Methods;
 
 use Qc\QcComments\Domain\Model\Comment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

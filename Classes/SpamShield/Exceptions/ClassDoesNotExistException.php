@@ -1,5 +1,5 @@
 <?php
-namespace Qc\QcComments\SpamValidator\Exceptions;
+namespace Qc\QcComments\SpamShield\Exceptions;
 
 class ClassDoesNotExistException extends \Exception
 {

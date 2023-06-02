@@ -1,18 +1,18 @@
 <?php
 
 declare(strict_types=1);
-namespace Qc\QcComments\SpamValidator;
+namespace Qc\QcComments\SpamShield;
 
 use Exception;
 use In2code\Powermail\Utility\ConfigurationUtility;
 use In2code\Powermail\Utility\ObjectUtility;
-use Qc\QcComments\SpamValidator\AbstractValidator;
+use Qc\QcComments\SpamShield\AbstractValidator;
 use Qc\QcComments\Domain\Model\Comment;
-use Qc\QcComments\SpamValidator\SpamShield\AbstractMethod;
-use Qc\QcComments\SpamValidator\SpamShield\MethodInterface;
-use Qc\QcComments\SpamValidator\SpamShield\ValueBlacklistMethod;
-use Qc\QcComments\SpamValidator\Exceptions\ClassDoesNotExistException;
-use Qc\QcComments\SpamValidator\Exceptions\InterfaceNotImplementedException;
+use Qc\QcComments\SpamShield\Methods\AbstractMethod;
+use Qc\QcComments\SpamShield\Methods\MethodInterface;
+use Qc\QcComments\SpamShield\Methods\ValueBlacklistMethod;
+use Qc\QcComments\SpamShield\Exceptions\ClassDoesNotExistException;
+use Qc\QcComments\SpamShield\Exceptions\InterfaceNotImplementedException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -140,8 +140,6 @@ class SpamShieldValidator extends AbstractValidator
                     $this->settings,
                     $method['configuration']
                 );
-                $methodInstance->initialize();
-                $methodInstance->initializeSpamCheck();
                 if ((int)$method['indication'] > 0 && $methodInstance->spamCheck($comment)) {
                     $this->addMessage($method['name'] . ' failed');
                 }

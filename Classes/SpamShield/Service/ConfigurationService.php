@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-namespace Qc\QcComments\SpamValidator\Service;
+namespace Qc\QcComments\SpamShield\Service;
 
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -33,56 +33,8 @@ class ConfigurationService implements SingletonInterface
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
         return $configurationManager->getConfiguration(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
-            'QcComments',
+            $pluginName,
         );
-    }
-
-    /**
-     * Get configuration (formally known as $this->conf in oldschool extensions)
-     *
-     * @param string $pluginName
-     * @return array
-     */
-    public function getTypoScriptConfiguration(string $pluginName = 'QcComments'): array
-    {
-        if (empty($this->configuration[$pluginName])) {
-            $this->configuration[$pluginName] = $this->getTypoScriptConfigurationFromOverallConfiguration($pluginName);
-        }
-        return $this->configuration[$pluginName];
-    }
-
-    /**
-     * @param string $pluginName
-     * @return array
-     */
-    protected function getTypoScriptSettingsFromOverallConfiguration(string $pluginName): array
-    {
-        $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
-        $setup = $configurationManager->getConfiguration(
-            ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
-            'QcComments',
-            $pluginName
-        );
-
-        return $setup['setup'] ?? [];
-    }
-
-    /**
-     * @param string $pluginName
-     * @return array
-     */
-    protected function getTypoScriptConfigurationFromOverallConfiguration(string $pluginName): array
-    {
-        $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
-        $configuration = $configurationManager->getConfiguration(
-            ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT,
-            'QcComments',
-            $pluginName
-        );
-        if (ArrayUtility::isValidPath($configuration, 'plugin./tx_powermail./settings./setup.')) {
-            return (array)$configuration['plugin.']['tx_qccomments.']['settings.']['setup.'];
-        }
-        return [];
     }
 
     /**

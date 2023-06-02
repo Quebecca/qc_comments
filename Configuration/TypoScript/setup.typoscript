@@ -30,7 +30,7 @@ plugin.tx_qccomments {
                     name = Honey Pot
 
                     # Class
-                    class = Qc\QcComments\SpamValidator\SpamShield\HoneyPodMethod
+                    class = Qc\QcComments\SpamShield\Methods\HoneyPodMethod
 
                     # if this check failes - add this indication value to indicator (0 disables this check completely)
                     indication = 5
@@ -49,7 +49,7 @@ plugin.tx_qccomments {
                     name = Value blacklist check
 
                     # Class
-                    class = Qc\QcComments\SpamValidator\SpamShield\ValueBlacklistMethod
+                    class = Qc\QcComments\SpamShield\Methods\ValueBlacklistMethod
 
                     # if this check failes - add this indication value to indicator (0 disables this check completely)
                     indication = 7
@@ -70,7 +70,7 @@ plugin.tx_qccomments {
                     name = Link check
 
                     # Class
-                    class = Qc\QcComments\SpamValidator\SpamShield\LinkMethod
+                    class = Qc\QcComments\SpamShield\Methods\LinkMethod
 
                     # if this check failes - add this indication value to indicator (0 disables this check completely)
                     indication = 3

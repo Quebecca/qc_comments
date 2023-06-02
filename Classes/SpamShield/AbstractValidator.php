@@ -1,12 +1,12 @@
 <?php
 
 declare(strict_types=1);
-namespace  Qc\QcComments\SpamValidator;
+namespace  Qc\QcComments\SpamShield;
 
 use In2code\Powermail\Domain\Model\Field;
 use In2code\Powermail\Utility\FrontendUtility;
 use Qc\QcComments\Domain\Model\Comment;
-use Qc\QcComments\SpamValidator\Service\ConfigurationService;
+use Qc\QcComments\SpamShield\Service\ConfigurationService;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;

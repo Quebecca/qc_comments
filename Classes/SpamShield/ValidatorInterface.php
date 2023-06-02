@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-namespace Qc\QcComments\SpamValidator;
+namespace Qc\QcComments\SpamShield;
 
 use In2code\Powermail\Domain\Model\Field;
 

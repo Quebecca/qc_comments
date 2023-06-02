@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-namespace Qc\QcComments\SpamValidator\SpamShield;
+namespace Qc\QcComments\SpamShield\Methods;
 
 use Qc\QcComments\Domain\Model\Comment;
 
@@ -18,16 +18,7 @@ interface MethodInterface
     public function __construct(Comment $comment, array $settings,  array $configuration = []);
 
     /**
-     * @return void
-     */
-    public function initialize(): void;
-
-    /**
-     * @return void
-     */
-    public function initializeSpamCheck(): void;
-
-    /**
+     * @param Comment $comment
      * @return bool
      */
     public function spamCheck(Comment $comment): bool;

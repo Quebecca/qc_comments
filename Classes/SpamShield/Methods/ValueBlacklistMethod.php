@@ -1,12 +1,12 @@
 <?php
 
 declare(strict_types=1);
-namespace Qc\QcComments\SpamValidator\SpamShield;
+namespace Qc\QcComments\SpamShield\Methods;
 
-use In2code\Powermail\Utility\ObjectUtility;
 use Qc\QcComments\Domain\Model\Comment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\Exception;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * Class ValueBlacklistMethod
@@ -42,7 +42,7 @@ class ValueBlacklistMethod extends AbstractMethod
      */
     protected function getValues(): array
     {
-        $values = ObjectUtility::getContentObject()->cObjGetSingle(
+        $values = $this->getContentObject()->cObjGetSingle(
             $this->configuration['values']['_typoScriptNodeValue'],
             $this->configuration['values']
         );
@@ -77,5 +77,14 @@ class ValueBlacklistMethod extends AbstractMethod
     protected function isStringInString(string $haystack, string $needle): bool
     {
         return preg_match('/(?:\A|[@\s\b_-]|\.)' . $needle . '(?:$|[\s\b_-]|\.)/i', $haystack) === 1;
+    }
+
+    /**
+     * @return ContentObjectRenderer
+     * @throws Exception
+     */
+    public function getContentObject(): ContentObjectRenderer
+    {
+        return GeneralUtility::makeInstance(ContentObjectRenderer::class);
     }
 }
