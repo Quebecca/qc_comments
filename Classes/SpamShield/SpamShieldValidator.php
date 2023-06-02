@@ -2,28 +2,36 @@
 
 declare(strict_types=1);
 namespace Qc\QcComments\SpamShield;
-
+/***
+ *
+ * This file is part of Qc Comments project.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ *  (c) 2023 <techno@quebec.ca>
+ *
+ ***/
 use Exception;
-use In2code\Powermail\Utility\ConfigurationUtility;
-use In2code\Powermail\Utility\ObjectUtility;
-use Qc\QcComments\SpamShield\AbstractValidator;
 use Qc\QcComments\Domain\Model\Comment;
 use Qc\QcComments\SpamShield\Methods\AbstractMethod;
 use Qc\QcComments\SpamShield\Methods\MethodInterface;
 use Qc\QcComments\SpamShield\Methods\ValueBlacklistMethod;
 use Qc\QcComments\SpamShield\Exceptions\ClassDoesNotExistException;
 use Qc\QcComments\SpamShield\Exceptions\InterfaceNotImplementedException;
+use Qc\QcComments\SpamShield\Service\ConfigurationService;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException;
+use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator as ExtbaseAbstractValidator;
 
 /**
  * Class SpamShieldValidator
  */
-class SpamShieldValidator extends AbstractValidator
+class SpamShieldValidator extends ExtbaseAbstractValidator
 {
 
     /**
@@ -48,11 +56,14 @@ class SpamShieldValidator extends AbstractValidator
     protected float $calculatedSpamFactor = 0.0;
 
     /**
-     * Error messages for email to admin
-     *
      * @var array
      */
     protected array $messages = [];
+
+    /**
+     * @var array
+     */
+    protected array $settings;
 
     /**
      * @var string
@@ -60,35 +71,29 @@ class SpamShieldValidator extends AbstractValidator
     protected string $methodInterface = MethodInterface::class;
 
     /**
+     * Constructs the validator and sets validation options
+     *
+     * @param array $options Options for the validator
+     * @throws InvalidValidationOptionsException
+     */
+    public function __construct(array $options = [])
+    {
+        parent::__construct($options);
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $this->settings = $configurationService->getTypoScriptSettings();
+    }
+    /**
      * @param Comment $comment
-     * @return bool
      * @throws Exception
      */
     public function isValid($comment)
     {
        if ($this->isSpamShieldEnabled()) {
            $this->runAllSpamMethods($comment);
-           // @todo : impelement the indicator
-          /* if(!empty($this->messages)){
-               foreach ($this->messages as $message){
-                   $this->addError($message, 1580681599);
-               }
-           }*/
-           /*$this->runAllSpamMethods($mail);
-           $this->calculateMailSpamFactor();
-           $this->saveSpamFactorInSession();
-           $this->saveSpamPropertiesInDevelopmentLog();
-           if ($this->isSpamToleranceLimitReached()) {
-               $this->addError('spam_details', 1580681599, ['spamfactor' => $this->getCalculatedSpamFactor(true)]);
-               $this->setValidState(false);
-               $this->sendSpamNotificationMail($mail);
-               $this->logSpamNotification($mail);
-           }*/
            if(!empty($this->messages)){
                $this->addError('spam_details', 1580681599);
            }
         }
-        return $this->isValidState();
     }
 
     /**
@@ -98,19 +103,6 @@ class SpamShieldValidator extends AbstractValidator
      */
     protected function runAllSpamMethods(Comment $comment): void
     {
-  /*          $valueBlacklistMethod = GeneralUtility::makeInstance(ValueBlacklistMethod::class,
-            $comment,
-            [],
-            []
-        );
-        $valueBlacklistMethod->initialize();
-        $valueBlacklistMethod->initializeSpamCheck();
-        if($valueBlacklistMethod->spamCheck($comment) == true){
-            $this->addMessage('ValueBlacklistMethod' . ' failed');
-            $this->addError('spam_details', 1580681599);
-
-        }*/
-
         foreach ($this->getSpamShieldMethodClasses() as $method) {
             $this->runSingleSpamMethod($comment, $method);
         }
@@ -200,13 +192,6 @@ class SpamShieldValidator extends AbstractValidator
      */
     protected function isSpamShieldEnabled(): bool
     {
-        //$this->initializeObject();
-       /* $breakerRunner = GeneralUtility::makeInstance(
-            BreakerRunner::class,
-            $mail,
-            $this->settings,
-            $this->flexForm
-        );*/
         return !empty($this->settings['spamshield']['_enable']);
     }
 

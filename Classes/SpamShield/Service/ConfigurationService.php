@@ -2,7 +2,16 @@
 
 declare(strict_types=1);
 namespace Qc\QcComments\SpamShield\Service;
-
+/***
+ *
+ * This file is part of Qc Comments project.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ *  (c) 2023 <techno@quebec.ca>
+ *
+ ***/
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility as CoreArrayUtility;
