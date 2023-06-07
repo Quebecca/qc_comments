@@ -13,4 +13,9 @@ call_user_func(
             [Qc\QcComments\Controller\Frontend\CommentsController::class  => 'show,saveComment'] // storing without using cash
         );
     }
+
+);
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig(
+    "@import 'EXT:qc_comments/Configuration/TSconfig/pageconfig.tsconfig'"
 );

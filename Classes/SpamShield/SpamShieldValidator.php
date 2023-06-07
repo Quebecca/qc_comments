@@ -15,16 +15,10 @@ namespace Qc\QcComments\SpamShield;
 use Exception;
 use Qc\QcComments\Domain\Model\Comment;
 use Qc\QcComments\SpamShield\Methods\AbstractMethod;
-use Qc\QcComments\SpamShield\Methods\MethodInterface;
-use Qc\QcComments\SpamShield\Methods\ValueBlacklistMethod;
 use Qc\QcComments\SpamShield\Exceptions\ClassDoesNotExistException;
 use Qc\QcComments\SpamShield\Exceptions\InterfaceNotImplementedException;
 use Qc\QcComments\SpamShield\Service\ConfigurationService;
-use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
-use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
-use TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator as ExtbaseAbstractValidator;
 
@@ -68,7 +62,7 @@ class SpamShieldValidator extends ExtbaseAbstractValidator
     /**
      * @var string
      */
-    protected string $methodInterface = MethodInterface::class;
+    protected string $methodInterface = AbstractMethod::class;
 
     /**
      * Constructs the validator and sets validation options

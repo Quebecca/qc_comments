@@ -1,0 +1,23 @@
+mod{
+    qcComments {
+        comments {
+            // Order by comment date
+            orderType = DESC
+            maxRecords = 100
+            numberOfSubPages = 50
+            maxCharacters = 10
+        }
+        statistics {
+            maxRecords = 30
+        }
+
+        csvExport {
+            filename {
+                dateFormat = Ymd
+            }
+            separator = ;
+            enclosure = "
+            escape = \
+        }
+    }
+}

@@ -18,23 +18,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Class HoneyPodMethod
  */
-class HoneyPodMethod extends AbstractMethod
+class HoneyPotMethod extends AbstractMethod
 {
     /**
-     * Honeypod Check: Spam recognized if Honeypod field is filled
+     * Honeypot Check: Spam recognized if Honeypot field is filled
      *
      * @return bool true if spam recognized
      */
     public function spamCheck(Comment $comment = null): bool
     {
-        return !empty($this->getArgumentsFromGetOrPostRequest("tx_qccomments_commentsform"));
-    }
-    /**
-     * @param string $key
-     */
-    protected function getArgumentsFromGetOrPostRequest(string $key)
-    {
         $args = (array)GeneralUtility::_GP('tx_qccomments_commentsform');
-        return $args['field']['__hp'];
+        return !empty($args['field']['__hp']);
     }
 }

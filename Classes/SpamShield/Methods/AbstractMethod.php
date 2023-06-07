@@ -17,7 +17,7 @@ use Qc\QcComments\Domain\Model\Comment;
 /**
  * Class AbstractMethod
  */
-abstract class AbstractMethod implements MethodInterface
+abstract class AbstractMethod
 {
 
     /**
@@ -54,7 +54,7 @@ abstract class AbstractMethod implements MethodInterface
 
     /**
      * @param Comment $comment
-     * @return bool*
+     * @return bool
      */
     public function spamCheck(Comment $comment): bool
     {

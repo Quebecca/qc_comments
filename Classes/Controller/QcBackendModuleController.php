@@ -18,11 +18,14 @@ use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Domain\Repository\CommentRepository;
 use Qc\QcComments\Domain\Session\BackendSession;
+use Qc\QcComments\SpamShield\Service\ConfigurationService;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
@@ -66,6 +69,11 @@ abstract class QcBackendModuleController extends BackendModuleActionController
      */
     protected CommentRepository $commentsRepository;
 
+    /**
+     * @var mixed
+     */
+    protected $userTS;
+
     const QC_LANG_FILE = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
 
     public function injectBackendSession(BackendSession $backendSession)
@@ -81,7 +89,9 @@ abstract class QcBackendModuleController extends BackendModuleActionController
     public function __construct(
     ) {
         $this->localizationUtility = GeneralUtility::makeInstance(LocalizationUtility::class);
+        $this->userTS = $this->getBackendUser()->getTSConfig()['mod.']['qcComments.'];
     }
+
 
     /**
      * Forward to the last selected action in case the current action is the default one
@@ -286,7 +296,16 @@ abstract class QcBackendModuleController extends BackendModuleActionController
     public function export(Filter $filter, ServerRequestInterface  $request,string $fileName,array $headers, array $data): ResponseInterface
     {
         $pageId = $request->getQueryParams()['parameters']['currentPageId'];
-        $csvSettings = $request->getQueryParams()['parameters']['csvSettings'];
+       /* $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
+        $x =  $configurationManager->getConfiguration(
+            ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT,
+            'QcComments'
+        );
+        debug($x);
+        die();*/
+        $tsConfig = GeneralUtility::makeInstance(ConfigurationService::class);
+
+        $csvSettings = $this->userTS['csvExport.'];
         $separator = $csvSettings['separator'] ?? ',';
         $enclosure = $csvSettings['enclosure'] ?? '"';
         $escape = $csvSettings['escape'] ?? '\\';
@@ -354,5 +373,13 @@ abstract class QcBackendModuleController extends BackendModuleActionController
 
 
     abstract protected function getHeaders(): array;
+
+    /**
+     * @return BackendUserAuthentication
+     */
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
+    }
 
 }

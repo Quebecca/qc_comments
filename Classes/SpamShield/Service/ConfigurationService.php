@@ -13,7 +13,6 @@ namespace Qc\QcComments\SpamShield\Service;
  *
  ***/
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ArrayUtility as CoreArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -29,6 +28,11 @@ class ConfigurationService implements SingletonInterface
     protected array $settings = [];
 
     /**
+     * @var mixed
+     */
+    protected $userTS;
+
+    /**
      * @var array
      */
     protected array $configuration = [];
@@ -40,9 +44,9 @@ class ConfigurationService implements SingletonInterface
     public function getTypoScriptSettings(string $pluginName = 'QcComments'): array
     {
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
-        return $configurationManager->getConfiguration(
+        return  $configurationManager->getConfiguration(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
-            $pluginName,
+            $pluginName
         );
     }
 
