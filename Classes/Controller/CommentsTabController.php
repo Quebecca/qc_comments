@@ -52,14 +52,14 @@ class CommentsTabController extends QcBackendModuleController
             ];
 
             $this->pages_ids = $this->commentsRepository->getPageIdsList();
-            $maxRecords = is_numeric($this->settings['comments']['maxRecords'])
-                ? $this->settings['comments']['maxRecords'] : self::DEFAULT_MAX_RECORDS;
+            $maxRecords = is_numeric($this->userTS['comments.']['maxRecords'])
+                ? $this->userTS['comments.']['maxRecords'] : self::DEFAULT_MAX_RECORDS;
 
-            $numberOfSubPages = is_numeric($this->settings['comments']['numberOfSubPages'])
-                ? $this->settings['comments']['numberOfSubPages'] : self::DEFAULT_MAX_PAGES;
+            $numberOfSubPages = is_numeric($this->userTS['comments.']['numberOfSubPages'])
+                ? $this->userTS['comments.']['numberOfSubPages'] : self::DEFAULT_MAX_PAGES;
 
-            $orderType = in_array($this->settings['comments']['orderType'], ['DESC', 'ASC'])
-                ? $this->settings['comments']['orderType'] : self::DEFAULT_ORDER_TYPES;
+            $orderType = in_array($this->userTS['comments.']['orderType'], ['DESC', 'ASC'])
+                ? $this->userTS['comments.']['orderType'] : self::DEFAULT_ORDER_TYPES;
 
             $tooMuchPages = count($this->pages_ids) > $numberOfSubPages;
             $this->pages_ids = array_slice(

@@ -36,7 +36,7 @@ class StatisticsTabController extends QcBackendModuleController
             }
             $this->pages_ids = $this->commentsRepository->getPageIdsList();
             $currentPageId = $this->root_id;
-            $maxRecords = $this->settings['statistics']['maxRecords'];
+            $maxRecords = $this->userTS['statistics.']['maxRecords'];
             $resultData = $this->commentsRepository->getStatistics($this->pages_ids, $maxRecords);
             if (count($resultData) > $maxRecords) {
                 $message = $this->localizationUtility->translate(self::QC_LANG_FILE . 'tooMuchPages',
