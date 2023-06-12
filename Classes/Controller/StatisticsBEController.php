@@ -2,6 +2,8 @@
 
 namespace Qc\QcComments\Controller;
 
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Driver\Exception;
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Service\StatisticsTabService;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
@@ -21,6 +23,8 @@ class StatisticsBEController extends QcBackendModuleController
 
     /**
      * @param Filter|null $filter
+     * @throws DBALException
+     * @throws Exception
      */
     public function statisticsAction(Filter $filter = null)
     {
@@ -39,6 +43,7 @@ class StatisticsBEController extends QcBackendModuleController
                     null, [$data['maxRecords']]);
                 $this->addFlashMessage($message, null, AbstractMessage::WARNING);
             }
+           $statsByDepth = $this->qcBeModuleService->getStatisticsByDepth();
             $this->view->assignMultiple([
                 'csvButton' => [
                     'href' => $this->getUrl('exportStatistics'),
@@ -51,7 +56,9 @@ class StatisticsBEController extends QcBackendModuleController
                 'rows' => $data['rows'],
                 'pagesId' => $this->pages_ids,
                 'settings',
-                'currentPageId' => $data['currentPageId']
+                'currentPageId' => $data['currentPageId'],
+                'totalSection_headers' => $statsByDepth['headers'],
+                'totalSection_row' => $statsByDepth['row']
             ]);
         }
 

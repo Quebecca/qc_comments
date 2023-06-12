@@ -109,6 +109,9 @@
             <trans-unit id="stats.h.avg">
                 <target>Moyenne</target>
             </trans-unit>
+            <trans-unit id="stats.h.nonEmptyComment">
+                <target>Commentaires ...</target>
+            </trans-unit>
             <trans-unit id="comments.h.comment_uid">
                 <target>Id</target>
             </trans-unit>

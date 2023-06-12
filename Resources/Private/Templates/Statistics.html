@@ -44,6 +44,13 @@
 <f:section name="rows">
     <div class="panel panel-space panel-default recordlist">
         <div class="panel-heading">
+            Statistique selon la profondeur
+        </div>
+        <f:render partial="StatsByDepthTable" arguments="{row:totalSection_row, headers:totalSection_headers, settings:settings}"/>
+    </div>
+
+    <div class="panel panel-space panel-default recordlist">
+        <div class="panel-heading">
             {f:translate(key: 'comments')}
         </div>
         <f:render partial="StatsTable" arguments="{rows:rows, headers:headers, settings:settings}"/>

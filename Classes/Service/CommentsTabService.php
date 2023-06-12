@@ -14,11 +14,7 @@ namespace Qc\QcComments\Service;
  ***/
 use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Domain\Filter\Filter;
-use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
-use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 
 class CommentsTabService extends QcBackendModuleService
 {

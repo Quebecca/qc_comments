@@ -160,7 +160,6 @@ class CommentRepository extends Repository
 
     /**
      * This function is used to get pages statistics for BE rendering and for export as well
-     * @param $page_ids
      * @param int|bool $limit
      * @return array
      */
@@ -192,28 +191,37 @@ class CommentRepository extends Repository
             // we add one more record to check if there are more than rendering results
             $data = $data->setMaxResults($limit + 1);
         }
-        $data = $data
+        return  $data
             ->execute()
             ->fetchAllAssociative();
 
-        $rows = [];
-        foreach ($data as $item) {
-            $item['total_neg'] = $item['total'] - $item['total_pos'];
+    }
 
-            $total =  $item['total_neg'] >  $item['total_pos']
-                ? - ((int)($item['total_neg']) - (int)($item['total_pos']))
-                :  $item['total_pos'];
 
-            $item['avg'] = $item['total'] > 0 ?
-                ' ' . number_format((($total) / $item['total']), 3) * 100 . ' %'
-            : '0 %';
-
-            $item['total_pos'] = $item['total_pos'] ?: '0';
-
-            $rows[] = $item;
-
-        }
-        return $rows;
+    /**
+     * @throws DBALException
+     * @throws Exception
+     */
+    public function getTotalNonEmptyComment(){
+        $pages_ids = $this->getPageIdsList();
+        $constraints = $this->getConstraints($pages_ids);
+        $constraints['whereClause'] .= " AND trim($this->tableName.comment) <> ''";
+        $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
+        $queryBuilder = $this->generateQueryBuilder();
+        return  $queryBuilder
+            ->count($this->tableName.'.uid')
+            ->from($this->tableName)
+            ->$joinMethod(
+                $this->tableName,
+                'pages',
+                'p',
+                $constraints['joinCond']
+            )
+            ->where(
+                $constraints['whereClause']
+            )
+            ->executeQuery()
+            ->fetchOne();
     }
 
     /**
