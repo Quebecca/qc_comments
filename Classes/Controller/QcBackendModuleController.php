@@ -18,6 +18,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Domain\Repository\CommentRepository;
 use Qc\QcComments\Domain\Session\BackendSession;
+use Qc\QcComments\Service\QcBackendModuleService;
 use Qc\QcComments\SpamShield\Service\ConfigurationService;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -44,10 +45,6 @@ abstract class QcBackendModuleController extends BackendModuleActionController
      */
     protected ?Icon $icon = null;
 
-    /**
-     * @var BackendSession
-     */
-    protected BackendSession $backendSession;
 
     /**
      * @var string
@@ -59,37 +56,19 @@ abstract class QcBackendModuleController extends BackendModuleActionController
      */
     protected array $pages_ids = [];
 
+    protected QcBackendModuleService  $qcBeModuleService;
+
+
     /**
      * @var LocalizationUtility
      */
     protected LocalizationUtility $localizationUtility;
 
-    /**
-     * @var CommentRepository
-     */
-    protected CommentRepository $commentsRepository;
-
-    /**
-     * @var mixed
-     */
-    protected $userTS;
-
     const QC_LANG_FILE = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
-
-    public function injectBackendSession(BackendSession $backendSession)
-    {
-        $this->backendSession = $backendSession;
-    }
-
-    public function injectCommentRepository(CommentRepository $commentsRepository)
-    {
-        $this->commentsRepository = $commentsRepository;
-    }
 
     public function __construct(
     ) {
         $this->localizationUtility = GeneralUtility::makeInstance(LocalizationUtility::class);
-        $this->userTS = $this->getBackendUser()->getTSConfig()['mod.']['qcComments.'];
     }
 
 
@@ -107,14 +86,14 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         $currentAction = $this->controllerName . '::' . $this->request->getControllerActionName();
         $arguments = $this->request->getArguments();
         if (!$arguments) { // no arguments means no action was selected
-            $lastAction = $this->backendSession->get('lastAction');
+            $lastAction = $this->qcBeModuleService->getBackendSession()->get('lastAction');
             if ($lastAction && $lastAction != $currentAction) {
                 list($controller, $action) = explode('::', $lastAction);
                 $this->forward($action, $controller);
             }
         }
         if ($this->isMenuAction($currentAction)) {
-            $this->backendSession->store('lastAction', $currentAction);
+            $this->qcBeModuleService->getBackendSession()->store('lastAction', $currentAction);
         }
     }
 
@@ -145,8 +124,9 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         $this->setMenu();
         $this->forwardToLastSelectedAction();
         $this->root_id = GeneralUtility::_GP('id');
-        $this->commentsRepository->setRootId((int)$this->root_id);
-        $this->commentsRepository->setSettings($this->settings);
+        $this->qcBeModuleService->setRootId($this->root_id);
+/*        $this->commentsRepository->setRootId((int)$this->root_id);
+        $this->commentsRepository->setSettings($this->settings);*/
     }
 
     /**
@@ -160,12 +140,12 @@ abstract class QcBackendModuleController extends BackendModuleActionController
             [
                 'label' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'menu.stats'),
                 'action' => 'statistics',
-                'controller' => 'StatisticsTab'
+                'controller' => 'StatisticsBE'
             ],
             [
                 'label' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'menu.list'),
                 'action' => 'comments',
-                'controller' => 'CommentsTab'
+                'controller' => 'CommentsBE'
             ],
 
         ];
@@ -200,7 +180,9 @@ abstract class QcBackendModuleController extends BackendModuleActionController
             $this->pageRenderer->addCssFile('EXT:qc_comments/Resources/Public/Css/be_qc_comments.css');
             $this->pageRenderer->addJsFile('EXT:qc_comments/Resources/Public/JavaScript/AdministrationModule.js');
         }
-        $this->processFilter();
+        //$this->processFilter();
+        $filter = $this->qcBeModuleService->processFilter();
+        $this->view->assign('filter', $filter);
 
     }
 
@@ -220,166 +202,15 @@ abstract class QcBackendModuleController extends BackendModuleActionController
 
     }
 
-
-    /**
-     * This function is used to get the filter from the backend session
-     * @param Filter|null $filter
-     * @return Filter|null
-     */
-    protected function processFilter(Filter $filter = null): ?Filter
-    {
-        // Add filtering to records
-        if ($filter === null) {
-            // Get filter from session if available
-            $filter = $this->backendSession->get('filter');
-            if ($filter == null) {
-                $filter = new Filter();
-            }
-        } else {
-            if ($filter->getDateRange() != 'userDefined') {
-                $filter->setStartDate(null);
-                $filter->setEndDate(null);
-            }
-
-            $this->backendSession->store('filter', $filter);
-        }
-        $this->view->assign('filter', $filter);
-        $this->commentsRepository->setFilter($filter);
-        return $filter;
-    }
-
     /**
      * This function will reset the search filter
      * @throws StopActionException
      */
     public function resetFilterAction(string $tabName = '')
     {
-        $this->processFilter(new Filter());
+        //$this->processFilter(new Filter());
+        $this->qcBeModuleService->processFilter(new Filter());
         $this->forward($tabName);
-    }
-
-    /**
-     * @param Filter $filter
-     * @param $fileName
-     * @param $csvDateFormat
-     * @param $pageId
-     * @return string
-     */
-    protected function getCSVFilename(Filter $filter, $fileName, $csvDateFormat, $pageId): string
-    {
-        $format = $csvDateFormat;
-        if($filter->getDateRange() == 'userDefined'){
-            $from = date($format,strtotime($filter->getStartDate()));
-            $now = date($format,strtotime($filter->getEndDate()));
-        }
-        else{
-            $now = date($format, strtotime('-'.$filter->getDateRange(), strtotime(date($format))));
-        }
-
-        return implode('-', array_filter([
-                $this->localizationUtility->translate(self::QC_LANG_FILE . $fileName),
-                $filter->getLang(),
-                'uid-' . $pageId,
-                $from,
-                $now,
-            ])) . '.csv';
-    }
-
-    /**
-     * @param Filter $filter
-     * @param ServerRequestInterface $request
-     * @param string $fileName
-     * @param array $headers
-     * @param array $data
-     * @return ResponseInterface
-     */
-    public function export(Filter $filter, ServerRequestInterface  $request,string $fileName,array $headers, array $data): ResponseInterface
-    {
-        $pageId = $request->getQueryParams()['parameters']['currentPageId'];
-       /* $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
-        $x =  $configurationManager->getConfiguration(
-            ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT,
-            'QcComments'
-        );
-        debug($x);
-        die();*/
-        $tsConfig = GeneralUtility::makeInstance(ConfigurationService::class);
-
-        $csvSettings = $this->userTS['csvExport.'];
-        $separator = $csvSettings['separator'] ?? ',';
-        $enclosure = $csvSettings['enclosure'] ?? '"';
-        $escape = $csvSettings['escape'] ?? '\\';
-        $csvDateFormat = $csvSettings['dateFormat'] ?? 'YmdHi';
-        $fileName = $this->getCSVFilename($filter, $fileName, $csvDateFormat, $pageId);
-
-        $response = new Response(
-            'php://output',
-            200,
-            ['Content-Type' => 'text/csv; charset=utf-8',
-                'Content-Description' => 'File transfer',
-                'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
-            ]
-        );
-
-        $fp = fopen('php://output', 'wb');
-        // BOM utf-8 pour excel
-        fwrite($fp, "\xEF\xBB\xBF");
-        fputcsv($fp, $headers, $separator, $enclosure, $escape);
-        foreach ($data as $row) {
-            foreach ($row as $item) {
-                fputcsv($fp, $item, $separator, $enclosure, $escape);
-            }
-        }
-        //  rewind($fp);
-        rtrim(stream_get_contents($fp), "\n");
-        fclose($fp);
-        return $response;
-    }
-
-    /**
-     * This function is used to generate a filter object from the ServerRequest
-     * @param ServerRequestInterface $request
-     * @return Filter
-     */
-    public function getFilterFromRequest(ServerRequestInterface $request): Filter
-    {
-        $filter = new Filter();
-        $filter->setLang($request->getQueryParams()['parameters']['lang']);
-        $filter->setDepth(intval($request->getQueryParams()['parameters']['depth']));
-        $filter->setDateRange($request->getQueryParams()['parameters']['selectDateRange']);
-        $filter->setStartDate($request->getQueryParams()['parameters']['startDate']);
-        $filter->setEndDate($request->getQueryParams()['parameters']['endDate']);
-        $filter->setIncludeEmptyPages($request->getQueryParams()['parameters']['includeEmptyPages'] === 'true');
-        return $filter;
-    }
-
-    /**
-     * This function is used to get the pages IDs
-     * @param ServerRequestInterface $request
-     * @param Filter $filter
-     * @return array
-     */
-    public function getPagesIds(ServerRequestInterface $request, Filter $filter): array
-    {
-        $this->commentsRepository->setRootId(intval($request->getQueryParams()['parameters']['currentPageId']));
-        $this->commentsRepository->setFilter($filter);
-
-        $pagesData = $this->commentsRepository->getPageIdsList();
-        if(intval($request->getQueryParams()['parameters']['depth']) == 0){
-            $pagesData = [$request->getQueryParams()['parameters']['currentPageId']];
-        }
-        return $pagesData;
-    }
-
-
-    abstract protected function getHeaders(): array;
-
-    /**
-     * @return BackendUserAuthentication
-     */
-    protected function getBackendUser(): BackendUserAuthentication
-    {
-        return $GLOBALS['BE_USER'];
     }
 
 }

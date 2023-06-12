@@ -1,5 +1,8 @@
 <?php
 
+use Qc\QcComments\Controller\CommentsBEController;
+use Qc\QcComments\Controller\StatisticsBEController;
+
 defined('TYPO3') || die('Access denied.');
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
@@ -22,8 +25,8 @@ call_user_func(
             'admin',
             '',
             [
-                \Qc\QcComments\Controller\StatisticsTabController::class => 'statistics, exportStatistics, resetFilter',
-                \Qc\QcComments\Controller\CommentsTabController::class => 'comments, exportComments, resetFilter',
+                StatisticsBEController::class => 'statistics, exportStatistics, resetFilter',
+                CommentsBEController::class => 'comments, exportComments, resetFilter',
             ],
             [
                 'access' => 'user,group',
