@@ -39,12 +39,6 @@ abstract class QcBackendModuleService
 
     const QC_LANG_FILE = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
 
-
-  /*  public function injectBackendSession(BackendSession $backendSession)
-    {
-        $this->backendSession = $backendSession;
-    }*/
-
     public function injectCommentRepository(CommentRepository $commentsRepository)
     {
         $this->commentsRepository = $commentsRepository;
@@ -78,7 +72,6 @@ abstract class QcBackendModuleService
 
             $this->backendSession->store('filter', $filter);
         }
-        //$this->view->assign('filter', $filter);
         $this->commentsRepository->setFilter($filter);
         $this->commentsRepository->setRootId($this->root_id);
         return $filter;
@@ -190,6 +183,11 @@ abstract class QcBackendModuleService
         return $pagesData;
     }
 
+    /**
+     * This function is used to format the statistics data
+     * @param $data
+     * @return array
+     */
     public function statisticsDataFormatting($data) : array{
         $rows = [];
         foreach ($data as $item) {

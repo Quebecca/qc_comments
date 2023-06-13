@@ -27,12 +27,24 @@ class Comment extends AbstractEntity
      */
     protected string $comment = '';
 
+    /**
+     * @var string
+     */
     protected string $urlOrig = '';
 
+    /**
+     * @var int
+     */
     protected int $uidOrig = 0;
 
+    /**
+     * @var int
+     */
     protected int $uidPermsGroup = 0;
 
+    /**
+     * @var string
+     */
     protected string $dateHour = '';
 
     /**

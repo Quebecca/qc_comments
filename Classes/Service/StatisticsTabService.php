@@ -56,8 +56,8 @@ class StatisticsTabService extends QcBackendModuleService
 
 
     /**
-     * @throws Exception
-     * @throws DBALException
+     * This function is used to get the statistics data by depth
+     * @return array
      */
     public function getStatisticsByDepth(): array
     {

@@ -73,12 +73,14 @@ class CommentRepository extends Repository
         return $connectionPool->getQueryBuilderForTable($this->tableName);
     }
 
+
     /**
      * This function is used to get the SQL constraints for the comments and statistics queries
      * @param array $page_ids
+     * @param bool $usefulCond
      * @return string[]
      */
-    public function getConstraints(array $page_ids, $usefulCond = true): array
+    public function getConstraints(array $page_ids, bool $usefulCond = true): array
     {
         $constrains = [
             'joinCond' => '',
@@ -108,7 +110,7 @@ class CommentRepository extends Repository
      * @param bool $showForHiddenPages
      * @return array
      */
-    public function getComments(array $pages_ids, string $limit, string $orderType, $showForHiddenPages = false): array
+    public function getComments(array $pages_ids, string $limit, string $orderType, bool $showForHiddenPages = false): array
     {
         $queryBuilder = $this->generateQueryBuilder();
         if($showForHiddenPages == true){
@@ -169,10 +171,12 @@ class CommentRepository extends Repository
 
     /**
      * This function is used to get pages statistics for BE rendering and for export as well
-     * @param int|bool $limit
+     * @param $page_ids
+     * @param $limit
+     * @param false $showForHiddenPages
      * @return array
      */
-    public function getStatistics($page_ids, $limit, $showForHiddenPages = false): array
+    public function getStatistics($page_ids, $limit,bool $showForHiddenPages = false): array
     {
         $queryBuilder = $this->generateQueryBuilder();
         if($showForHiddenPages == true){
@@ -211,10 +215,11 @@ class CommentRepository extends Repository
 
 
     /**
-     * @throws DBALException
-     * @throws Exception
+     * This function is used to get the total number of non-empty comments
+     * @param false $showForHiddenPages
+     * @return mixed
      */
-    public function getTotalNonEmptyComment($showForHiddenPages = false){
+    public function getTotalNonEmptyComment(bool $showForHiddenPages = false){
         $pages_ids = $this->getPageIdsList();
         $constraints = $this->getConstraints($pages_ids, false);
         $constraints['whereClause'] .= " AND trim($this->tableName.comment) <> ''";
