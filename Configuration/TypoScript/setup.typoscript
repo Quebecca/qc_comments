@@ -8,8 +8,8 @@ plugin.tx_qccomments {
     settings {
         comments {
             // if empty default will be 500
-            maxCharacters = 500
-            minCharacters = 5
+            maxCharacters = 50
+            minCharacters = 2
         }
 
         // Activate recaptcha
@@ -20,7 +20,7 @@ plugin.tx_qccomments {
         }
 
         spamshield {
-            _enable = 1
+            _enable = 0
             methods{
                 # Honeypot check
                 1 {

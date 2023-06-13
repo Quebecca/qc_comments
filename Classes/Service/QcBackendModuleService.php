@@ -4,7 +4,7 @@ namespace Qc\QcComments\Service;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Qc\QcComments\Configuration\Configuration;
+use Qc\QcComments\Configuration\TsConfiguration;
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Domain\Repository\CommentRepository;
 use Qc\QcComments\Domain\Session\BackendSession;
@@ -35,7 +35,7 @@ abstract class QcBackendModuleService
      */
     protected $root_id;
 
-    protected Configuration $tsConfiguration;
+    protected TsConfiguration $tsConfiguration;
 
     const QC_LANG_FILE = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
 
@@ -53,7 +53,7 @@ abstract class QcBackendModuleService
     public function __construct(){
         $this->localizationUtility = GeneralUtility::makeInstance(LocalizationUtility::class);
         $this->backendSession = GeneralUtility::makeInstance(BackendSession::class);
-        $this->tsConfiguration = GeneralUtility::makeInstance(Configuration::class);
+        $this->tsConfiguration = GeneralUtility::makeInstance(TsConfiguration::class);
     }
 
     /**

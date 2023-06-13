@@ -21,7 +21,7 @@ $( document ).ready(function() {
         var submitAmount = 0;
         var isRecaptchaLoaded = false;
         $('#commentForm :input').on('click',function (){
-            if(!isRecaptchaLoaded && skipRecaptcha === '1'){
+            if(!isRecaptchaLoaded && skipRecaptcha === true){
                 var lang = $('#lang').attr('data-tr-label')
                 var head = document.getElementsByTagName('head')[0];
                 var script = document.createElement('script');
@@ -39,7 +39,7 @@ $( document ).ready(function() {
         });
         $('#commentForm').submit(function (event) {
 
-            if (skipRecaptcha === '0' && commentValidation()) {
+            if (!skipRecaptcha && commentValidation()) {
                 $('#submitButton').prop("disabled", true);
                 return true;
             }

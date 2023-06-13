@@ -13,11 +13,11 @@ namespace Qc\QcComments\SpamShield;
  *
  ***/
 use Exception;
+use Qc\QcComments\Configuration\TyposcriptConfiguration;
 use Qc\QcComments\Domain\Model\Comment;
 use Qc\QcComments\SpamShield\Methods\AbstractMethod;
 use Qc\QcComments\SpamShield\Exceptions\ClassDoesNotExistException;
 use Qc\QcComments\SpamShield\Exceptions\InterfaceNotImplementedException;
-use Qc\QcComments\SpamShield\Service\ConfigurationService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator as ExtbaseAbstractValidator;
@@ -73,8 +73,9 @@ class SpamShieldValidator extends ExtbaseAbstractValidator
     public function __construct(array $options = [])
     {
         parent::__construct($options);
-        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $this->settings = $configurationService->getTypoScriptSettings();
+        $typoScriptConfigurationService = GeneralUtility::makeInstance(TyposcriptConfiguration::class);
+        $this->settings = $typoScriptConfigurationService->getTypoScriptSettings();
+        debug($this->settings);
     }
     /**
      * @param Comment $comment

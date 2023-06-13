@@ -13,9 +13,9 @@ namespace Qc\QcComments\Controller\Frontend;
  *
  ***/
 
+use Qc\QcComments\Configuration\TyposcriptConfiguration;
 use Qc\QcComments\Domain\Model\Comment;
 use Qc\QcComments\Domain\Repository\CommentRepository;
-use Qc\QcComments\SpamShield\Service\ConfigurationService;
 use Qc\QcComments\SpamShield\SpamShieldValidator;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
@@ -32,6 +32,12 @@ class CommentsController extends ActionController
      * @var CommentRepository
      */
     protected CommentRepository $commentsRepository;
+
+    /**
+     * @var TyposcriptConfiguration
+     */
+    protected TyposcriptConfiguration  $typoscriptConfiguration;
+
 
     /**
      * @var array
@@ -62,25 +68,10 @@ class CommentsController extends ActionController
     public function __construct(
     ) {
         $this->localizationUtility = GeneralUtility::makeInstance(LocalizationUtility::class);
-        $confService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $this->isSpamShieldEnabled = $confService->getTypoScriptSettings()['spamshield']['_enable'] == '1';
+        $this->typoscriptConfiguration = GeneralUtility::makeInstance(TyposcriptConfiguration::class);
+        $this->isSpamShieldEnabled = $this->typoscriptConfiguration->isSpamShieldEnabled();
     }
 
-    protected function initializeAction()
-    {
-        parent::initializeAction();
-        $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
-        $typoScriptSettings = $typoScriptService->convertTypoScriptArrayToPlainArray($GLOBALS['TSFE']->tmpl->setup);
-        $this->tsConfig =$typoScriptSettings['plugin']['tx_qccomments']['settings'];
-        $this->tsConfig['comments']['maxCharacters'] = (int)($this->tsConfig['comments']['maxCharacters']) > 0
-            ? (int)($this->tsConfig['comments']['maxCharacters'])
-            : self::DEFAULT_MAX_CHARACTERS;
-
-        $this->tsConfig['comments']['minCharacters'] = (int)($this->tsConfig['comments']['minCharacters']) > 0
-            ? (int)($this->tsConfig['comments']['minCharacters'])
-            : self::DEFAULT_MIN_CHARACTERS;
-
-    }
 
     /**
      * This function is used to render the comments form
@@ -88,20 +79,21 @@ class CommentsController extends ActionController
      */
     public function showAction(array $args = [])
     {
-        $config = [];
-        foreach ($this->tsConfig['comments'] as $key => $val) {
-            if ($key != 'maxCharacters' && $key != "minCharacters") {
-                $config[$key] = $val !== '' ? $val : $this->localizationUtility->translate(self::QC_LANG_FILE . $key);
-            } else {
-                $config[$key] = $val;
-            }
-        }
+        $commentLengthconfig = [
+            'maxCharacters' => $this->typoscriptConfiguration->getCommentsMaxCharacters(),
+            'minCharacters' => $this->typoscriptConfiguration->getCommentsMinCharacters()
+        ];
+        $recaptchaConfig = [
+            'enabled' => $this->typoscriptConfiguration->isRecaptchaEnabled(),
+            'sitekey' => $this->typoscriptConfiguration->getRecaptchaSitekey(),
+            'secret' => $this->typoscriptConfiguration->getRecaptchaSecretKey()
+        ];
         $this->view->assignMultiple([
             'submitted' => $this->request->getArguments()['submitted'],
             'validationResults' => $this->request->getArguments()['validationResults'],
             'comment' => new Comment(),
-            'config' => $config,
-            'recaptchaConfig' => $this->tsConfig['recaptcha'],
+            'config' => $commentLengthconfig,
+            'recaptchaConfig' => $recaptchaConfig,
             'isSpamShieldEnabled' => $this->isSpamShieldEnabled
         ]);
     }
@@ -120,7 +112,7 @@ class CommentsController extends ActionController
             $validationResults = $validator->validate($comment);
             $spamErrors = $validationResults->hasErrors();
             if($spamErrors){
-                $this->forward('show', null, null, ['submitted' => false,'validationResults' => $validationResults]);
+                $this->redirect('show', null, null, ['submitted' => false,'validationResults' => $validationResults]);
             }
         }
         if(!$spamErrors){
@@ -129,11 +121,11 @@ class CommentsController extends ActionController
                 $comment->setUidPermsGroup(
                     BackendUtility::getRecord('pages', $pageUid, 'perms_groupid', "uid = $pageUid")['perms_groupid']
                 );
-                $comment->setComment(substr($comment->getComment(), 0, $this->tsConfig['comments']['maxCharacters']));
+                $comment->setComment(substr($comment->getComment(), 0,$this->typoscriptConfiguration->getCommentsMaxCharacters()));
                 $comment->setDateHour(date('Y-m-d H:i:s'));
                 $this->commentsRepository->add($comment);
             }
-            $this->forward('show', null, null, ['submitted' => true]);
+            $this->redirect('show', null, null, ['submitted' => true]);
         }
     }
 
