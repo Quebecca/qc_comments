@@ -78,7 +78,7 @@ class CommentRepository extends Repository
      * @param array $page_ids
      * @return string[]
      */
-    public function getConstraints(array $page_ids): array
+    public function getConstraints(array $page_ids, $usefulCond = true): array
     {
         $constrains = [
             'joinCond' => '',
@@ -89,10 +89,14 @@ class CommentRepository extends Repository
         $ids_csv = implode(',', $ids_list);
         $constrains['joinCond'] = " p.uid = uid_orig $this->date_criteria $this->lang_criteria";
         $constrains['whereClause'] = " p.uid in ($ids_csv)";
-        $usefulCond = $this->filter->getUseful() != '' ?  'useful = ' . $this->filter->getUseful() : '';
-        if ($usefulCond != '') {
-            $constrains['whereClause'] .= "AND $usefulCond";
+        if($usefulCond === true){
+
+            $usefulCond = $this->filter->getUseful() != '' ?  'useful = ' . $this->filter->getUseful() : '';
+            if ($usefulCond != '') {
+                $constrains['whereClause'] .= "AND $usefulCond";
+            }
         }
+
         return $constrains;
     }
 
@@ -175,8 +179,7 @@ class CommentRepository extends Repository
             $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
         }
         $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
-        //@todo : Retirer la condition useful pour la page des statistiques
-        $constraints = $this->getConstraints($page_ids);
+        $constraints = $this->getConstraints($page_ids, false);
         $data =  $queryBuilder
             ->select('p.uid as page_uid', 'p.title as page_title')
             ->addSelectLiteral(
@@ -213,7 +216,7 @@ class CommentRepository extends Repository
      */
     public function getTotalNonEmptyComment($showForHiddenPages = false){
         $pages_ids = $this->getPageIdsList();
-        $constraints = $this->getConstraints($pages_ids);
+        $constraints = $this->getConstraints($pages_ids, false);
         $constraints['whereClause'] .= " AND trim($this->tableName.comment) <> ''";
         $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
         $queryBuilder = $this->generateQueryBuilder();
