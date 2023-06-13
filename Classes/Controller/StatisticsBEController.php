@@ -74,6 +74,7 @@ class StatisticsBEController extends QcBackendModuleController
     }
 
     /**
+     * This function is used to export statistics records on a csv file
      * @param ServerRequestInterface $request
      * @return Response
      */

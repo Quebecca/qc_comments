@@ -28,11 +28,6 @@ class ConfigurationService implements SingletonInterface
     protected array $settings = [];
 
     /**
-     * @var mixed
-     */
-    protected $userTS;
-
-    /**
      * @var array
      */
     protected array $configuration = [];

@@ -68,9 +68,7 @@ class CommentsController extends ActionController
 
     protected function initializeAction()
     {
-
         parent::initializeAction();
-
         $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
         $typoScriptSettings = $typoScriptService->convertTypoScriptArrayToPlainArray($GLOBALS['TSFE']->tmpl->setup);
         $this->tsConfig =$typoScriptSettings['plugin']['tx_qccomments']['settings'];

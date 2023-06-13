@@ -83,6 +83,7 @@ class CommentsBEController extends QcBackendModuleController
 
 
     /**
+     * This function is used to export comments records on a csv file
      * @param ServerRequestInterface $request
      * @return Response
      */

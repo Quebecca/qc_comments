@@ -43,15 +43,24 @@ class Configuration
         $this->tsConfig = $tsConfig;
     }
 
-    public function getCsvSeparator(){
+    /**
+     * @return string
+     */
+    public function getCsvSeparator() : string {
         return $this->tsConfig['csvExport.']['separator'] ?? ',';
     }
 
-    public function getCsvEnclosure(){
+    /**
+     * @return string
+     */
+    public function getCsvEnclosure() : string {
         return $this->tsConfig['csvExport.']['enclosure'] ?? '"';
     }
 
-    public function getCsvEscape(){
+    /**
+     * @return string
+     */
+    public function getCsvEscape() : string{
         return $this->tsConfig['csvExport.']['escape'] ?? '\\';
     }
 
@@ -59,33 +68,62 @@ class Configuration
         return $this->tsConfig['csvExport.']['filename.']['dateFormat'] ?? 'YmdHi';
     }
 
-    public function getCommentsOrderType(){
-        //@todo :  Vérifier si ASC ou DESC
-        return $this->tsConfig['comments.']['orderType'] ?? 'DESC';
+    /**
+     * @return string
+     */
+    public function getCommentsOrderType() : string {
+        if($this->tsConfig['comments.']['orderType'] == null
+            || !in_array(strtoupper($this->tsConfig['comments.']['orderType']), ['ASC', 'DESC'])){
+            return 'DESC';
+        }
+        return $this->tsConfig['comments.']['orderType'];
     }
 
-    public function getCommentsMaxRecords(){
-        // @todo : Il faut vérifier que c'est un nombre
-        return $this->tsConfig['comments.']['maxRecords'] ?? '100';
+    /**
+     * @return string
+
+     */
+    public function getCommentsMaxRecords(): string {
+        if($this->tsConfig['comments.']['maxRecords'] == null
+            || !is_numeric($this->tsConfig['comments.']['maxRecords'])){
+            return '100';
+        }
+        return $this->tsConfig['comments.']['maxRecords'];
     }
 
-    public function getCommentsNumberOfSubPages(){
-        return $this->tsConfig['comments.']['numberOfSubPages'] ?? '50';
+    /**
+     * @return string
+     */
+    public function getCommentsNumberOfSubPages() : string {
+        if($this->tsConfig['comments.']['numberOfSubPages'] == null
+            || !is_numeric($this->tsConfig['comments.']['numberOfSubPages'])){
+            return '50';
+        }
+        return $this->tsConfig['comments.']['numberOfSubPages'];
     }
 
-/*    public function getCommentsMaxCharacters(){
-        return $this->tsConfig['comments']['maxCharacters'] ?? '10';
-    }*/
-
-    public function getStatisticsMaxRecords(){
-        return $this->tsConfig['statistics.']['maxRecords'] ?? '30';
+    /**
+     * @return string
+     */
+    public function getStatisticsMaxRecords(): string {
+        if($this->tsConfig['statistics.']['maxRecords'] == null
+            || !is_numeric($this->tsConfig['statistics.']['maxRecords'])){
+            return '30';
+        }
+        return $this->tsConfig['statistics.']['maxRecords'];
     }
 
+    /**
+     * @return bool
+     */
     public function showStatisticsForHiddenPage(): bool
     {
         return $this->tsConfig['statistics.']['showStatisticsForHiddenPages'] == '1';
     }
 
+    /**
+     * @return bool
+     */
     public function showCommentsForHiddenPage(): bool
     {
         return $this->tsConfig['comments.']['showCommentsForHiddenPages'] == '1';

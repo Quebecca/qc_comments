@@ -31,11 +31,6 @@ abstract class QcBackendModuleService
     protected CommentRepository $commentsRepository;
 
     /**
-     * @var mixed
-     */
-    protected $userTS;
-
-    /**
      * @var int|mixed
      */
     protected $root_id;

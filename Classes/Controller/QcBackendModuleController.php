@@ -80,7 +80,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
             $lastAction = $this->qcBeModuleService->getBackendSession()->get('lastAction');
             if ($lastAction && $lastAction != $currentAction) {
                 list($controller, $action) = explode('::', $lastAction);
-                $this->forward($action, $controller);
+                $this->redirect($action, $controller);
             }
         }
         if ($this->isMenuAction($currentAction)) {
@@ -114,10 +114,8 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         $this->controllerName = $this->request->getControllerName();
         $this->setMenu();
         $this->forwardToLastSelectedAction();
-        $this->root_id = GeneralUtility::_GP('id');
+        $this->root_id = GeneralUtility::_GP('id') ?? 0;
         $this->qcBeModuleService->setRootId($this->root_id);
-/*        $this->commentsRepository->setRootId((int)$this->root_id);
-        $this->commentsRepository->setSettings($this->settings);*/
     }
 
     /**
@@ -171,7 +169,6 @@ abstract class QcBackendModuleController extends BackendModuleActionController
             $this->pageRenderer->addCssFile('EXT:qc_comments/Resources/Public/Css/be_qc_comments.css');
             $this->pageRenderer->addJsFile('EXT:qc_comments/Resources/Public/JavaScript/AdministrationModule.js');
         }
-        //$this->processFilter();
         $filter = $this->qcBeModuleService->processFilter();
         $this->view->assign('filter', $filter);
 
@@ -199,9 +196,8 @@ abstract class QcBackendModuleController extends BackendModuleActionController
      */
     public function resetFilterAction(string $tabName = '')
     {
-        //$this->processFilter(new Filter());
         $this->qcBeModuleService->processFilter(new Filter());
-        $this->forward($tabName);
+        $this->redirect($tabName);
     }
 
 }
