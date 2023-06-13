@@ -12,34 +12,42 @@ namespace Qc\QcComments\Service;
  *  (c) 2023 <techno@quebec.ca>
  *
  ***/
+
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
 use Qc\QcComments\Domain\Filter\Filter;
 
 class CommentsTabService extends QcBackendModuleService
 {
-    protected const DEFAULT_ORDER_TYPES = 'DESC';
-    protected const DEFAULT_MAX_RECORDS = '100';
-    protected const DEFAULT_MAX_PAGES = '100';
+    /**
+     * @var bool
+     */
+    protected bool $showCommentsForHiddenPage;
 
+    protected const DEFAULT_ORDER_TYPES = 'DESC';
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->showCommentsForHiddenPage = $this->tsConfiguration->showCommentsForHiddenPage();
+    }
 
     /**
      * This function is used to get the list of comments in BE module
      * @param Filter|null $filter
      * @throws Exception
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
-    public function getComments(Filter $filter = null)
+    public function getComments(Filter $filter = null): array
     {
         $pages_ids = $this->commentsRepository->getPageIdsList();
-        $maxRecords = is_numeric($this->userTS['comments.']['maxRecords'])
-            ? $this->userTS['comments.']['maxRecords'] : self::DEFAULT_MAX_RECORDS;
 
-        $numberOfSubPages = is_numeric($this->userTS['comments.']['numberOfSubPages'])
-            ? $this->userTS['comments.']['numberOfSubPages'] : self::DEFAULT_MAX_PAGES;
+        $maxRecords = $this->tsConfiguration->getCommentsMaxRecords();
 
-        $orderType = in_array($this->userTS['comments.']['orderType'], ['DESC', 'ASC'])
-            ? $this->userTS['comments.']['orderType'] : self::DEFAULT_ORDER_TYPES;
+        $numberOfSubPages = $this->tsConfiguration->getCommentsNumberOfSubPages();
+
+        $orderType = $this->tsConfiguration->getCommentsOrderType();
 
         $tooMuchPages = count($pages_ids) > $numberOfSubPages;
         $pages_ids = array_slice(
@@ -47,14 +55,13 @@ class CommentsTabService extends QcBackendModuleService
             0,
             $numberOfSubPages
         );
-        $stats = $this->commentsRepository->getStatistics($pages_ids, $maxRecords);
-        $comments = $this->commentsRepository->getComments($pages_ids, $maxRecords, $orderType);
+        $stats = $this->commentsRepository->getStatistics($pages_ids, $maxRecords, $this->showCommentsForHiddenPage);
+        $comments = $this->commentsRepository->getComments($pages_ids, $maxRecords, $orderType, $this->showCommentsForHiddenPage);
 
+        $stats = $this->statisticsDataFormatting($stats);
 
         $tooMuchResults = $this->commentsRepository->getListCount() > $maxRecords
                             || $tooMuchPages;
-
-
         $pagesId = $pages_ids;
         $currentPageId = $this->root_id;
         $commentHeaders = $this->getHeaders();
@@ -102,7 +109,7 @@ class CommentsTabService extends QcBackendModuleService
     {
         $pagesIds = $this->getPagesIds($filter, $currentPageId);
 
-        $data = $this->commentsRepository->getComments($pagesIds, false, self::DEFAULT_ORDER_TYPES);
+        $data = $this->commentsRepository->getComments($pagesIds, false, self::DEFAULT_ORDER_TYPES, $this->showCommentsForHiddenPage);
         $headers = $this->getHeaders(true);
         foreach ($data as $row) {
             array_walk($row, function (&$field) {

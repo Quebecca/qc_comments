@@ -18,6 +18,7 @@ use Qc\QcComments\Domain\Filter\Filter;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
@@ -100,11 +101,15 @@ class CommentRepository extends Repository
      * @param array $pages_ids
      * @param string $limit
      * @param string $orderType
+     * @param bool $showForHiddenPages
      * @return array
      */
-    public function getComments(array $pages_ids, string $limit, string $orderType): array
+    public function getComments(array $pages_ids, string $limit, string $orderType, $showForHiddenPages = false): array
     {
         $queryBuilder = $this->generateQueryBuilder();
+        if($showForHiddenPages == true){
+            $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
+        }
         $constraints = $this->getConstraints($pages_ids);
         $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
 
@@ -163,9 +168,12 @@ class CommentRepository extends Repository
      * @param int|bool $limit
      * @return array
      */
-    public function getStatistics($page_ids, $limit): array
+    public function getStatistics($page_ids, $limit, $showForHiddenPages = false): array
     {
         $queryBuilder = $this->generateQueryBuilder();
+        if($showForHiddenPages == true){
+            $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
+        }
         $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
         $constraints = $this->getConstraints($page_ids);
         $data =  $queryBuilder
@@ -202,12 +210,15 @@ class CommentRepository extends Repository
      * @throws DBALException
      * @throws Exception
      */
-    public function getTotalNonEmptyComment(){
+    public function getTotalNonEmptyComment($showForHiddenPages = false){
         $pages_ids = $this->getPageIdsList();
         $constraints = $this->getConstraints($pages_ids);
         $constraints['whereClause'] .= " AND trim($this->tableName.comment) <> ''";
         $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
         $queryBuilder = $this->generateQueryBuilder();
+        if($showForHiddenPages == true){
+            $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
+        }
         return  $queryBuilder
             ->count($this->tableName.'.uid')
             ->from($this->tableName)
@@ -260,6 +271,7 @@ class CommentRepository extends Repository
         array_unshift($page_ids, $this->root_id);
         return $page_ids;
     }
+
 
     /**
      * @param int $root_id

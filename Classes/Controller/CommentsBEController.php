@@ -2,6 +2,7 @@
 
 namespace Qc\QcComments\Controller;
 
+use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -25,7 +26,7 @@ class CommentsBEController extends QcBackendModuleController
      * This function is used to get the list of comments in BE module
      * @param Filter|null $filter
      * @throws Exception
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     public function commentsAction(Filter $filter = null)
     {
@@ -47,7 +48,6 @@ class CommentsBEController extends QcBackendModuleController
             ];
 
             $data = $this->qcBeModuleService->getComments();
-
 
             if($data['tooMachResults'] == true){
                 $message = $this->localizationUtility

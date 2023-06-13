@@ -6,9 +6,12 @@ mod{
             maxRecords = 100
             numberOfSubPages = 50
             maxCharacters = 10
+            showCommentsForHiddenPages = 1
+
         }
         statistics {
             maxRecords = 30
+            showStatisticsForHiddenPages = 1
         }
 
         csvExport {

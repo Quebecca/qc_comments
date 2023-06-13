@@ -14,18 +14,28 @@ namespace Qc\QcComments\Service;
  ***/
 
 
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
 use Qc\QcComments\Domain\Filter\Filter;
 
 class StatisticsTabService extends QcBackendModuleService
 {
 
+    protected bool $showStatisticsForHiddenPage;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->showStatisticsForHiddenPage = $this->tsConfiguration->showStatisticsForHiddenPage();
+    }
+
     public function getPageStatistics(): array
     {
             $pages_ids = $this->commentsRepository->getPageIdsList();
             $currentPageId = $this->root_id;
-            $maxRecords = $this->userTS['statistics.']['maxRecords'];
-            $resultData = $this->commentsRepository->getStatistics($pages_ids, $maxRecords);
+            $maxRecords = $this->tsConfiguration->getStatisticsMaxRecords();
+            $resultData = $this->commentsRepository->getStatistics($pages_ids, $maxRecords, $this->showStatisticsForHiddenPage);
             $formattedData = $this->statisticsDataFormatting($resultData);
             $tooMuchResults = count($resultData) > $maxRecords;
             $headers = $this->getHeaders();
@@ -46,13 +56,13 @@ class StatisticsTabService extends QcBackendModuleService
 
 
     /**
-     * @throws \Doctrine\DBAL\Driver\Exception
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws Exception
+     * @throws DBALException
      */
-    public function getStatisticsByDepth(){
+    public function getStatisticsByDepth(): array
+    {
         $pages_ids = $this->commentsRepository->getPageIdsList();
-
-        $resultData = $this->commentsRepository->getStatistics($pages_ids,false);
+        $resultData = $this->commentsRepository->getStatistics($pages_ids,false,$this->showStatisticsForHiddenPage);
         $data = $this->statisticsDataFormatting($resultData);
         $avg = 0;
         $total_pos = 0;
@@ -70,9 +80,10 @@ class StatisticsTabService extends QcBackendModuleService
             $total_neg += intval($item['total_neg']);
            $total += $item['total'];
         }
-        $avg = $avg / count($resultData). ' %';
+        $itemLength = count($resultData) > 0 ? count($resultData) : 1;
+        $avg = ($avg / $itemLength ). ' %';
         // Getting the number of comments
-        $total_comment = $this->commentsRepository->getTotalNonEmptyComment();
+        $total_comment = $this->commentsRepository->getTotalNonEmptyComment($this->showStatisticsForHiddenPage);
 
         $result = compact(
             'page_title',
@@ -106,28 +117,6 @@ class StatisticsTabService extends QcBackendModuleService
         return $headers;
     }
 
-    public function statisticsDataFormatting($data) : array{
-        $rows = [];
-        foreach ($data as $item) {
-            $item['total_neg'] = $item['total'] - $item['total_pos'];
-
-            $total =  $item['total_neg'] >  $item['total_pos']
-                ? - ((int)($item['total_neg']) - (int)($item['total_pos']))
-                :  $item['total_pos'];
-
-            $item['avg'] = $item['total'] > 0 ?
-                ' ' . number_format((($total) / $item['total']), 3) * 100 . ' %'
-                : '0 %';
-
-            $item['total_pos'] = $item['total_pos'] ?: '0';
-
-            $rows[] = $item;
-
-        }
-        return $rows;
-    }
-
-
     /**
      * @param Filter $filter
      * @param int $currentPageId
@@ -136,8 +125,7 @@ class StatisticsTabService extends QcBackendModuleService
     public function exportStatisticsData(Filter  $filter, int $currentPageId): ResponseInterface
     {
         $pagesIds = $this->getPagesIds($filter, $currentPageId);
-
-        $data = $this->commentsRepository->getStatistics($pagesIds,false);
+        $data = $this->commentsRepository->getStatistics($pagesIds,false,$this->showStatisticsForHiddenPage);
         $formattedData = $this->statisticsDataFormatting($data);
         $headers = $this->getHeaders();
 

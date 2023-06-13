@@ -4,6 +4,7 @@ namespace Qc\QcComments\Service;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Qc\QcComments\Configuration\Configuration;
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Domain\Repository\CommentRepository;
 use Qc\QcComments\Domain\Session\BackendSession;
@@ -39,13 +40,15 @@ abstract class QcBackendModuleService
      */
     protected $root_id;
 
+    protected Configuration $tsConfiguration;
+
     const QC_LANG_FILE = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
 
 
-    public function injectBackendSession(BackendSession $backendSession)
+  /*  public function injectBackendSession(BackendSession $backendSession)
     {
         $this->backendSession = $backendSession;
-    }
+    }*/
 
     public function injectCommentRepository(CommentRepository $commentsRepository)
     {
@@ -54,8 +57,8 @@ abstract class QcBackendModuleService
 
     public function __construct(){
         $this->localizationUtility = GeneralUtility::makeInstance(LocalizationUtility::class);
-        $this->userTS = $this->getBackendUser()->getTSConfig()['mod.']['qcComments.'];
-
+        $this->backendSession = GeneralUtility::makeInstance(BackendSession::class);
+        $this->tsConfiguration = GeneralUtility::makeInstance(Configuration::class);
     }
 
     /**
@@ -125,11 +128,11 @@ abstract class QcBackendModuleService
      */
     public function export(Filter $filter, int $currentPageId,string $fileName,array $headers, array $data): ResponseInterface
     {
-        $csvSettings = $this->userTS['csvExport.'];
-        $separator = $csvSettings['separator'] ?? ',';
-        $enclosure = $csvSettings['enclosure'] ?? '"';
-        $escape = $csvSettings['escape'] ?? '\\';
-        $csvDateFormat = $csvSettings['dateFormat'] ?? 'YmdHi';
+        $separator = $this->tsConfiguration->getCsvSeparator();
+        $enclosure = $this->tsConfiguration->getCsvEnclosure();
+        $escape = $this->tsConfiguration->getCsvEscape();
+        $csvDateFormat =$this->tsConfiguration->getCsvDateFormat();
+
         $fileName = $this->getCSVFilename($filter, $fileName, $csvDateFormat, $currentPageId);
 
         $response = new Response(
@@ -192,6 +195,26 @@ abstract class QcBackendModuleService
         return $pagesData;
     }
 
+    public function statisticsDataFormatting($data) : array{
+        $rows = [];
+        foreach ($data as $item) {
+            $item['total_neg'] = $item['total'] - $item['total_pos'];
+
+            $total =  $item['total_neg'] >  $item['total_pos']
+                ? - ((int)($item['total_neg']) - (int)($item['total_pos']))
+                :  $item['total_pos'];
+
+            $item['avg'] = $item['total'] > 0 ?
+                ' ' . number_format((($total) / $item['total']), 3) * 100 . ' %'
+                : '0 %';
+
+            $item['total_pos'] = $item['total_pos'] ?: '0';
+
+            $rows[] = $item;
+
+        }
+        return $rows;
+    }
 
     abstract protected function getHeaders(): array;
 
