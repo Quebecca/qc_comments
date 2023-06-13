@@ -112,7 +112,7 @@ class CommentsController extends ActionController
             $validationResults = $validator->validate($comment);
             $spamErrors = $validationResults->hasErrors();
             if($spamErrors){
-                $this->redirect('show', null, null, ['submitted' => false,'validationResults' => $validationResults]);
+                $this->forward('show', null, null, ['submitted' => false,'validationResults' => $validationResults]);
             }
         }
         if(!$spamErrors){
@@ -125,7 +125,7 @@ class CommentsController extends ActionController
                 $comment->setDateHour(date('Y-m-d H:i:s'));
                 $this->commentsRepository->add($comment);
             }
-            $this->redirect('show', null, null, ['submitted' => true]);
+            $this->forward('show', null, null, ['submitted' => true]);
         }
     }
 

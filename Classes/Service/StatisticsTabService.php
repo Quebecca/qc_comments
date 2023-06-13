@@ -32,25 +32,25 @@ class StatisticsTabService extends QcBackendModuleService
 
     public function getPageStatistics(): array
     {
-            $pages_ids = $this->commentsRepository->getPageIdsList();
-            $currentPageId = $this->root_id;
-            $maxRecords = $this->tsConfiguration->getStatisticsMaxRecords();
-            $resultData = $this->commentsRepository->getStatistics($pages_ids, $maxRecords, $this->showStatisticsForHiddenPage);
-            $formattedData = $this->statisticsDataFormatting($resultData);
-            $tooMuchResults = count($resultData) > $maxRecords;
-            $headers = $this->getHeaders();
-           /* if ($tooMuchResults) {
-                array_pop($resultData); // last line was there to check that limit has been reached
-            }*/
-            return [
-                'tooMuchResults' => $tooMuchResults,
-                'maxRecords' => $maxRecords,
-                'headers' => $headers,
-                'rows' => $formattedData,
-                'pagesId' => $pages_ids,
-                'settings',
-                'currentPageId' => $currentPageId
-            ];
+        $pages_ids = $this->commentsRepository->getPageIdsList();
+        $currentPageId = $this->root_id;
+        $maxRecords = $this->tsConfiguration->getStatisticsMaxRecords();
+        $resultData = $this->commentsRepository->getStatistics($pages_ids, $maxRecords, $this->showStatisticsForHiddenPage);
+        $formattedData = $this->statisticsDataFormatting($resultData);
+        $tooMuchResults = count($resultData) > $maxRecords;
+        $headers = $this->getHeaders();
+       /* if ($tooMuchResults) {
+            array_pop($resultData); // last line was there to check that limit has been reached
+        }*/
+        return [
+            'tooMuchResults' => $tooMuchResults,
+            'maxRecords' => $maxRecords,
+            'headers' => $headers,
+            'rows' => $formattedData,
+            'pagesId' => $pages_ids,
+            'settings',
+            'currentPageId' => $currentPageId
+        ];
 
     }
 

@@ -175,6 +175,7 @@ class CommentRepository extends Repository
             $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
         }
         $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
+        //@todo : Retirer la condition useful pour la page des statistiques
         $constraints = $this->getConstraints($page_ids);
         $data =  $queryBuilder
             ->select('p.uid as page_uid', 'p.title as page_title')

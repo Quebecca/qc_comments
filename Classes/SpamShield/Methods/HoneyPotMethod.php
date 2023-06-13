@@ -16,7 +16,7 @@ use Qc\QcComments\Domain\Model\Comment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class HoneyPodMethod
+ * Class HoneyPotMethod
  */
 class HoneyPotMethod extends AbstractMethod
 {

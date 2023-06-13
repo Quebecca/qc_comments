@@ -30,7 +30,7 @@ plugin.tx_qccomments {
                     name = Honey Pot
 
                     # Class
-                    class = Qc\QcComments\SpamShield\Methods\HoneyPodMethod
+                    class = Qc\QcComments\SpamShield\Methods\HoneyPotMethod
 
                     # if this check failes - add this indication value to indicator (0 disables this check completely)
                     indication = 5

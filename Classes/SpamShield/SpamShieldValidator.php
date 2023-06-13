@@ -65,6 +65,12 @@ class SpamShieldValidator extends ExtbaseAbstractValidator
     protected string $methodInterface = AbstractMethod::class;
 
     /**
+     * @var TyposcriptConfiguration
+     */
+    protected TyposcriptConfiguration  $typoscriptConfiguration;
+
+
+    /**
      * Constructs the validator and sets validation options
      *
      * @param array $options Options for the validator
@@ -75,7 +81,8 @@ class SpamShieldValidator extends ExtbaseAbstractValidator
         parent::__construct($options);
         $typoScriptConfigurationService = GeneralUtility::makeInstance(TyposcriptConfiguration::class);
         $this->settings = $typoScriptConfigurationService->getTypoScriptSettings();
-        debug($this->settings);
+        $this->typoscriptConfiguration = GeneralUtility::makeInstance(TyposcriptConfiguration::class);
+
     }
     /**
      * @param Comment $comment
@@ -83,7 +90,7 @@ class SpamShieldValidator extends ExtbaseAbstractValidator
      */
     public function isValid($comment)
     {
-       if ($this->isSpamShieldEnabled()) {
+       if ($this->typoscriptConfiguration->isSpamShieldEnabled()) {
            $this->runAllSpamMethods($comment);
            if(!empty($this->messages)){
                $this->addError('spam_details', 1580681599);
