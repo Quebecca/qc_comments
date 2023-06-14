@@ -110,7 +110,7 @@
                 <target>Moyenne</target>
             </trans-unit>
             <trans-unit id="stats.h.nonEmptyComment">
-                <target>Commentaires ...</target>
+                <target>Total des commentaires</target>
             </trans-unit>
             <trans-unit id="comments.h.comment_uid">
                 <target>Id</target>

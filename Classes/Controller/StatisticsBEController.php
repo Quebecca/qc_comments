@@ -23,10 +23,9 @@ class StatisticsBEController extends QcBackendModuleController
 
     /**
      * @param Filter|null $filter
-     * @throws DBALException
-     * @throws Exception
+     * @return ResponseInterface
      */
-    public function statisticsAction(Filter $filter = null)
+    public function statisticsAction(Filter $filter = null): ResponseInterface
     {
         if (!$this->root_id) {
             $this->view->assign('noPageSelected', true);
@@ -61,16 +60,17 @@ class StatisticsBEController extends QcBackendModuleController
                 'totalSection_row' => $statsByDepth['row']
             ]);
         }
-
+        return $this->htmlResponse();
     }
 
     /**
      * This function will reset the search filter
      * @throws StopActionException
      */
-    public function resetFilterAction(string $tabName = '')
+    public function resetFilterAction(string $tabName = ''): ResponseInterface
     {
         parent::resetFilterAction('statistics');
+        return $this->htmlResponse();
     }
 
     /**

@@ -28,7 +28,7 @@ class CommentsBEController extends QcBackendModuleController
      * @throws Exception
      * @throws DBALException
      */
-    public function commentsAction(Filter $filter = null)
+    public function commentsAction(Filter $filter = null): ResponseInterface
     {
         if (!$this->root_id) {
             $this->view->assign('noPageSelected', true);
@@ -70,15 +70,17 @@ class CommentsBEController extends QcBackendModuleController
                    ]
                );
         }
+        return $this->htmlResponse();
     }
 
     /**
      * This function will reset the search filter
      * @throws StopActionException
      */
-    public function resetFilterAction(string $tabName = '')
+    public function resetFilterAction(string $tabName = ''): ResponseInterface
     {
         parent::resetFilterAction('comments');
+        return $this->htmlResponse();
     }
 
 

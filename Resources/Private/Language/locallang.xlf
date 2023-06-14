@@ -106,7 +106,7 @@
 				<source>Average</source>
 			</trans-unit>
 			<trans-unit id="stats.h.nonEmptyComment">
-				<source>Non empty comments</source>
+				<source>Total comments</source>
 			</trans-unit>
 			<trans-unit id="comments.h.comment_uid">
 				<source>Uid</source>
