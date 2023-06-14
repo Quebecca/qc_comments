@@ -20,7 +20,7 @@ plugin.tx_qccomments {
         }
 
         spamshield {
-            _enable = 0
+            _enable = 1
             methods{
                 # Honeypot check
                 1 {

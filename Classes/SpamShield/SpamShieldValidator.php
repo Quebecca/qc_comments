@@ -92,8 +92,9 @@ class SpamShieldValidator extends ExtbaseAbstractValidator
     {
        if ($this->typoscriptConfiguration->isSpamShieldEnabled()) {
            $this->runAllSpamMethods($comment);
+           $this->calculateSpamFactor();
            if(!empty($this->messages)){
-               $this->addError('spam_details', 1580681599);
+               $this->addError('spam_details', $this->getCalculatedSpamFactor(true));
            }
         }
     }
@@ -136,6 +137,8 @@ class SpamShieldValidator extends ExtbaseAbstractValidator
                 );
                 if ((int)$method['indication'] > 0 && $methodInstance->spamCheck($comment)) {
                     $this->addMessage($method['name'] . ' failed');
+                    $this->increaseSpamIndicator((int)$method['indication']);
+
                 }
             } else {
                 throw new InterfaceNotImplementedException(
@@ -147,8 +150,87 @@ class SpamShieldValidator extends ExtbaseAbstractValidator
 
     }
 
+
     /**
-     * Get all spamshield method classes from typoscript and sort them
+     * @param bool $readableOutput
+     * @return float|string
+     */
+    public function getCalculatedSpamFactor(bool $readableOutput = false)
+    {
+        $calculatedSpamFactor = $this->calculatedSpamFactor;
+        if ($readableOutput) {
+            $calculatedSpamFactor = $this->formatSpamFactor($calculatedSpamFactor);
+        }
+        return $calculatedSpamFactor;
+    }
+
+    /**
+     * Format for Spamfactor (0.23 => 23%)
+     *
+     * @param float $factor
+     * @return string
+     */
+    protected function formatSpamFactor(float $factor): string
+    {
+        return number_format(($factor * 100), 0) . '%';
+    }
+
+    /**
+     * calculate spam factor for this mail
+     *        spam formula with asymptote 1 (100%)
+     *
+     * @return void
+     */
+    protected function calculateSpamFactor(): void
+    {
+        $calculatedSpamFactor = 0;
+        if ($this->getSpamIndicator() > 0) {
+            $calculatedSpamFactor = -1 / $this->getSpamIndicator() + 1;
+        }
+        $this->setCalculatedSpamFactor($calculatedSpamFactor);
+    }
+
+    /**
+     * @param float $calculatedSpamFactor
+     * @return void
+     */
+    public function setCalculatedSpamFactor(float $calculatedSpamFactor): void
+    {
+        $this->calculatedSpamFactor = $calculatedSpamFactor;
+    }
+
+
+    /**
+     * Increase Global Indicator
+     *
+     * @param int $indication
+     * @return void
+     */
+    public function increaseSpamIndicator(int $indication): void
+    {
+        $this->setSpamIndicator($this->getSpamIndicator() + $indication);
+    }
+
+
+    /**
+     * @param int $spamIndicator
+     * @return void
+     */
+    public function setSpamIndicator(int $spamIndicator): void
+    {
+        $this->spamIndicator = $spamIndicator;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSpamIndicator(): int
+    {
+        return $this->spamIndicator;
+    }
+
+    /**
+     * Get all spam shield method classes from typoscript and sort them
      *
      * @return array
      */

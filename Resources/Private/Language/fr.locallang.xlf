@@ -223,8 +223,11 @@
             <trans-unit id="comments-module">
                 <target>Module des commentaires</target>
             </trans-unit>
+            <trans-unit id="spam_detected">
+                <target>Spam détecté : </target>
+            </trans-unit>
             <trans-unit id="spam_details">
-                <target>Spam détecté : X de chance de spam dans ce commentaire</target>
+                <target>%s de chance de spam dans ce commentaire</target>
             </trans-unit>
             <trans-unit id="spam-message">
                 <target>Avertissement : Le formulaire comporte 1 champ(s) en erreur. Veuillez s'il vous plaît les corriger.</target>
