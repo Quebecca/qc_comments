@@ -2,7 +2,6 @@ $( document ).ready(function() {
 
     // @todo : vider le champ de commentaire après l'envoie
 
-
     if (document.getElementById('commentForm') !== null) {
         let siteKey = document.getElementById('sitekey').getAttribute('data-tr-label') ?? '';
         let maxCharacters = document.getElementById('maxCharacters').getAttribute('data-tr-label') ?? '';
@@ -67,10 +66,10 @@ $( document ).ready(function() {
             if (submitAmount === 0) {
                 submitAmount++;
                 field.disabled = true;
-                setTimeout(function enable() {
+/*                setTimeout(function enable() {
                     submitAmount = 0;
                     field.disabled = false;
-                }, 6000);
+                }, 6000);*/
                 $('#commentForm').trigger('submit');
             }
         });
