@@ -1,21 +1,25 @@
 <?php
 
+use Qc\QcComments\Controller\Frontend\CommentsController;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+
 if (!defined('TYPO3')) {
     die('Access denied.');
 }
 
 call_user_func(
     function () {
-        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+        ExtensionUtility::configurePlugin(
             'QcComments',
             'commentsForm',
-            [Qc\QcComments\Controller\Frontend\CommentsController::class => 'show,saveComment'], //With cash - prevent storing cashed data
-            [Qc\QcComments\Controller\Frontend\CommentsController::class  => 'show,saveComment'] // storing without using cash
+            [CommentsController::class => 'show,saveComment'], //With cash - prevent storing cashed data
+            [CommentsController::class  => 'show,saveComment'] // storing without using cash
         );
     }
 
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig(
+ExtensionManagementUtility::addUserTSConfig(
     "@import 'EXT:qc_comments/Configuration/TSconfig/pageconfig.tsconfig'"
 );

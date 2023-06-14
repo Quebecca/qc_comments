@@ -1,9 +1,11 @@
 <?php
 
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
 defined('TYPO3') or die();
 $lll = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
+ExtensionManagementUtility::addTCAcolumns(
     'pages',
     [
         'tx_select_comments_form_page_mode' => [
@@ -25,13 +27,13 @@ $lll = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
     ]
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette(
+ExtensionManagementUtility::addFieldsToPalette(
     'pages',
     'commentsSection',
     'tx_select_comments_form_page_mode'
 );
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+ExtensionManagementUtility::addToAllTCAtypes(
     'pages',
     '--palette--;;commentsSection',
     '',

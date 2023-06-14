@@ -1,8 +1,9 @@
 <?php
 declare(strict_types = 1);
 
+use Qc\QcComments\Domain\Model\Comment;
 return [
-    Qc\QcComments\Domain\Model\Comment::class => [
+    Comment::class => [
         'tableName' => 'tx_qccomments_domain_model_comment',
         'date_hour' => 'dateHour',
         'url_orig' => 'urlOrig',

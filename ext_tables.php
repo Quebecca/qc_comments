@@ -2,10 +2,12 @@
 
 use Qc\QcComments\Controller\CommentsBEController;
 use Qc\QcComments\Controller\StatisticsBEController;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
 defined('TYPO3') || die('Access denied.');
 
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+ExtensionUtility::registerPlugin(
     'QcComments',
     'commentsForm',
     'Show comments form'
@@ -13,13 +15,13 @@ defined('TYPO3') || die('Access denied.');
 
 call_user_func(
     function () {
-        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+        ExtensionUtility::registerPlugin(
             'QcComments',
             'commentsForm',
             'Add comments section in page'
         );
 
-        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+        ExtensionUtility::registerModule(
             'QcComments',
             'web',
             'admin',
@@ -34,6 +36,6 @@ call_user_func(
                 'labels' => 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:qc_comments',
             ]
         );
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('qc_comments', 'Configuration/TypoScript', 'Module used to manage FE users comments on pages');
+        ExtensionManagementUtility::addStaticFile('qc_comments', 'Configuration/TypoScript', 'Module used to manage FE users comments on pages');
     }
 );

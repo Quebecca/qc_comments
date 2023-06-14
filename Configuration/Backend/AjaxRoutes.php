@@ -2,17 +2,20 @@
 
 declare(strict_types=1);
 
+use Qc\QcComments\Controller\CommentsBEController;
+use Qc\QcComments\Controller\StatisticsBEController;
+
 return [
     'export_comments' => [
         'path' => '/export_comments',
         'referrer' => 'required,refresh-empty',
-        'target' => \Qc\QcComments\Controller\CommentsBEController::class . '::exportCommentsAction'
+        'target' => CommentsBEController::class . '::exportCommentsAction'
     ],
 
     'export_statistics' => [
         'path' => '/export_statistics',
         'referrer' => 'required,refresh-empty',
-        'target' => \Qc\QcComments\Controller\StatisticsBEController::class . '::exportStatisticsAction'
+        'target' => StatisticsBEController::class . '::exportStatisticsAction'
     ],
 
 ];
