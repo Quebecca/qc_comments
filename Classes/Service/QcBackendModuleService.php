@@ -194,7 +194,7 @@ abstract class QcBackendModuleService
             $item['total_neg'] = $item['total'] - $item['total_pos'];
 
             $total =  $item['total_neg'] >  $item['total_pos']
-                ? - ((int)($item['total_neg']) - (int)($item['total_pos']))
+                ? - ((int)($item['total_neg']))
                 :  $item['total_pos'];
 
             $item['avg'] = $item['total'] > 0 ?
