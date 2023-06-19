@@ -192,11 +192,7 @@ abstract class QcBackendModuleService
         $rows = [];
         foreach ($data as $item) {
             $item['total_neg'] = $item['total'] - $item['total_pos'];
-
-            $total =  $item['total_neg'] >  $item['total_pos']
-                ? - ((int)($item['total_neg']))
-                :  $item['total_pos'];
-
+            $total = $item['total_pos'];
             $item['avg'] = $item['total'] > 0 ?
                 ' ' . number_format((($total) / $item['total']), 3) * 100 . ' %'
                 : '0 %';
