@@ -194,7 +194,7 @@ abstract class QcBackendModuleService
             $item['total_neg'] = $item['total'] - $item['total_pos'];
             $total = $item['total_pos'];
             $item['avg'] = $item['total'] > 0 ?
-                ' ' . number_format((($total) / $item['total']), 3) * 100 . ' %'
+                ' ' . number_format((($total) / $item['total']), 2) * 100 . ' %'
                 : '0 %';
 
             $item['total_pos'] = $item['total_pos'] ?: '0';

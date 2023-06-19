@@ -232,7 +232,9 @@
             <trans-unit id="spam-message">
                 <target>Avertissement : Le formulaire comporte 1 champ(s) en erreur. Veuillez s'il vous plaît les corriger.</target>
             </trans-unit>
-
+            <trans-unit id="stats-by-depth">
+                <target>Statistique selon la profondeur</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -238,6 +238,9 @@
             <trans-unit id="spam-message">
                 <source>Warning: There are fields in the form containing errors. Please correct these errors.</source>
             </trans-unit>
+            <trans-unit id="stats-by-depth">
+                <source>Statistics by depth</source>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>

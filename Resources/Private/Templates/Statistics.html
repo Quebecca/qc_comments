@@ -38,16 +38,17 @@
             </div>
         </f:else>
     </f:if>
-
 </f:section>
 
 <f:section name="rows">
-    <div class="panel panel-space panel-default recordlist">
-        <div class="panel-heading">
-            Statistique selon la profondeur
+    <f:if condition="{filter.depth} > 0">
+        <div class="panel panel-space panel-default recordlist">
+            <div class="panel-heading">
+                {f:translate(key: 'stats-by-depth')}
+            </div>
+            <f:render partial="StatsByDepthTable" arguments="{row:totalSection_row, headers:totalSection_headers, settings:settings}"/>
         </div>
-        <f:render partial="StatsByDepthTable" arguments="{row:totalSection_row, headers:totalSection_headers, settings:settings}"/>
-    </div>
+    </f:if>
 
     <div class="panel panel-space panel-default recordlist">
         <div class="panel-heading">

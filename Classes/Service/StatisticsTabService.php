@@ -81,7 +81,7 @@ class StatisticsTabService extends QcBackendModuleService
            $total += $item['total'];
         }
         $itemLength = count($resultData) > 0 ? count($resultData) : 1;
-        $avg = ($avg / $itemLength ). ' %';
+        $avg = number_format(($avg / $itemLength), 1). ' %';
         // Getting the number of comments
         $total_comment = $this->commentsRepository->getTotalNonEmptyComment($this->showStatisticsForHiddenPage);
 
