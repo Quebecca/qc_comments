@@ -13,12 +13,14 @@ namespace Qc\QcComments\Controller\Frontend;
  *
  ***/
 
+use Psr\Http\Message\ResponseInterface;
 use Qc\QcComments\Configuration\TyposcriptConfiguration;
 use Qc\QcComments\Domain\Model\Comment;
 use Qc\QcComments\Domain\Repository\CommentRepository;
 use Qc\QcComments\SpamShield\SpamShieldValidator;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
@@ -75,8 +77,9 @@ class CommentsController extends ActionController
     /**
      * This function is used to render the comments form
      * @param array $args
+     * @return ResponseInterface
      */
-    public function showAction(array $args = [])
+    public function showAction(array $args = []): ResponseInterface
     {
         $commentLengthconfig = [
             'maxCharacters' => $this->typoscriptConfiguration->getCommentsMaxCharacters(),
@@ -95,15 +98,17 @@ class CommentsController extends ActionController
             'recaptchaConfig' => $recaptchaConfig,
             'isSpamShieldEnabled' => $this->isSpamShieldEnabled
         ]);
+        return $this->htmlResponse();
     }
+
 
     /**
      * This function is used to save comment
      * @param Comment|null $comment
+     * @return ResponseInterface
      * @throws IllegalObjectTypeException
-     * @throws StopActionException
      */
-    public function saveCommentAction(Comment $comment = null)
+    public function saveCommentAction(Comment $comment = null): ResponseInterface
     {
         $spamErrors = false;
         if($this->isSpamShieldEnabled){
@@ -111,7 +116,7 @@ class CommentsController extends ActionController
             $validationResults = $validator->validate($comment);
             $spamErrors = $validationResults->hasErrors();
             if($spamErrors){
-                $this->forward('show', null, null, ['submitted' => 'false','validationResults' => $validationResults]);
+                return (new ForwardResponse('show'))->withArguments(['submitted' => 'false','validationResults' => $validationResults]);
             }
         }
         if(!$spamErrors){
@@ -124,8 +129,9 @@ class CommentsController extends ActionController
                 $comment->setDateHour(date('Y-m-d H:i:s'));
                 $this->commentsRepository->add($comment);
             }
-            $this->forward('show', null, null, ['submitted' => 'true']);
+            return (new ForwardResponse('show'))->withArguments(['submitted' => 'true']);
         }
+        return $this->htmlResponse();
     }
 
 }
