@@ -1,8 +1,16 @@
 $( document ).ready(function() {
 
-    // @todo : vider le champ de commentaire après l'envoie
-
+    let isFormSubmittedElement = document.getElementById('isFormSubmitted');
+    if(isFormSubmittedElement !== null){
+        let submitted = isFormSubmitted.getAttribute('data-tr-label')
+        if(['true', 'false'].includes(submitted)){
+            let anchor = document.getElementById('comments-form-section');
+            anchor.scrollIntoView()
+        }
+    }
     if (document.getElementById('commentForm') !== null) {
+
+
         let siteKey = document.getElementById('sitekey').getAttribute('data-tr-label') ?? '';
         let maxCharacters = document.getElementById('maxCharacters').getAttribute('data-tr-label') ?? '';
         let minCharacters = document.getElementById('minCharacters').getAttribute('data-tr-label') ?? '';

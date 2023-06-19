@@ -6,12 +6,13 @@
 <div class="d-none" id="lang" data-tr-label="{v:page.language(languages: 'en', pageUid: '0', normalWhenNoLanguage: 'en')}"></div>
 <f:if condition="{checkPageMode}">
     <div class="col-12">
-        <div class="frame frame-default frame-type-list frame-layout-0">
+        <div class="d-none" id="isFormSubmitted" data-tr-label="{submitted}"></div>
+        <div class="frame frame-default frame-type-list frame-layout-0" id="comments-form-section">
             <h2>
                 <f:translate key="formSectionTitle"/>
             </h2>
             <div>
-                <f:if condition="{submitted}">
+                <f:if condition="{submitted} === 'true">
                     <f:then>
                         <div role="alert">
                             <p>
