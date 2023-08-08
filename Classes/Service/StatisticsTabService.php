@@ -14,8 +14,6 @@ namespace Qc\QcComments\Service;
  ***/
 
 
-use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
 use Qc\QcComments\Domain\Filter\Filter;
 
@@ -27,7 +25,8 @@ class StatisticsTabService extends QcBackendModuleService
     public function __construct()
     {
         parent::__construct();
-        $this->showStatisticsForHiddenPage = $this->tsConfiguration->showStatisticsForHiddenPage();
+        $this->showStatisticsForHiddenPage
+            = $this->tsConfiguration->showStatisticsForHiddenPage();
     }
 
     public function getPageStatistics(): array
@@ -35,13 +34,15 @@ class StatisticsTabService extends QcBackendModuleService
         $pages_ids = $this->commentsRepository->getPageIdsList();
         $currentPageId = $this->root_id;
         $maxRecords = $this->tsConfiguration->getStatisticsMaxRecords();
-        $resultData = $this->commentsRepository->getStatistics($pages_ids, $maxRecords, $this->showStatisticsForHiddenPage);
+        $resultData = $this->commentsRepository
+                        ->getStatistics(
+                            $pages_ids,
+                            $maxRecords,
+                            $this->showStatisticsForHiddenPage
+                        );
         $formattedData = $this->statisticsDataFormatting($resultData);
         $tooMuchResults = count($resultData) > $maxRecords;
         $headers = $this->getHeaders();
-       /* if ($tooMuchResults) {
-            array_pop($resultData); // last line was there to check that limit has been reached
-        }*/
         return [
             'tooMuchResults' => $tooMuchResults,
             'maxRecords' => $maxRecords,
@@ -62,7 +63,12 @@ class StatisticsTabService extends QcBackendModuleService
     public function getStatisticsByDepth(): array
     {
         $pages_ids = $this->commentsRepository->getPageIdsList();
-        $resultData = $this->commentsRepository->getStatistics($pages_ids,false,$this->showStatisticsForHiddenPage);
+        $resultData = $this->commentsRepository
+                        ->getStatistics(
+                            $pages_ids,
+                            false,
+                            $this->showStatisticsForHiddenPage
+                        );
         $data = $this->statisticsDataFormatting($resultData);
         $avg = 0;
         $total_pos = 0;
@@ -83,7 +89,8 @@ class StatisticsTabService extends QcBackendModuleService
         $itemLength = count($resultData) > 0 ? count($resultData) : 1;
         $avg = number_format(($avg / $itemLength), 1). ' %';
         // Getting the number of comments
-        $total_comment = $this->commentsRepository->getTotalNonEmptyComment($this->showStatisticsForHiddenPage);
+        $total_comment = $this->commentsRepository
+                            ->getTotalNonEmptyComment($this->showStatisticsForHiddenPage);
 
         $result = compact(
             'page_title',
@@ -96,7 +103,8 @@ class StatisticsTabService extends QcBackendModuleService
         $result['page_uid'] = $this->root_id;
 
         $headers = $this->getHeaders();
-        $headers['totalNonEmptyComments'] = $this->localizationUtility->translate(self::QC_LANG_FILE . 'stats.h.nonEmptyComment');
+        $headers['totalNonEmptyComments'] = $this->localizationUtility
+                                        ->translate(self::QC_LANG_FILE . 'stats.h.nonEmptyComment');
 
         return [
             'headers' => $headers,
@@ -111,8 +119,17 @@ class StatisticsTabService extends QcBackendModuleService
     protected function getHeaders(): array
     {
         $headers = [];
-        foreach (['page_uid', 'page_title', 'total_pos', 'total_neg', 'total', 'avg'] as $col) {
-            $headers[$col] = $this->localizationUtility->translate(self::QC_LANG_FILE . 'stats.h.' . $col);
+        $columns = [
+            'page_uid',
+            'page_title',
+            'total_pos',
+            'total_neg',
+            'total',
+            'avg'
+        ];
+        foreach ($columns as $col) {
+            $headers[$col] = $this->localizationUtility
+                ->translate(self::QC_LANG_FILE . 'stats.h.' . $col);
         }
         return $headers;
     }
@@ -125,7 +142,12 @@ class StatisticsTabService extends QcBackendModuleService
     public function exportStatisticsData(Filter  $filter, int $currentPageId): ResponseInterface
     {
         $pagesIds = $this->getPagesIds($filter, $currentPageId);
-        $data = $this->commentsRepository->getStatistics($pagesIds,false,$this->showStatisticsForHiddenPage);
+        $data = $this->commentsRepository
+            ->getStatistics(
+                $pagesIds,
+                false,
+                $this->showStatisticsForHiddenPage
+            );
         $formattedData = $this->statisticsDataFormatting($data);
         $headers = $this->getHeaders();
 

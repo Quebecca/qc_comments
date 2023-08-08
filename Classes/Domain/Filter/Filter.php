@@ -95,7 +95,8 @@ class Filter implements Arrayable
         $this->useful = $useful;
         $this->dateRange = $dateRange;
         $this->extKey = 'qc_comments';
-        $this->localizationUtility = GeneralUtility::makeInstance(LocalizationUtility::class);
+        $this->localizationUtility
+            = GeneralUtility::makeInstance(LocalizationUtility::class);
     }
 
     /**
@@ -201,11 +202,16 @@ class Filter implements Arrayable
     public function getDepthOptions(): array
     {
         return [
-            0 => $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.depth.thisPage'),
-            1 => '1 ' . $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.depth.level'),
-            2 => '2 ' . $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.depth.levels'),
-            3 => '3 ' . $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.depth.levels'),
-            999 => $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.depth.limitless'),
+            0 => $this->localizationUtility
+                ->translate(self::QC_LANG_FILE . 'filter.depth.thisPage'),
+            1 => '1 ' . $this->localizationUtility
+                    ->translate(self::QC_LANG_FILE . 'filter.depth.level'),
+            2 => '2 ' . $this->localizationUtility
+                    ->translate(self::QC_LANG_FILE . 'filter.depth.levels'),
+            3 => '3 ' . $this->localizationUtility
+                    ->translate(self::QC_LANG_FILE . 'filter.depth.levels'),
+            999 => $this->localizationUtility
+                ->translate(self::QC_LANG_FILE . 'filter.depth.limitless'),
         ];
     }
 
@@ -215,15 +221,24 @@ class Filter implements Arrayable
     public function getDateRangeOptions(): array
     {
         return [
-            '1 day' => '1 ' . $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.dateRange.day'),
-            '2 day' => '2 ' . $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.dateRange.days'),
-            '1 week' => '1 ' . $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.dateRange.week'),
-            '2 week' => '2 ' . $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.dateRange.weeks'),
-            '1 month' => '1 ' . $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.dateRange.month'),
-            '3 month' => '3 ' . $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.dateRange.months'),
-            '6 month' => '6 ' . $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.dateRange.months'),
-            '1 year' => '1 ' . $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.dateRange.year'),
-            'userDefined' =>  $this->localizationUtility->translate(self::QC_LANG_FILE . 'userDefined')
+            '1 day' => '1 ' . $this->localizationUtility
+                    ->translate(self::QC_LANG_FILE . 'filter.dateRange.day'),
+            '2 day' => '2 ' . $this->localizationUtility
+                    ->translate(self::QC_LANG_FILE . 'filter.dateRange.days'),
+            '1 week' => '1 ' . $this->localizationUtility
+                    ->translate(self::QC_LANG_FILE . 'filter.dateRange.week'),
+            '2 week' => '2 ' . $this->localizationUtility
+                    ->translate(self::QC_LANG_FILE . 'filter.dateRange.weeks'),
+            '1 month' => '1 ' . $this->localizationUtility
+                    ->translate(self::QC_LANG_FILE . 'filter.dateRange.month'),
+            '3 month' => '3 ' . $this->localizationUtility
+                    ->translate(self::QC_LANG_FILE . 'filter.dateRange.months'),
+            '6 month' => '6 ' . $this->localizationUtility
+                    ->translate(self::QC_LANG_FILE . 'filter.dateRange.months'),
+            '1 year' => '1 ' . $this->localizationUtility
+                    ->translate(self::QC_LANG_FILE . 'filter.dateRange.year'),
+            'userDefined' =>  $this->localizationUtility
+                ->translate(self::QC_LANG_FILE . 'userDefined')
         ];
     }
 
@@ -233,9 +248,12 @@ class Filter implements Arrayable
     public function getLangOptions(): array
     {
         return [
-            '' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.lang.all'),
-            'fr' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.lang.french'),
-            'en' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'filter.lang.english'),
+            '' => $this->localizationUtility
+                ->translate(self::QC_LANG_FILE . 'filter.lang.all'),
+            'fr' => $this->localizationUtility
+                ->translate(self::QC_LANG_FILE . 'filter.lang.french'),
+            'en' => $this->localizationUtility
+                ->translate(self::QC_LANG_FILE . 'filter.lang.english'),
         ];
     }
 
@@ -245,9 +263,12 @@ class Filter implements Arrayable
     public function getCommentsUtility(): array
     {
         return [
-            '' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'all'),
-            '0' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'notUseful'),
-            '1' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'comments.h.useful'),
+            '' => $this->localizationUtility
+                ->translate(self::QC_LANG_FILE . 'all'),
+            '0' => $this->localizationUtility
+                ->translate(self::QC_LANG_FILE . 'notUseful'),
+            '1' => $this->localizationUtility
+                ->translate(self::QC_LANG_FILE . 'comments.h.useful'),
         ];
     }
 
@@ -305,11 +326,13 @@ class Filter implements Arrayable
             if ($this->startDate != '') {
                 // delete minutes seconds
                 $formatedStartDate = explode(' ', $this->startDate);
-                $criteria = " and date_hour >= '" . date('Y-m-d H:i:s', strtotime($formatedStartDate[0])) . "'";
+                $criteria = " and date_hour >= '"
+                    . date('Y-m-d H:i:s', strtotime($formatedStartDate[0])) . "'";
             }
             if ($this->endDate != '') {
                 $formatedEndDate = explode(' ', $this->endDate);
-                $criteria .= " and date_hour <= '" . date('Y-m-d H:i:s', strtotime($formatedEndDate[0])) . "'";
+                $criteria .= " and date_hour <= '"
+                    . date('Y-m-d H:i:s', strtotime($formatedEndDate[0])) . "'";
             }
         } else {
             $criteria = " and date_hour >= '" . $this->getDateForRange() . "'";

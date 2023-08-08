@@ -92,19 +92,36 @@ class BackendModuleActionController extends ActionController
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uriBuilder->setRequest($this->request);
 
-        $menu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $menu = $this->view
+                    ->getModuleTemplate()
+                    ->getDocHeaderComponent()
+                    ->getMenuRegistry()
+                    ->makeMenu();
         $menu->setIdentifier($this->menuIdentifier);
 
         foreach ($this->menuItems as $menuItem) {
             $item = $menu->makeMenuItem()
                 ->setTitle($menuItem['label'])
-                ->setHref((string)$uriBuilder->reset()->uriFor($menuItem['action'], [], $menuItem['controller']))
-                ->setActive($this->request->getControllerActionName() === $menuItem['action']
-                                    && $this->request->getControllerName() === $menuItem['controller']);
+                ->setHref(
+                    (string)$uriBuilder
+                        ->reset()
+                        ->uriFor($menuItem['action'],
+                            [],
+                        $menuItem['controller']
+                        )
+                )
+                ->setActive(
+                    $this->request->getControllerActionName() === $menuItem['action']
+                    && $this->request->getControllerName() === $menuItem['controller']
+                );
             $menu->addMenuItem($item);
         }
 
-        $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+        $this->view
+            ->getModuleTemplate()
+            ->getDocHeaderComponent()
+            ->getMenuRegistry()
+            ->addMenu($menu);
     }
 
 

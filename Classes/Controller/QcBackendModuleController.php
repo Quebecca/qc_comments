@@ -59,7 +59,8 @@ abstract class QcBackendModuleController extends BackendModuleActionController
 
     public function __construct(
     ) {
-        $this->localizationUtility = GeneralUtility::makeInstance(LocalizationUtility::class);
+        $this->localizationUtility
+            = GeneralUtility::makeInstance(LocalizationUtility::class);
     }
 
 
@@ -76,7 +77,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         }
         $currentAction = $this->controllerName . '::' . $this->request->getControllerActionName();
         $arguments = $this->request->getArguments();
-        if (!$arguments) { // no arguments means no action was selected
+        if (!$arguments) { // no arguments mean no action was selected
             $lastAction = $this->qcBeModuleService->getBackendSession()->get('lastAction');
             if ($lastAction && $lastAction != $currentAction) {
                 list($controller, $action) = explode('::', $lastAction);
@@ -127,12 +128,14 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         $this->setMenuIdentifier('commentsMenu');
         $menuItems = [
             [
-                'label' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'menu.stats'),
+                'label' => $this->localizationUtility
+                    ->translate(self::QC_LANG_FILE . 'menu.stats'),
                 'action' => 'statistics',
                 'controller' => 'StatisticsBE'
             ],
             [
-                'label' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'menu.list'),
+                'label' => $this->localizationUtility
+                    ->translate(self::QC_LANG_FILE . 'menu.list'),
                 'action' => 'comments',
                 'controller' => 'CommentsBE'
             ],
@@ -150,8 +153,8 @@ abstract class QcBackendModuleController extends BackendModuleActionController
     protected function getUrl($action, array $arguments = [], $controller = null): string
     {
         /** @var UriBuilder $uriBuilder */
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $uriBuilder->setRequest($this->request);
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class)
+            ->setRequest($this->request);
         return $uriBuilder->uriFor($action, $arguments, $controller);
     }
 
@@ -163,11 +166,21 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         parent::initializeView($view);
         $moduleTemplate = $view->getModuleTemplate();
         if ($this->root_id && $moduleTemplate) {
-            $record = BackendUtility::readPageAccess($this->root_id, $this->getBackendUser()->getPagePermsClause(1));
+            $record = BackendUtility::readPageAccess(
+                $this->root_id,
+                $this->getBackendUser()
+                    ->getPagePermsClause(1)
+            );
             $moduleTemplate->getDocHeaderComponent()->setMetaInformation($record);
-            $this->pageRenderer->loadRequireJsModule('TYPO3/CMS/Backend/DateTimePicker');
-            $this->pageRenderer->addCssFile('EXT:qc_comments/Resources/Public/Css/be_qc_comments.css');
-            $this->pageRenderer->addJsFile('EXT:qc_comments/Resources/Public/JavaScript/AdministrationModule.js');
+            $this->pageRenderer->loadRequireJsModule(
+                'TYPO3/CMS/Backend/DateTimePicker'
+            );
+            $this->pageRenderer->addCssFile(
+                'EXT:qc_comments/Resources/Public/Css/be_qc_comments.css'
+            );
+            $this->pageRenderer->addJsFile(
+                'EXT:qc_comments/Resources/Public/JavaScript/AdministrationModule.js'
+            );
         }
         $filter = $this->qcBeModuleService->processFilter();
         $this->view->assign('filter', $filter);
@@ -180,12 +193,16 @@ abstract class QcBackendModuleController extends BackendModuleActionController
     public function initializeListAction()
     {
         if (!isset($this->settings['dateFormat'])) {
-            $this->settings['dateFormat'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?: 'd-m-Y';
+            $this->settings['dateFormat']
+                = $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']
+                    ?: 'd-m-Y';
         }
         if (!isset($this->settings['timeFormat'])) {
             $this->settings['timeFormat'] = $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'];
         }
-        $constraintConfiguration = $this->arguments->getArgument('filter')->getPropertyMappingConfiguration();
+        $constraintConfiguration = $this->arguments
+                                    ->getArgument('filter')
+                                    ->getPropertyMappingConfiguration();
         $constraintConfiguration->allowAllProperties();
 
     }

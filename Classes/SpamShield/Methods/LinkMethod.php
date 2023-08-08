@@ -27,7 +27,11 @@ class LinkMethod extends AbstractMethod
      */
     public function spamCheck(Comment $comment): bool
     {
-        preg_match_all('@http://|https://|ftp://@', $comment->getComment(), $result);
+        preg_match_all(
+            '@http://|https://|ftp://@',
+            $comment->getComment(),
+            $result
+        );
         return count($result[0]) > (int)$this->configuration['linkLimit'];
     }
 }

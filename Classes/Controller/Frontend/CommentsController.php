@@ -22,7 +22,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -38,18 +37,6 @@ class CommentsController extends ActionController
      * @var TyposcriptConfiguration
      */
     protected TyposcriptConfiguration  $typoscriptConfiguration;
-
-
-    /**
-     * @var array
-     */
-    private array $tsConfig = [];
-
-    private const DEFAULT_MAX_CHARACTERS = 500;
-
-    private const DEFAULT_MIN_CHARACTERS = 3;
-
-    private const QC_LANG_FILE = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
 
     /**
      * @var LocalizationUtility
@@ -68,8 +55,10 @@ class CommentsController extends ActionController
 
     public function __construct(
     ) {
-        $this->localizationUtility = GeneralUtility::makeInstance(LocalizationUtility::class);
-        $this->typoscriptConfiguration = GeneralUtility::makeInstance(TyposcriptConfiguration::class);
+        $this->localizationUtility =
+            GeneralUtility::makeInstance(LocalizationUtility::class);
+        $this->typoscriptConfiguration =
+            GeneralUtility::makeInstance(TyposcriptConfiguration::class);
         $this->isSpamShieldEnabled = $this->typoscriptConfiguration->isSpamShieldEnabled();
     }
 
@@ -110,31 +99,45 @@ class CommentsController extends ActionController
      */
     public function saveCommentAction(Comment $comment = null): ResponseInterface
     {
-        $spamErrors = false;
         if($this->isSpamShieldEnabled){
             $validator = GeneralUtility::makeInstance(SpamShieldValidator::class);
             $validationResults = $validator->validate($comment);
             $spamErrors = $validationResults->hasErrors();
             if($spamErrors){
-                return (new ForwardResponse('show'))->withArguments(['submitted' => 'false','validationResults' => $validationResults]);
+                return (
+                    new ForwardResponse('show'))
+                        ->withArguments([
+                            'submitted' => 'false',
+                            'validationResults' => $validationResults
+                        ]);
             }
         }
-        if(!$spamErrors){
-            if ($comment) {
-                $pageUid = $comment->getUidOrig();
-                $comment->setUidPermsGroup(
-                    BackendUtility::getRecord('pages', $pageUid, 'perms_groupid', "uid = $pageUid")['perms_groupid']
+        if ($comment) {
+            $pageUid = $comment->getUidOrig();
+            $comment->setUidPermsGroup(
+                BackendUtility::getRecord(
+                'pages', $pageUid,
+                'perms_groupid',
+                "uid = $pageUid")['perms_groupid']
+            );
+            if($this->typoscriptConfiguration->isAnonymizeCommentEnabled()){
+                $comment->setComment(
+                    $this->anonymizeComment(
+                        $comment->getComment()
+                    )
                 );
-                if($this->typoscriptConfiguration->isAnonymizeCommentEnabled()){
-                    $comment->setComment($this->anonymizeComment($comment->getComment()));
-                }
-                $comment->setComment(substr($comment->getComment(), 0,$this->typoscriptConfiguration->getCommentsMaxCharacters()));
-                $comment->setDateHour(date('Y-m-d H:i:s'));
-                $this->commentsRepository->add($comment);
             }
-            return (new ForwardResponse('show'))->withArguments(['submitted' => 'true']);
+            $comment->setComment(
+                substr(
+                    $comment->getComment(), 0,
+                    $this->typoscriptConfiguration->getCommentsMaxCharacters()
+                )
+            );
+            $comment->setDateHour(date('Y-m-d H:i:s'));
+            $this->commentsRepository->add($comment);
         }
-        return $this->htmlResponse();
+        return (new ForwardResponse('show'))
+                ->withArguments(['submitted' => 'true']);
     }
 
     /**

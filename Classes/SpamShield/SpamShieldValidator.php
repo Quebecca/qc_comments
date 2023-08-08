@@ -79,9 +79,11 @@ class SpamShieldValidator extends ExtbaseAbstractValidator
     public function __construct(array $options = [])
     {
         parent::__construct($options);
-        $typoScriptConfigurationService = GeneralUtility::makeInstance(TyposcriptConfiguration::class);
+        $typoScriptConfigurationService
+            = GeneralUtility::makeInstance(TyposcriptConfiguration::class);
         $this->settings = $typoScriptConfigurationService->getTypoScriptSettings();
-        $this->typoscriptConfiguration = GeneralUtility::makeInstance(TyposcriptConfiguration::class);
+        $this->typoscriptConfiguration
+            = GeneralUtility::makeInstance(TyposcriptConfiguration::class);
 
     }
     /**
@@ -94,7 +96,10 @@ class SpamShieldValidator extends ExtbaseAbstractValidator
            $this->runAllSpamMethods($comment);
            $this->calculateSpamFactor();
            if(!empty($this->messages)){
-               $this->addError('spam_details', $this->getCalculatedSpamFactor(true));
+               $this->addError(
+                   'spam_details',
+                   $this->getCalculatedSpamFactor(true)
+               );
            }
         }
     }
@@ -123,7 +128,9 @@ class SpamShieldValidator extends ExtbaseAbstractValidator
         if (!empty($method['_enable'])) {
             if (!class_exists($method['class'])) {
                 throw new ClassDoesNotExistException(
-                    'Class ' . $method['class'] . ' does not exists - check if file was loaded with autoloader',
+                    'Class '
+                    . $method['class']
+                    . ' does not exists - check if file was loaded with autoloader',
                     1578609568
                 );
             }

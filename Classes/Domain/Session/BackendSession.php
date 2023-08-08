@@ -57,7 +57,9 @@ class BackendSession
      */
     public function registerFilterKey(string $key, string $class): void
     {
-        if (!$this->isClassImplementsInterface($class, Arrayable::class) && $key != 'lastAction') {
+        if (!$this->isClassImplementsInterface($class, Arrayable::class)
+            && $key != 'lastAction')
+        {
             throw new \InvalidArgumentException('Given class not instance of Arrayable');
         }
         $this->registeredKeys[$key] = $class;
@@ -137,7 +139,9 @@ class BackendSession
             $this->delete($key);
             return null;
         }
-        if ((is_object($result) && is_a($result, Arrayable::class)) || $key == 'lastAction') {
+        if ((is_object($result) && is_a($result, Arrayable::class))
+            || $key == 'lastAction')
+        {
             return $result;
         }
         if (is_array($result) && isset($this->registeredKeys[$key])) {

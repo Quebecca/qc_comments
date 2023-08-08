@@ -37,20 +37,29 @@ class CheckPageModeViewHelper extends AbstractViewHelper
      */
     public function getCommentsFormPageMode(int $pageUid): bool
     {
-        $data = BackendUtility::getRecord('pages', $pageUid, 'uid,pid,tx_select_comments_form_page_mode');
+        $data = BackendUtility::getRecord(
+            'pages',
+            $pageUid,
+            'uid,pid,tx_select_comments_form_page_mode'
+        );
         $enabledMode = ['mode 1', 'mode 2'];
         $disabledMode = ['mode 3', 'mode 4'];
         $inheritanceMode = ['', 'not specified'];
         $currentMode = $data['tx_select_comments_form_page_mode'];
 
-        if (in_array($currentMode, $enabledMode) || in_array($currentMode, $disabledMode)) {
+        if (in_array($currentMode, $enabledMode)
+            || in_array($currentMode, $disabledMode))
+        {
             return in_array($currentMode, $enabledMode);
         }
 
         // check parents page
         $pageUid = $data['pid'];
         while ($pageUid != 0 && in_array($currentMode, $inheritanceMode)) {
-            $data = BackendUtility::getRecord('pages', $pageUid, 'uid,pid,tx_select_comments_form_page_mode');
+            $data = BackendUtility::getRecord(
+                'pages',
+                $pageUid,
+                'uid,pid,tx_select_comments_form_page_mode');
             $currentMode = $data['tx_select_comments_form_page_mode'];
             $pageUid = $data['pid'];
         }

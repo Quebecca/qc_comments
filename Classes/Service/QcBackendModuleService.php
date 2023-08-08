@@ -45,9 +45,12 @@ abstract class QcBackendModuleService
     }
 
     public function __construct(){
-        $this->localizationUtility = GeneralUtility::makeInstance(LocalizationUtility::class);
-        $this->backendSession = GeneralUtility::makeInstance(BackendSession::class);
-        $this->tsConfiguration = GeneralUtility::makeInstance(TsConfiguration::class);
+        $this->localizationUtility
+            = GeneralUtility::makeInstance(LocalizationUtility::class);
+        $this->backendSession
+            = GeneralUtility::makeInstance(BackendSession::class);
+        $this->tsConfiguration
+            = GeneralUtility::makeInstance(TsConfiguration::class);
     }
 
     /**
@@ -93,7 +96,13 @@ abstract class QcBackendModuleService
             $now = date($format,strtotime($filter->getEndDate()));
         }
         else{
-            $now = date($format, strtotime('-'.$filter->getDateRange(), strtotime(date($format))));
+            $now = date(
+                $format,
+                strtotime(
+                    '-'.$filter->getDateRange(),
+                    strtotime(date($format))
+                )
+            );
         }
 
         return implode('-', array_filter([
@@ -114,7 +123,13 @@ abstract class QcBackendModuleService
      * @param array $data
      * @return ResponseInterface
      */
-    public function export(Filter $filter, int $currentPageId,string $fileName,array $headers, array $data): ResponseInterface
+    public function export(
+        Filter $filter,
+        int $currentPageId,
+        string $fileName,
+        array $headers,
+        array $data
+    ): ResponseInterface
     {
         $separator = $this->tsConfiguration->getCsvSeparator();
         $enclosure = $this->tsConfiguration->getCsvEnclosure();
@@ -160,7 +175,9 @@ abstract class QcBackendModuleService
         $filter->setDateRange($request->getQueryParams()['parameters']['selectDateRange']);
         $filter->setStartDate($request->getQueryParams()['parameters']['startDate']);
         $filter->setEndDate($request->getQueryParams()['parameters']['endDate']);
-        $filter->setIncludeEmptyPages($request->getQueryParams()['parameters']['includeEmptyPages'] === 'true');
+        $filter->setIncludeEmptyPages(
+$request->getQueryParams()['parameters']['includeEmptyPages'] === 'true'
+        );
         return $filter;
     }
 

@@ -55,8 +55,16 @@ class CommentsTabService extends QcBackendModuleService
             0,
             $numberOfSubPages
         );
-        $stats = $this->commentsRepository->getStatistics($pages_ids, $maxRecords, $this->showCommentsForHiddenPage);
-        $comments = $this->commentsRepository->getComments($pages_ids, $maxRecords, $orderType, $this->showCommentsForHiddenPage);
+        $stats = $this->commentsRepository
+            ->getStatistics($pages_ids, $maxRecords, $this->showCommentsForHiddenPage);
+
+        $comments = $this->commentsRepository
+            ->getComments(
+                $pages_ids,
+                $maxRecords,
+                $orderType,
+                $this->showCommentsForHiddenPage
+            );
 
         $stats = $this->statisticsDataFormatting($stats);
 
@@ -89,12 +97,15 @@ class CommentsTabService extends QcBackendModuleService
         $headers = [];
 
         foreach (['date_hour', 'comment', 'useful'] as $col) {
-            $headers[$col] = $this->localizationUtility->translate(self::QC_LANG_FILE . 'comments.h.' . $col);
+            $headers[$col] = $this->localizationUtility
+                ->translate(self::QC_LANG_FILE . 'comments.h.' . $col);
         }
         if ($include_csv_headers) {
             $headers = array_merge([
-                'page_uid' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'csv.h.page_uid'),
-                'page_title' => $this->localizationUtility->translate(self::QC_LANG_FILE . 'stats.h.page_title'),
+                'page_uid' => $this->localizationUtility
+                    ->translate(self::QC_LANG_FILE . 'csv.h.page_uid'),
+                'page_title' => $this->localizationUtility
+                    ->translate(self::QC_LANG_FILE . 'stats.h.page_title'),
             ], $headers);
         }
         return $headers;
@@ -109,7 +120,13 @@ class CommentsTabService extends QcBackendModuleService
     {
         $pagesIds = $this->getPagesIds($filter, $currentPageId);
 
-        $data = $this->commentsRepository->getComments($pagesIds, false, self::DEFAULT_ORDER_TYPES, $this->showCommentsForHiddenPage);
+        $data = $this->commentsRepository
+            ->getComments(
+                $pagesIds,
+                false,
+                self::DEFAULT_ORDER_TYPES, $this->showCommentsForHiddenPage
+            );
+
         $headers = $this->getHeaders(true);
         foreach ($data as $row) {
             array_walk($row, function (&$field) {

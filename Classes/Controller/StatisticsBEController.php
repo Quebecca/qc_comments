@@ -2,8 +2,6 @@
 
 namespace Qc\QcComments\Controller;
 
-use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Driver\Exception;
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Service\StatisticsTabService;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
@@ -18,7 +16,8 @@ class StatisticsBEController extends QcBackendModuleController
     public function __construct()
     {
         parent::__construct();
-        $this->qcBeModuleService = GeneralUtility::makeInstance(StatisticsTabService::class);
+        $this->qcBeModuleService
+            = GeneralUtility::makeInstance(StatisticsTabService::class);
     }
 
     /**
@@ -38,8 +37,12 @@ class StatisticsBEController extends QcBackendModuleController
             }
             $data = $this->qcBeModuleService->getPageStatistics();
             if($data['tooMuchResults'] == true){
-                $message = $this->localizationUtility->translate(self::QC_LANG_FILE . 'tooMuchPages',
-                    null, [$data['maxRecords']]);
+                $message = $this->localizationUtility
+                    ->translate(
+                        self::QC_LANG_FILE . 'tooMuchPages',
+                    null,
+                        [$data['maxRecords']]
+                    );
                 $this->addFlashMessage($message, null, AbstractMessage::WARNING);
             }
            $statsByDepth = $this->qcBeModuleService->getStatisticsByDepth();

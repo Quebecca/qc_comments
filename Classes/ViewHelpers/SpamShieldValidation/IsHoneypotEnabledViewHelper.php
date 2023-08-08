@@ -18,7 +18,8 @@ class IsHoneypotEnabledViewHelper extends AbstractViewHelper
      */
     public function render(): bool
     {
-        $configurationService = GeneralUtility::makeInstance(TyposcriptConfiguration::class);
+        $configurationService
+            = GeneralUtility::makeInstance(TyposcriptConfiguration::class);
         $settings = $configurationService->getTypoScriptSettings();
         return $configurationService->isValidationEnabled($settings, HoneyPotMethod::class);
     }

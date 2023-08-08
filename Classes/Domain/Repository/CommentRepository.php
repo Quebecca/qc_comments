@@ -93,7 +93,9 @@ class CommentRepository extends Repository
         $constrains['whereClause'] = " p.uid in ($ids_csv)";
         if($usefulCond === true){
 
-            $usefulCond = $this->filter->getUseful() != '' ?  'useful = ' . $this->filter->getUseful() : '';
+            $usefulCond = $this->filter->getUseful() != ''
+                ?  'useful = ' . $this->filter->getUseful()
+                : '';
             if ($usefulCond != '') {
                 $constrains['whereClause'] .= "AND $usefulCond";
             }
@@ -110,7 +112,12 @@ class CommentRepository extends Repository
      * @param bool $showForHiddenPages
      * @return array
      */
-    public function getComments(array $pages_ids, string $limit, string $orderType, bool $showForHiddenPages = false): array
+    public function getComments(
+        array $pages_ids,
+        string $limit,
+        string $orderType,
+        bool $showForHiddenPages = false
+    ): array
     {
         $queryBuilder = $this->generateQueryBuilder();
         if($showForHiddenPages == true){
@@ -157,7 +164,14 @@ class CommentRepository extends Repository
     {
         $ids_list = $this->getPageIdsList();
         $queryBuilder = $this->generateQueryBuilder();
-        $constraints = $queryBuilder->expr()->in('uid_orig', $queryBuilder->createNamedParameter($ids_list, ConnectionAlias::PARAM_INT_ARRAY));
+        $constraints = $queryBuilder->expr()
+            ->in(
+                'uid_orig',
+                $queryBuilder->createNamedParameter(
+                    $ids_list,
+                    ConnectionAlias::PARAM_INT_ARRAY
+                )
+            );
         $constraints .= $this->date_criteria . ' ' . $this->lang_criteria;
         return $queryBuilder
             ->count('*')

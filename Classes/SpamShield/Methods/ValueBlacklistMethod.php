@@ -55,7 +55,11 @@ class ValueBlacklistMethod extends AbstractMethod
             $this->configuration['values']['_typoScriptNodeValue'],
             $this->configuration['values']
         );
-       return GeneralUtility::trimExplode($this->delimiter, $this->reduceDelimiters($values), true);
+       return GeneralUtility::trimExplode (
+           $this->delimiter,
+           $this->reduceDelimiters($values),
+           true
+       );
     }
 
     /**
@@ -85,12 +89,13 @@ class ValueBlacklistMethod extends AbstractMethod
      */
     protected function isStringInString(string $haystack, string $needle): bool
     {
-        return preg_match('/(?:\A|[@\s\b_-]|\.)' . $needle . '(?:$|[\s\b_-]|\.)/i', $haystack) === 1;
+        return preg_match(
+            '/(?:\A|[@\s\b_-]|\.)' . $needle . '(?:$|[\s\b_-]|\.)/i',
+            $haystack) === 1;
     }
 
     /**
      * @return ContentObjectRenderer
-     * @throws Exception
      */
     public function getContentObject(): ContentObjectRenderer
     {
