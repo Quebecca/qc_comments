@@ -108,7 +108,6 @@ class TyposcriptConfiguration
 
     }
 
-
     /**
      * @return bool
      */
@@ -127,6 +126,20 @@ class TyposcriptConfiguration
     public function getLinkCheckMethodLinksLimit(){
         return $this->settings['spamshield']['methods']['3']['configuration']['linkLimit'] ?? '1';
 
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAnonymizeCommentEnabled() : bool {
+        return $this->settings['comments']['anonymizeComment']['enabled'] == '1';
+    }
+
+    /**
+     * @return string
+     */
+    public function getAnonymizationCommentPattern() : string {
+        return $this->settings['comments']['anonymizeComment']['pattern'] ?? '';
     }
 
 }

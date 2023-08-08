@@ -125,6 +125,9 @@ class CommentsController extends ActionController
                 $comment->setUidPermsGroup(
                     BackendUtility::getRecord('pages', $pageUid, 'perms_groupid', "uid = $pageUid")['perms_groupid']
                 );
+                if($this->typoscriptConfiguration->isAnonymizeCommentEnabled()){
+                    $comment->setComment($this->anonymizeComment($comment->getComment()));
+                }
                 $comment->setComment(substr($comment->getComment(), 0,$this->typoscriptConfiguration->getCommentsMaxCharacters()));
                 $comment->setDateHour(date('Y-m-d H:i:s'));
                 $this->commentsRepository->add($comment);
@@ -132,6 +135,20 @@ class CommentsController extends ActionController
             return (new ForwardResponse('show'))->withArguments(['submitted' => 'true']);
         }
         return $this->htmlResponse();
+    }
+
+    /**
+     * This function is used to anonymat sensible information in a comment
+     * @param $comment
+     * @return string
+     */
+    function anonymizeComment($comment): string
+    {
+        $pattern = $this->typoscriptConfiguration->getAnonymizationCommentPattern();
+        return preg_replace_callback($pattern, function ($match) {
+            $anonymatInfo = substr($match[0], strlen($match[0]) - 4);
+            return '[...'.$anonymatInfo.' ]';
+        }, $comment);
     }
 
 }
