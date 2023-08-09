@@ -48,8 +48,7 @@ class CommentsBEController extends QcBackendModuleController
             ];
 
             $data = $this->qcBeModuleService->getComments();
-
-            if($data['tooMachResults'] == true){
+            if($data['tooMuchResults'] === true){
                 $message = $this->localizationUtility
                     ->translate(self::QC_LANG_FILE . 'tooMuchResults',
                         null, (array)[$data['numberOfSubPages'], $data['maxRecords']]);
