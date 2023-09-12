@@ -109,7 +109,7 @@ abstract class QcBackendModuleService
                 $this->localizationUtility->translate(self::QC_LANG_FILE . $fileName),
                 $filter->getLang(),
                 'uid-' . $pageId,
-                $from,
+                $from ?? '',
                 $now,
             ])) . '.csv';
     }
@@ -173,8 +173,8 @@ abstract class QcBackendModuleService
         $filter->setLang($request->getQueryParams()['parameters']['lang']);
         $filter->setDepth(intval($request->getQueryParams()['parameters']['depth']));
         $filter->setDateRange($request->getQueryParams()['parameters']['selectDateRange']);
-        $filter->setStartDate($request->getQueryParams()['parameters']['startDate']);
-        $filter->setEndDate($request->getQueryParams()['parameters']['endDate']);
+        $filter->setStartDate($request->getQueryParams()['parameters']['startDate'] ?? '');
+        $filter->setEndDate($request->getQueryParams()['parameters']['endDate'] ?? '');
         $filter->setIncludeEmptyPages(
 $request->getQueryParams()['parameters']['includeEmptyPages'] === 'true'
         );

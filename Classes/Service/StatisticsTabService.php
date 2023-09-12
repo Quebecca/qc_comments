@@ -156,7 +156,7 @@ class StatisticsTabService extends QcBackendModuleService
         $i = 0;
         foreach ($formattedData as $record) {
             foreach ($headers as $headerKey => $header) {
-                $mappedData[$record['pages_uid']][$i][$headerKey] = $record[$headerKey];
+                $mappedData[$record['pages_uid'] ?? ''][$i][$headerKey] = $record[$headerKey] ?? '';
             }
             $i++;
         }
