@@ -118,7 +118,7 @@ class TsConfiguration
      */
     public function showStatisticsForHiddenPage(): bool
     {
-        return $this->tsConfig['statistics.']['showStatisticsForHiddenPages'] == '1';
+        return ($this->tsConfig['statistics.']['showStatisticsForHiddenPages'] ?? false) == '1';
     }
 
     /**
@@ -126,7 +126,7 @@ class TsConfiguration
      */
     public function showCommentsForHiddenPage(): bool
     {
-        return $this->tsConfig['comments.']['showCommentsForHiddenPages'] == '1';
+        return ($this->tsConfig['comments.']['showCommentsForHiddenPages'] ?? false) == '1';
     }
 
     /**

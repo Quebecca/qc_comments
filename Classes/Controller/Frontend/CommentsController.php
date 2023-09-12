@@ -80,8 +80,8 @@ class CommentsController extends ActionController
             'secret' => $this->typoscriptConfiguration->getRecaptchaSecretKey()
         ];
         $this->view->assignMultiple([
-            'submitted' => $this->request->getArguments()['submitted'],
-            'validationResults' => $this->request->getArguments()['validationResults'],
+            'submitted' => $this->request->getArguments()['submitted'] ?? '',
+            'validationResults' => $this->request->getArguments()['validationResults'] ?? '',
             'comment' => new Comment(),
             'config' => $commentLengthconfig,
             'recaptchaConfig' => $recaptchaConfig,
