@@ -120,7 +120,7 @@ class TyposcriptConfiguration
      * @return bool
      */
     public function isMethodEnabled(string $methodName) : bool {
-        return ($this->settings['spamshield']['methods']["$methodName"]['_enable'] ?? false ) == '1';
+        return ($this->settings['spamshield']['methods']["$methodName"]['_enable'] ?? false) == '1';
     }
 
     public function getLinkCheckMethodLinksLimit(){
@@ -132,7 +132,7 @@ class TyposcriptConfiguration
      * @return bool
      */
     public function isAnonymizeCommentEnabled() : bool {
-        return $this->settings['comments']['anonymizeComment']['enabled'] ?? '' == '1';
+        return ($this->settings['comments']['anonymizeComment']['enabled'] ?? false) == '1';
     }
 
     /**
