@@ -34,13 +34,6 @@ In the Fluid pages:
     <f:cObject typoscriptObjectPath="lib.commentForm" />
 
 ### Form Controls
-The comments fom comes with four controls : 
-Recatpcha 
-Validation form 
-Spam shield 
-Anonymize data
-
-
 #### Recaptcha
 By default, the recaptcha control is disabled, you can enable it by using the Typoscript configuration :  
 
@@ -61,8 +54,8 @@ You can also control the size of the submitted comments, by controlling the mini
     plugin.commentsForm {
         settings {
             comments {
-                // by default 500
-                maxCharacters = 250
+                maxCharacters = 500
+                minCharacters = 2
             }
         }
     }
@@ -185,26 +178,59 @@ Dans les pages Fluid pages fluid :
 
     <f:cObject typoscriptObjectPath="lib.commentForm" />
 
-Vous pouvez définir le nombre de caractères autorisé dans un commentaire en utilisant l'option 'maxCharacters'.
-L'extension supporte également la vérification Recaptcha, vous pouvez l'activer et l'utiliser en utilisant la configuration Typoscript :
+
+### Les contrôles de formulaire
+#### Recaptcha
+Par défaut, le control recaptcha est désactivé, vous pouvez l'activer et le configurer en utilisant la configuration suivante : 
+       
+     plugin.commentsForm {
+            settings {
+                recaptcha {
+                    // enabled = 1, disabled = 0
+                    enabled = 1
+                    // Your recpatcha site key
+                    sitekey = 
+                }
+            }
+        }
+
+#### Partie validation de formulaire
+L'extension vous permet aussi de controller la taille des commentaires envoyés par les utilisateurs, en spécifiant le nombre minimum et maximum des caractères autorisé à chaque commentaire envoyé :  
 
     plugin.commentsForm {
         settings {
             comments {
-                // Par défaut 500
-                maxCharacters = 250
-            }
-    
-            recaptcha {
-                // Activer = 1, Désactiver = 0
-                enabled = 1
-                // Votre clé de site
-                sitekey =
-                // Votre clé de site
-                secret =
+                maxCharacters = 500
+                minCharacters = 2
             }
         }
     }
+
+#### Anonymiser les informations sensibles
+Si vous souhaitez cacher les informations qui sont considéré sensibles pour vous dans les commentaires envoyés par les utilisateurs, vous pouvez appliquer un pattern qui permet de filtrer le contenu des commentaires en cachant les données sensibles :
+
+    plugin.commentsForm {
+        settings {
+            comments {
+                 anonymizeComment {
+                    enabled = 1
+                    pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/
+                }
+            }
+        }
+    }
+
+#### Le control de Spam
+L'extension vous fournit un contrôle de spam avec trois différentes méthodes : 
+
+* Honeypot check
+
+* Vérification de la liste noire des valeurs
+
+* Vérification du lien
+
+Vous pouvez configurer ces contrôles directement dans le fichier setup.typoscript de l'extension.
+
 ### Additional content element
 L'affichage de plugin qc_comment porte deux section sepéarées, une pour afficher le formulaire de commentaire,
 la deuxième est optionnelle, vous pouvez choisir un tt_content pour l'affiché à coté de commentaire, la capture d'écran montre 
