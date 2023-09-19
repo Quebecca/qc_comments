@@ -23,7 +23,7 @@
                     <f:else>
                         <f:variable name="absUrl" value="{v:page.absoluteUrl()}"/>
                         <div class="row">
-                            <div class="comments-form col-12 col-lg-8 sansBorder ">
+                            <div class="comments-form col-12 col-lg-8">
                                 <f:form action="saveComment" object="{comment}" objectName="comment" id="commentForm">
 
                                     <f:render partial="SpamShieldComponents/FormError" arguments="{_all}"/>
@@ -54,7 +54,7 @@
                                                 <f:translate key="haveYouAComment" />
                                             </label>
                                             <br>
-                                            <span id="commentpage_complement_label" class="complementLabel">
+                                            <span>
                                                 <f:translate key="haveYouACommentDescription" />
                                             </span>
                                         </p>
