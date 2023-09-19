@@ -33,9 +33,30 @@ In the Fluid pages:
 
     <f:cObject typoscriptObjectPath="lib.commentForm" />
 
+### Form Controls
+The comments fom comes with four controls : 
+Recatpcha 
+Validation form 
+Spam shield 
+Anonymize data
 
-You can set the limit number of characters  by using the option 'maxCharacters'.
-The extension also supports the Recaptcha verification, you can enable it and used it by using the Typoscript configuration:
+
+#### Recaptcha
+By default, the recaptcha control is disabled, you can enable it by using the Typoscript configuration :  
+
+    plugin.commentsForm {
+        settings {
+            recaptcha {
+                // enabled = 1, disabled = 0
+                enabled = 1
+                // Your recpatcha site key
+                sitekey = 
+            }
+        }
+    }
+
+#### Form validation
+You can also control the size of the submitted comments, by controlling the minimum and the maximum number of characters that a comment can contain.
 
     plugin.commentsForm {
         settings {
@@ -43,14 +64,34 @@ The extension also supports the Recaptcha verification, you can enable it and us
                 // by default 500
                 maxCharacters = 250
             }
-            recaptcha {
-                // enabled = 1, disabled = 0
-                enabled = 1
-                sitekey =
-                secret =
+        }
+    }
+
+#### Anonymize comment info
+If you hope to hide the sensitive data from the submitted comments like email adresses or phone numbers, you can apply any patten you want by using the following configuration :
+    
+    plugin.commentsForm {
+        settings {
+            comments {
+                 anonymizeComment {
+                    enabled = 1
+                    pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/
+                }
             }
         }
     }
+
+#### Spam shield
+The extension cames also with a spam shield with three protections :
+
+* Honeypot check
+
+* Value blacklist check
+
+* Link check
+
+You can configure this protection with the typoscript configuration that cames with the extension, in the setup.typoscript file.
+
 
 #### Screenshot of the comments form in a front end page
 
