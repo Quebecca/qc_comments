@@ -67,7 +67,7 @@ You can also control the size of the submitted comments, by controlling the mini
         }
     }
 
-#### Anonymize comment info
+#### Anonymize sensitive information
 If you hope to hide the sensitive data from the submitted comments like email adresses or phone numbers, you can apply any patten you want by using the following configuration :
     
     plugin.commentsForm {
