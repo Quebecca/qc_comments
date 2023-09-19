@@ -8,7 +8,7 @@ plugin.tx_qccomments {
     settings {
         comments {
             // if empty default will be 500
-            maxCharacters = 50
+            maxCharacters = 500
             minCharacters = 2
             anonymizeComment {
                 enabled = 1
@@ -30,56 +30,34 @@ plugin.tx_qccomments {
                 # Honeypot check
                 1 {
                     _enable = 1
-
-                    # Spamcheck name
                     name = Honey Pot
-
                     # Class
                     class = Qc\QcComments\SpamShield\Methods\HoneyPotMethod
-
-                    # if this check failes - add this indication value to indicator (0 disables this check completely)
                     indication = 5
-
-                    # method configuration
-                    configuration {
-
-                    }
                 }
 
                 # Value blacklist check
                 2 {
                     _enable = 1
-
-                    # Spamcheck name
                     name = Value blacklist check
-
                     # Class
                     class = Qc\QcComments\SpamShield\Methods\ValueBlacklistMethod
-
-                    # if this check failes - add this indication value to indicator (0 disables this check completely)
                     indication = 7
-
                     # method configuration
                     configuration {
                         # Blacklisted values (could also get read from a file - simply with FLUIDTEMPLATE)
                         values = TEXT
-                        values.value = toto,viagra,sex,porn,p0rn
+                        values.value = viagra,sex,porn,p0rn
                     }
                 }
 
                 # Link check : Check the number of allowed links
                 3 {
                     _enable = 1
-
-                    # Spamcheck name
                     name = Link check
-
                     # Class
                     class = Qc\QcComments\SpamShield\Methods\LinkMethod
-
-                    # if this check failes - add this indication value to indicator (0 disables this check completely)
                     indication = 3
-
                     # method configuration
                     configuration {
                         # number of allowed links

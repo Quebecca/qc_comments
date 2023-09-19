@@ -6,7 +6,7 @@ Qc Comments
 This extension can be used for managing comments section for frontend pages.
 
 It comes with two important features :
-### Frontend plugin
+## Frontend plugin
 A plugin that allows an administrator to add a comments section as a form, where the frontend users can send their comments and opinions for each page.
 The comments component can be enabled or disabled using four different ways :
 - Comments for the selected page and all its sub-pages.
@@ -91,7 +91,7 @@ You can configure this protection with the typoscript configuration that cames w
 ![FE comments form](Documentation/Images/commentsFormFE.PNG)
 
 
-### Backend module
+## Backend module
 This module contains two different tabs:
 
 #### Statistics tab
