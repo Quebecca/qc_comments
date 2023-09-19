@@ -43,9 +43,9 @@ abstract class AbstractMethod
     /**
      * @param Comment $comment
      * @param array $settings
-     * @param array $configuration
+     * @param mixed $configuration
      */
-    public function __construct(Comment $comment, array $settings = [], array $configuration = [])
+    public function __construct(Comment $comment, array $settings = [],  $configuration = [])
     {
         $this->comment = $comment;
         $this->settings = $settings;
