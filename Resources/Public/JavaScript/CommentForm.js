@@ -3,7 +3,7 @@ var submitAmount = 1;
 $( document ).ready(function() {
     let isFormSubmittedElement = document.getElementById('isFormSubmitted');
     if(isFormSubmittedElement !== null){
-        let submitted = isFormSubmittedElement.getAttribute('data-tr-label')
+        let submitted = isFormSubmittedElement.getAttribute('data-ts')
         if(['true', 'false'].includes(submitted)){
             let anchor = document.getElementById('comments-form-section');
             anchor.scrollIntoView()
@@ -11,9 +11,9 @@ $( document ).ready(function() {
     }
     if (document.getElementById('commentForm') !== null) {
 
-        let maxCharacters = document.getElementById('maxCharacters').getAttribute('data-tr-label') ?? '';
-        let minCharacters = document.getElementById('minCharacters').getAttribute('data-tr-label') ?? '';
-        let skipRecaptcha = document.getElementById('skipRecaptcha').getAttribute('data-tr-label') ?? '';
+        let maxCharacters = document.getElementById('maxCharacters').getAttribute('data-ts') ?? '';
+        let minCharacters = document.getElementById('minCharacters').getAttribute('data-ts') ?? '';
+        let skipRecaptcha = document.getElementById('skipRecaptcha').getAttribute('data-ts') ?? '';
 
         [
             document.getElementById('usefulN'),
@@ -58,7 +58,7 @@ $( document ).ready(function() {
             if (typeof widgetId === 'undefined') {
                 return;
             }
-            if (typeof grecaptcha == 'object' && commentValidation() == true) {
+            if (typeof grecaptcha == 'object' && commentValidation() === true) {
                 if (!grecaptcha.getResponse(widgetId)) {
                     event.preventDefault();
                     grecaptcha.execute(widgetId);
@@ -80,8 +80,8 @@ $( document ).ready(function() {
         }
 
         function checkCommentLength(){
-            let maxLabel = document.getElementById('maxLabel').getAttribute('data-tr-label')
-            let charLabel = document.getElementById('charLabel').getAttribute('data-tr-label')
+            let maxLabel = document.getElementById('maxLabel').getAttribute('data-ts')
+            let charLabel = document.getElementById('charLabel').getAttribute('data-ts')
             let currentLength = maxCharacters -  $('#comment-textarea').val().length
             if(currentLength >= 0){
                 document.getElementById('limitLabel').innerHTML = maxLabel + currentLength + charLabel
@@ -100,7 +100,8 @@ function onloadCallback () {
             'callback': onCompleted
         });
     });
-};
+}
+
 function onCompleted() {
     $('#submitButton').prop("disabled", true);
     if (submitAmount <= 1) {

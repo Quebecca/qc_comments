@@ -3,10 +3,10 @@
 
 <f:variable name="pageUid" value="{v:page.info(field: 'uid')}"/>
 <f:variable name="checkPageMode" value="{modePage -> qcComments:CheckPageMode(pageUid: pageUid)}"/>
-<div class="d-none" id="lang" data-tr-label="{v:page.language(languages: 'en', pageUid: '0', normalWhenNoLanguage: 'en')}"></div>
+<div class="d-none" id="lang" data-ts="{v:page.language(languages: 'en', pageUid: '0', normalWhenNoLanguage: 'en')}"></div>
 <f:if condition="{checkPageMode}">
     <div class="col-12">
-        <div class="d-none" id="isFormSubmitted" data-tr-label="{submitted}"></div>
+        <div class="d-none" id="isFormSubmitted" data-ts="{submitted}"></div>
         <div class="frame frame-default frame-type-list frame-layout-0" id="comments-form-section">
             <h2>
                 <f:translate key="formSectionTitle"/>
@@ -68,12 +68,12 @@
                                         />
                                         <span id="error-message-too-short" class="d-none"><f:translate key="too-short-comment"/></span>
 
-                                        <div class="d-none" id="maxLabel" data-tr-label="{f:translate(key: 'max')}"></div>
-                                        <div class="d-none" id="charLabel" data-tr-label="{f:translate(key='characters')}"></div>
-                                        <div class="d-none" id="sitekey" data-tr-label="{recaptchaConfig.sitekey}"></div>
-                                        <div class="d-none" id="maxCharacters" data-tr-label="{config.maxCharacters}"></div>
-                                        <div class="d-none" id="minCharacters" data-tr-label="{config.minCharacters}"></div>
-                                        <div class="d-none" id="skipRecaptcha" data-tr-label="{recaptchaConfig.enabled}"></div>
+                                        <div class="d-none" id="maxLabel" data-ts="{f:translate(key: 'max')}"></div>
+                                        <div class="d-none" id="charLabel" data-ts="{f:translate(key='characters')}"></div>
+                                        <div class="d-none" id="sitekey" data-ts="{recaptchaConfig.sitekey}"></div>
+                                        <div class="d-none" id="maxCharacters" data-ts="{config.maxCharacters}"></div>
+                                        <div class="d-none" id="minCharacters" data-ts="{config.minCharacters}"></div>
+                                        <div class="d-none" id="skipRecaptcha" data-ts="{recaptchaConfig.enabled}"></div>
                                         <f:render partial="SpamShieldComponents/HoneyPot" arguments="{_all}"/>
 
                                         <div id="infoMaxCaracteres" class="infoSupplJs" aria-hidden="true">
