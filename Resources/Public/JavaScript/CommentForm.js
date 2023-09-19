@@ -39,6 +39,8 @@ $( document ).ready(function() {
             }
             if(commentValidation() === false){
                 event.preventDefault()
+                submitAmount = 0;
+
             }
 
             $('#comment-textarea').on('keyup', function () {
@@ -74,9 +76,6 @@ $( document ).ready(function() {
             $('#submitButton').attr('disabled', !validComment)
             $('#error-message-too-short').toggleClass('d-none', validComment)
             $(textareaElement).toggleClass('error-textarea',!validComment)
-            if(validComment == false){
-                submitAmount = 0;
-            }
             return validComment;
         }
 
