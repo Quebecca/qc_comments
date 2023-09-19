@@ -98,6 +98,7 @@ lib.qcCommentsAdditionalContent {
 
 page {
     includeJSLibs.jquery = https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js
+    includeJS.recaptcha = https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit
     includeJS.commentsForm = EXT:qc_comments/Resources/Public/JavaScript/CommentForm.js
     includeCSS.commentsFormCss = EXT:qc_comments/Resources/Public/Css/fe_qc_comments.css
 }
