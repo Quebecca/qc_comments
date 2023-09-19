@@ -1,4 +1,4 @@
-var submitAmount = 0;
+var submitAmount = 1;
 
 $( document ).ready(function() {
     let isFormSubmittedElement = document.getElementById('isFormSubmitted');
@@ -56,7 +56,7 @@ $( document ).ready(function() {
             if (typeof widgetId === 'undefined') {
                 return;
             }
-            if (typeof grecaptcha == 'object') {
+            if (typeof grecaptcha == 'object' && commentValidation() == true) {
                 if (!grecaptcha.getResponse(widgetId)) {
                     event.preventDefault();
                     grecaptcha.execute(widgetId);
@@ -74,6 +74,9 @@ $( document ).ready(function() {
             $('#submitButton').attr('disabled', !validComment)
             $('#error-message-too-short').toggleClass('d-none', validComment)
             $(textareaElement).toggleClass('error-textarea',!validComment)
+            if(validComment == false){
+                submitAmount = 0;
+            }
             return validComment;
         }
 
@@ -101,7 +104,7 @@ function onloadCallback () {
 };
 function onCompleted() {
     $('#submitButton').prop("disabled", true);
-    if (submitAmount === 0) {
+    if (submitAmount <= 1) {
         $('#commentForm').trigger('submit', [true]);
     }
     submitAmount++;
