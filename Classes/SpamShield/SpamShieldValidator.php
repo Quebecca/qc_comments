@@ -76,22 +76,24 @@ class SpamShieldValidator extends ExtbaseAbstractValidator
      * @param array $options Options for the validator
      * @throws InvalidValidationOptionsException
      */
-    public function __construct(array $options = [])
+   /* public function __construct(array $options = [])
     {
         parent::__construct($options);
-        $typoScriptConfigurationService
-            = GeneralUtility::makeInstance(TyposcriptConfiguration::class);
-        $this->settings = $typoScriptConfigurationService->getTypoScriptSettings();
-        $this->typoscriptConfiguration
-            = GeneralUtility::makeInstance(TyposcriptConfiguration::class);
+      
 
-    }
+    }*/
     /**
      * @param Comment $comment
      * @throws Exception
      */
     public function isValid($comment)
     {
+          $typoScriptConfigurationService
+            = GeneralUtility::makeInstance(TyposcriptConfiguration::class);
+        $this->settings = $typoScriptConfigurationService->getTypoScriptSettings();
+        $this->typoscriptConfiguration
+            = GeneralUtility::makeInstance(TyposcriptConfiguration::class);
+        
        if ($this->typoscriptConfiguration->isSpamShieldEnabled()) {
            $this->runAllSpamMethods($comment);
            $this->calculateSpamFactor();
