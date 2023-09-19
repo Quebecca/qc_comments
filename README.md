@@ -150,7 +150,7 @@ The rendering result can be controlled by Typoscript configuration:
 ## À propos
 Cette extension propose une solution pour gérer la partie commentaires pour les pages frontend, pour cela il vient avec deux fonctionnalités importantes :
 
-### Frontend plugin
+## Frontend plugin
 Cette plugin permet l'administrateur d'ajouter le composant de commentaires sous forme d'un formulaire frontend, où les utilisateur peuvent envoyer leurs commentaires et avis.
 L'affichage de formulaire de commentaires dans le frontend peut être controller 
 par quatre différents choix:
@@ -256,11 +256,11 @@ Pour faire référencer à un tt_content (text, titre, etc.), vous pouvez ajoute
         }
     }
 
-La configuration Typoscript ce-dessus montre un exemple d'integration d'un elemente tt_content pour l'afficher dans la partie optionnelle de pluguin.
+La configuration Typoscript ci-dessus montre un exemple d'integration d'un elemente tt_content pour l'afficher dans la partie optionnelle de pluguin.
 
 Note : Il est important de garder le nom de définition 'lib.qcCommentsAdditionalContent'.
 
-### Backend module
+## Backend module
 Ce module vient avec deux tabulations :
 
 #### Statistiques
