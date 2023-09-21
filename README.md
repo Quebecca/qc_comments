@@ -277,6 +277,7 @@ négatifs.
 En utilisant cette tabulation, l'administrateur peut lister les commentaires envoyés par page.
 
 NB : Toutes les données listées dans les deux tabulations peuvent être filtré or exporter sous format csv.
+
 NB : L'extension offre aussi une fonctionnalité qui permet d'exporter les commentaires ou les résultats des statistiques en se basant sur les options de filtres sélectionnées.
 
 L'affichage dans les deux tabulations peut être controller en utilisant la configuration Tsconfig suivante :
