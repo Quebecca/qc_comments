@@ -105,7 +105,7 @@ with analytics data.
 
 
 #### Comments tab
-By using this tab, the administrator can list the comments records that are sent for each selected page by the users.
+By using this tab, the administrator can list and export the comments records.
 
 #### Screenshot of the comments tab
 
