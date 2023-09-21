@@ -112,7 +112,7 @@ By using this tab, the administrator can list and export the comments records.
 ![Comments tab](Documentation/Images/comments.PNG)
 
 
-The extension also comes with an export function that allows user to export comments or statistiques based on the filter applied.
+The extension also comes with an export function that allows user to export comments or statistics based on the filter applied.
 
 The rendering result can be controlled by the following Tsconfig configuration:
 
