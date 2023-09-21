@@ -213,7 +213,7 @@ par quatre différents choix :
 - Masquer pour cette page seulement
 
 NB : Le choix de mode d'affichage peut être sélectionné à partir d'un champ nommé "Sélectionner le mode d'affichage de la section commentaires" dans le module "Page".
-Si le choix d'affichage n'est pas choisie manuellement par l'administrateur le choix de la page parent sera hérité.
+Si le choix d'affichage n'est pas sélectionné manuellement par l'administrateur le choix de la page parente sera utilisé.
 
 NB : Pour intégrer le composant dans vos pages front end, il faut ajouter l'élément suivant dans votre configuration TypoScript :
 
