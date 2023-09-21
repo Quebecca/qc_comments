@@ -116,33 +116,32 @@ The extension also came with an export function that allow user to export commen
 
 The rendering result can be controlled by Typoscript configuration:
 
-    module.tx_qccomments {
-        settings {
+    mod{
+        qcComments {
             comments {
-                // Order by comment date field
+                // Order by comment date
                 orderType = DESC
-                // Max records that will be shown in the comments table
                 maxRecords = 100
-                // Number of subpages that will be parsed
                 numberOfSubPages = 50
+                showCommentsForHiddenPages = 1
+    
             }
             statistics {
-                // Max records that will be showed in the statistics table
                 maxRecords = 30
+                showStatisticsForHiddenPages = 1
             }
     
             csvExport {
                 filename {
-                    // This date will added to the exported file name
-                    dateFormat = YmdHi
+                    dateFormat = Ymd
                 }
-                // Csv parameters
                 separator = ;
                 enclosure = "
-                escape = \\
+                escape = \
             }
         }
     }
+
 
 [Version française]
 # Documentation Qc Comments
@@ -151,15 +150,15 @@ The rendering result can be controlled by Typoscript configuration:
 Cette extension propose une solution pour gérer la partie commentaires pour les pages frontend, pour cela il vient avec deux fonctionnalités importantes :
 
 ## Frontend plugin
-Cette plugin permet l'administrateur d'ajouter le composant de commentaires sous forme d'un formulaire frontend, où les utilisateur peuvent envoyer leurs commentaires et avis.
+Ce plugin permet l'administrateur d'ajouter le composant de commentaires sous forme d'un formulaire frontend, où les utilisateurs peuvent envoyer leurs commentaires et avis.
 L'affichage de formulaire de commentaires dans le frontend peut être controller 
-par quatre différents choix:
+par quatre différents choix :
 - Afficher pour cette page et ses sous-pages
 - Afficher pour cette page seulement
 - Masquer pour cette page et ses sous-pages
 - Masquer pour cette page seulement
 
-NB : Le choix de mode d'affichage peut être sélectionner à partir d'un champ nommé "Sélectionner le mode d'affichage de la section commentaires" dans le module "Page".
+NB : Le choix de mode d'affichage peut être sélectionné à partir d'un champ nommé "Sélectionner le mode d'affichage de la section commentaires" dans le module "Page".
 Si le choix d'affichage n'est pas choisie manuellement par l'administrateur le choix de la page parent sera hérité.
 
 NB : Pour intégrer le composant dans vos pages front end, il faut ajouter l'élément suivant dans votre configuration TypoScript :
