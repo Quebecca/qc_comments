@@ -114,7 +114,7 @@ By using this tab, the administrator can list the comments records that are sent
 
 The extension also came with an export function that allow user to export comment or statistiques based on the filter options.
 
-The rendering result can be controlled by Typoscript configuration:
+The rendering result can be controlled by the following Tsconfig configuration:
 
     mod{
         qcComments {
@@ -154,7 +154,7 @@ The rendering result can be controlled by Typoscript configuration:
 # Documentation Qc Comments
 
 ## À propos
-Cette extension propose une solution pour gérer la partie commentaires pour les pages frontend, pour cela il vient avec deux fonctionnalités importantes :
+L’extension propose une solution qui permet de gérer la partie commentaires sur les pages frontend, elle offre un plugin frontend sous forme d’un formulaire que l’utilisateur puisse l’utiliser pour envoyer ses commentaires, ainsi qu’un module Backend qui permet l’administrateur d’afficher et analyser les différents commentaires envoyés pour chaque page.
 
 ## Frontend plugin
 Ce plugin permet l'administrateur d'ajouter le composant de commentaires sous forme d'un formulaire frontend, où les utilisateurs peuvent envoyer leurs commentaires et avis.
@@ -187,7 +187,7 @@ Dans les pages Fluid pages fluid :
 
 ### Les contrôles de formulaire
 #### Recaptcha
-Par défaut, le control recaptcha est désactivé, vous pouvez l'activer et le configurer en utilisant la configuration suivante : 
+Par défaut, le contrôle recaptcha est désactivé, vous pouvez l'activer et le configurer en utilisant la configuration suivante : 
        
      plugin.commentsForm {
             settings {
@@ -226,7 +226,7 @@ Si vous souhaitez cacher les informations qui sont considéré sensibles pour vo
         }
     }
 
-#### Le control de Spam
+#### Le contrôle de Spam
 L'extension vous fournit un contrôle de spam avec trois différentes méthodes : 
 
 * Honeypot check
@@ -238,7 +238,7 @@ L'extension vous fournit un contrôle de spam avec trois différentes méthodes 
 Vous pouvez configurer ces contrôles directement dans le fichier setup.typoscript de l'extension.
 
 ### Additional content element
-L'affichage de plugin qc_comment porte deux section sepéarées, une pour afficher le formulaire de commentaire,
+L'affichage de plugin qc_comments porte deux sections séparées, une pour afficher le formulaire de commentaire,
 la deuxième est optionnelle, vous pouvez choisir un tt_content pour l'affiché à coté de commentaire, la capture d'écran montre 
 un exemple d'affichage de cette section : 
 
@@ -276,10 +276,10 @@ négatifs.
 #### Commentaires
 En utilisant cette tabulation, l'administrateur peut lister les commentaires envoyés par page.
 
-NB : Toutes les données listés dans les deux tabulations peuvent être filtré or exporter sous format csv.
-NB : L'extension support aussi une fonctionnalité qui permet d'exporter les commentaires ou les résultats des statistiques en se basant sur les options de filtres sélectionnées.
+NB : Toutes les données listées dans les deux tabulations peuvent être filtré or exporter sous format csv.
+NB : L'extension offre aussi une fonctionnalité qui permet d'exporter les commentaires ou les résultats des statistiques en se basant sur les options de filtres sélectionnées.
 
-L'affichage dans deux tabulations peut être controller en utilisant la configuration typoscript ce dessous :
+L'affichage dans deux tabulations peut être controller en utilisant la configuration Tsconfig ci-dessous :
 
      mod{
         qcComments {
