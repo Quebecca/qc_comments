@@ -14,7 +14,7 @@ The comments component can be enabled or disabled using four different ways :
 - No comments component for the selected page.
 - No comments component for the selected page and its sub-pages.
 
-Note : The option can be changed using the input that cames with the extension named "Select comments section display mode" in the 'Pages module' configuration in the 'Extended' tab.
+Note : The option can be changed using the input that comes with the extension named "Select comments section display mode" in the 'Pages module' configuration in the 'Extended' tab.
 If the option isn't specified in a page by the administrator, the option will be inherited from the parent page.
 
 Note : To add the comments form component to your frontend pages, you will have to add the current component to your TypoScript configuration:
@@ -75,7 +75,7 @@ If you hope to hide the sensitive data from the submitted comments like email ad
     }
 
 #### Spam shield
-The extension cames also with a spam shield with three protections :
+The extension comes also with a spam shield with three protections :
 
 * Honeypot check
 
@@ -83,7 +83,7 @@ The extension cames also with a spam shield with three protections :
 
 * Link check
 
-You can configure this protection with the typoscript configuration that cames with the extension, in the setup.typoscript file.
+You can configure this protection with the typoscript configuration that comes with the extension, in the setup.typoscript file.
 
 
 #### Screenshot of the comments form in a front end page
@@ -112,7 +112,7 @@ By using this tab, the administrator can list the comments records that are sent
 ![Comments tab](Documentation/Images/comments.PNG)
 
 
-The extension also came with an export function that allow user to export comment or statistiques based on the filter options.
+The extension also comes with an export function that allows user to export comments or statistiques based on the filter applied.
 
 The rendering result can be controlled by the following Tsconfig configuration:
 
