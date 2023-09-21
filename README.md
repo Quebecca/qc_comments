@@ -121,20 +121,27 @@ The rendering result can be controlled by Typoscript configuration:
             comments {
                 // Order by comment date
                 orderType = DESC
+                // Max records that will be shown in the comments table
                 maxRecords = 100
+                // Number of subpages that will be parsed
                 numberOfSubPages = 50
+                // Show comments for hidden pages
                 showCommentsForHiddenPages = 1
     
             }
             statistics {
+                // Max records that will be showed in the statistics table
                 maxRecords = 30
+                // Show statistics for hidden pages
                 showStatisticsForHiddenPages = 1
             }
     
             csvExport {
                 filename {
-                    dateFormat = Ymd
+                    // This date will added to the exported file name
+                    dateFormat = YmdHi
                 }
+                // Csv parameters
                 separator = ;
                 enclosure = "
                 escape = \
@@ -269,35 +276,40 @@ négatifs.
 #### Commentaires
 En utilisant cette tabulation, l'administrateur peut lister les commentaires envoyés par page.
 
-NB : Tous les données listés dans les deux tabulations peuvent être filtré or exporter sous format csv.
+NB : Toutes les données listés dans les deux tabulations peuvent être filtré or exporter sous format csv.
 NB : L'extension support aussi une fonctionnalité qui permet d'exporter les commentaires ou les résultats des statistiques en se basant sur les options de filtres sélectionnées.
 
 L'affichage dans deux tabulations peut être controller en utilisant la configuration typoscript ce dessous :
 
-    module.tx_qccomments {
-        settings {
+     mod{
+        qcComments {
             comments {
-                // Trier par champ de date de commentaire
+                // Type de tri (tri sur le champ date)
                 orderType = DESC
-                // Nombre d'enregistrements qui seront affichés dans le tableau de commentaires
+                // Nombre maximum des commentaires affichés
                 maxRecords = 100
-                // Nombre de sous-pages qui seront analysées
+                // Nombre maximum des sous-pages considérées 
                 numberOfSubPages = 50
+                // Afficher la liste des commentaires pour les pages cachées
+                showCommentsForHiddenPages = 1
+    
             }
             statistics {
-                // Nombre d'enregistrements qui seront affichés dans le tableau de statistiques
+                // Nombre maximum des statistiques affichées
                 maxRecords = 30
+                // Afficher les statisques pour les pages cachées
+                showStatisticsForHiddenPages = 1
             }
-
+    
             csvExport {
                 filename {
-                    // Cette date sera ajoutée au nom du fichier exporté
+                    // La date sera ajoutée au nom de fichier
                     dateFormat = YmdHi
                 }
-                // Les Paramètres CSV
+                // Les paramétres de CSV
                 separator = ;
                 enclosure = "
-                escape = \\
+                escape = \
             }
         }
     }
