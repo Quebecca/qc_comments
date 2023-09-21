@@ -97,7 +97,7 @@ This module contains two different tabs:
 #### Statistics tab
 
 
-This tab is used to give the administrator an idea of how much a selected page is useful for frontend users by using a table
+This tab is used to give the administrator an idea of how much a selected page is useful for frontend users, by using a table
 with analytics data.
 #### Screenshot of the statistics tab
 
