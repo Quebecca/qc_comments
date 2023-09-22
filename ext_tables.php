@@ -21,7 +21,7 @@ call_user_func(
             'Add comments section in page'
         );
 
-        ExtensionUtility::registerModule(
+/*        ExtensionUtility::registerModule(
             'QcComments',
             'web',
             'admin',
@@ -35,7 +35,7 @@ call_user_func(
                 'icon' => 'EXT:qc_comments/Resources/Public/Icons/qc_comments.svg',
                 'labels' => 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:qc_comments',
             ]
-        );
+        );*/
         ExtensionManagementUtility::addStaticFile('qc_comments', 'Configuration/TypoScript', 'Module used to manage FE users comments on pages');
     }
 );
