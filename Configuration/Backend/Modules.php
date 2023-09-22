@@ -1,4 +1,6 @@
 <?php
+use Qc\QcComments\Controller\StatisticsBEController;
+use Qc\QcComments\Controller\CommentsBEController;
 
 return [
     'web_qccomments' => [
