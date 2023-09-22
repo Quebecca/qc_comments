@@ -19,5 +19,30 @@ return [
                 'comments, exportComments, resetFilter',
             ],
         ],
-    ]
+    ],
+    'routes' => [
+        '_default' => [
+            'target' => StatisticsBEController::class . '::statistics',
+        ],
+        'exportStatistics' => [
+            'path' => '/exportStatistics',
+            'target' => StatisticsBEController::class . '::exportStatistics',
+        ],
+        'resetFilter' => [
+            'target' => StatisticsBEController::class . '::resetFilter',
+            'methods' => ['POST'],
+        ],
+        'exportComments' => [
+            'path' => '/exportComments',
+            'target' => CommentsBEController::class . '::exportComments',
+        ],
+        'resetFilter_comments' => [
+            'path' => '/resetFilter_comments',
+            'target' => CommentsBEController::class . '::resetFilter',
+        ],
+        'comments' => [
+            'path' => '/comments',
+            'target' => CommentsBEController::class . '::comments',
+        ]
+],
 ];
