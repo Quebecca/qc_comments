@@ -86,7 +86,7 @@ class SpamShieldValidator extends ExtbaseAbstractValidator
      * @param Comment $comment
      * @throws Exception
      */
-    public function isValid($comment)
+    public function isValid($comment) : void
     {
           $typoScriptConfigurationService
             = GeneralUtility::makeInstance(TyposcriptConfiguration::class);
