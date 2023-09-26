@@ -13,10 +13,10 @@ return [
         'extensionName' => 'QcComments',
         'controllerActions' => [
             StatisticsBEController::class => [
-                'statistics, exportStatistics, resetFilter',
+                'statistics', 'exportStatistics', 'resetFilter'
             ],
             CommentsBEController::class => [
-                'comments, exportComments, resetFilter',
+                'comments', 'exportComments', 'resetFilter'
             ],
         ],
     ],
