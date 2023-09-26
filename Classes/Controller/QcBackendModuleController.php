@@ -15,12 +15,12 @@ namespace Qc\QcComments\Controller;
 
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Service\QcBackendModuleService;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -138,7 +138,7 @@ abstract class QcBackendModuleController extends BackendModuleActionController
                     ->translate(self::QC_LANG_FILE . 'menu.list'),
                 'action' => 'comments',
                 'controller' => 'CommentsBE'
-            ],
+            ]
 
         ];
         $this->setMenuItems($menuItems);
@@ -158,13 +158,13 @@ abstract class QcBackendModuleController extends BackendModuleActionController
         return $uriBuilder->uriFor($action, $arguments, $controller);
     }
 
-    /**
-     * @param ViewInterface $view
-     */
-    protected function initializeView(ViewInterface $view)
+
+    protected function initializeView( $view)
     {
         parent::initializeView($view);
-        $moduleTemplate = $view->getModuleTemplate();
+        //$moduleTemplate = $view->getModuleTemplate();
+        $this->moduleTemplateFactory = GeneralUtility::makeInstance(ModuleTemplateFactory::class);
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         if ($this->root_id && $moduleTemplate) {
             $record = BackendUtility::readPageAccess(
                 $this->root_id,
@@ -178,8 +178,9 @@ abstract class QcBackendModuleController extends BackendModuleActionController
             $this->pageRenderer->addCssFile(
                 'EXT:qc_comments/Resources/Public/Css/be_qc_comments.css'
             );
-            $this->pageRenderer->addJsFile(
-                'EXT:qc_comments/Resources/Public/JavaScript/AdministrationModule.js'
+
+            $this->pageRenderer->loadRequireJsModule(
+                'TYPO3/CMS/QcComments/AdministrationModule'
             );
         }
         $filter = $this->qcBeModuleService->processFilter();

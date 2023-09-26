@@ -63,7 +63,9 @@ class StatisticsBEController extends QcBackendModuleController
                 'totalSection_row' => $statsByDepth['row']
             ]);
         }
-        return $this->htmlResponse();
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate->setContent($this->view->render());
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**

@@ -14,13 +14,12 @@ declare(strict_types=1);
  ***/
 namespace Qc\QcComments\Controller;
 
-use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 
 /**
@@ -38,15 +37,10 @@ class BackendModuleActionController extends ActionController
      */
     protected $iconFactory;
 
-    /**
-     * @var BackendTemplateView
-     */
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+
     protected $view;
 
-    /**
-     * @var BackendTemplateView
-     */
-    protected $defaultViewObjectName = BackendTemplateView::class;
 
     /**
      * The menu identifier for the backend module
@@ -74,13 +68,14 @@ class BackendModuleActionController extends ActionController
     protected PageRenderer $pageRenderer;
 
     /**
-     * @param ViewInterface $view
+     * @param  $view
      */
-    protected function initializeView(ViewInterface $view)
+    protected function initializeView( $view)
     {
-        /** @var BackendTemplateView $view */
-        $this->pageRenderer = $this->view->getModuleTemplate()->getPageRenderer();
+        /** @var  $view */
+        $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $this->createMenu();
+
     }
 
     /**
@@ -91,13 +86,14 @@ class BackendModuleActionController extends ActionController
         /** @var UriBuilder $uriBuilder */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uriBuilder->setRequest($this->request);
-
-        $menu = $this->view
-                    ->getModuleTemplate()
+        $this->moduleTemplateFactory = GeneralUtility::makeInstance(ModuleTemplateFactory::class);
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $menu = $moduleTemplate
                     ->getDocHeaderComponent()
                     ->getMenuRegistry()
                     ->makeMenu();
         $menu->setIdentifier($this->menuIdentifier);
+
 
         foreach ($this->menuItems as $menuItem) {
             $item = $menu->makeMenuItem()
@@ -117,8 +113,7 @@ class BackendModuleActionController extends ActionController
             $menu->addMenuItem($item);
         }
 
-        $this->view
-            ->getModuleTemplate()
+        $moduleTemplate
             ->getDocHeaderComponent()
             ->getMenuRegistry()
             ->addMenu($menu);
