@@ -98,8 +98,8 @@ class StatisticsBEController extends QcBackendModuleController
         $this->moduleTemplateFactory = GeneralUtility::makeInstance(ModuleTemplateFactory::class);
         $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->moduleTemplate->makeDocHeaderModuleMenu(['id' => 1]);
-        // $this->moduleTemplate->renderResponse('Statistics');
-        return $this->htmlResponse($this->moduleTemplate->renderContent());
+        return $this->moduleTemplate->renderResponse('Statistics');
+        //return $this->htmlResponse($this->moduleTemplate->renderContent());
 
     }
 }

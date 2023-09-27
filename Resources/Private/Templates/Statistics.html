@@ -1,33 +1,7 @@
-{namespace bm=CHF\BackendModule\ViewHelpers}
-{namespace core = TYPO3\CMS\Core\ViewHelpers}
+<html data-namespace-typo3-fluid="true" xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
 
-<f:layout name="Default"/>
-
-<f:section name="headline">
-    <h1>
-        Stats
-    </h1>
+<f:layout name="Module" />
+<f:section name="Content">
+    <h1>Stats</h1>
 </f:section>
-
-<f:section name="content">
-
-    <f:debug>{_all}</f:debug>
-</f:section>
-
-<f:section name="rows">
-    <f:if condition="{filter.depth} > 0">
-        <div class="panel panel-space panel-default recordlist">
-            <div class="panel-heading">
-                {f:translate(key: 'stats-by-depth')}
-            </div>
-            <f:render partial="StatsByDepthTable" arguments="{row:totalSection_row, headers:totalSection_headers, settings:settings}"/>
-        </div>
-    </f:if>
-
-    <div class="panel panel-space panel-default recordlist">
-        <div class="panel-heading">
-            {f:translate(key: 'comments')}
-        </div>
-        <f:render partial="StatsTable" arguments="{rows:rows, headers:headers, settings:settings}"/>
-    </div>
-</f:section>
+</html>

@@ -103,7 +103,7 @@ class CommentsBEController extends QcBackendModuleController
         $this->moduleTemplateFactory = GeneralUtility::makeInstance(ModuleTemplateFactory::class);
         $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->moduleTemplate->makeDocHeaderModuleMenu(['id' => 1]);
-        //return $this->moduleTemplate->renderResponse('Comments');
-        return $this->htmlResponse($this->moduleTemplate->renderContent());
+        return $this->moduleTemplate->renderResponse('Comments');
+        //return $this->htmlResponse($this->moduleTemplate->renderContent());
     }
 }
