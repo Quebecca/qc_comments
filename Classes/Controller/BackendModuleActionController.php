@@ -14,6 +14,7 @@ declare(strict_types=1);
  ***/
 namespace Qc\QcComments\Controller;
 
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -31,6 +32,9 @@ class BackendModuleActionController extends ActionController
      * @var int
      */
     protected int $pageUid = 0;
+
+    protected ModuleTemplate $moduleTemplate;
+
 
     /**
      * @var IconFactory

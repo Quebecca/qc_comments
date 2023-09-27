@@ -4,6 +4,7 @@ namespace Qc\QcComments\Controller;
 
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Service\StatisticsTabService;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
@@ -13,6 +14,7 @@ use TYPO3\CMS\Core\Http\Response;
 
 class StatisticsBEController extends QcBackendModuleController
 {
+
     public function __construct()
     {
         parent::__construct();
@@ -89,5 +91,15 @@ class StatisticsBEController extends QcBackendModuleController
         $filter->setDepth( intval($request->getQueryParams()['parameters']['depth']));
         $currentPageId = intval($request->getQueryParams()['parameters']['currentPageId']);
         return $this->qcBeModuleService->exportStatisticsData($filter, $currentPageId);
+    }
+
+    public function handleRequest(ServerRequestInterface $request): ResponseInterface
+    {
+        $this->moduleTemplateFactory = GeneralUtility::makeInstance(ModuleTemplateFactory::class);
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->moduleTemplate->makeDocHeaderModuleMenu(['id' => 1]);
+        // $this->moduleTemplate->renderResponse('Statistics');
+        return $this->htmlResponse($this->moduleTemplate->renderContent());
+
     }
 }
