@@ -6,6 +6,7 @@ use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Qc\QcComments\Controller\v12\QcCommentsBEv12Controller;
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Service\CommentsTabService;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -14,7 +15,7 @@ use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\StopActionException;
 
-class CommentsBEController extends QcBackendModuleController
+class CommentsBEController extends QcCommentsBEv12Controller
 {
 
     public function __construct()
@@ -31,6 +32,8 @@ class CommentsBEController extends QcBackendModuleController
      */
     public function commentsAction(Filter $filter = null): ResponseInterface
     {
+        $this->addMainMenu('comments');
+
         if (!$this->root_id) {
             $this->view->assign('noPageSelected', true);
         }

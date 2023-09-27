@@ -1,6 +1,7 @@
 <?php
 use Qc\QcComments\Controller\StatisticsBEController;
 use Qc\QcComments\Controller\CommentsBEController;
+use Qc\QcComments\Controller\v12\QcCommentsBEv12Controller;
 
 return [
     'web_qc_comments' => [
@@ -89,16 +90,18 @@ return [
         'labels' => [
             'title' => 'Statistics',
         ],
-        'routes' => [
-            '_default' => [
-                'target' => StatisticsBEController::class . '::handleRequest',
+        'extensionName' => 'QcComments',
+        'controllerActions' => [
+            QcCommentsBEv12Controller::class => [
+                'statistics','comments',
             ],
+
         ],
         'moduleData' => [
             'action' => 'statistics',
         ],
     ],
-
+/*
     'web_qc_comments_comments' => [
         'parent' => 'web_qc_comments',
         'access' => 'user',
@@ -115,5 +118,5 @@ return [
         'moduleData' => [
             'action' => 'comments',
         ],
-    ],
+    ],*/
 ];

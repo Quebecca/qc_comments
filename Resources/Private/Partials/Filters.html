@@ -1,7 +1,8 @@
+{namespace f= TYPO3\Fluid\ViewHelpers}
 <f:form action="{action}" object="{filter}" objectName="filter" id="filter-form">
     <div class="row">
         <div class="col-md-2">
-            <label>{f:translate(key: 'filter.lang')}</label>
+            <label>{f:translate(key: 'filter.lang', extensionName : 'qc_comments')}</label>
             <f:form.select property="lang"
                            options="{filter.langOptions}"
                            optionLabelField="title"
@@ -10,7 +11,7 @@
             />
         </div>
         <div class="col-md-2">
-            <label>{f:translate(key: 'filter.depth')}</label>
+            <label>{f:translate(key: 'filter.depth', extensionName : 'qc_comments')}</label>
             <f:form.select property="depth"
                            options="{filter.depthOptions}"
                            optionLabelField="title"
@@ -20,7 +21,7 @@
         </div>
         <f:if condition="{action} == 'comments'">
             <div class="col-md-2">
-                <label>{f:translate(key: 'utility')}</label>
+                <label>{f:translate(key: 'utility', extensionName : 'qc_comments')}</label>
                 <f:form.select property="useful"
                                options="{filter.commentsUtility}"
                                optionLabelField="title"
@@ -30,7 +31,7 @@
             </div>
         </f:if>
         <div class="col-md-2">
-            <label>{f:translate(key: 'filter.dateRange')}</label>
+            <label>{f:translate(key: 'filter.dateRange', extensionName : 'qc_comments')}</label>
             <f:form.select property="dateRange"
                            options="{filter.dateRangeOptions}"
                            optionLabelField="title"
@@ -42,7 +43,7 @@
         <div class="col-md-2">
             <f:if condition="{filter.dateRange} == 'userDefined'">
                 <div class="datepicker">
-                    <label for="startDate">{f:translate(key:'filter.userDefined.from')}</label>
+                    <label for="startDate">{f:translate(key:'filter.userDefined.from', extensionName : 'qc_comments')}</label>
                     <div class="input-group ">
                         <f:form.textfield
                                 property="startDate"
@@ -58,7 +59,7 @@
                     </div>
                 </div>
                 <div class="datepicker">
-                    <label for="endDate">{f:translate(key:'filter.userDefined.to')}</label>
+                    <label for="endDate">{f:translate(key:'filter.userDefined.to', extensionName : 'qc_comments')}</label>
                     <div class="input-group">
                         <f:form.textfield
                                 property="endDate"
@@ -84,7 +85,7 @@
                              value="1"
                              id="includeEmptyPages"
             />
-            <label class="form-check-label" for="includeEmptyPages">{f:translate(key: 'filter.includeEmptyPages')}</label>
+            <label class="form-check-label" for="includeEmptyPages">{f:translate(key: 'filter.includeEmptyPages', extensionName : 'qc_comments')}</label>
 
         </div>
         <div class="col-md-4">
@@ -112,9 +113,9 @@
 </f:form>
 <f:section name="buttons">
     <f:form.submit value="{f:translate(key: 'filter.submit')}" class="btn btn-default"/>
-    <a href="{resetButton.href}" class="btn btn-default">{f:translate(key:'filter.reset')}</a>
+    <a href="{resetButton.href}" class="btn btn-default">{f:translate(key:'filter.reset', extensionName : 'qc_comments')}</a>
    <button class="btn btn-default" onclick="exportFunction(event, '{action}')" id="cc">
-       {csvButton.icon -> f:format.raw()} {f:translate(key:'links.exportCsv')}
+       {csvButton.icon -> f:format.raw()} {f:translate(key:'links.exportCsv', extensionName : 'qc_comments')}
    </button>
 </f:section>
 

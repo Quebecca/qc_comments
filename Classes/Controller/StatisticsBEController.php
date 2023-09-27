@@ -2,6 +2,7 @@
 
 namespace Qc\QcComments\Controller;
 
+use Qc\QcComments\Controller\v12\QcCommentsBEv12Controller;
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Service\StatisticsTabService;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -12,24 +13,26 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\Response;
 
-class StatisticsBEController extends QcBackendModuleController
+class StatisticsBEController extends QcCommentsBEv12Controller
 {
 
     public function __construct()
     {
-        parent::__construct();
+      //  parent::__construct();
         $this->qcBeModuleService
             = GeneralUtility::makeInstance(StatisticsTabService::class);
     }
 
     /**
      * @param Filter|null $filter
-     * @return ResponseInterface
      */
     public function statisticsAction(Filter $filter = null): ResponseInterface
     {
+        $this->addMainMenu('statistics');
+
+        $this->root_id = 1;
         if (!$this->root_id) {
-            $this->view->assign('noPageSelected', true);
+            $this->moduleTemplate->assign('noPageSelected', true);
         }
         else {
             if ($filter) {
@@ -48,26 +51,29 @@ class StatisticsBEController extends QcBackendModuleController
                 $this->addFlashMessage($message, null, AbstractMessage::WARNING);
             }
            $statsByDepth = $this->qcBeModuleService->getStatisticsByDepth();
-            $this->view->assignMultiple([
-                'csvButton' => [
+           //return $this->handleRequest($this->request);
+            $this->moduleTemplate->assignMultiple([
+             /*   'csvButton' => [
                     'href' => $this->getUrl('exportStatistics'),
                     'icon' => $this->icon,
-                ],
-                'resetButton' => [
+                ],*/
+                /*'resetButton' => [
                     'href' => $this->getUrl('resetFilter'),
-                ],
+                ],*/
                 'headers' => $data['headers'],
                 'rows' => $data['rows'],
-                'pagesId' => $this->pages_ids,
+              //  'pagesId' => $this->pages_ids,
                 'settings',
                 'currentPageId' => $data['currentPageId'],
                 'totalSection_headers' => $statsByDepth['headers'],
                 'totalSection_row' => $statsByDepth['row']
             ]);
         }
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
-        $moduleTemplate->setContent($this->view->render());
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        return $this->moduleTemplate->renderResponse('StatisticsV12');
+
+        /*        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+                $moduleTemplate->setContent($this->view->render());
+                return $this->htmlResponse($moduleTemplate->renderContent());*/
     }
 
     /**
@@ -98,8 +104,44 @@ class StatisticsBEController extends QcBackendModuleController
         $this->moduleTemplateFactory = GeneralUtility::makeInstance(ModuleTemplateFactory::class);
         $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
         $this->moduleTemplate->makeDocHeaderModuleMenu(['id' => 1]);
+       // $this->statisticsAction();
         return $this->moduleTemplate->renderResponse('Statistics');
         //return $this->htmlResponse($this->moduleTemplate->renderContent());
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

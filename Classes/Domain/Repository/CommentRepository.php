@@ -264,6 +264,8 @@ class CommentRepository extends Repository
      */
     public function getPageIdsList(): array
     {
+        $this->filter = new Filter();
+
         $depth = $this->filter->getDepth();
         $page_ids = [];
         if ($depth > 0) {

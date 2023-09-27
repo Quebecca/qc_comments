@@ -3,17 +3,15 @@
 <f:layout name="Module" />
 <f:section name="Content">
     <h1>Stats</h1>
-
-    <f:comment>
-        <f:render section="rows" arguments="{_all}"/>
-    </f:comment>
     <f:if condition="{noPageSelected}">
         <f:then>
             <f:render partial="noPageSelected" />
         </f:then>
         <f:else>
             <div class="statistic_sections">
-                <f:flashMessages queueIdentifier="qc_comments"/>
+                <f:comment>
+                    <f:flashMessages queueIdentifier="qc_comments"/>
+                </f:comment>
                 <f:render partial="Filters"
                           arguments="{
                               action: 'statistics',

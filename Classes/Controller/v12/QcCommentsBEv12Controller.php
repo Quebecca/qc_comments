@@ -1,0 +1,226 @@
+<?php
+namespace Qc\QcComments\Controller\v12;
+
+use Doctrine\DBAL\Driver\Exception;
+use Psr\Http\Message\ResponseInterface;
+use Qc\QcComments\Domain\Filter\Filter;
+use Qc\QcComments\Service\QcBackendModuleService;
+use Qc\QcComments\Service\StatisticsTabService;
+use TYPO3\CMS\Backend\Module\ModuleData;
+use TYPO3\CMS\Backend\Routing\UriBuilder as BackendUriBuilder;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository;
+use TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository;
+use TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository;
+use TYPO3\CMS\Beuser\Domain\Repository\FileMountRepository;
+use TYPO3\CMS\Beuser\Service\UserInformationService;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+
+class QcCommentsBEv12Controller extends ActionController
+{
+    protected ?ModuleData $moduleData = null;
+    protected ModuleTemplate $moduleTemplate;
+    protected int $root_id;
+    protected string $controllerName = '';
+    protected QcBackendModuleService  $qcBeModuleService;
+    const QC_LANG_FILE = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
+    protected string $extKey;
+    /**
+     * @var mixed|object|ModuleTemplateFactory
+     */
+    private mixed $moduleTemplateFactory;
+    /**
+     * @var mixed|object|PageRenderer
+     */
+    private mixed $pageRenderer;
+
+    public function __construct(
+    ) {
+        $this->moduleTemplateFactory = GeneralUtility::makeInstance(ModuleTemplateFactory::class);
+        $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+
+    }
+
+    /**
+     * Init module state.
+     * This isn't done within __construct() since the controller
+     * object is only created once in extbase when multiple actions are called in
+     * one call. When those change module state, the second action would see old state.
+     */
+    public function initializeAction(): void
+    {
+        $this->moduleData = $this->request->getAttribute('moduleData');
+
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $this->moduleTemplate->setTitle('QcComments');
+        $this->moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
+
+        $this->extKey = $this->request->getControllerExtensionKey();
+        $this->controllerName = $this->request->getControllerName();
+        //$this->setMenu();
+        //$this->forwardToLastSelectedAction();
+        $this->root_id = GeneralUtility::_GP('id') ?? 0;
+
+        /*$this->qcBeModuleService->setRootId($this->root_id);
+        $filter = $this->qcBeModuleService->processFilter();
+        $this->moduleTemplate->assign('filter', $filter);*/
+
+    }
+
+    /**
+     * Load JS module
+     */
+    protected function initializeView(): void
+    {
+        $this->pageRenderer->loadRequireJsModule(
+            'TYPO3/CMS/QcComments/AdministrationModule'
+        );
+        $this->pageRenderer->loadRequireJsModule(
+            'TYPO3/CMS/Backend/DateTimePicker'
+        );
+        $this->pageRenderer->addCssFile(
+            'EXT:qc_comments/Resources/Public/Css/be_qc_comments.css'
+        );
+
+    }
+
+ /*   public function statisticsAction(Filter $filter = null): ResponseInterface{
+        $this->addMainMenu('statistics');
+        return $this->moduleTemplate->renderResponse('StatisticsV12');
+    }
+
+    public function commentsAction(): ResponseInterface{
+        $this->addMainMenu('comments');
+        return $this->moduleTemplate->renderResponse('Comments12');
+    }*/
+    /**
+     * Doc header main drop down
+     */
+    protected function addMainMenu(string $currentAction): void
+    {
+        $this->uriBuilder->setRequest($this->request);
+        $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $menu->setIdentifier('QcCommentsMenu');
+        $menu->addMenuItem(
+            $menu->makeMenuItem()
+                ->setTitle('Statistics')
+                ->setHref($this->uriBuilder->uriFor('statistics'))
+                ->setActive($currentAction === 'statistics')
+        );
+        $menu->addMenuItem(
+            $menu->makeMenuItem()
+                ->setTitle('Comments')
+                ->setHref($this->uriBuilder->uriFor('comments'))
+                ->setActive($currentAction === 'comments')
+        );
+        $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
+    }
+
+
+
+    /**
+     * @param Filter|null $filter
+     */
+    public function statisticsAction(Filter $filter = null): ResponseInterface
+    {
+
+        $this->qcBeModuleService
+            = GeneralUtility::makeInstance(StatisticsTabService::class);
+        $this->qcBeModuleService->setRootId($this->root_id);
+        $this->addMainMenu('statistics');
+
+        if (!$this->root_id) {
+            $this->moduleTemplate->assign('noPageSelected', true);
+        }
+        else {
+            if ($filter) {
+                $this->qcBeModuleService->processFilter($filter);
+                $this->view->assign('filter', $filter);
+
+            }
+            $data = $this->qcBeModuleService->getPageStatistics();
+            if($data['tooMuchResults'] == true){
+                $message = $this->localizationUtility
+                    ->translate(
+                        self::QC_LANG_FILE . 'tooMuchPages',
+                        null,
+                        [$data['maxRecords']]
+                    );
+                $this->addFlashMessage($message, null, AbstractMessage::WARNING);
+            }
+            $statsByDepth = $this->qcBeModuleService->getStatisticsByDepth();
+            //return $this->handleRequest($this->request);
+            $this->moduleTemplate->assignMultiple([
+                /*   'csvButton' => [
+                       'href' => $this->getUrl('exportStatistics'),
+                       'icon' => $this->icon,
+                   ],*/
+                /*'resetButton' => [
+                    'href' => $this->getUrl('resetFilter'),
+                ],*/
+                'headers' => $data['headers'],
+                'rows' => $data['rows'],
+                //  'pagesId' => $this->pages_ids,
+                'settings',
+                'currentPageId' => $data['currentPageId'],
+                'totalSection_headers' => $statsByDepth['headers'],
+                'totalSection_row' => $statsByDepth['row']
+            ]);
+        }
+        $filter = $this->qcBeModuleService->processFilter();
+
+        $this->moduleTemplate->assign('filter', $filter);
+
+        return $this->moduleTemplate->renderResponse('StatisticsV12');
+
+        /*        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+                $moduleTemplate->setContent($this->view->render());
+                return $this->htmlResponse($moduleTemplate->renderContent());*/
+    }
+
+
+
+
+
+
+
+
+    /**
+     * This function is used to get the list of comments in BE module
+     * @param Filter|null $filter
+     * @throws Exception
+     * @throws DBALException
+     */
+    public function commentsAction(Filter $filter = null): ResponseInterface
+    {
+        $this->addMainMenu('comments');
+        return $this->moduleTemplate->renderResponse('Comments12');
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

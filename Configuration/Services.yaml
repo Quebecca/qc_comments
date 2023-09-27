@@ -10,12 +10,17 @@ services:
   Qc\QcComments\Domain\Repository\CommentRepository:
     public: true
 
+  Qc\QcComments\Domain\Filter\Filter:
+    public: true
+
   Qc\QcComments\Controller\CommentsBEController:
     tags: [ 'backend.controller' ]
 
   Qc\QcComments\Controller\StatisticsBEController:
     tags: [ 'backend.controller' ]
 
+  Qc\QcComments\Controller\v12\QcCommentsBEv12Controller:
+    tags: [ 'backend.controller' ]
 
 
 
