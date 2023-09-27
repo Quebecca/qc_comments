@@ -24,59 +24,6 @@ class StatisticsBEController extends QcCommentsBEv12Controller
     }
 
     /**
-     * @param Filter|null $filter
-     */
-    public function statisticsAction(Filter $filter = null): ResponseInterface
-    {
-        $this->addMainMenu('statistics');
-
-        $this->root_id = 1;
-        if (!$this->root_id) {
-            $this->moduleTemplate->assign('noPageSelected', true);
-        }
-        else {
-            if ($filter) {
-                $this->qcBeModuleService->processFilter($filter);
-                $this->view->assign('filter', $filter);
-
-            }
-            $data = $this->qcBeModuleService->getPageStatistics();
-            if($data['tooMuchResults'] == true){
-                $message = $this->localizationUtility
-                    ->translate(
-                        self::QC_LANG_FILE . 'tooMuchPages',
-                    null,
-                        [$data['maxRecords']]
-                    );
-                $this->addFlashMessage($message, null, AbstractMessage::WARNING);
-            }
-           $statsByDepth = $this->qcBeModuleService->getStatisticsByDepth();
-           //return $this->handleRequest($this->request);
-            $this->moduleTemplate->assignMultiple([
-             /*   'csvButton' => [
-                    'href' => $this->getUrl('exportStatistics'),
-                    'icon' => $this->icon,
-                ],*/
-                /*'resetButton' => [
-                    'href' => $this->getUrl('resetFilter'),
-                ],*/
-                'headers' => $data['headers'],
-                'rows' => $data['rows'],
-              //  'pagesId' => $this->pages_ids,
-                'settings',
-                'currentPageId' => $data['currentPageId'],
-                'totalSection_headers' => $statsByDepth['headers'],
-                'totalSection_row' => $statsByDepth['row']
-            ]);
-        }
-        return $this->moduleTemplate->renderResponse('StatisticsV12');
-
-        /*        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
-                $moduleTemplate->setContent($this->view->render());
-                return $this->htmlResponse($moduleTemplate->renderContent());*/
-    }
-
-    /**
      * This function will reset the search filter
      * @throws StopActionException
      */

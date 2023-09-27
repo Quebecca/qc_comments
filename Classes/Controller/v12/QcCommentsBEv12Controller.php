@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class QcCommentsBEv12Controller extends ActionController
@@ -66,20 +67,12 @@ class QcCommentsBEv12Controller extends ActionController
     public function initializeAction(): void
     {
         $this->moduleData = $this->request->getAttribute('moduleData');
-
         $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $this->moduleTemplate->setTitle('QcComments');
         $this->moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
-
         $this->extKey = $this->request->getControllerExtensionKey();
         $this->controllerName = $this->request->getControllerName();
-        //$this->setMenu();
-        //$this->forwardToLastSelectedAction();
         $this->root_id = GeneralUtility::_GP('id') ?? 0;
-        /*$this->qcBeModuleService->setRootId($this->root_id);
-        $filter = $this->qcBeModuleService->processFilter();
-        $this->moduleTemplate->assign('filter', $filter);*/
-
     }
 
     /**
@@ -121,13 +114,14 @@ class QcCommentsBEv12Controller extends ActionController
         $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
     }
 
-
-
     /**
      * @param Filter|null $filter
      */
-    public function statisticsAction(Filter $filter = null): ResponseInterface
+    public function statisticsAction(Filter $filter = null,  string $operation = ''): ResponseInterface
     {
+        if($operation === 'reset-filters'){
+            $filter = new Filter();
+        }
         $this->qcBeModuleService
             = GeneralUtility::makeInstance(StatisticsTabService::class);
         $this->qcBeModuleService->setRootId($this->root_id);
@@ -153,18 +147,9 @@ class QcCommentsBEv12Controller extends ActionController
                 $this->addFlashMessage($message, null, AbstractMessage::WARNING);
             }
             $statsByDepth = $this->qcBeModuleService->getStatisticsByDepth();
-            //return $this->handleRequest($this->request);
             $this->moduleTemplate->assignMultiple([
-                /*   'csvButton' => [
-                       'href' => $this->getUrl('exportStatistics'),
-                       'icon' => $this->icon,
-                   ],*/
-                /*'resetButton' => [
-                    'href' => $this->getUrl('resetFilter'),
-                ],*/
                 'headers' => $data['headers'],
                 'rows' => $data['rows'],
-                //  'pagesId' => $this->pages_ids,
                 'settings',
                 'currentPageId' => $data['currentPageId'],
                 'totalSection_headers' => $statsByDepth['headers'],
@@ -193,7 +178,4 @@ class QcCommentsBEv12Controller extends ActionController
         $currentPageId = intval($request->getQueryParams()['parameters']['currentPageId']);
         return $this->qcBeModuleService->exportStatisticsData($filter, $currentPageId);
     }
-
-
-
 }

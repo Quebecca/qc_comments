@@ -93,7 +93,7 @@ return [
         'extensionName' => 'QcComments',
         'controllerActions' => [
             QcCommentsBEv12Controller::class => [
-                'statistics','comments',
+                'statistics','comments','resetFilter'
             ],
 
         ],
