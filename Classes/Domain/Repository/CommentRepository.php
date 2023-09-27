@@ -12,7 +12,6 @@
 namespace Qc\QcComments\Domain\Repository;
 
 use Doctrine\DBAL\Connection as ConnectionAlias;
-use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Exception;
 use Qc\QcComments\Domain\Filter\Filter;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
@@ -157,8 +156,7 @@ class CommentRepository extends Repository
     /**
      * This function is used to get the number of records by the depth for BE rendering verification
      * @return int
-     * @throws Exception
-     * @throws DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     public function getListCount(): int
     {
@@ -264,8 +262,7 @@ class CommentRepository extends Repository
      */
     public function getPageIdsList(): array
     {
-        $this->filter = new Filter();
-
+      //  $this->filter = new Filter();
         $depth = $this->filter->getDepth();
         $page_ids = [];
         if ($depth > 0) {

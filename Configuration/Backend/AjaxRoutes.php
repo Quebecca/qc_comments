@@ -15,7 +15,7 @@ return [
     'export_statistics' => [
         'path' => '/export_statistics',
         'referrer' => 'required,refresh-empty',
-        'target' => StatisticsBEController::class . '::exportStatisticsAction'
+        'target' => \Qc\QcComments\Controller\v12\QcCommentsBEv12Controller::class . '::exportStatisticsAction'
     ],
 
 ];

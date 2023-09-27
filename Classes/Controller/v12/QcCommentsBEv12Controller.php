@@ -3,6 +3,7 @@ namespace Qc\QcComments\Controller\v12;
 
 use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Service\QcBackendModuleService;
 use Qc\QcComments\Service\StatisticsTabService;
@@ -15,6 +16,7 @@ use TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository;
 use TYPO3\CMS\Beuser\Domain\Repository\FileMountRepository;
 use TYPO3\CMS\Beuser\Service\UserInformationService;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -66,7 +68,6 @@ class QcCommentsBEv12Controller extends ActionController
         //$this->setMenu();
         //$this->forwardToLastSelectedAction();
         $this->root_id = GeneralUtility::_GP('id') ?? 0;
-
         /*$this->qcBeModuleService->setRootId($this->root_id);
         $filter = $this->qcBeModuleService->processFilter();
         $this->moduleTemplate->assign('filter', $filter);*/
@@ -89,16 +90,6 @@ class QcCommentsBEv12Controller extends ActionController
         );
 
     }
-
- /*   public function statisticsAction(Filter $filter = null): ResponseInterface{
-        $this->addMainMenu('statistics');
-        return $this->moduleTemplate->renderResponse('StatisticsV12');
-    }
-
-    public function commentsAction(): ResponseInterface{
-        $this->addMainMenu('comments');
-        return $this->moduleTemplate->renderResponse('Comments12');
-    }*/
     /**
      * Doc header main drop down
      */
@@ -129,12 +120,11 @@ class QcCommentsBEv12Controller extends ActionController
      */
     public function statisticsAction(Filter $filter = null): ResponseInterface
     {
-
         $this->qcBeModuleService
             = GeneralUtility::makeInstance(StatisticsTabService::class);
         $this->qcBeModuleService->setRootId($this->root_id);
+        $this->qcBeModuleService->processFilter();
         $this->addMainMenu('statistics');
-
         if (!$this->root_id) {
             $this->moduleTemplate->assign('noPageSelected', true);
         }
@@ -177,41 +167,26 @@ class QcCommentsBEv12Controller extends ActionController
 
         $this->moduleTemplate->assign('filter', $filter);
 
-        return $this->moduleTemplate->renderResponse('StatisticsV12');
-
-        /*        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
-                $moduleTemplate->setContent($this->view->render());
-                return $this->htmlResponse($moduleTemplate->renderContent());*/
+        return $this->moduleTemplate->renderResponse('Statistics');
     }
-
-
-
-
 
 
 
 
     /**
-     * This function is used to get the list of comments in BE module
-     * @param Filter|null $filter
-     * @throws Exception
-     * @throws DBALException
+     * This function is used to export statistics records on a csv file
+     * @param ServerRequestInterface $request
+     * @return Response
      */
-    public function commentsAction(Filter $filter = null): ResponseInterface
+    public function exportStatisticsAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->addMainMenu('comments');
-        return $this->moduleTemplate->renderResponse('Comments12');
+        $this->qcBeModuleService
+            = GeneralUtility::makeInstance(StatisticsTabService::class);
+        $filter = $this->qcBeModuleService->getFilterFromRequest($request);
+        $filter->setDepth( intval($request->getQueryParams()['parameters']['depth']));
+        $currentPageId = intval($request->getQueryParams()['parameters']['currentPageId']);
+        return $this->qcBeModuleService->exportStatisticsData($filter, $currentPageId);
     }
-
-
-
-
-
-
-
-
-
-
 
 
 
