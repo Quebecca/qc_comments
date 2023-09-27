@@ -19,7 +19,11 @@ use TYPO3\CMS\Beuser\Service\UserInformationService;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -41,12 +45,16 @@ class QcCommentsBEv12Controller extends ActionController
      * @var mixed|object|PageRenderer
      */
     private mixed $pageRenderer;
+    /**
+     * @var mixed|object|LocalizationUtility
+     */
+    private mixed $localizationUtility;
 
     public function __construct(
     ) {
         $this->moduleTemplateFactory = GeneralUtility::makeInstance(ModuleTemplateFactory::class);
         $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-
+        $this->localizationUtility = GeneralUtility::makeInstance(LocalizationUtility::class);
     }
 
     /**
@@ -171,8 +179,6 @@ class QcCommentsBEv12Controller extends ActionController
     }
 
 
-
-
     /**
      * This function is used to export statistics records on a csv file
      * @param ServerRequestInterface $request
@@ -187,14 +193,6 @@ class QcCommentsBEv12Controller extends ActionController
         $currentPageId = intval($request->getQueryParams()['parameters']['currentPageId']);
         return $this->qcBeModuleService->exportStatisticsData($filter, $currentPageId);
     }
-
-
-
-
-
-
-
-
 
 
 

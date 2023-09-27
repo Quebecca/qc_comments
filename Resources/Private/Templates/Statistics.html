@@ -2,16 +2,16 @@
 
 <f:layout name="Module" />
 <f:section name="Content">
-    <h1>Stats</h1>
+    <h1>
+        {f:translate(key: 'menu.stats')}
+    </h1>
     <f:if condition="{noPageSelected}">
         <f:then>
             <f:render partial="noPageSelected" />
         </f:then>
         <f:else>
             <div class="statistic_sections">
-                <f:comment>
-                    <f:flashMessages queueIdentifier="qc_comments"/>
-                </f:comment>
+                <f:flashMessages/>
                 <f:render partial="Filters"
                           arguments="{
                               action: 'statistics',
