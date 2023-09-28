@@ -5,6 +5,7 @@ use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Domain\Filter\Filter;
+use Qc\QcComments\Service\CommentsTabService;
 use Qc\QcComments\Service\QcBackendModuleService;
 use Qc\QcComments\Service\StatisticsTabService;
 use TYPO3\CMS\Backend\Module\ModuleData;
@@ -133,7 +134,7 @@ class QcCommentsBEv12Controller extends ActionController
         else {
             if ($filter) {
                 $this->qcBeModuleService->processFilter($filter);
-                $this->view->assign('filter', $filter);
+                $this->moduleTemplate->assign('filter', $filter);
 
             }
             $data = $this->qcBeModuleService->getPageStatistics();
@@ -165,6 +166,55 @@ class QcCommentsBEv12Controller extends ActionController
 
 
     /**
+     * This function is used to get the list of comments in BE module
+     * @param Filter|null $filter
+     * @throws Exception
+     */
+    public function commentsAction(Filter $filter = null): ResponseInterface
+    {
+        $this->addMainMenu('comments');
+        $this->qcBeModuleService
+            = GeneralUtility::makeInstance(CommentsTabService::class);
+        $this->qcBeModuleService->setRootId($this->root_id);
+        $this->qcBeModuleService->processFilter();
+
+        if (!$this->root_id) {
+            $this->moduleTemplate->assign('noPageSelected', true);
+        }
+        else {
+            if ($filter) {
+                $this->qcBeModuleService->processFilter($filter);
+                $this->moduleTemplate->assign('filter', $filter);
+            }
+            $data = $this->qcBeModuleService->getComments();
+            if($data['tooMuchResults'] === true){
+                $message = $this->localizationUtility
+                    ->translate(self::QC_LANG_FILE . 'tooMuchResults',
+                        null, (array)[$data['numberOfSubPages'], $data['maxRecords']]);
+                $this->addFlashMessage($message, null, AbstractMessage::WARNING);
+            }
+
+            $this
+                ->moduleTemplate
+                ->assignMultiple(
+                    [
+                        /*'csvButton' => $csvButton,
+                        'resetButton' => $resetButton,*/
+                        'commentHeaders' => $data['commentHeaders'],
+                        'stats' => $data['stats'],
+                        'comments' => $data['comments'],
+                        'pagesId' => $data['pagesId'],
+                        'currentPageId' => $data['currentPageId']
+                    ]
+                );
+        }
+        $filter = $this->qcBeModuleService->processFilter();
+        $this->moduleTemplate->assign('filter', $filter);
+        return $this->moduleTemplate->renderResponse('Comments');
+
+    }
+
+    /**
      * This function is used to export statistics records on a csv file
      * @param ServerRequestInterface $request
      * @return Response
@@ -178,4 +228,8 @@ class QcCommentsBEv12Controller extends ActionController
         $currentPageId = intval($request->getQueryParams()['parameters']['currentPageId']);
         return $this->qcBeModuleService->exportStatisticsData($filter, $currentPageId);
     }
+
+
+
+
 }
