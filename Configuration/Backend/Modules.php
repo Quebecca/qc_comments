@@ -6,24 +6,17 @@ use Qc\QcComments\Controller\v12\QcCommentsBEv12Controller;
 return [
     'web_qc_comments' => [
         'parent' => 'web',
-        'access' => 'user',
         'position' => ['after' => 'info'],
         'path' => '/module/web/qc_comments/statistics',
-        'workspaces' => 'live',
-        'iconIdentifier' => 'qc_comments',
-        'icon' => 'EXT:qc_comments/Resources/Public/Icons/Extension.svg',
+        'icon' => 'EXT:qc_comments/Resources/Public/Icons/qc_comments.svg',
         'labels' => [
-            'title' => 'Statistics',
+            'title' => 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:qc_comments',
         ],
         'extensionName' => 'QcComments',
         'controllerActions' => [
             QcCommentsBEv12Controller::class => [
                 'comments','statistics','resetFilter'
-            ],
-
-        ],
-        'moduleData' => [
-            'action' => 'statistics',
-        ],
+            ]
+        ]
     ],
 ];
