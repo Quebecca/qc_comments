@@ -170,8 +170,11 @@ class QcCommentsBEv12Controller extends ActionController
      * @param Filter|null $filter
      * @throws Exception
      */
-    public function commentsAction(Filter $filter = null): ResponseInterface
+    public function commentsAction(Filter $filter = null, string $operation = ''): ResponseInterface
     {
+        if($operation === 'reset-filters'){
+            $filter = new Filter();
+        }
         $this->addMainMenu('comments');
         $this->qcBeModuleService
             = GeneralUtility::makeInstance(CommentsTabService::class);
