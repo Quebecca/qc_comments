@@ -25,58 +25,6 @@ class CommentsBEController extends QcCommentsBEv12Controller
     }
 
     /**
-     * This function is used to get the list of comments in BE module
-     * @param Filter|null $filter
-     * @throws Exception
-     * @throws DBALException
-     */
-    public function commentsAction(Filter $filter = null): ResponseInterface
-    {
-        $this->addMainMenu('comments');
-
-        if (!$this->root_id) {
-            $this->view->assign('noPageSelected', true);
-        }
-        else {
-            if ($filter) {
-                $this->qcBeModuleService->processFilter($filter);
-                $this->view->assign('filter', $filter);
-            }
-            $csvButton = [
-                'href' => $this->getUrl('exportComments'),
-                'icon' => $this->icon,
-            ];
-
-            $resetButton = [
-                'href' => $this->getUrl('resetFilter')
-            ];
-
-            $data = $this->qcBeModuleService->getComments();
-            if($data['tooMuchResults'] === true){
-                $message = $this->localizationUtility
-                    ->translate(self::QC_LANG_FILE . 'tooMuchResults',
-                        null, (array)[$data['numberOfSubPages'], $data['maxRecords']]);
-                $this->addFlashMessage($message, null, AbstractMessage::WARNING);
-            }
-
-            $this
-                ->view
-                ->assignMultiple(
-                   [
-                       'csvButton' => $csvButton,
-                       'resetButton' => $resetButton,
-                       'commentHeaders' => $data['commentHeaders'],
-                       'stats' => $data['stats'],
-                       'comments' => $data['comments'],
-                       'pagesId' => $data['pagesId'],
-                       'currentPageId' => $data['currentPageId']
-                   ]
-               );
-        }
-        return $this->htmlResponse();
-    }
-
-    /**
      * This function will reset the search filter
      * @throws StopActionException
      */
