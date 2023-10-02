@@ -53,12 +53,12 @@
                                 class="form-control  t3js-datetimepicker t3js-clearable"
                                 additionalAttributes="{'autocomplete': 'off'}"
                                 data="{date-type: 'date'}"
-                                value="{f:if(condition: filter.startDate, then: filter.startDate)}"
+                                value="{f:if(condition: filter.startDate, then: \"{f:format.date(format:'d-m-Y', date: '{filter.startDate}')}\")}"
 
                         />
                         <f:form.hidden
                                 property="startDate"
-                                value="{f:if(condition: filter.startDate, then: filter.startDate)}"
+                                value="{f:if(condition: filter.startDate, then: \"{f:format.date(format:'d-m-Y', date: '{filter.startDate}')}\")}"
 
                         />
                         <label class="btn btn-default" for="startDate">
@@ -75,12 +75,12 @@
                                 additionalAttributes="{'autocomplete': 'off'}"
                                 class="form-control  t3js-datetimepicker t3js-clearable"
                                 data="{date-type: 'date'}"
-                                value="{f:if(condition: filter.endDate, then: filter.endDate)}"
+                                value="{f:if(condition: filter.endDate, then: \"{f:format.date(format:'d-m-Y', date: '{filter.endDate}')}\")}"
 
                         />
                         <f:form.hidden
                                 property="endDate"
-                                value="{f:if(condition: filter.endDate, then: filter.endDate)}"
+                                value="{f:if(condition: filter.endDate, then: \"{f:format.date(format:'d-m-Y', date: '{filter.endDate}')}\")}"
 
                         />
                         <label class="btn btn-default" for="endDate">

@@ -2,6 +2,11 @@
 
 <f:layout name="Module" />
 <f:section name="Content">
+    <f:be.pageRenderer
+            includeJavaScriptModules="{
+            0: '@typo3/belog/backend-log.js'
+        }"
+    />
     <h1>
         {f:translate(key: 'comments')}
     </h1>
