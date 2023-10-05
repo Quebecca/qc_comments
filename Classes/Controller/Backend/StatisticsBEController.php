@@ -13,6 +13,8 @@ class StatisticsBEController extends QcCommentsBEController
 {
     /**
      * @param Filter|null $filter
+     * @param string $operation
+     * @return ResponseInterface
      */
     public function statisticsAction(Filter $filter = null,  string $operation = ''): ResponseInterface
     {

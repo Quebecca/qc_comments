@@ -2,7 +2,6 @@
 namespace Qc\QcComments\Controller\Backend;
 
 use Psr\Http\Message\ResponseInterface;
-use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Service\CommentsTabService;
 use Qc\QcComments\Service\QcBackendModuleService;
 use TYPO3\CMS\Backend\Module\ModuleData;
@@ -51,9 +50,6 @@ class QcCommentsBEController extends ActionController
      * @var LocalizationUtility
      */
     protected LocalizationUtility $localizationUtility;
-
-
-
 
     public function __construct(
     ) {
@@ -124,7 +120,7 @@ class QcCommentsBEController extends ActionController
     {
         $this->qcBeModuleService
             = GeneralUtility::makeInstance(CommentsTabService::class);
-        $currentAction =  $this->request->getControllerActionName(); //v12\QcCommentsBEv12::handleRequests
+        $currentAction =  $this->request->getControllerActionName();
         if ($currentAction === 'handleRequests') {
             $lastAction = $this->qcBeModuleService->getBackendSession()->get('lastAction');
             $lastActionName = $lastAction['actionName'] ?? 'statistics';
@@ -132,7 +128,13 @@ class QcCommentsBEController extends ActionController
             return ( new ForwardResponse($lastActionName))->withControllerName($lastControllerName);
         }
         else {
-            $this->qcBeModuleService->getBackendSession()->store('lastAction', ['controllerName' => $this->controllerName, 'actionName' => $currentAction]);
+            $this->qcBeModuleService->getBackendSession()->store(
+                'lastAction',
+                [
+                    'controllerName' => $this->controllerName,
+                    'actionName' => $currentAction
+                ]
+            );
             return new ForwardResponse($currentAction);
         }
     }

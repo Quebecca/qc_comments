@@ -1,6 +1,7 @@
 <?php
 namespace Qc\QcComments\Controller\Backend;
 
+use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Domain\Filter\Filter;
@@ -11,6 +12,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class CommentsBEController extends QcCommentsBEController
 {
+    /**
+     * @param Filter|null $filter
+     * @param string $operation
+     * @return ResponseInterface
+     * @throws Exception
+     */
     public function commentsAction(Filter $filter = null, string $operation = ''): ResponseInterface{
 
         if($operation === 'reset-filters'){
