@@ -1,5 +1,8 @@
 <?php
+
+use Qc\QcComments\Controller\Backend\CommentsBEController;
 use Qc\QcComments\Controller\Backend\QcCommentsBEController;
+use Qc\QcComments\Controller\Backend\StatisticsBEController;
 
 return [
     'web_qc_comments' => [
@@ -15,8 +18,12 @@ return [
             QcCommentsBEController::class => [
                 'handleRequests',
                 'resetFilter',
-                'comments',
+            ],
+            StatisticsBEController::class => [
                 'statistics'
+            ],
+            CommentsBEController::class => [
+                'comments'
             ]
         ]
     ],

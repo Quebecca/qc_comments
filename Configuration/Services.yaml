@@ -16,5 +16,11 @@ services:
   Qc\QcComments\Controller\Backend\QcCommentsBEController:
     tags: [ 'backend.controller' ]
 
+  Qc\QcComments\Controller\Backend\StatisticsBEController:
+    tags: [ 'backend.controller' ]
+
+  Qc\QcComments\Controller\Backend\CommentsBEController:
+    tags: [ 'backend.controller' ]
+
 
 

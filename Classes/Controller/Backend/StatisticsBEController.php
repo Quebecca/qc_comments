@@ -1,0 +1,88 @@
+<?php
+namespace Qc\QcComments\Controller\Backend;
+
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Qc\QcComments\Domain\Filter\Filter;
+use Qc\QcComments\Service\StatisticsTabService;
+use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+class StatisticsBEController extends QcCommentsBEController
+{
+    /**
+     * @param Filter|null $filter
+     */
+    public function statisticsAction(Filter $filter = null,  string $operation = ''): ResponseInterface
+    {
+        if($operation === 'reset-filters'){
+            $filter = new Filter();
+        }
+        $this->qcBeModuleService
+            = GeneralUtility::makeInstance(StatisticsTabService::class);
+        $this->qcBeModuleService->getBackendSession()->store(
+            'lastAction',
+            [
+                'controllerName' => $this->controllerName,
+                'actionName' => "statistics"
+            ]);
+
+        $this->qcBeModuleService->getBackendSession()->store('lastAction', 'statistics');
+
+        $this->qcBeModuleService->setRootId($this->root_id);
+        $this->qcBeModuleService->processFilter();
+        $this->addMainMenu('statistics');
+        if (!$this->root_id) {
+            $this->moduleTemplate->assign('noPageSelected', true);
+        }
+        else {
+            if ($filter) {
+                $this->qcBeModuleService->processFilter($filter);
+                $this->moduleTemplate->assign('filter', $filter);
+
+            }
+            $data = $this->qcBeModuleService->getPageStatistics();
+            if($data['tooMuchResults'] == true){
+                $message = $this->localizationUtility
+                    ->translate(
+                        self::QC_LANG_FILE . 'tooMuchPages',
+                        null,
+                        [$data['maxRecords']]
+                    );
+                $this->addFlashMessage($message, null, AbstractMessage::WARNING);
+            }
+            $statsByDepth = $this->qcBeModuleService->getStatisticsByDepth();
+            $this->moduleTemplate->assignMultiple([
+                'headers' => $data['headers'],
+                'rows' => $data['rows'],
+                'settings',
+                'currentPageId' => $data['currentPageId'],
+                'totalSection_headers' => $statsByDepth['headers'],
+                'totalSection_row' => $statsByDepth['row']
+            ]);
+        }
+        $filter = $this->qcBeModuleService->processFilter();
+
+        $this->moduleTemplate->assign('filter', $filter);
+
+        return $this->moduleTemplate->renderResponse('Statistics');
+    }
+
+
+    /**
+     * This function is used to export statistics records on a csv file
+     * @param ServerRequestInterface $request
+     * @return Response
+     */
+    public function exportStatisticsAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $this->qcBeModuleService
+            = GeneralUtility::makeInstance(StatisticsTabService::class);
+        $filter = $this->qcBeModuleService->getFilterFromRequest($request);
+        $filter->setDepth( intval($request->getQueryParams()['parameters']['depth']));
+        $currentPageId = intval($request->getQueryParams()['parameters']['currentPageId']);
+        return $this->qcBeModuleService->exportStatisticsData($filter, $currentPageId);
+    }
+
+}

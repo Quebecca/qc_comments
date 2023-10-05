@@ -2,16 +2,12 @@
 namespace Qc\QcComments\Controller\Backend;
 
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Service\CommentsTabService;
 use Qc\QcComments\Service\QcBackendModuleService;
-use Qc\QcComments\Service\StatisticsTabService;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
@@ -46,15 +42,18 @@ class QcCommentsBEController extends ActionController
     /**
      * @var ModuleTemplateFactory
      */
-    private ModuleTemplateFactory $moduleTemplateFactory;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
     /**
      * @var PageRenderer
      */
-    private PageRenderer $pageRenderer;
+    protected PageRenderer $pageRenderer;
     /**
      * @var LocalizationUtility
      */
-    private LocalizationUtility $localizationUtility;
+    protected LocalizationUtility $localizationUtility;
+
+
+
 
     public function __construct(
     ) {
@@ -106,168 +105,36 @@ class QcCommentsBEController extends ActionController
         $menu->addMenuItem(
             $menu->makeMenuItem()
                 ->setTitle('Statistics')
-                ->setHref($this->uriBuilder->uriFor('statistics'))
+                ->setHref($this->uriBuilder->uriFor('statistics', [],'Backend\StatisticsBE'))
                 ->setActive($currentAction === 'statistics')
         );
         $menu->addMenuItem(
             $menu->makeMenuItem()
                 ->setTitle('Comments')
-                ->setHref($this->uriBuilder->uriFor('comments'))
+                ->setHref($this->uriBuilder->uriFor('comments', [], 'Backend\CommentsBE'))
                 ->setActive($currentAction === 'comments')
         );
         $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
     }
 
     /**
-     * @param Filter|null $filter
-     */
-    public function statisticsAction(Filter $filter = null,  string $operation = ''): ResponseInterface
-    {
-        if($operation === 'reset-filters'){
-            $filter = new Filter();
-        }
-        $this->qcBeModuleService
-            = GeneralUtility::makeInstance(StatisticsTabService::class);
-        $this->qcBeModuleService->getBackendSession()->store('lastAction', 'statistics');
-
-        $this->qcBeModuleService->setRootId($this->root_id);
-        $this->qcBeModuleService->processFilter();
-        $this->addMainMenu('statistics');
-        if (!$this->root_id) {
-            $this->moduleTemplate->assign('noPageSelected', true);
-        }
-        else {
-            if ($filter) {
-                $this->qcBeModuleService->processFilter($filter);
-                $this->moduleTemplate->assign('filter', $filter);
-
-            }
-            $data = $this->qcBeModuleService->getPageStatistics();
-            if($data['tooMuchResults'] == true){
-                $message = $this->localizationUtility
-                    ->translate(
-                        self::QC_LANG_FILE . 'tooMuchPages',
-                        null,
-                        [$data['maxRecords']]
-                    );
-                $this->addFlashMessage($message, null, AbstractMessage::WARNING);
-            }
-            $statsByDepth = $this->qcBeModuleService->getStatisticsByDepth();
-            $this->moduleTemplate->assignMultiple([
-                'headers' => $data['headers'],
-                'rows' => $data['rows'],
-                'settings',
-                'currentPageId' => $data['currentPageId'],
-                'totalSection_headers' => $statsByDepth['headers'],
-                'totalSection_row' => $statsByDepth['row']
-            ]);
-        }
-        $filter = $this->qcBeModuleService->processFilter();
-
-        $this->moduleTemplate->assign('filter', $filter);
-
-        return $this->moduleTemplate->renderResponse('Statistics');
-    }
-
-
-
-    public function commentsAction(Filter $filter = null, string $operation = ''): ResponseInterface{
-
-        if($operation === 'reset-filters'){
-            $filter = new Filter();
-        }
-        $this->qcBeModuleService
-            = GeneralUtility::makeInstance(CommentsTabService::class);
-        $this->qcBeModuleService->getBackendSession()->store('lastAction', 'comments');
-
-        $this->addMainMenu('comments');
-
-        $this->qcBeModuleService->setRootId($this->root_id);
-        $this->qcBeModuleService->processFilter();
-
-        if (!$this->root_id) {
-            $this->moduleTemplate->assign('noPageSelected', true);
-        }
-        else {
-            if ($filter) {
-                $this->qcBeModuleService->processFilter($filter);
-                $this->moduleTemplate->assign('filter', $filter);
-            }
-            $data = $this->qcBeModuleService->getComments();
-            if($data['tooMuchResults'] === true){
-                $message = $this->localizationUtility
-                    ->translate(self::QC_LANG_FILE . 'tooMuchResults',
-                        null, (array)[$data['numberOfSubPages'], $data['maxRecords']]);
-                $this->addFlashMessage($message, null, AbstractMessage::WARNING);
-            }
-
-            $this
-                ->moduleTemplate
-                ->assignMultiple(
-                    [
-                        'commentHeaders' => $data['commentHeaders'],
-                        'stats' => $data['stats'],
-                        'comments' => $data['comments'],
-                        'pagesId' => $data['pagesId'],
-                        'currentPageId' => $data['currentPageId']
-                    ]
-                );
-        }
-        $filter = $this->qcBeModuleService->processFilter();
-        $this->moduleTemplate->assign('filter', $filter);
-        return $this->moduleTemplate->renderResponse('Comments');
-
-    }
-
-    /**
      * This function is used to handle requests, when no action selected
-     * @param Filter|null $filter
      */
-    public function handleRequestsAction(Filter $filter = null, string $operation = ''): ResponseInterface
+    public function handleRequestsAction(): ResponseInterface
     {
         $this->qcBeModuleService
             = GeneralUtility::makeInstance(CommentsTabService::class);
-
         $currentAction =  $this->request->getControllerActionName(); //v12\QcCommentsBEv12::handleRequests
         if ($currentAction === 'handleRequests') {
-            $lastAction = $this->qcBeModuleService->getBackendSession()->get('lastAction') ?? 'statistics';
-            return new ForwardResponse($lastAction);
+            $lastAction = $this->qcBeModuleService->getBackendSession()->get('lastAction');
+            $lastActionName = $lastAction['actionName'] ?? 'statistics';
+            $lastControllerName =  $lastAction['controllerName'] ?? 'Backend\StatisticsBE';
+            return ( new ForwardResponse($lastActionName))->withControllerName($lastControllerName);
         }
         else {
-            $this->qcBeModuleService->getBackendSession()->store('lastAction', $currentAction);
+            $this->qcBeModuleService->getBackendSession()->store('lastAction', ['controllerName' => $this->controllerName, 'actionName' => $currentAction]);
             return new ForwardResponse($currentAction);
         }
-    }
-
-    /**
-     * This function is used to export statistics records on a csv file
-     * @param ServerRequestInterface $request
-     * @return Response
-     */
-    public function exportStatisticsAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $this->qcBeModuleService
-            = GeneralUtility::makeInstance(StatisticsTabService::class);
-        $filter = $this->qcBeModuleService->getFilterFromRequest($request);
-        $filter->setDepth( intval($request->getQueryParams()['parameters']['depth']));
-        $currentPageId = intval($request->getQueryParams()['parameters']['currentPageId']);
-        return $this->qcBeModuleService->exportStatisticsData($filter, $currentPageId);
-    }
-
-    /**
-     * This function is used to export comments records on a csv file
-     * @param ServerRequestInterface $request
-     * @return Response
-     */
-    public function exportCommentsAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $this->qcBeModuleService
-            = GeneralUtility::makeInstance(CommentsTabService::class);
-        $filter = $this->qcBeModuleService->getFilterFromRequest($request);
-        $filter->setDepth( intval($request->getQueryParams()['parameters']['depth']));
-        $filter->setUseful($request->getQueryParams()['parameters']['useful']);
-        $currentPageId = intval($request->getQueryParams()['parameters']['currentPageId']);
-        return $this->qcBeModuleService->exportCommentsData($filter, $currentPageId);
     }
 
 }
