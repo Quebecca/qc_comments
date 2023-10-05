@@ -1,5 +1,5 @@
 <?php
-namespace Qc\QcComments\Controller\v12;
+namespace Qc\QcComments\Controller\Backend;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -18,7 +18,7 @@ use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
-class QcCommentsBEv12Controller extends ActionController
+class QcCommentsBEController extends ActionController
 {
     /**
      * @var ModuleData|null
@@ -252,6 +252,22 @@ class QcCommentsBEv12Controller extends ActionController
         $filter->setDepth( intval($request->getQueryParams()['parameters']['depth']));
         $currentPageId = intval($request->getQueryParams()['parameters']['currentPageId']);
         return $this->qcBeModuleService->exportStatisticsData($filter, $currentPageId);
+    }
+
+    /**
+     * This function is used to export comments records on a csv file
+     * @param ServerRequestInterface $request
+     * @return Response
+     */
+    public function exportCommentsAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $this->qcBeModuleService
+            = GeneralUtility::makeInstance(CommentsTabService::class);
+        $filter = $this->qcBeModuleService->getFilterFromRequest($request);
+        $filter->setDepth( intval($request->getQueryParams()['parameters']['depth']));
+        $filter->setUseful($request->getQueryParams()['parameters']['useful']);
+        $currentPageId = intval($request->getQueryParams()['parameters']['currentPageId']);
+        return $this->qcBeModuleService->exportCommentsData($filter, $currentPageId);
     }
 
 }

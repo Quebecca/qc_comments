@@ -1,5 +1,5 @@
 <?php
-use Qc\QcComments\Controller\v12\QcCommentsBEv12Controller;
+use Qc\QcComments\Controller\Backend\QcCommentsBEController;
 
 return [
     'web_qc_comments' => [
@@ -12,7 +12,7 @@ return [
         ],
         'extensionName' => 'QcComments',
         'controllerActions' => [
-            QcCommentsBEv12Controller::class => [
+            QcCommentsBEController::class => [
                 'handleRequests',
                 'resetFilter',
                 'comments',
