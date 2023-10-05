@@ -1,7 +1,6 @@
 <?php
 namespace Qc\QcComments\Controller\v12;
 
-use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Domain\Filter\Filter;
@@ -9,50 +8,53 @@ use Qc\QcComments\Service\CommentsTabService;
 use Qc\QcComments\Service\QcBackendModuleService;
 use Qc\QcComments\Service\StatisticsTabService;
 use TYPO3\CMS\Backend\Module\ModuleData;
-use TYPO3\CMS\Backend\Routing\UriBuilder as BackendUriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository;
-use TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository;
-use TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository;
-use TYPO3\CMS\Beuser\Domain\Repository\FileMountRepository;
-use TYPO3\CMS\Beuser\Service\UserInformationService;
 use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
-use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class QcCommentsBEv12Controller extends ActionController
 {
+    /**
+     * @var ModuleData|null
+     */
     protected ?ModuleData $moduleData = null;
+    /**
+     * @var ModuleTemplate
+     */
     protected ModuleTemplate $moduleTemplate;
+    /**
+     * @var int
+     */
     protected int $root_id;
+    /**
+     * @var string
+     */
     protected string $controllerName = '';
+    /**
+     * @var QcBackendModuleService
+     */
     protected QcBackendModuleService  $qcBeModuleService;
+
     const QC_LANG_FILE = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
-    protected string $extKey;
-    protected bool $actionForwarded = false;
+
     /**
-     * @var mixed|object|ModuleTemplateFactory
+     * @var ModuleTemplateFactory
      */
-    private mixed $moduleTemplateFactory;
+    private ModuleTemplateFactory $moduleTemplateFactory;
     /**
-     * @var mixed|object|PageRenderer
+     * @var PageRenderer
      */
-    private mixed $pageRenderer;
+    private PageRenderer $pageRenderer;
     /**
-     * @var mixed|object|LocalizationUtility
+     * @var LocalizationUtility
      */
-    private mixed $localizationUtility;
+    private LocalizationUtility $localizationUtility;
 
     public function __construct(
     ) {
@@ -73,7 +75,6 @@ class QcCommentsBEv12Controller extends ActionController
         $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $this->moduleTemplate->setTitle('QcComments');
         $this->moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
-        $this->extKey = $this->request->getControllerExtensionKey();
         $this->controllerName = $this->request->getControllerName();
         $this->root_id = GeneralUtility::_GP('id') ?? 0;
     }
@@ -122,8 +123,6 @@ class QcCommentsBEv12Controller extends ActionController
      */
     public function statisticsAction(Filter $filter = null,  string $operation = ''): ResponseInterface
     {
-       // debug($this->request->getArguments());
-
         if($operation === 'reset-filters'){
             $filter = new Filter();
         }
@@ -174,7 +173,6 @@ class QcCommentsBEv12Controller extends ActionController
 
     public function commentsAction(Filter $filter = null, string $operation = ''): ResponseInterface{
 
-        // return new ForwardResponse('statistics');
         if($operation === 'reset-filters'){
             $filter = new Filter();
         }
@@ -207,8 +205,6 @@ class QcCommentsBEv12Controller extends ActionController
                 ->moduleTemplate
                 ->assignMultiple(
                     [
-                        /*'csvButton' => $csvButton,
-                        'resetButton' => $resetButton,*/
                         'commentHeaders' => $data['commentHeaders'],
                         'stats' => $data['stats'],
                         'comments' => $data['comments'],
