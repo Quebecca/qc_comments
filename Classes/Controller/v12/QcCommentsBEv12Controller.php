@@ -234,7 +234,7 @@ class QcCommentsBEv12Controller extends ActionController
 
         $currentAction =  $this->request->getControllerActionName(); //v12\QcCommentsBEv12::handleRequests
         if ($currentAction === 'handleRequests') {
-            $lastAction = $this->qcBeModuleService->getBackendSession()->get('lastAction');
+            $lastAction = $this->qcBeModuleService->getBackendSession()->get('lastAction') ?? 'statistics';
             return new ForwardResponse($lastAction);
         }
         else {
