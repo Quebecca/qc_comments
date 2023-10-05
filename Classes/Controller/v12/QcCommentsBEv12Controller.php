@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -39,6 +40,7 @@ class QcCommentsBEv12Controller extends ActionController
     protected QcBackendModuleService  $qcBeModuleService;
     const QC_LANG_FILE = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
     protected string $extKey;
+    protected bool $actionForwarded = false;
     /**
      * @var mixed|object|ModuleTemplateFactory
      */
@@ -120,11 +122,15 @@ class QcCommentsBEv12Controller extends ActionController
      */
     public function statisticsAction(Filter $filter = null,  string $operation = ''): ResponseInterface
     {
+       // debug($this->request->getArguments());
+
         if($operation === 'reset-filters'){
             $filter = new Filter();
         }
         $this->qcBeModuleService
             = GeneralUtility::makeInstance(StatisticsTabService::class);
+        $this->qcBeModuleService->getBackendSession()->store('lastAction', 'statistics');
+
         $this->qcBeModuleService->setRootId($this->root_id);
         $this->qcBeModuleService->processFilter();
         $this->addMainMenu('statistics');
@@ -165,19 +171,19 @@ class QcCommentsBEv12Controller extends ActionController
     }
 
 
-    /**
-     * This function is used to get the list of comments in BE module
-     * @param Filter|null $filter
-     * @throws Exception
-     */
-    public function commentsAction(Filter $filter = null, string $operation = ''): ResponseInterface
-    {
+
+    public function commentsAction(Filter $filter = null, string $operation = ''): ResponseInterface{
+
+        // return new ForwardResponse('statistics');
         if($operation === 'reset-filters'){
             $filter = new Filter();
         }
-        $this->addMainMenu('comments');
         $this->qcBeModuleService
             = GeneralUtility::makeInstance(CommentsTabService::class);
+        $this->qcBeModuleService->getBackendSession()->store('lastAction', 'comments');
+
+        $this->addMainMenu('comments');
+
         $this->qcBeModuleService->setRootId($this->root_id);
         $this->qcBeModuleService->processFilter();
 
@@ -218,6 +224,26 @@ class QcCommentsBEv12Controller extends ActionController
     }
 
     /**
+     * This function is used to handle requests, when no action selected
+     * @param Filter|null $filter
+     */
+    public function handleRequestsAction(Filter $filter = null, string $operation = ''): ResponseInterface
+    {
+        $this->qcBeModuleService
+            = GeneralUtility::makeInstance(CommentsTabService::class);
+
+        $currentAction =  $this->request->getControllerActionName(); //v12\QcCommentsBEv12::handleRequests
+        if ($currentAction === 'handleRequests') {
+            $lastAction = $this->qcBeModuleService->getBackendSession()->get('lastAction');
+            return new ForwardResponse($lastAction);
+        }
+        else {
+            $this->qcBeModuleService->getBackendSession()->store('lastAction', $currentAction);
+            return new ForwardResponse($currentAction);
+        }
+    }
+
+    /**
      * This function is used to export statistics records on a csv file
      * @param ServerRequestInterface $request
      * @return Response
@@ -231,8 +257,5 @@ class QcCommentsBEv12Controller extends ActionController
         $currentPageId = intval($request->getQueryParams()['parameters']['currentPageId']);
         return $this->qcBeModuleService->exportStatisticsData($filter, $currentPageId);
     }
-
-
-
 
 }

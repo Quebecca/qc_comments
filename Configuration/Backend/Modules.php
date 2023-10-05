@@ -15,7 +15,10 @@ return [
         'extensionName' => 'QcComments',
         'controllerActions' => [
             QcCommentsBEv12Controller::class => [
-                'comments','statistics','resetFilter'
+                'handleRequests',
+                'resetFilter',
+                'comments',
+                'statistics'
             ]
         ]
     ],
