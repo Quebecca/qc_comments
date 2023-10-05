@@ -13,7 +13,7 @@ use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
-abstract class QcBackendModuleService
+class QcBackendModuleService
 {
     /**
      * @var LocalizationUtility
@@ -222,7 +222,6 @@ $request->getQueryParams()['parameters']['includeEmptyPages'] === 'true'
         return $rows;
     }
 
-    abstract protected function getHeaders(): array;
 
     /**
      * @return BackendUserAuthentication

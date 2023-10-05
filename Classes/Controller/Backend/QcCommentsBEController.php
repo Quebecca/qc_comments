@@ -2,7 +2,6 @@
 namespace Qc\QcComments\Controller\Backend;
 
 use Psr\Http\Message\ResponseInterface;
-use Qc\QcComments\Service\CommentsTabService;
 use Qc\QcComments\Service\QcBackendModuleService;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -119,13 +118,14 @@ class QcCommentsBEController extends ActionController
     public function handleRequestsAction(): ResponseInterface
     {
         $this->qcBeModuleService
-            = GeneralUtility::makeInstance(CommentsTabService::class);
+            = GeneralUtility::makeInstance(QcBackendModuleService::class);
         $currentAction =  $this->request->getControllerActionName();
         if ($currentAction === 'handleRequests') {
             $lastAction = $this->qcBeModuleService->getBackendSession()->get('lastAction');
             $lastActionName = $lastAction['actionName'] ?? 'statistics';
             $lastControllerName =  $lastAction['controllerName'] ?? 'Backend\StatisticsBE';
-            return ( new ForwardResponse($lastActionName))->withControllerName($lastControllerName);
+            return (new ForwardResponse($lastActionName))
+                    ->withControllerName($lastControllerName);
         }
         else {
             $this->qcBeModuleService->getBackendSession()->store(
