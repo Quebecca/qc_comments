@@ -8,6 +8,7 @@ return [
     'web_qc_comments' => [
         'parent' => 'web',
         'position' => ['after' => 'info'],
+        'access' => 'user',
         'path' => '/module/web/qc_comments',
         'icon' => 'EXT:qc_comments/Resources/Public/Icons/qc_comments.svg',
         'labels' => [
