@@ -1,9 +1,13 @@
 ### FE : L’internaute aura les options suivantes :
-![FE Trois options](Documentation/Images/etatBase.png)
+
+![FE Trois options](/Images/etatBase.png)
+
 1. **Oui**
    En cliquant sur « Oui », le formulaire s’envoie et le message « Votre avis a été envoyé. » s’affiche.
-   ![FE Envoi de fomulaire](Documentation/Images/OuiSelectionne.png)
-   Après l’envoi de formulaire :
+
+![FE Envoi de fomulaire](/Images/OuiSelectionne.png)
+
+    Après l’envoi de formulaire :
     - Un message « Votre message a été bien envoyé, Merci de nous aider à améliorer Québec.ca. » sera affiché
     - Un champ texte (Obligatoire) : « Voulez-vous ajouter un commentaire »
     - Un Bouton « Soumettre » pour envoyer le commentaire
@@ -17,13 +21,16 @@
     - Un champ texte (Obligatoire) : Veuillez ajouter des précisions
 
    Après l’envoi de formulaire, le message « Votre avis a été envoyé. Merci de nous aider à améliorer Québec.ca » sera affiché.
-   ![FE Envoi de fomulaire](Documentation/Images/NonSelectionne.png)
+
+    ![FE Envoi de fomulaire](/Images/NonSelectionne.png)
 
 3. **Signaler un problème**
    Si le client clique sur « Signaler un problème », le formulaire affiche deux champs :
     - Quel est le problème : Un champ obligatoire « Radio »
     - Précisez la nature du problème : Un champ texte obligatoire
-      ![FE Envoi de fomulaire](Documentation/Images/signalerUnProb.png)
+
+      ![FE Envoi de fomulaire](/Images/signalerUnProb.png)
+
 
    Après l’envoi de formulaire, le message « Votre avis a été envoyé. Merci de nous aider à améliorer Québec.ca » sera affiché.
 
