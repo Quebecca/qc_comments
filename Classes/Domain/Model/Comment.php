@@ -18,9 +18,9 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 class Comment extends AbstractEntity
 {
     /**
-     * @var int
+     * @var string
      */
-    protected int $useful = 0;
+    protected string $useful = '0';
 
     /**
      * @var string
@@ -65,15 +65,15 @@ class Comment extends AbstractEntity
     /**
      * @return int
      */
-    public function getUseful(): int
+    public function getUseful(): string
     {
         return $this->useful;
     }
 
     /**
-     * @param int $useful
+     * @param string $useful
      */
-    public function setUseful(int $useful): void
+    public function setUseful(string $useful): void
     {
         $this->useful = $useful;
     }

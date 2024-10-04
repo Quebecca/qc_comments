@@ -122,8 +122,9 @@ class CommentsController extends ActionController
                 case 'NA' : $commentType = 'reporting_problem';break;
             }
             $selectedReasonOption = $this->getSelectedReasonOption($commentType,$comment->getReasonCode());
-            $comment->setReasonShortLabel($selectedReasonOption['short_label']);
-            $comment->setReasonLongLabel($selectedReasonOption['long_label']);
+
+            $comment->setReasonShortLabel($selectedReasonOption['short_label'] ?? '');
+            $comment->setReasonLongLabel($selectedReasonOption['long_label'] ?? '');
             $pageUid = $comment->getUidOrig();
             $comment->setUidPermsGroup(
                 BackendUtility::getRecord(

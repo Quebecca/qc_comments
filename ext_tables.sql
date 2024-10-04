@@ -5,7 +5,7 @@ CREATE TABLE tx_qccomments_domain_model_comment (
        pid int(11) DEFAULT '0' NOT NULL,
 
        date_hour varchar(20) DEFAULT '' NOT NULL,
-       useful tinyint(1) DEFAULT '0' NOT NULL,
+       useful varchar(4) DEFAULT '0' NOT NULL,
        comment text,
        uid_orig int(11) UNSIGNED DEFAULT '0' NOT NULL,
        url_orig text,
