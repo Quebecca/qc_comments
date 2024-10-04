@@ -142,4 +142,8 @@ class TyposcriptConfiguration
         return $this->settings['comments']['anonymizeComment']['pattern'] ?? '';
     }
 
+    public function getReasonOptions() : array {
+        return $this->settings['options'] ?? [];
+    }
+
 }

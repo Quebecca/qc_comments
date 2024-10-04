@@ -79,13 +79,15 @@ class CommentsController extends ActionController
             'sitekey' => $this->typoscriptConfiguration->getRecaptchaSitekey(),
             'secret' => $this->typoscriptConfiguration->getRecaptchaSecretKey()
         ];
+        $reasonOptions = $this->typoscriptConfiguration->getReasonOptions();
         $this->view->assignMultiple([
             'submitted' => $this->request->getArguments()['submitted'] ?? '',
             'validationResults' => $this->request->getArguments()['validationResults'] ?? '',
             'comment' => new Comment(),
             'config' => $commentLengthconfig,
             'recaptchaConfig' => $recaptchaConfig,
-            'isSpamShieldEnabled' => $this->isSpamShieldEnabled
+            'isSpamShieldEnabled' => $this->isSpamShieldEnabled,
+            'reasonOptions' => $reasonOptions
         ]);
         return $this->htmlResponse();
     }
@@ -113,6 +115,15 @@ class CommentsController extends ActionController
             }
         }
         if ($comment) {
+            $commentType = '';
+            switch ($comment->getUseful()){
+                case '0' : $commentType = 'negative_reasons';break;
+                case '1' : $commentType = 'positif_reasons';break;
+                case 'NA' : $commentType = 'reporting_problem';break;
+            }
+            $selectedReasonOption = $this->getSelectedReasonOption($commentType,$comment->getReasonCode());
+            $comment->setReasonShortLabel($selectedReasonOption['short_label']);
+            $comment->setReasonLongLabel($selectedReasonOption['long_label']);
             $pageUid = $comment->getUidOrig();
             $comment->setUidPermsGroup(
                 BackendUtility::getRecord(
@@ -140,6 +151,21 @@ class CommentsController extends ActionController
                 ->withArguments(['submitted' => 'true']);
     }
 
+    /**
+     * This function returns the associated selected option
+     * @param $reasonType //Negative or Problème reporting
+     * @param $reason_code // Option code
+     * @return array
+     */
+    public function getSelectedReasonOption($reasonType, $reason_code) : array {
+        $options = $this->typoscriptConfiguration->getReasonOptions()[$reasonType];
+        foreach ($options as $item) {
+            if ($item['code'] === $reason_code) {
+                return $item;
+            }
+        }
+        return [];
+    }
     /**
      * This function is used to anonymat sensible information in a comment
      * @param $comment

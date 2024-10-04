@@ -8,6 +8,10 @@ return [
         'date_hour' => 'dateHour',
         'url_orig' => 'urlOrig',
         'uid_orig' => 'uidOrig',
-        'uid_perms_group' => 'uidPermsGroup'
+        'uid_perms_group' => 'uidPermsGroup',
+        'reason_code' => 'reasonCode',
+        'reason_long_label' => 'reasonLongLabel',
+        'reason_short_label' => 'reasonShortLabel',
+        'reason' => 'reason'
     ],
 ];

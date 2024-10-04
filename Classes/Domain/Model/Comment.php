@@ -48,6 +48,21 @@ class Comment extends AbstractEntity
     protected string $dateHour = '';
 
     /**
+     * @var string
+     */
+    protected string $reasonCode = '';
+
+    /**
+     * @var string
+     */
+    protected string $reasonLongLabel = '';
+
+    /**
+     * @var string
+     */
+    protected string $reasonShortLabel = '';
+
+    /**
      * @return int
      */
     public function getUseful(): int
@@ -141,5 +156,52 @@ class Comment extends AbstractEntity
     public function setDateHour(string $dateHour): void
     {
         $this->dateHour = $dateHour;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReasonCode(): string
+    {
+        return $this->reasonCode;
+    }
+
+    /**
+     * @param string $reasonCode
+     */
+    public function setReasonCode(string $reasonCode): void
+    {
+        $this->reasonCode = $reasonCode;
+    }
+    /**
+     * @param string $reasonShorLabel
+     */
+    public function setReasonShortLabel(string $reasonShortLabel): void
+    {
+        $this->reasonShortLabel = $reasonShortLabel;
+    }
+
+    /**
+     * @param string $reasonLongLabel
+     */
+    public function setReasonLongLabel(string $reasonLongLabel): void
+    {
+        $this->reasonLongLabel = $reasonLongLabel;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReasonLongLabel(): string
+    {
+        return $this->reasonLongLabel;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReasonShortLabel(): string
+    {
+        return $this->reasonShortLabel;
     }
 }

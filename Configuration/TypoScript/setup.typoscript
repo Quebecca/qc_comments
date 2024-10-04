@@ -16,6 +16,42 @@ plugin.tx_qccomments {
             }
 
         }
+        options {
+          negative_reasons {
+            1 {
+              code = Negatif Code1
+              short_label = Negatif short code 1
+              long_label = Negatif long code 1
+            }
+            2 {
+              code = Negatif Code2
+              short_label = Negatif short code 2
+              long_label = Negatif long code 2
+            }
+            3 {
+              code = Negatif Code3
+              short_label = Negatif short code 3
+              long_label = Negatif long code 3
+            }
+          }
+          reporting_problem {
+            1 {
+              code = Problem Code1
+              short_label = Problem short code 1
+              long_label = Problem long code 1
+            }
+            2 {
+              code = Problem Code2
+              short_label = Problem short code 2
+              long_label = Problem long code 2
+            }
+            3 {
+              code = Problem Code3
+              short_label = Problem short code 3
+              long_label = Problem long code 3
+            }
+          }
+        }
 
         // Activate recaptcha
         recaptcha {

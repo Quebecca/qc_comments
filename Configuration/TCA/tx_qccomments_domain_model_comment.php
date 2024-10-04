@@ -129,6 +129,27 @@ return [
             'config' => [
                 'type' => 'input',
             ],
+        ],
+        'reason_code' => [
+            'exclude' => true,
+            'label' => 'reason',
+            'config' => [
+                'type' => 'input',
+            ],
+        ],
+        'reason_long_label' => [
+            'exclude' => true,
+            'label' => 'reason_long_label',
+            'config' => [
+                'type' => 'input',
+            ],
+        ],
+        'reason_short_label' => [
+            'exclude' => true,
+            'label' => 'reason_short_label',
+            'config' => [
+                'type' => 'input',
+            ],
         ]
 
     ],
