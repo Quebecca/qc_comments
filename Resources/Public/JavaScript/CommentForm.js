@@ -67,9 +67,10 @@ $( document ).ready(function() {
                 event.preventDefault();
             }
 
+
         })
 
-        function commentValidation() {
+      function commentValidation() {
             let textareaElement = $('#comment-textarea');
             let commentLength = textareaElement.val().length;
             let validComment = ( minCharacters <= commentLength && commentLength <= maxCharacters ) || commentLength === 0;

@@ -20,6 +20,11 @@ class Comment extends AbstractEntity
     /**
      * @var string
      */
+    protected string $submittedFormUid = '0';
+
+    /**
+     * @var string
+     */
     protected string $useful = '0';
 
     /**
@@ -203,5 +208,21 @@ class Comment extends AbstractEntity
     public function getReasonShortLabel(): string
     {
         return $this->reasonShortLabel;
+    }
+
+    /**
+     * @param string $submittedFormUid
+     */
+    public function setSubmittedFormUid(string $submittedFormUid): void
+    {
+        $this->submittedFormUid = $submittedFormUid;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubmittedFormUid(): string
+    {
+        return $this->submittedFormUid;
     }
 }

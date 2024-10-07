@@ -150,7 +150,15 @@ return [
             'config' => [
                 'type' => 'input',
             ],
+        ],
+        'submitted_form_uid' => [
+            'exclude' => true,
+            'label' => 'submitted_form_uid',
+            'config' => [
+                'type' => 'input',
+            ],
         ]
+
 
     ],
 ];

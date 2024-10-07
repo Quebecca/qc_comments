@@ -16,6 +16,8 @@ CREATE TABLE tx_qccomments_domain_model_comment (
 			 reason_code varchar(100),
 			 reason_long_label text,
 			 reason_short_label text,
+			 submitted_form_uid text,
+
        tstamp int(11) unsigned DEFAULT '0' NOT NULL,
        crdate int(11) unsigned DEFAULT '0' NOT NULL,
        hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,

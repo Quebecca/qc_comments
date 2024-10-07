@@ -79,7 +79,7 @@ class SpamShieldValidator extends ExtbaseAbstractValidator
    /* public function __construct(array $options = [])
     {
         parent::__construct($options);
-      
+
 
     }*/
     /**
@@ -93,7 +93,7 @@ class SpamShieldValidator extends ExtbaseAbstractValidator
         $this->settings = $typoScriptConfigurationService->getTypoScriptSettings();
         $this->typoscriptConfiguration
             = GeneralUtility::makeInstance(TyposcriptConfiguration::class);
-        
+
        if ($this->typoscriptConfiguration->isSpamShieldEnabled()) {
            $this->runAllSpamMethods($comment);
            $this->calculateSpamFactor();
@@ -170,7 +170,8 @@ class SpamShieldValidator extends ExtbaseAbstractValidator
         if ($readableOutput) {
             $calculatedSpamFactor = $this->formatSpamFactor($calculatedSpamFactor);
         }
-        return $calculatedSpamFactor;
+        //return $calculatedSpamFactor;
+        return 0;
     }
 
     /**

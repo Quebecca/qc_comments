@@ -82,6 +82,9 @@ class CommentsController extends ActionController
         $reasonOptions = $this->typoscriptConfiguration->getReasonOptions();
         $this->view->assignMultiple([
             'submitted' => $this->request->getArguments()['submitted'] ?? '',
+            'submittedFormUid' => strval($this->request->getArguments()['formUid']) ?? '',
+            'submittedFormType' => $this->request->getArguments()['useful'] ?? null,
+            'formUpdated' => $this->request->getArguments()['formUpdated'] ?? null,
             'validationResults' => $this->request->getArguments()['validationResults'] ?? '',
             'comment' => new Comment(),
             'config' => $commentLengthconfig,
@@ -145,8 +148,28 @@ class CommentsController extends ActionController
                     $this->typoscriptConfiguration->getCommentsMaxCharacters()
                 )
             );
+            $formUpdated = false;
+
             $comment->setDateHour(date('Y-m-d H:i:s'));
-            $this->commentsRepository->add($comment);
+
+            if($comment->getSubmittedFormUid() != '0'){
+                 $exisitingComment= $this->commentsRepository->findByUid(intval($comment->getSubmittedFormUid()));
+                $exisitingComment->setComment($comment->getComment());
+                $this->commentsRepository->update($exisitingComment);
+                $formUpdated = true;
+            }else{
+                $this->commentsRepository->add($comment);
+                $this->commentsRepository->persistenceManager->persistAll();
+            }
+            $submittedFormUid = strval($comment->getUid());
+            return (new ForwardResponse('show'))
+                ->withArguments([
+                    'submitted' => 'true',
+                    'formUid' => $submittedFormUid,
+                    'useful' => $comment->getUseful(),
+                    'formUpdated' => $formUpdated
+                ]);
+
         }
         return (new ForwardResponse('show'))
                 ->withArguments(['submitted' => 'true']);
