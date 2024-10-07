@@ -46,7 +46,7 @@
         content: "";
         display: inline-block;
         width: 24px;
-        height: 20px;
+        height: 24px;
         background-image: url("../Icons/submittedSuccess.svg") ;
         background-size: contain;
         background-repeat: no-repeat;
