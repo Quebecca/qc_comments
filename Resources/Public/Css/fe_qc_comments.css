@@ -18,7 +18,7 @@
 .error-textarea {
     border : 0.3rem solid #d6330bE6 !important;
 }
-#error-message-too-short {
+#error-message-too-short, .options-error-message {
     font-size: 0.875rem;
     font-family : 'Open Sans',sans-serif;
     line-height: 1.14;
