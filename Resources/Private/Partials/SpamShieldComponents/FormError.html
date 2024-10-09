@@ -1,16 +1,9 @@
 {namespace v=FluidTYPO3\Vhs\ViewHelpers}
-
 <f:if condition="{validationResults.flattenedErrors -> f:count()} > 0">
-    <div>
-        <p class="spam-details">
-            <f:translate key="spam-message"/>
-        </p>
-        <ul class="errors">
-            <f:for each="{validationResults.flattenedErrors}" as="errors">
-                <f:for each="{errors}" as="error">
-                    <li><span class="spam-details"><f:translate key="spam_detected"/> <f:translate key="spam_details" arguments="{arg: error.code}"/></span></li>
-                </f:for>
-            </f:for>
+    <div class="spam-error-message">
+        <ul>
+            <li class="message-icon"></li>
+            <li>Impossible de prouver que vous êtes un humain. Votre avis n’a pas pu être envoyé.</li>
         </ul>
     </div>
 </f:if>

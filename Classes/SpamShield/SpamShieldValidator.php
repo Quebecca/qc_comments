@@ -100,7 +100,7 @@ class SpamShieldValidator extends ExtbaseAbstractValidator
            if(!empty($this->messages)){
                $this->addError(
                    'spam_details',
-                   $this->getCalculatedSpamFactor(true)
+                   (int)$this->getCalculatedSpamFactor(true)
                );
            }
         }
@@ -170,8 +170,8 @@ class SpamShieldValidator extends ExtbaseAbstractValidator
         if ($readableOutput) {
             $calculatedSpamFactor = $this->formatSpamFactor($calculatedSpamFactor);
         }
-        //return $calculatedSpamFactor;
-        return 0;
+        return intval($this->calculatedSpamFactor);
+
     }
 
     /**

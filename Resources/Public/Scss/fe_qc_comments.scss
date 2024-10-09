@@ -52,3 +52,43 @@
         }
     }
 }
+.submitted-form-message {
+    border : none;*
+.message-icon {
+    margin-bottom : 0;
+    &:after {
+        content: '';
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        background-image: url("../Icons/submittedSuccess.svg") ;
+        background-size: contain;
+        background-repeat: no-repeat;
+        vertical-align: middle;
+        margin-right : 1rem;
+    }
+}
+}
+
+.spam-error-message li, .submitted-form-message li {
+    display : inline;
+    list-style: none;
+}
+.spam-error-message {
+    border : none;*
+.message-icon {
+    margin-bottom : 0;
+    &:after {
+        content: '';
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        background-image: url("../Icons/spamMessage.svg") ;
+        background-size: contain;
+        background-repeat: no-repeat;
+        vertical-align: middle;
+        margin-right : 1rem;
+    }
+}
+}
+
