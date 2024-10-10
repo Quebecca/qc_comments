@@ -36,11 +36,15 @@
 .d-none {
     display : none !important;
 }
+.spam-error-message li, .submitted-form-message li {
+    display : inline;
+    list-style: none;
+}
 .submitted-form-message {
-    border : none;*
-    .message-icon {
+    border : none;
+    li {
         margin-bottom : 0;
-        &:after {
+        &:before {
             content: '';
             display: inline-block;
             width: 24px;
@@ -54,15 +58,11 @@
     }
 }
 
-.spam-error-message li, .submitted-form-message li {
-    display : inline;
-    list-style: none;
-}
 .spam-error-message {
-    border : none;*
-    .message-icon {
+    border : none;
+    li {
         margin-bottom : 0;
-        &:after {
+        &:before {
             content: '';
             display: inline-block;
             width: 24px;
