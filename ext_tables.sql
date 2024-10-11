@@ -17,6 +17,8 @@ CREATE TABLE tx_qccomments_domain_model_comment (
 			 reason_long_label text,
 			 reason_short_label text,
 			 submitted_form_uid text,
+			 user_uid_fixing_problem int,
+			 fixing_date varchar(20) DEFAULT '' NOT NULL,
 
        tstamp int(11) unsigned DEFAULT '0' NOT NULL,
        crdate int(11) unsigned DEFAULT '0' NOT NULL,

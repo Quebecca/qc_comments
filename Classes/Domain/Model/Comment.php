@@ -68,6 +68,16 @@ class Comment extends AbstractEntity
     protected string $reasonShortLabel = '';
 
     /**
+     * @var int
+     */
+    protected int $userUidFixingProblem = 0;
+
+    /**
+     * @var string
+     */
+    protected string $fixingDate = '';
+
+    /**
      * @return int
      */
     public function getUseful(): string
@@ -224,5 +234,37 @@ class Comment extends AbstractEntity
     public function getSubmittedFormUid(): string
     {
         return $this->submittedFormUid;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUserUidFixingProblem(): int
+    {
+        return $this->userUidFixingProblem;
+    }
+
+    /**
+     * @param int $userUidFixingProblem
+     */
+    public function setUserUidFixingProblem(int $userUidFixingProblem): void
+    {
+        $this->userUidFixingProblem = $userUidFixingProblem;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFixingDate(): string
+    {
+        return $this->fixingDate;
+    }
+
+    /**
+     * @param string $fixingDate
+     */
+    public function setFixingDate(string $fixingDate): void
+    {
+        $this->fixingDate = $fixingDate;
     }
 }

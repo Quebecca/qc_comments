@@ -3,6 +3,7 @@
 use Qc\QcComments\Controller\Backend\CommentsBEController;
 use Qc\QcComments\Controller\Backend\QcCommentsBEController;
 use Qc\QcComments\Controller\Backend\StatisticsBEController;
+use Qc\QcComments\Controller\Backend\TechnicalProblemsBEController;
 
 return [
     'web_qc_comments' => [
@@ -25,6 +26,10 @@ return [
             ],
             CommentsBEController::class => [
                 'comments'
+            ],
+            TechnicalProblemsBEController::class => [
+                'handleRequests',
+                'technicalProblems'
             ]
         ]
     ],

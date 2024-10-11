@@ -17,6 +17,7 @@ use Qc\QcComments\Domain\Filter\Filter;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Repository;
@@ -94,13 +95,12 @@ class CommentRepository extends Repository
         if($usefulCond === true){
 
             $usefulCond = $this->filter->getUseful() != ''
-                ?  'useful = ' . $this->filter->getUseful()
+               ?  "useful like '" . $this->filter->getUseful()."'"
                 : '';
             if ($usefulCond != '') {
-                $constrains['whereClause'] .= "AND $usefulCond";
+                $constrains['whereClause'] .= " AND $usefulCond";
             }
         }
-
         return $constrains;
     }
 
@@ -124,16 +124,27 @@ class CommentRepository extends Repository
             $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
         }
         $constraints = $this->getConstraints($pages_ids);
+        $queryBuilder->getRestrictions()->removeByType(DeletedRestriction::class);
         $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
-
         $data= $queryBuilder
-                ->select('p.uid', 'p.title', 'date_hour', 'comment', 'useful')
+                ->select(
+                    'p.uid', $this->tableName.'.uid as recordUid',
+                    'beUsers.realName', 'beUsers.email',  'p.title', 'date_hour', 'comment', 'useful', 'fixing_date',
+                    'reason_short_label', $this->tableName.".deleted"
+
+                )
                 ->from($this->tableName)
                 ->$joinMethod(
                     $this->tableName,
                     'pages',
                     'p',
                     $constraints['joinCond']
+                )
+                ->leftJoin(
+                    $this->tableName,
+                    'be_users',
+                    'beUsers',
+                    'beUsers.uid = user_uid_fixing_problem'
                 )
                 ->where(
                     $constraints['whereClause']
@@ -146,7 +157,6 @@ class CommentRepository extends Repository
                 ->orderBy('date_hour', $orderType)
                 ->execute()
                 ->fetchAllAssociative();
-
         $rows = [];
         foreach ($data as $item) {
             $rows[$item['uid']][] = $item;
@@ -180,6 +190,22 @@ class CommentRepository extends Repository
             )
             ->execute()
             ->fetchAssociative()['COUNT(*)'];
+    }
+
+
+    /**
+     * @param $uid
+     * @return void
+     */
+    public function deleteComment($uid) : void {
+        $queryBuilder = $this->generateQueryBuilder();
+        $queryBuilder
+            ->update($this->tableName)
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid))
+            )
+            ->set('deleted', 1)
+            ->executeStatement();
     }
 
     /**

@@ -12,6 +12,8 @@ return [
         'reason_code' => 'reasonCode',
         'reason_long_label' => 'reasonLongLabel',
         'reason_short_label' => 'reasonShortLabel',
-        'submitted_form_uid' => 'submittedFormUid'
+        'submitted_form_uid' => 'submittedFormUid',
+        'user_uid_fixing_problem' => 'userUidFixingProblem',
+        'fixing_date' => 'fixingDate'
     ],
 ];

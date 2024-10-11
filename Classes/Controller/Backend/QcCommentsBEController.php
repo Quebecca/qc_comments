@@ -6,11 +6,13 @@ use Qc\QcComments\Service\QcBackendModuleService;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use Psr\Http\Message\ServerRequestInterface;
 
 class QcCommentsBEController extends ActionController
 {
@@ -108,6 +110,12 @@ class QcCommentsBEController extends ActionController
                 ->setTitle('Comments')
                 ->setHref($this->uriBuilder->uriFor('comments', [], 'Backend\CommentsBE'))
                 ->setActive($currentAction === 'comments')
+        );
+        $menu->addMenuItem(
+            $menu->makeMenuItem()
+                ->setTitle('TechnicalProblemsBEController')
+                ->setHref($this->uriBuilder->uriFor('technicalProblems', [], 'Backend\TechnicalProblemsBE'))
+                ->setActive($currentAction === 'technicalProblems')
         );
         $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
     }

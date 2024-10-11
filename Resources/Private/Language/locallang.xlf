@@ -117,7 +117,18 @@
 			<trans-unit id="comments.h.comment">
 				<source>Comment</source>
 			</trans-unit>
-
+			<trans-unit id="comments.h.type_problem">
+				<source>Type de problème</source>
+			</trans-unit>
+			<trans-unit id="comments.h.be_user_name">
+				<source>User name</source>
+			</trans-unit>
+			<trans-unit id="comments.h.fix_date">
+				<source>Fix date</source>
+			</trans-unit>
+			<trans-unit id="comments.h.description">
+				<source>Description</source>
+			</trans-unit>
 			<trans-unit id="positive">
 				<source>Yes</source>
 			</trans-unit>

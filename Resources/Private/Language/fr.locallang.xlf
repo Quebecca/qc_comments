@@ -124,6 +124,18 @@
             <trans-unit id="comments.h.comment">
                 <target>Commentaire</target>
             </trans-unit>
+			<trans-unit id="comments.h.be_user_name">
+				<target>Utilisateur</target>
+			</trans-unit>
+			<trans-unit id="comments.h.fix_date">
+				<target>Date de traitement</target>
+			</trans-unit>
+		   <trans-unit id="comments.h.description">
+				<target>Description</target>
+			</trans-unit>
+			<trans-unit id="comments.h.type_problem">
+				<target>Problem type</target>
+			</trans-unit>
             <trans-unit id="positive">
                 <target>Oui</target>
             </trans-unit>

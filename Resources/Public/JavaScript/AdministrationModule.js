@@ -2,6 +2,7 @@
  * Module: TYPO3/CMS/QcComments/AdministrationModule
  */
 var exportFunction;
+var technicalProblemFixed;
 define(['jquery'], function($) {
     'use strict';
     $(document).ready(function (){
@@ -31,7 +32,7 @@ define(['jquery'], function($) {
                 'startDate' : $('#startDate').val(),
                 'endDate' : $('#endDate').val(),
             }
-            let url = actionName === 'comments' ? TYPO3.settings.ajaxUrls.export_comments : TYPO3.settings.ajaxUrls.export_statistics
+            let url = actionName === 'comments' ? TYPO3.settings.ajaxUrls.export_comments : TYPO3.settings.ajaxUrls.export_statistics;
             require(['TYPO3/CMS/Core/Ajax/AjaxRequest'], function (AjaxRequest) {
                 new AjaxRequest(url)
                     .withQueryArguments({parameters: parameters})
@@ -48,5 +49,25 @@ define(['jquery'], function($) {
                     });
             })
         }
+         $('.technicalProblemFixed').on('click', function(){
+           let technicalProblemUid = $(this).attr('technical-probelm-uid');
+           let url = TYPO3.settings.ajaxUrls.problem_fixed;
+           require(['TYPO3/CMS/Core/Ajax/AjaxRequest'], function (AjaxRequest) {
+             new AjaxRequest(url)
+               .withQueryArguments({technicalProblemUid: technicalProblemUid})
+               .get()
+               .then(async function (response) {
+                 response.resolve().then(function (result){
+                   if(result != null){
+                     alert('success')
+                     var link=document.getElementById('problem-'+technicalProblemUid);
+                     link.href=response.response.url
+                     console.log(link.href)
+                     link.click();
+                   }
+                 });
+               });
+           })
+         })
     })
 })

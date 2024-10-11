@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Qc\QcComments\Controller\Backend\CommentsBEController;
 use Qc\QcComments\Controller\Backend\StatisticsBEController;
+use Qc\QcComments\Controller\Backend\TechnicalProblemsBEController;
 
 return [
     'export_comments' => [
@@ -17,5 +18,11 @@ return [
         'referrer' => 'required,refresh-empty',
         'target' => StatisticsBEController::class . '::exportStatisticsAction'
     ],
+
+    'problem_fixed' => [
+        'path' => '/problem_fixed',
+        'referrer' => 'required, refresh-empty',
+        'target' => TechnicalProblemsBEController::class. '::technicalProblemFixedAction'
+    ]
 
 ];

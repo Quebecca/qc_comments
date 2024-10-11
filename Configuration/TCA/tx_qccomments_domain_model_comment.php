@@ -157,8 +157,20 @@ return [
             'config' => [
                 'type' => 'input',
             ],
+        ],
+        'user_uid_fixing_problem' => [
+            'exclude' => true,
+            'label' => 'user_uid_fixing_problem',
+            'config' => [
+                'type' => 'input',
+            ],
+        ],
+        'fixing_date' => [
+            'exclude' => true,
+            'label' => 'fixing_date',
+            'config' => [
+                'type' => 'input',
+            ],
         ]
-
-
     ],
 ];
