@@ -101,6 +101,14 @@
             <label class="form-check-label" for="includeEmptyPages">{f:translate(key: 'filter.includeEmptyPages', extensionName : 'qc_comments')}</label>
 
         </div>
+        <div class="col-md-3">
+            <f:form.checkbox property="includeFixedTechnicalProblem"
+                             value="1"
+                             id="includeFixedTechnicalProblem"
+            />
+            <label class="form-check-label" for="includeFixedTechnicalProblem">Afficher les problèmes techniques traités</label>
+
+        </div>
         <div class="col-md-4">
             <f:render section="buttons" arguments="{_all}"/>
         </div>

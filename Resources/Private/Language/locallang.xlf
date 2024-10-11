@@ -121,10 +121,10 @@
 				<source>Type de problème</source>
 			</trans-unit>
 			<trans-unit id="comments.h.be_user_name">
-				<source>User name</source>
+				<source>Fixed by</source>
 			</trans-unit>
 			<trans-unit id="comments.h.fix_date">
-				<source>Fix date</source>
+				<source>Fixed on</source>
 			</trans-unit>
 			<trans-unit id="comments.h.description">
 				<source>Description</source>

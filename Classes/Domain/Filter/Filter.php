@@ -26,6 +26,7 @@ class Filter implements Arrayable
     protected const KEY_INCLUDE_EMPTY_PAGES = 'includeEmptyPages';
     protected const KEY_DEPTH = 'depth';
     protected const KEY_USEFUL = 'useful';
+    protected const KEY_INCLUDE_FIXED_TECHNICAL_PROBLEM = 'includeFixedTechnicalProblem';
 
     /**
      * @var LocalizationUtility
@@ -67,6 +68,11 @@ class Filter implements Arrayable
      */
     public string $extKey;
 
+    /**
+     * @var bool|string
+     */
+    public bool $includeFixedTechnicalProblem = false;
+
     const QC_LANG_FILE = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
 
     /**
@@ -85,7 +91,8 @@ class Filter implements Arrayable
         string $dateRange ='1 day',
         bool $includeEmptyPages = false,
         int $depth = 1,
-        string $useful = ''
+        string $useful = '',
+        string $includeFixedTechnicalProblem = '0'
     ) {
         $this->lang = $lang;
         $this->startDate = $startDate;
@@ -97,6 +104,7 @@ class Filter implements Arrayable
         $this->extKey = 'qc_comments';
         $this->localizationUtility
             = GeneralUtility::makeInstance(LocalizationUtility::class);
+        $this->includeFixedTechnicalProblem = $includeFixedTechnicalProblem;
     }
 
     /**
@@ -272,6 +280,7 @@ class Filter implements Arrayable
         ];
     }
 
+
     /**
      * @return string
      */
@@ -287,6 +296,7 @@ class Filter implements Arrayable
     {
         $this->useful = $useful;
     }
+
 
     /**
      * @param string|null $startDate
@@ -312,6 +322,21 @@ class Filter implements Arrayable
     public function getEndDate()
     {
         return $this->endDate;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIncludeFixedTechnicalProblem():bool{
+        return $this->includeFixedTechnicalProblem;
+    }
+
+    /**
+     * @param bool $includeFixedTechnicalProblem
+     */
+    public function setIncludeFixedTechnicalProblem(bool $includeFixedTechnicalProblem): void
+    {
+        $this->includeFixedTechnicalProblem = $includeFixedTechnicalProblem;
     }
 
     /**
@@ -352,7 +377,8 @@ class Filter implements Arrayable
           self::KEY_DATE_RANGE => $this->getDateRange()  ?? '',
           self::KEY_INCLUDE_EMPTY_PAGES => $this->getIncludeEmptyPages() ?? false,
           self::KEY_DEPTH => $this->getDepth()  ?? '',
-          self::KEY_USEFUL => $this->getUseful() ?? ''
+          self::KEY_USEFUL => $this->getUseful() ?? '',
+          self::KEY_INCLUDE_FIXED_TECHNICAL_PROBLEM => $this->getIncludeFixedTechnicalProblem() ?? false
         ];
     }
 
@@ -370,7 +396,8 @@ class Filter implements Arrayable
             $values[self::KEY_DATE_RANGE],
             $values[self::KEY_INCLUDE_EMPTY_PAGES],
             $values[self::KEY_DEPTH],
-            $values[self::KEY_USEFUL]
+            $values[self::KEY_USEFUL],
+            $values[self::KEY_INCLUDE_FIXED_TECHNICAL_PROBLEM] ?? false
         );
     }
 }

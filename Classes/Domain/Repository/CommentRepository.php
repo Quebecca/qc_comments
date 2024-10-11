@@ -93,7 +93,6 @@ class CommentRepository extends Repository
         $constrains['joinCond'] = " p.uid = uid_orig $this->date_criteria $this->lang_criteria";
         $constrains['whereClause'] = " p.uid in ($ids_csv)";
         if($usefulCond === true){
-
             $usefulCond = $this->filter->getUseful() != ''
                ?  "useful like '" . $this->filter->getUseful()."'"
                 : '';
@@ -124,7 +123,9 @@ class CommentRepository extends Repository
             $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
         }
         $constraints = $this->getConstraints($pages_ids);
-        $queryBuilder->getRestrictions()->removeByType(DeletedRestriction::class);
+        if($this->filter->getIncludeFixedTechnicalProblem() === true){
+            $queryBuilder->getRestrictions()->removeByType(DeletedRestriction::class);
+        }
         $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
         $data= $queryBuilder
                 ->select(
