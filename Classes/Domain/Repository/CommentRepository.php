@@ -223,6 +223,7 @@ class CommentRepository extends Repository
         }
         $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
         $constraints = $this->getConstraints($page_ids, false);
+        $queryBuilder->getRestrictions()->removeByType(DeletedRestriction::class);
         $data =  $queryBuilder
             ->select('p.uid as page_uid', 'p.title as page_title')
             ->addSelectLiteral(

@@ -4,14 +4,12 @@ namespace Qc\QcComments\Controller\Backend;
 
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Service\TechnicalProblemsTabService;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
-use TYPO3\CMS\Core\Context\Context;
 
 class TechnicalProblemsBEController extends QcCommentsBEController
 {
@@ -81,5 +79,19 @@ class TechnicalProblemsBEController extends QcCommentsBEController
         return $this->moduleTemplate->renderResponse('TechnicalProblems');
     }
 
-
+    /**
+     * This function is used to mark technical problem as solved
+     * @return ForwardResponse
+     * @throws AspectNotFoundException
+     */
+    public function markProblemAsFixedAction()
+    {
+        $this->qcBeModuleService
+            = GeneralUtility::makeInstance(TechnicalProblemsTabService::class);
+        $recordUid = $this->request->getArguments()['technicalProblemUid'];
+        if($recordUid){
+            $this->qcBeModuleService->markProblemAsFixed($recordUid);
+        }
+        return new ForwardResponse('technicalProblems');
+    }
 }

@@ -28,8 +28,8 @@ return [
                 'comments'
             ],
             TechnicalProblemsBEController::class => [
-                'handleRequests',
-                'technicalProblems'
+                'technicalProblems',
+                'markProblemAsFixed'
             ]
         ]
     ],

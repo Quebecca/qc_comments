@@ -78,6 +78,11 @@ class Comment extends AbstractEntity
     protected string $fixingDate = '';
 
     /**
+     * @var int
+     */
+    protected int $deleted = 0;
+
+    /**
      * @return int
      */
     public function getUseful(): string
@@ -266,5 +271,21 @@ class Comment extends AbstractEntity
     public function setFixingDate(string $fixingDate): void
     {
         $this->fixingDate = $fixingDate;
+    }
+
+    /**
+     * @param int $deleted
+     */
+    public function setDeleted(int $deleted): void
+    {
+        $this->deleted = $deleted;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDeleted(): int
+    {
+        return $this->deleted;
     }
 }

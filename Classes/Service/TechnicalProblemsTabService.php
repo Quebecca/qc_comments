@@ -57,6 +57,7 @@ class TechnicalProblemsTabService extends QcBackendModuleService
                 $this->showCommentsForHiddenPage
             );
 
+
         $stats = $this->statisticsDataFormatting($stats);
         $tooMuchResults = $this->commentsRepository->getListCount() > $maxRecords
             || $tooMuchPages;
@@ -101,7 +102,13 @@ class TechnicalProblemsTabService extends QcBackendModuleService
         return $headers;
     }
 
-    public function technicalProblemFixed($recordUid) : bool
+    /**
+     * This function is used to mark the technical problem as solved
+     * @param $recordUid
+     * @return bool
+     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
+     */
+    public function markProblemAsFixed($recordUid) : bool
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $userBeUid = $context->getPropertyFromAspect('backend.user', 'id');
@@ -109,8 +116,9 @@ class TechnicalProblemsTabService extends QcBackendModuleService
         if($comment != null){
             $comment->setUserUidFixingProblem($userBeUid);
             $comment->setFixingDate(date('Y-m-d H:i:s'));
+            $comment->setDeleted(1);
             $this->updateComment($comment);
-            $this->deleteComment($recordUid);
+            $this->commentsRepository->persistenceManager->persistAll();
         }
         return true;
     }

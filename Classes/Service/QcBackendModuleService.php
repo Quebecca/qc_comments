@@ -222,9 +222,7 @@ $request->getQueryParams()['parameters']['includeEmptyPages'] === 'true'
         return $rows;
     }
 
-    public function deleteComment($uid){
-        $this->commentsRepository->deleteComment($uid);
-    }
+
 
     public function getComment($commentUid){
         return $this->commentsRepository->findByUid($commentUid);

@@ -23,6 +23,7 @@ CREATE TABLE tx_qccomments_domain_model_comment (
        tstamp int(11) unsigned DEFAULT '0' NOT NULL,
        crdate int(11) unsigned DEFAULT '0' NOT NULL,
        hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
+			 deleted smallint(5) unsigned DEFAULT '0' NOT NULL,
        starttime int(11) unsigned DEFAULT '0' NOT NULL,
        endtime int(11) unsigned DEFAULT '0' NOT NULL,
        sorting int(11) DEFAULT '0' NOT NULL,
