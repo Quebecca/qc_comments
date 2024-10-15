@@ -28,10 +28,9 @@ class TechnicalProblemsBEController extends QcCommentsBEController
             $this->qcBeModuleService->technicalProblemFixed($this->request->getArguments()['recordUidToRemove']);
         }
 
-        if($operation === 'reset-filters' || $filter == null){
+        if($operation === 'reset-filters'){
             $filter = new Filter();
         }
-        $filter->setUseful('NA');
 
         $this->qcBeModuleService->getBackendSession()->store(
             'lastAction',
@@ -75,6 +74,7 @@ class TechnicalProblemsBEController extends QcCommentsBEController
              );
         }
         $filter = $this->qcBeModuleService->processFilter();
+        $filter->setUseful('NA');
         $this->moduleTemplate->assign('filter', $filter);
         return $this->moduleTemplate->renderResponse('TechnicalProblems');
     }
