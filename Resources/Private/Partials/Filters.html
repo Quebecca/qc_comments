@@ -53,12 +53,12 @@
                                 class="form-control  t3js-datetimepicker t3js-clearable"
                                 additionalAttributes="{'autocomplete': 'off'}"
                                 data="{date-type: 'date'}"
-                                value="{f:if(condition: filter.startDate, then: \"{f:format.date(format:'d-m-Y', date: '{filter.startDate}')}\")}"
+                                value="{f:if(condition: filter.startDate, then: \"{f:format.date(format:'Y-m-d', date: '{filter.startDate}')}\")}"
 
                         />
                         <f:form.hidden
                                 property="startDate"
-                                value="{f:if(condition: filter.startDate, then: \"{f:format.date(format:'d-m-Y', date: '{filter.startDate}')}\")}"
+                                value="{f:if(condition: filter.startDate, then: \"{f:format.date(format:'Y-m-d', date: '{filter.startDate}')}\")}"
 
                         />
                         <label class="btn btn-default" for="startDate">
@@ -75,12 +75,12 @@
                                 additionalAttributes="{'autocomplete': 'off'}"
                                 class="form-control  t3js-datetimepicker t3js-clearable"
                                 data="{date-type: 'date'}"
-                                value="{f:if(condition: filter.endDate, then: \"{f:format.date(format:'d-m-Y', date: '{filter.endDate}')}\")}"
+                                value="{f:if(condition: filter.endDate, then: \"{f:format.date(format:'Y-m-d', date: '{filter.endDate}')}\")}"
 
                         />
                         <f:form.hidden
                                 property="endDate"
-                                value="{f:if(condition: filter.endDate, then: \"{f:format.date(format:'d-m-Y', date: '{filter.endDate}')}\")}"
+                                value="{f:if(condition: filter.endDate, then: \"{f:format.date(format:'Y-m-d', date: '{filter.endDate}')}\")}"
 
                         />
                         <label class="btn btn-default" for="endDate">
@@ -93,22 +93,28 @@
     </div>
     <br>
     <div class="row">
-        <div class="col-md-3">
-            <f:form.checkbox property="includeEmptyPages"
-                             value="1"
-                             id="includeEmptyPages"
-            />
-            <label class="form-check-label" for="includeEmptyPages">{f:translate(key: 'filter.includeEmptyPages', extensionName : 'qc_comments')}</label>
+        <f:if condition="{action} == 'comments'">
+            <div class="col-md-3">
+                <f:form.checkbox property="includeEmptyPages"
+                                 value="1"
+                                 id="includeEmptyPages"
+                />
+                <label class="form-check-label" for="includeEmptyPages">{f:translate(key: 'filter.includeEmptyPages', extensionName : 'qc_comments')}</label>
 
-        </div>
-        <div class="col-md-3">
-            <f:form.checkbox property="includeFixedTechnicalProblem"
-                             value="1"
-                             id="includeFixedTechnicalProblem"
-            />
-            <label class="form-check-label" for="includeFixedTechnicalProblem">Afficher les problèmes techniques traités</label>
+            </div>
+        </f:if>
+        <f:if condition="{action} == technicalProblems">
+            <div class="col-md-3">
+                <f:form.checkbox property="includeFixedTechnicalProblem"
+                                 value="1"
+                                 id="includeFixedTechnicalProblem"
+                                 class=""
+                />
+                <label class="form-check-label" for="includeFixedTechnicalProblem">Afficher les problèmes techniques traités</label>
 
-        </div>
+            </div>
+        </f:if>
+
         <div class="col-md-4">
             <f:render section="buttons" arguments="{_all}"/>
         </div>
