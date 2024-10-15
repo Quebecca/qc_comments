@@ -6,9 +6,11 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Service\CommentsTabService;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 
 class CommentsBEController extends QcCommentsBEController
 {
@@ -69,6 +71,22 @@ class CommentsBEController extends QcCommentsBEController
         $this->moduleTemplate->assign('filter', $filter);
         return $this->moduleTemplate->renderResponse('Comments');
 
+    }
+
+    /**
+     * This function is used to mark technical problem as solved
+     * @return ForwardResponse
+     * @throws AspectNotFoundException
+     */
+    public function deleteCommentAction()
+    {
+        $this->qcBeModuleService
+            = GeneralUtility::makeInstance(CommentsTabService::class);
+        $recordUid = $this->request->getArguments()['commentUid'];
+        if($recordUid){
+            $this->qcBeModuleService->deleteComment($recordUid);
+        }
+        return new ForwardResponse('comments');
     }
 
 

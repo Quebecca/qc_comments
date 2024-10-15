@@ -95,8 +95,7 @@ class CommentsTabService extends QcBackendModuleService
     protected function getHeaders(bool $include_csv_headers = false): array
     {
         $headers = [];
-
-        foreach (['date_hour', 'comment', 'useful'] as $col) {
+        foreach (['date_hour', 'comment', 'useful', 'comment_option', ''] as $col) {
             $headers[$col] = $this->localizationUtility
                 ->translate(self::QC_LANG_FILE . 'comments.h.' . $col);
         }
@@ -109,6 +108,11 @@ class CommentsTabService extends QcBackendModuleService
             ], $headers);
         }
         return $headers;
+    }
+
+    public function deleteComment($commentUid) {
+
+        $this->commentsRepository->deleteComment($commentUid);
     }
 
     /**

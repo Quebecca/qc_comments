@@ -25,7 +25,8 @@ return [
                 'statistics'
             ],
             CommentsBEController::class => [
-                'comments'
+                'comments',
+                'deleteComment'
             ],
             TechnicalProblemsBEController::class => [
                 'technicalProblems',

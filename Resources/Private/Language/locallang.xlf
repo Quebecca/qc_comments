@@ -117,6 +117,9 @@
 			<trans-unit id="comments.h.comment">
 				<source>Comment</source>
 			</trans-unit>
+			<trans-unit id="comments.h.comment_option">
+				<source>Comment</source>
+			</trans-unit>
 			<trans-unit id="comments.h.type_problem">
 				<source>Type de problème</source>
 			</trans-unit>

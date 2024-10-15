@@ -29,6 +29,27 @@
                             </div>
                         </td>
                         <td>{row.useful}</td>
+                        <td>
+                            <f:if condition="{row.reason_short_label} != ''">
+                                <f:then>{row.reason_short_label}</f:then>
+                                <f:else>--</f:else>
+                            </f:if>
+
+                        </td>
+                        <td>
+                            <f:if condition="{row.deleted} == 1">
+                                <f:then>
+                                    <span style="color:red" class="font-weight-bold">Supprimé </span>
+                                </f:then>
+                                <f:else>
+                                    <f:form action="deleteComment">
+                                        <input type="hidden" name="commentUid" value="{row.recordUid}">
+                                        <f:form.submit value="Supprimer" class="btn btn-default"/>
+                                    </f:form>
+
+                                </f:else>
+                            </f:if>
+                        </td>
                     </tr>
                 </f:for>
                 </tbody>

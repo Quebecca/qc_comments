@@ -124,6 +124,9 @@
             <trans-unit id="comments.h.comment">
                 <target>Commentaire</target>
             </trans-unit>
+		   <trans-unit id="comments.h.comment_option">
+				<target>Option sélectionnée</target>
+			</trans-unit>
 			<trans-unit id="comments.h.be_user_name">
 				<target>Traité par</target>
 			</trans-unit>
