@@ -44,9 +44,9 @@ class CommentsFilter extends Filter
         string $dateRange ='1 day',
         int $depth = 1,
         bool $includeEmptyPages = false,
-        string $useful = '',
+        string $useful = '%',
         bool $includeDeletedComments = false,
-        string $commentReason = ""
+        string $commentReason = "%"
     ) {
         parent::__construct(
             $lang,
@@ -88,7 +88,7 @@ class CommentsFilter extends Filter
             parent::toArray(),
             [
                 self::KEY_INCLUDE_DELETED_COMMENTS => $this->getIncludeDeletedComments() ?? false,
-                self::KEY_COMMENT_REASON => $this->getCommentsReasons() ?? "%",
+                self::KEY_COMMENT_REASON => $this->getCommentReason() ?? "%"
             ]
         );
     }
