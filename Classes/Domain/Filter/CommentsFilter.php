@@ -4,7 +4,7 @@ namespace Qc\QcComments\Domain\Filter;
 
 class CommentsFilter extends Filter
 {
-
+    protected const KEY_INCLUDE_DELETED_COMMENTS= false;
 
     public bool $includeDeletedComments = false;
 
@@ -26,6 +26,7 @@ class CommentsFilter extends Filter
         int $depth = 1,
         bool $includeEmptyPages = false,
         string $useful = '',
+        bool $includeDeletedComments = false
     ) {
         parent::__construct(
             $lang,
@@ -36,6 +37,7 @@ class CommentsFilter extends Filter
             $includeEmptyPages,
             $useful
         );
+        $this->includeDeletedComments = $includeDeletedComments;
     }
 
     /**
@@ -43,7 +45,10 @@ class CommentsFilter extends Filter
      */
     public function toArray(): array
     {
-        return parent::toArray();
+        return array_merge(
+            parent::toArray(),
+            [self::KEY_INCLUDE_DELETED_COMMENTS => $this->getIncludeDeletedComments() ?? false]
+        );
     }
 
     /**
@@ -60,7 +65,8 @@ class CommentsFilter extends Filter
             $values[parent::KEY_DATE_RANGE],
             $values[parent::KEY_DEPTH],
             $values[parent::KEY_INCLUDE_EMPTY_PAGES],
-            $values[parent::KEY_USEFUL]
+            $values[parent::KEY_USEFUL],
+            $values[self::KEY_INCLUDE_DELETED_COMMENTS] ?? false
         );
     }
 

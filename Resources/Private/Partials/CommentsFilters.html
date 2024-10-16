@@ -93,27 +93,22 @@
     </div>
     <br>
     <div class="row">
-        <f:if condition="{action} == 'comments'">
-            <div class="col-md-3">
-                <f:form.checkbox property="includeEmptyPages"
-                                 value="1"
-                                 id="includeEmptyPages"
-                />
-                <label class="form-check-label" for="includeEmptyPages">{f:translate(key: 'filter.includeEmptyPages', extensionName : 'qc_comments')}</label>
+        <div class="col-md-3">
+            <f:form.checkbox property="includeEmptyPages"
+                             value="1"
+                             id="includeEmptyPages"
+            />
+            <label class="form-check-label" for="includeEmptyPages">{f:translate(key: 'filter.includeEmptyPages', extensionName : 'qc_comments')}</label>
 
-            </div>
-        </f:if>
-        <f:if condition="{action} == technicalProblems">
-            <div class="col-md-3">
-                <f:form.checkbox property="includeFixedTechnicalProblems"
-                                 value="1"
-                                 id="includeFixedTechnicalProblems"
-                                 class=""
-                />
-                <label class="form-check-label" for="includeFixedTechnicalProblems">Afficher les problèmes techniques traités</label>
+        </div>
+        <div class="col-md-3">
+            <f:form.checkbox property="includeDeletedComments"
+                             value="1"
+                             id="includeDeletedComments"
+            />
+            <label class="form-check-label" for="includeDeletedComments">Afficher les commentaires retirés</label>
 
-            </div>
-        </f:if>
+        </div>
 
         <div class="col-md-4">
             <f:render section="buttons" arguments="{_all}"/>
