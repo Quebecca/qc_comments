@@ -5,12 +5,12 @@ namespace Qc\QcComments\Domain\Filter;
 
 class TechnicalProblemsFilter extends Filter
 {
-    protected const KEY_INCLUDE_FIXED_TECHNICAL_PROBLEM = 'includeFixedTechnicalProblem';
+    protected const KEY_INCLUDE_FIXED_TECHNICAL_PROBLEMS = 'includeFixedTechnicalProblems';
 
     /**
      * @var bool
      */
-    public bool $includeFixedTechnicalProblem = false;
+    public bool $includeFixedTechnicalProblems = false;
 
 
     /**
@@ -18,9 +18,10 @@ class TechnicalProblemsFilter extends Filter
      * @param string $startDate
      * @param string $endDate
      * @param string $dateRange
-     * @param bool $includeEmptyPages
      * @param int $depth
+     * @param bool $includeEmptyPages
      * @param string $useful
+     * @param bool $includeFixedTechnicalProblems
      */
     public function __construct(
         string $lang = '',
@@ -29,7 +30,7 @@ class TechnicalProblemsFilter extends Filter
         string $dateRange ='1 day',
         int $depth = 1,
         bool $includeEmptyPages = false,
-        string $useful = '',
+        bool $includeFixedTechnicalProblems = false
     ) {
         parent::__construct(
             $lang,
@@ -38,25 +39,26 @@ class TechnicalProblemsFilter extends Filter
             $dateRange,
             $depth,
             $includeEmptyPages,
-            $useful
+            "NA"
         );
+        $this->includeFixedTechnicalProblems = $includeFixedTechnicalProblems;
     }
 
+
+    /**
+     * @param bool $includeFixedTechnicalProblems
+     */
+    public function setIncludeFixedTechnicalProblems(bool $includeFixedTechnicalProblems): void
+    {
+        $this->includeFixedTechnicalProblems = $includeFixedTechnicalProblems;
+    }
 
     /**
      * @return bool
      */
-    public function getIncludeFixedTechnicalProblem(): bool
+    public function getIncludeFixedTechnicalProblems(): bool
     {
-        return $this->includeFixedTechnicalProblem;
-    }
-
-    /**
-     * @param bool $includeFixedTechnicalProblem
-     */
-    public function setIncludeFixedTechnicalProblem(bool $includeFixedTechnicalProblem): void
-    {
-        $this->includeFixedTechnicalProblem = $includeFixedTechnicalProblem;
+        return $this->includeFixedTechnicalProblems;
     }
 
     /**
@@ -64,14 +66,12 @@ class TechnicalProblemsFilter extends Filter
      */
     public function toArray(): array
     {
-/*        return array_merge(
+        return array_merge(
             parent::toArray(),
             [
-                self::KEY_INCLUDE_FIXED_TECHNICAL_PROBLEM => $this->getIncludeFixedTechnicalProblem() ?? false,
-                self::KEY_INCLUDE_EMPTY_PAGES => $this->getIncludeEmptyPages() ?? false
+                self::KEY_INCLUDE_FIXED_TECHNICAL_PROBLEMS => $this->getIncludeFixedTechnicalProblems() ?? false,
             ],
-        );*/
-        return parent::toArray();
+        );
     }
 
     /**
@@ -88,7 +88,7 @@ class TechnicalProblemsFilter extends Filter
               $values[parent::KEY_DATE_RANGE],
               $values[parent::KEY_DEPTH],
               $values[parent::KEY_INCLUDE_EMPTY_PAGES],
-              $values[self::KEY_INCLUDE_FIXED_TECHNICAL_PROBLEM] ?? false
+              $values[self::KEY_INCLUDE_FIXED_TECHNICAL_PROBLEMS] ?? false
           );
     }
     /**
@@ -102,6 +102,6 @@ class TechnicalProblemsFilter extends Filter
      * @return bool
      */
     public function getRecordVisbility() :bool{
-        return $this->getIncludeFixedTechnicalProblem();
+        return $this->getIncludeFixedTechnicalProblems();
     }
 }
