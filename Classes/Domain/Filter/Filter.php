@@ -130,7 +130,6 @@ abstract class Filter implements Arrayable
      */
     public function setUseful(string $useful): void
     {
-
         $this->useful = $useful == '' ? '%' : $useful;
     }
 

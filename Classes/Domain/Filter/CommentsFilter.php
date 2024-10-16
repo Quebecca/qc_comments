@@ -10,6 +10,9 @@ class CommentsFilter extends Filter
 {
     protected const KEY_INCLUDE_DELETED_COMMENTS= false;
 
+    protected const KEY_COMMENT_REASON= "commentReason";
+
+
     /**
      * @var bool
      */
@@ -83,7 +86,10 @@ class CommentsFilter extends Filter
     {
         return array_merge(
             parent::toArray(),
-            [self::KEY_INCLUDE_DELETED_COMMENTS => $this->getIncludeDeletedComments() ?? false]
+            [
+                self::KEY_INCLUDE_DELETED_COMMENTS => $this->getIncludeDeletedComments() ?? false,
+                self::KEY_COMMENT_REASON => $this->getCommentsReasons() ?? "%",
+            ]
         );
     }
 
@@ -102,7 +108,8 @@ class CommentsFilter extends Filter
             $values[parent::KEY_DEPTH],
             $values[parent::KEY_INCLUDE_EMPTY_PAGES],
             $values[parent::KEY_USEFUL],
-            $values[self::KEY_INCLUDE_DELETED_COMMENTS] ?? false
+            $values[self::KEY_INCLUDE_DELETED_COMMENTS] ?? false,
+            $values[self::KEY_COMMENT_REASON] ?? "%",
         );
     }
 
