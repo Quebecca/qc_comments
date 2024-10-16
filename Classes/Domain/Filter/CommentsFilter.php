@@ -2,11 +2,25 @@
 
 namespace Qc\QcComments\Domain\Filter;
 
+use Qc\QcComments\Configuration\TyposcriptConfiguration;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+
 class CommentsFilter extends Filter
 {
     protected const KEY_INCLUDE_DELETED_COMMENTS= false;
 
-    public bool $includeDeletedComments = false;
+    /**
+     * @var bool
+     */
+    protected bool $includeDeletedComments = false;
+
+    /**
+     * @var string
+     */
+    protected string $commentReason = "%";
+
+    protected TyposcriptConfiguration $typoscriptConfiguration;
 
 
     /**
@@ -14,9 +28,11 @@ class CommentsFilter extends Filter
      * @param string $startDate
      * @param string $endDate
      * @param string $dateRange
-     * @param bool $includeEmptyPages
      * @param int $depth
+     * @param bool $includeEmptyPages
      * @param string $useful
+     * @param bool $includeDeletedComments
+     * @param string $commentReason
      */
     public function __construct(
         string $lang = '',
@@ -26,7 +42,8 @@ class CommentsFilter extends Filter
         int $depth = 1,
         bool $includeEmptyPages = false,
         string $useful = '',
-        bool $includeDeletedComments = false
+        bool $includeDeletedComments = false,
+        string $commentReason = ""
     ) {
         parent::__construct(
             $lang,
@@ -38,6 +55,25 @@ class CommentsFilter extends Filter
             $useful
         );
         $this->includeDeletedComments = $includeDeletedComments;
+        $this->commentReason = $commentReason;
+        $this->typoscriptConfiguration = GeneralUtility::makeInstance(TyposcriptConfiguration::class);
+        $this->typoscriptConfiguration->setConfigurationType(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+        $this->typoscriptConfiguration->setSettings('tx_qccomments');
+    }
+
+    /**
+     * This function is used to the options form typoscript and show them in the option field of the filter
+     * @return array
+     */
+    public function getCommentsReasons(): array
+    {
+        $options = $this->typoscriptConfiguration->getNegativeCommentsReasonsForBE();
+        $filterOptions = [];
+        $filterOptions[''] = 'Tous';
+        foreach ($options as $key => $values) {
+            $filterOptions[$values['short_label']] = $values['short_label'];
+        }
+        return $filterOptions;
     }
 
     /**
@@ -87,14 +123,33 @@ class CommentsFilter extends Filter
         $this->includeDeletedComments = $includeDeletedComments;
     }
 
-    public function getConstraints() : string{
+    /**
+     * @return string
+     */
+    public function getCommentReason(): string
+    {
+        return $this->commentReason;
+    }
 
-        $criteria = $this->getLangCriteria()
-            .$this->getDateCriteria();
+    /**
+     * @param string $commentReason
+     */
+    public function setCommentReason(string $commentReason): void
+    {
+        $this->commentReason = $commentReason == '' ? '%' : $commentReason;
+    }
 
-
-
-        return $criteria;
+    /**
+     *
+     * @param string $useful
+     */
+    public function setUseful(string $useful): void
+    {
+        //check if the useful filter changed to "Negative comment" we set default value for
+        if($useful == '0' && $useful != $this->getUseful()){
+            $this->setCommentReason('%');
+        }
+        $this->useful = $useful == '' ? '%' : $useful;
     }
 
     /**
@@ -102,7 +157,12 @@ class CommentsFilter extends Filter
      */
     public function getUsibiltyCriteria(): string
     {
-        return " useful like '".$this->getUseful()."'";
+        $criteria =  " useful like '".$this->getUseful()."'";
+        // we apply the reason only if the comment is negative
+        if($this->getUseful() == '0'){
+            $criteria .= "AND reason_short_label like '".$this->getCommentReason()."'";
+        }
+        return $criteria;
     }
 
     /**

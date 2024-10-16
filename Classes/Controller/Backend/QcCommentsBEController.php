@@ -113,7 +113,7 @@ class QcCommentsBEController extends ActionController
         );
         $menu->addMenuItem(
             $menu->makeMenuItem()
-                ->setTitle('TechnicalProblemsBEController')
+                ->setTitle('Technical problems')
                 ->setHref($this->uriBuilder->uriFor('technicalProblems', [], 'Backend\TechnicalProblemsBE'))
                 ->setActive($currentAction === 'technicalProblems')
         );

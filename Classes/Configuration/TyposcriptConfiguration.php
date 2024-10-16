@@ -20,6 +20,12 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
 class TyposcriptConfiguration
 {
+    /**
+     * configuration type is used to Use "CONFIGURATION_TYPE_SETTINGS" is we have a FE call or "CONFIGURATION_TYPE_FRAMEWORK" if we have a BE call
+     * @var string
+     */
+    protected string $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS;
+
     public function __construct()
     {
         $this->setSettings('QcComments');
@@ -35,14 +41,34 @@ class TyposcriptConfiguration
      */
     protected array $configuration = [];
 
+    /**
+     * @param string $pluginName
+     * @return void
+     */
 
     public function setSettings(string $pluginName): void
     {
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
         $this->settings =  $configurationManager->getConfiguration(
-            ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
+            $this->configurationType,
             $pluginName
         );
+    }
+
+    /**
+     * @param string $configurationType
+     */
+    public function setConfigurationType(string $configurationType): void
+    {
+        $this->configurationType = $configurationType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfigurationType(): string
+    {
+        return $this->configurationType;
     }
 
     /**
@@ -146,4 +172,7 @@ class TyposcriptConfiguration
         return $this->settings['options'] ?? [];
     }
 
+    public function getNegativeCommentsReasonsForBE() :array {
+        return $this->settings['plugin.']['tx_qccomments.']['settings.']['options.']['negative_reasons.'] ??  [];
+    }
 }

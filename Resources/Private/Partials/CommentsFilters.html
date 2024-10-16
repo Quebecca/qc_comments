@@ -22,17 +22,28 @@
                            id="depth"
             />
         </div>
-        <f:if condition="{action} == 'comments'">
+        <div class="col-md-2">
+            <label>{f:translate(key: 'utility', extensionName : 'qc_comments')}</label>
+            <f:form.select property="useful"
+                           options="{filter.commentsUtility}"
+                           optionLabelField="title"
+                           additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
+                           class="form-control form-select"
+                           id="useful"
+            />
+        </div>
+        <f:if condition="{filter.useful} == '0'">
             <div class="col-md-2">
-                <label>{f:translate(key: 'utility', extensionName : 'qc_comments')}</label>
-                <f:form.select property="useful"
-                               options="{filter.commentsUtility}"
+                <label>Raison d'insatisfaction</label>
+                <f:form.select property="commentReason"
+                               options="{filter.commentsReasons}"
                                optionLabelField="title"
                                class="form-control form-select"
-                               id="useful"
+                               id="commentReason"
                 />
             </div>
         </f:if>
+
         <div class="col-md-2">
             <label>{f:translate(key: 'filter.dateRange', extensionName : 'qc_comments')}</label>
             <f:form.select property="dateRange"
