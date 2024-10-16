@@ -3,7 +3,7 @@ namespace Qc\QcComments\Controller\Backend;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Qc\QcComments\Domain\Filter\Filter;
+use Qc\QcComments\Domain\Filter\StatisticsFilter;
 use Qc\QcComments\Service\StatisticsTabService;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
@@ -12,14 +12,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class StatisticsBEController extends QcCommentsBEController
 {
     /**
-     * @param Filter|null $filter
+     * @param StatisticsFilter|null $filter
      * @param string $operation
      * @return ResponseInterface
      */
-    public function statisticsAction(Filter $filter = null,  string $operation = ''): ResponseInterface
+    public function statisticsAction(StatisticsFilter $filter = null,  string $operation = ''): ResponseInterface
     {
         if($operation === 'reset-filters'){
-            $filter = new Filter();
+            $filter = new StatisticsFilter();
         }
         $this->qcBeModuleService
             = GeneralUtility::makeInstance(StatisticsTabService::class);

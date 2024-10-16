@@ -92,14 +92,15 @@ class CommentRepository extends Repository
         $ids_csv = implode(',', $ids_list);
         $constrains['joinCond'] = " p.uid = uid_orig $this->date_criteria $this->lang_criteria";
         $constrains['whereClause'] = " p.uid in ($ids_csv)";
-        if($usefulCond === true){
+        /*if($usefulCond === true){
             $usefulCond = $this->filter->getUseful() != ''
                ?  "useful like '" . $this->filter->getUseful()."'"
                 : '';
             if ($usefulCond != '') {
                 $constrains['whereClause'] .= " AND $usefulCond";
             }
-        }
+        }*/
+        $constrains['whereClause'] .= " AND ". $this->filter->getUsibiltyCriteria();
         return $constrains;
     }
 
@@ -119,11 +120,13 @@ class CommentRepository extends Repository
     ): array
     {
         $queryBuilder = $this->generateQueryBuilder();
-        if($showForHiddenPages == true){
+        if($showForHiddenPages === true){
             $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
         }
+
         $constraints = $this->getConstraints($pages_ids);
-        if($this->filter->getIncludeFixedTechnicalProblem() === true){
+
+        if($this->filter->getRecordVisbility() === true){
             $queryBuilder->getRestrictions()->removeByType(DeletedRestriction::class);
         }
         $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
@@ -151,7 +154,7 @@ class CommentRepository extends Repository
                     $constraints['whereClause']
                 );
 
-        if ($limit != false) {
+        if ($limit) {
             $data = $data->setMaxResults($limit);
         }
         $data = $data
@@ -219,11 +222,12 @@ class CommentRepository extends Repository
     public function getStatistics($page_ids, $limit,bool $showForHiddenPages = false): array
     {
         $queryBuilder = $this->generateQueryBuilder();
-        if($showForHiddenPages == true){
+        if($showForHiddenPages){
             $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
         }
         $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
         $constraints = $this->getConstraints($page_ids, false);
+        //@todo : only for comments and problems module
         $queryBuilder->getRestrictions()->removeByType(DeletedRestriction::class);
         $data =  $queryBuilder
             ->select('p.uid as page_uid', 'p.title as page_title')
@@ -244,7 +248,7 @@ class CommentRepository extends Repository
             )
             ->groupBy('p.uid', 'p.title');
 
-        if ($limit != false) {
+        if ($limit) {
             // we add one more record to check if there are more than rendering results
             $data = $data->setMaxResults($limit + 1);
         }
@@ -260,13 +264,14 @@ class CommentRepository extends Repository
      * @param false $showForHiddenPages
      * @return mixed
      */
-    public function getTotalNonEmptyComment(bool $showForHiddenPages = false){
+    public function getTotalNonEmptyComment(bool $showForHiddenPages = false): mixed
+    {
         $pages_ids = $this->getPageIdsList();
         $constraints = $this->getConstraints($pages_ids, false);
         $constraints['whereClause'] .= " AND trim($this->tableName.comment) <> ''";
         $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
         $queryBuilder = $this->generateQueryBuilder();
-        if($showForHiddenPages == true){
+        if($showForHiddenPages){
             $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
         }
         return  $queryBuilder

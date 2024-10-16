@@ -17,7 +17,9 @@ namespace Qc\QcComments\Domain\Session;
 
 use __PHP_Incomplete_Class;
 use phpDocumentor\Reflection\Types\String_;
-use Qc\QcComments\Domain\Filter\Filter;
+use Qc\QcComments\Domain\Filter\CommentsFilter;
+use Qc\QcComments\Domain\Filter\StatisticsFilter;
+use Qc\QcComments\Domain\Filter\TechnicalProblemsFilter;
 use Qc\QcComments\Util\Arrayable;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 
@@ -46,7 +48,9 @@ class BackendSession
     public function __construct()
     {
         $this->sessionObject = $GLOBALS['BE_USER'];
-        $this->registerFilterKey('filter', Filter::class);
+        $this->registerFilterKey('commentsFilter', CommentsFilter::class);
+        $this->registerFilterKey('technicalProblemsFilter', TechnicalProblemsFilter::class);
+        $this->registerFilterKey('statisticsFilter', StatisticsFilter::class);
         $this->registerFilterKey('lastAction', String_::class);
     }
 

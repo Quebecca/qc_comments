@@ -16,6 +16,7 @@ namespace Qc\QcComments\Service;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
+use Qc\QcComments\Domain\Filter\CommentsFilter;
 use Qc\QcComments\Domain\Filter\Filter;
 
 class CommentsTabService extends QcBackendModuleService
@@ -85,6 +86,53 @@ class CommentsTabService extends QcBackendModuleService
             'maxRecords'
         );
 
+    }
+
+    /**
+     * This function is used to generate a filter object from the ServerRequest
+     * @param ServerRequestInterface $request
+     * @return Filter
+     */
+    public function getFilterFromRequest(ServerRequestInterface $request): Filter
+    {
+        $filter = new CommentsFilter();
+        $filter->setLang($request->getQueryParams()['parameters']['lang']);
+        $filter->setDepth(intval($request->getQueryParams()['parameters']['depth']));
+        $filter->setDateRange($request->getQueryParams()['parameters']['selectDateRange']);
+        $filter->setStartDate($request->getQueryParams()['parameters']['startDate'] ?? '');
+        $filter->setEndDate($request->getQueryParams()['parameters']['endDate'] ?? '');
+        $filter->setIncludeEmptyPages(
+            $request->getQueryParams()['parameters']['includeEmptyPages'] === 'true'
+        );
+        $filter->setUseful($request->getQueryParams()['parameters']['useful'] ?? '');
+        return $filter;
+    }
+
+    /**
+     * This function is used to get the filter from the backend session
+     * @param Filter|null $filter
+     * @return Filter|null
+     */
+    public function processFilter(Filter $filter = null): ?Filter
+    {
+       // Add filtering to records
+          if ($filter === null) {
+              // Get filter from session if available
+              $filter = $this->backendSession->get('commentsFilter');
+              if ($filter == null) {
+                  $filter = new CommentsFilter();
+              }
+          } else {
+              if ($filter->getDateRange() != 'userDefined') {
+                  $filter->setStartDate(null);
+                  $filter->setEndDate(null);
+              }
+
+              $this->backendSession->store('commentsFilter', $filter);
+          }
+          $this->commentsRepository->setFilter($filter);
+          $this->commentsRepository->setRootId($this->root_id);
+          return $filter;
     }
 
     /**

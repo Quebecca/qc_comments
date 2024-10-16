@@ -4,7 +4,7 @@ namespace Qc\QcComments\Controller\Backend;
 use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Qc\QcComments\Domain\Filter\Filter;
+use Qc\QcComments\Domain\Filter\CommentsFilter;
 use Qc\QcComments\Service\CommentsTabService;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Http\Response;
@@ -15,15 +15,15 @@ use TYPO3\CMS\Extbase\Http\ForwardResponse;
 class CommentsBEController extends QcCommentsBEController
 {
     /**
-     * @param Filter|null $filter
+     * @param CommentsFilter|null $filter
      * @param string $operation
      * @return ResponseInterface
      * @throws Exception
      */
-    public function commentsAction(Filter $filter = null, string $operation = ''): ResponseInterface{
-
+    public function commentsAction(CommentsFilter $filter = null, string $operation = ''): ResponseInterface {
+        $this->addMainMenu('comments');
         if($operation === 'reset-filters'){
-            $filter = new Filter();
+            $filter = new CommentsFilter();
         }
         $this->qcBeModuleService
             = GeneralUtility::makeInstance(CommentsTabService::class);
@@ -34,7 +34,6 @@ class CommentsBEController extends QcCommentsBEController
                 'actionName' => 'comments'
             ]);
 
-        $this->addMainMenu('comments');
 
         $this->qcBeModuleService->setRootId($this->root_id);
         $this->qcBeModuleService->processFilter();
@@ -44,7 +43,7 @@ class CommentsBEController extends QcCommentsBEController
         }
         else {
             if ($filter) {
-                $this->qcBeModuleService->processFilter($filter);
+                $filter = $this->qcBeModuleService->processFilter($filter);
                 $this->moduleTemplate->assign('filter', $filter);
             }
             $data = $this->qcBeModuleService->getComments();
@@ -67,10 +66,9 @@ class CommentsBEController extends QcCommentsBEController
                     ]
                 );
         }
-        $filter = $this->qcBeModuleService->processFilter();
+        $filter = $this->qcBeModuleService->processFilter($filter);
         $this->moduleTemplate->assign('filter', $filter);
         return $this->moduleTemplate->renderResponse('Comments');
-
     }
 
     /**

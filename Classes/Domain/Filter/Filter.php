@@ -17,16 +17,26 @@ use Qc\QcComments\Util\Arrayable;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
-class Filter implements Arrayable
+abstract class Filter implements Arrayable
 {
     protected const KEY_LANG = 'lang';
     protected const KEY_START_DATE = 'startDate';
     protected const KEY_END_DATE = 'endDate';
     protected const KEY_DATE_RANGE = 'dateRange';
-    protected const KEY_INCLUDE_EMPTY_PAGES = 'includeEmptyPages';
     protected const KEY_DEPTH = 'depth';
+    protected const KEY_INCLUDE_EMPTY_PAGES = 'includeEmptyPages';
+
     protected const KEY_USEFUL = 'useful';
-    protected const KEY_INCLUDE_FIXED_TECHNICAL_PROBLEM = 'includeFixedTechnicalProblem';
+
+
+    /**
+     * @var string
+     */
+    public string $useful = '';
+    /**
+     * @var bool
+     */
+    public bool $includeEmptyPages = true;
 
     /**
      * @var LocalizationUtility
@@ -41,17 +51,13 @@ class Filter implements Arrayable
     /**
      * @var string
      */
-    public $startDate = '';
+    public string $startDate = '';
 
     /**
      * @var string
      */
-    public $endDate = '';
+    public string $endDate = '';
 
-    /**
-     * @var bool
-     */
-    public bool $includeEmptyPages = true;
 
     /**
      * @var int
@@ -61,69 +67,31 @@ class Filter implements Arrayable
     /**
      * @var string
      */
-    public string $useful = '';
-
-    /**
-     * @var string
-     */
     public string $extKey;
 
-    /**
-     * @var bool|string
-     */
-    public bool $includeFixedTechnicalProblem = false;
+
 
     const QC_LANG_FILE = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
 
-    /**
-     * @param string $lang
-     * @param string $startDate
-     * @param string $endDate
-     * @param string $dateRange
-     * @param bool $includeEmptyPages
-     * @param int $depth
-     * @param string $useful
-     */
     public function __construct(
         string $lang = '',
         string $startDate = '',
         string $endDate = '',
         string $dateRange ='1 day',
-        bool $includeEmptyPages = false,
         int $depth = 1,
-        string $useful = '',
-        string $includeFixedTechnicalProblem = '0'
+        bool $includeEmptyPages = false,
+        string $useful = ""
     ) {
         $this->lang = $lang;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
-        $this->includeEmptyPages = $includeEmptyPages;
         $this->depth = $depth;
-        $this->useful = $useful;
         $this->dateRange = $dateRange;
         $this->extKey = 'qc_comments';
+        $this->includeEmptyPages = $includeEmptyPages;
+        $this->useful = $useful;
         $this->localizationUtility
             = GeneralUtility::makeInstance(LocalizationUtility::class);
-        $this->includeFixedTechnicalProblem = $includeFixedTechnicalProblem;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getIncludeEmptyPages(): bool
-    {
-        return $this->includeEmptyPages;
-    }
-
-    /**
-     * @param bool $includeEmptyPages
-     *
-     * @return Filter
-     */
-    public function setIncludeEmptyPages(bool $includeEmptyPages): Filter
-    {
-        $this->includeEmptyPages = $includeEmptyPages;
-        return $this;
     }
 
     /**
@@ -148,6 +116,24 @@ class Filter implements Arrayable
         $this->depth = $depth;
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getUseful(): string
+    {
+        return $this->useful;
+    }
+
+    /**
+     * @param string $useful
+     */
+    public function setUseful(string $useful): void
+    {
+
+        $this->useful = $useful == '' ? '%' : $useful;
+    }
+
 
     /**
      * @return string
@@ -189,7 +175,7 @@ class Filter implements Arrayable
         return $this->dateRange;
     }
 
-    public function getDateForRange($format = 'Y-m-d H:i:s')
+    public function getDateForRange($format = 'Y-m-d H:i:s'): string
     {
         return date($format, strtotime('-' . $this->getDateRange()));
     }
@@ -280,33 +266,15 @@ class Filter implements Arrayable
         ];
     }
 
-
-    /**
-     * @return string
-     */
-    public function getUseful(): string
-    {
-        return $this->useful;
-    }
-
-    /**
-     * @param string $useful
-     */
-    public function setUseful(string $useful): void
-    {
-        $this->useful = $useful;
-    }
-
-
     /**
      * @param string|null $startDate
      */
-    public function setStartDate(string $startDate = null)
+    public function setStartDate(string $startDate = null): void
     {
-        $this->startDate = $startDate;
+        $this->startDate = $startDate ?? '';
     }
 
-    public function getStartDate()
+    public function getStartDate(): string
     {
         return $this->startDate;
     }
@@ -314,12 +282,12 @@ class Filter implements Arrayable
     /**
      * @param string|null $endDate
      */
-    public function setEndDate(string $endDate = null)
+    public function setEndDate(string $endDate = null): void
     {
-        $this->endDate = $endDate;
+        $this->endDate = $endDate ?? '';
     }
 
-    public function getEndDate()
+    public function getEndDate(): string
     {
         return $this->endDate;
     }
@@ -327,16 +295,20 @@ class Filter implements Arrayable
     /**
      * @return bool
      */
-    public function getIncludeFixedTechnicalProblem():bool{
-        return $this->includeFixedTechnicalProblem;
+    public function getIncludeEmptyPages(): bool
+    {
+        return $this->includeEmptyPages;
     }
 
     /**
-     * @param bool $includeFixedTechnicalProblem
+     * @param bool $includeEmptyPages
+     *
+     * @return Filter
      */
-    public function setIncludeFixedTechnicalProblem(bool $includeFixedTechnicalProblem): void
+    public function setIncludeEmptyPages(bool $includeEmptyPages): Filter
     {
-        $this->includeFixedTechnicalProblem = $includeFixedTechnicalProblem;
+        $this->includeEmptyPages = $includeEmptyPages;
+        return $this;
     }
 
     /**
@@ -365,6 +337,20 @@ class Filter implements Arrayable
         return $criteria;
     }
 
+
+    /**
+     * This function is used to check for the useful field filter
+     * @return string
+     */
+    abstract public function getUsibiltyCriteria():string;
+
+    /**
+     * This function is used to check if we display the deleted record or not
+     * @return bool
+     */
+    abstract public function getRecordVisbility():bool;
+
+
     /**
      * @return array
      */
@@ -375,10 +361,9 @@ class Filter implements Arrayable
           self::KEY_START_DATE => $this->getStartDate() ?? '',
           self::KEY_END_DATE => $this->getEndDate()  ?? '',
           self::KEY_DATE_RANGE => $this->getDateRange()  ?? '',
-          self::KEY_INCLUDE_EMPTY_PAGES => $this->getIncludeEmptyPages() ?? false,
           self::KEY_DEPTH => $this->getDepth()  ?? '',
+          self::KEY_INCLUDE_EMPTY_PAGES => $this->getIncludeEmptyPages() ?? false,
           self::KEY_USEFUL => $this->getUseful() ?? '',
-          self::KEY_INCLUDE_FIXED_TECHNICAL_PROBLEM => $this->getIncludeFixedTechnicalProblem() ?? false
         ];
     }
 
@@ -387,17 +372,16 @@ class Filter implements Arrayable
      * @param array $values
      * @return Filter
      */
-    public static function getInstanceFromArray(array $values): Filter
+        public static function getInstanceFromArray(array $values)
     {
-        return new Filter(
+
+      /*  return new Filter(
             $values[self::KEY_LANG],
             $values[self::KEY_START_DATE],
             $values[self::KEY_END_DATE],
             $values[self::KEY_DATE_RANGE],
-            $values[self::KEY_INCLUDE_EMPTY_PAGES],
             $values[self::KEY_DEPTH],
-            $values[self::KEY_USEFUL],
             $values[self::KEY_INCLUDE_FIXED_TECHNICAL_PROBLEM] ?? false
-        );
+        );*/
     }
 }

@@ -15,7 +15,9 @@ namespace Qc\QcComments\Service;
 
 
 use Psr\Http\Message\ResponseInterface;
+use Qc\QcComments\Domain\Filter\CommentsFilter;
 use Qc\QcComments\Domain\Filter\Filter;
+use Qc\QcComments\Domain\Filter\StatisticsFilter;
 
 class StatisticsTabService extends QcBackendModuleService
 {
@@ -111,6 +113,51 @@ class StatisticsTabService extends QcBackendModuleService
             'row' => $result
         ];
     }
+
+
+    /**
+     * This function is used to generate a filter object from the ServerRequest
+     * @param ServerRequestInterface $request
+     * @return Filter
+     */
+    public function getFilterFromRequest(ServerRequestInterface $request): Filter
+    {
+        $filter = new StatisticsFilter();
+        $filter->setLang($request->getQueryParams()['parameters']['lang']);
+        $filter->setDepth(intval($request->getQueryParams()['parameters']['depth']));
+        $filter->setDateRange($request->getQueryParams()['parameters']['selectDateRange']);
+        $filter->setStartDate($request->getQueryParams()['parameters']['startDate'] ?? '');
+        $filter->setEndDate($request->getQueryParams()['parameters']['endDate'] ?? '');
+        return $filter;
+    }
+
+    /**
+     * This function is used to get the filter from the backend session
+     * @param Filter|null $filter
+     * @return Filter|null
+     */
+    public function processFilter(Filter $filter = null): ?Filter
+    {
+        // Add filtering to records
+        if ($filter === null) {
+            // Get filter from session if available
+            $filter = $this->backendSession->get('statisticsFilter');
+            if ($filter == null) {
+                $filter = new CommentsFilter();
+            }
+        } else {
+            if ($filter->getDateRange() != 'userDefined') {
+                $filter->setStartDate(null);
+                $filter->setEndDate(null);
+            }
+
+            $this->backendSession->store('statisticsFilter', $filter);
+        }
+        $this->commentsRepository->setFilter($filter);
+        $this->commentsRepository->setRootId($this->root_id);
+        return $filter;
+    }
+
 
     /**
      * This function is used to return the headers used in the exported file and the BE module table

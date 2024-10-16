@@ -2,7 +2,7 @@
 
 namespace Qc\QcComments\Controller\Backend;
 
-use Qc\QcComments\Domain\Filter\Filter;
+use Qc\QcComments\Domain\Filter\TechnicalProblemsFilter;
 use Qc\QcComments\Service\TechnicalProblemsTabService;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
@@ -15,12 +15,11 @@ class TechnicalProblemsBEController extends QcCommentsBEController
 {
 
     /**
-     * @param Filter|null $filter
+     * @param TechnicalProblemsFilter|null $filter
      * @param string $operation
      * @return ResponseInterface
-     * @throws Exception
      */
-    public function technicalProblemsAction(Filter $filter = null, string $operation = ''): ResponseInterface{
+    public function technicalProblemsAction(TechnicalProblemsFilter $filter = null, string $operation = ''): ResponseInterface{
 
         $this->qcBeModuleService
             = GeneralUtility::makeInstance(TechnicalProblemsTabService::class);
@@ -29,7 +28,7 @@ class TechnicalProblemsBEController extends QcCommentsBEController
         }
 
         if($operation === 'reset-filters'){
-            $filter = new Filter();
+            $filter = new TechnicalProblemsFilter();
         }
 
         $this->qcBeModuleService->getBackendSession()->store(
@@ -74,7 +73,6 @@ class TechnicalProblemsBEController extends QcCommentsBEController
              );
         }
         $filter = $this->qcBeModuleService->processFilter();
-        $filter->setUseful('NA');
         $this->moduleTemplate->assign('filter', $filter);
         return $this->moduleTemplate->renderResponse('TechnicalProblems');
     }

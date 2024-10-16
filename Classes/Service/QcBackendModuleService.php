@@ -60,7 +60,7 @@ class QcBackendModuleService
      */
     public function processFilter(Filter $filter = null): ?Filter
     {
-        // Add filtering to records
+      /*  // Add filtering to records
         if ($filter === null) {
             // Get filter from session if available
             $filter = $this->backendSession->get('filter');
@@ -77,7 +77,7 @@ class QcBackendModuleService
         }
         $this->commentsRepository->setFilter($filter);
         $this->commentsRepository->setRootId($this->root_id);
-        return $filter;
+        return $filter;*/
     }
 
 
@@ -162,24 +162,7 @@ class QcBackendModuleService
         return $response;
     }
 
-    /**
-     * This function is used to generate a filter object from the ServerRequest
-     * @param ServerRequestInterface $request
-     * @return Filter
-     */
-    public function getFilterFromRequest(ServerRequestInterface $request): Filter
-    {
-        $filter = new Filter();
-        $filter->setLang($request->getQueryParams()['parameters']['lang']);
-        $filter->setDepth(intval($request->getQueryParams()['parameters']['depth']));
-        $filter->setDateRange($request->getQueryParams()['parameters']['selectDateRange']);
-        $filter->setStartDate($request->getQueryParams()['parameters']['startDate'] ?? '');
-        $filter->setEndDate($request->getQueryParams()['parameters']['endDate'] ?? '');
-        $filter->setIncludeEmptyPages(
-$request->getQueryParams()['parameters']['includeEmptyPages'] === 'true'
-        );
-        return $filter;
-    }
+
 
     /**
      * This function is used to get the pages IDs
