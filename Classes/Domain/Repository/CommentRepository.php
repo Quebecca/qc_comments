@@ -252,12 +252,62 @@ class CommentRepository extends Repository
             // we add one more record to check if there are more than rendering results
             $data = $data->setMaxResults($limit + 1);
         }
-        return  $data
+        $rows =  $data
             ->execute()
             ->fetchAllAssociative();
+        // Check fo reason to get the dissatisfation result
+        if(get_class($this->filter) == "Qc\QcComments\Domain\Filter\StatisticsFilter"){
+            if($this->filter && $this->filter->getCommentReason() !== ""){
 
+
+            }
+        }
+        return $rows;
     }
 
+    /**
+     * This function is used to get the average dissatisfaction by page
+     * @param $pageUid
+     * @return float
+     */
+    public function getDissatisfactionAvg($pageUid) : float{
+        $queryBuilder = $this->generateQueryBuilder();
+        $queryBuilder->getRestrictions()->removeByType(DeletedRestriction::class);
+
+        $data =  $queryBuilder
+            ->select()
+            ->addSelectLiteral(
+                $queryBuilder->expr()->count('*', 'total'),
+            )
+            ->from($this->tableName)
+
+            ->where(
+                "uid_orig = ".$pageUid." and useful like '0'"
+            );
+        $total = $data
+            ->execute()
+            ->fetchAllAssociative()[0]['total'];
+
+
+        $queryBuilder = $this->generateQueryBuilder();
+        $queryBuilder->getRestrictions()->removeByType(DeletedRestriction::class);
+
+        $data =  $queryBuilder
+            ->select()
+            ->addSelectLiteral(
+                $queryBuilder->expr()->count('*', 'total'),
+            )
+            ->from($this->tableName)
+
+            ->where(
+                "uid_orig = ".$pageUid." and useful like '0' and reason_short_label like '".$this->filter->getCommentReason(). "'"
+            );
+        $reasonTotal = $data
+            ->execute()
+            ->fetchAllAssociative()[0]['total'];
+
+        return $reasonTotal / $total;
+    }
 
     /**
      * This function is used to get the total number of non-empty comments

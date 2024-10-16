@@ -55,6 +55,13 @@ class StatisticsBEController extends QcCommentsBEController
                 $this->addFlashMessage($message, null, AbstractMessage::WARNING);
             }
             $statsByDepth = $this->qcBeModuleService->getStatisticsByDepth();
+
+
+            $dissatisfactionShare = [];
+          /*  if($filter->getCommentReason() != ""){
+
+            }*/
+
             $this->moduleTemplate->assignMultiple([
                 'headers' => $data['headers'],
                 'rows' => $data['rows'],

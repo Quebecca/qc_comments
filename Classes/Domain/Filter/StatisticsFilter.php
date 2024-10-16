@@ -2,8 +2,100 @@
 
 namespace Qc\QcComments\Domain\Filter;
 
+use Qc\QcComments\Configuration\TyposcriptConfiguration;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+
 class StatisticsFilter extends Filter
 {
+    protected const KEY_COMMENT_REASON= "commentReason";
+
+    /**
+     * @var string
+     */
+    protected string $commentReason = "%";
+
+    protected TyposcriptConfiguration $typoscriptConfiguration;
+
+    /**
+     * @param string $lang
+     * @param string $startDate
+     * @param string $endDate
+     * @param string $dateRange
+     * @param int $depth
+     * @param bool $includeEmptyPages
+     * @param string $useful
+     * @param string $commentReason
+     */
+    public function __construct(
+        string $lang = '',
+        string $startDate = '',
+        string $endDate = '',
+        string $dateRange ='1 day',
+        int $depth = 1,
+        bool $includeEmptyPages = false,
+        string $useful = '%',
+        string $commentReason = "%"
+    ) {
+        parent::__construct(
+            $lang,
+            $startDate,
+            $endDate,
+            $dateRange,
+            $depth,
+            $includeEmptyPages,
+            $useful
+        );
+        $this->commentReason = $commentReason;
+        $this->typoscriptConfiguration = GeneralUtility::makeInstance(TyposcriptConfiguration::class);
+        $this->typoscriptConfiguration->setConfigurationType(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+        $this->typoscriptConfiguration->setSettings('tx_qccomments');
+    }
+
+    /**
+     * This function is used to the options form typoscript and show them in the option field of the filter
+     * @return array
+     */
+    public function getCommentsReasons(): array
+    {
+        $options = $this->typoscriptConfiguration->getNegativeCommentsReasonsForBE();
+        $filterOptions = [];
+        $filterOptions[''] = 'Tous';
+        foreach ($options as $key => $values) {
+            $filterOptions[$values['short_label']] = $values['short_label'];
+        }
+        return $filterOptions;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCommentReason(): string
+    {
+        return $this->commentReason;
+    }
+
+    /**
+     * @param string $commentReason
+     */
+    public function setCommentReason(string $commentReason): void
+    {
+        $this->commentReason = $commentReason == '' ? '%' : $commentReason;
+    }
+
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return array_merge(
+            parent::toArray(),
+            [
+                self::KEY_COMMENT_REASON => $this->getCommentReason() ?? "%"
+            ]
+        );
+    }
 
     /**
      * This function is used to map array to filter object
@@ -19,7 +111,9 @@ class StatisticsFilter extends Filter
             $values[parent::KEY_DATE_RANGE],
             $values[parent::KEY_DEPTH],
             $values[parent::KEY_INCLUDE_EMPTY_PAGES],
-            $values[parent::KEY_USEFUL]
+            $values[parent::KEY_USEFUL],
+            $values[self::KEY_COMMENT_REASON] ?? "%"
+
         );
     }
 

@@ -200,7 +200,6 @@ class QcBackendModuleService
             $item['total_pos'] = $item['total_pos'] ?: '0';
 
             $rows[] = $item;
-
         }
         return $rows;
     }

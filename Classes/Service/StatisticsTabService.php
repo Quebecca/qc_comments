@@ -22,6 +22,7 @@ use Qc\QcComments\Domain\Filter\StatisticsFilter;
 class StatisticsTabService extends QcBackendModuleService
 {
 
+    protected StatisticsFilter $filter;
     protected bool $showStatisticsForHiddenPage;
 
     public function __construct()
@@ -57,6 +58,29 @@ class StatisticsTabService extends QcBackendModuleService
 
     }
 
+
+    /**
+     * This function is used to format the statistics data and the avg of dissatisfaction by page and reason
+     * @param $data
+     * @return array
+     */
+    public function statisticsDataFormatting($data) : array {
+        $rows = [];
+        foreach ($data as $item) {
+            $item['total_neg'] = $item['total'] - $item['total_pos'];
+            $total = $item['total_pos'];
+            $item['avg'] = $item['total'] > 0 ?
+                ' ' . number_format((($total) / $item['total']), 2) * 100 . ' %'
+                : '0 %';
+            $item['total_pos'] = $item['total_pos'] ?: '0';
+            if($this->filter->getCommentReason() !== '%'){
+                $avg = $this->commentsRepository->getDissatisfactionAvg($item['page_uid']);
+                $item['dissatisfaction'] = number_format(($avg), 2) * 100 . ' %';
+            }
+            $rows[] = $item;
+        }
+        return $rows;
+    }
 
     /**
      * This function is used to get the statistics data by depth
@@ -107,7 +131,6 @@ class StatisticsTabService extends QcBackendModuleService
         $headers = $this->getHeaders();
         $headers['totalNonEmptyComments'] = $this->localizationUtility
                                         ->translate(self::QC_LANG_FILE . 'stats.h.nonEmptyComment');
-
         return [
             'headers' => $headers,
             'row' => $result
@@ -155,6 +178,7 @@ class StatisticsTabService extends QcBackendModuleService
         }
         $this->commentsRepository->setFilter($filter);
         $this->commentsRepository->setRootId($this->root_id);
+        $this->filter = $filter;
         return $filter;
     }
 

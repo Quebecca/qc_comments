@@ -23,6 +23,15 @@
             />
         </div>
         <div class="col-md-2">
+            <label>Raison d'insatisfaction</label>
+            <f:form.select property="commentReason"
+                           options="{filter.commentsReasons}"
+                           optionLabelField="title"
+                           class="form-control form-select"
+                           id="commentReason"
+            />
+        </div>
+        <div class="col-md-2">
             <label>{f:translate(key: 'filter.dateRange', extensionName : 'qc_comments')}</label>
             <f:form.select property="dateRange"
                            options="{filter.dateRangeOptions}"

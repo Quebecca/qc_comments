@@ -5,6 +5,9 @@
             <f:for as="header" each="{headers}" iteration="iterator">
                 <th>{header}</th>
             </f:for>
+            <f:if condition="{rows.0.dissatisfaction}">
+                <th>Part d'insatisfaction</th>
+            </f:if>
         </tr>
         </thead>
         <tbody>
@@ -21,6 +24,9 @@
                 <td>{row.total_neg}</td>
                 <td>{row.total}</td>
                 <td>{row.avg}</td>
+                <f:if condition="{row.dissatisfaction}">
+                    <td>{row.dissatisfaction}</td>
+                </f:if>
             </tr>
         </f:for>
         </tbody>
