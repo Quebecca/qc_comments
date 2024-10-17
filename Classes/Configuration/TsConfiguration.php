@@ -69,64 +69,49 @@ class TsConfiguration
     }
 
     /**
+     * @param $moduleName
      * @return string
      */
-    public function getCommentsOrderType() : string {
-        if($this->tsConfig['comments.']['orderType'] == null
-            || !in_array(strtoupper($this->tsConfig['comments.']['orderType']), ['ASC', 'DESC'])){
+    public function getOrderType($moduleName) : string {
+        if($this->tsConfig[$moduleName.'.']['orderType'] == null
+            || !in_array(strtoupper($this->tsConfig[$moduleName.'.']['orderType']), ['ASC', 'DESC'])){
             return 'DESC';
         }
-        return $this->tsConfig['comments.']['orderType'];
+        return $this->tsConfig[$moduleName.'.']['orderType'];
     }
 
-    /**
-     * @return string
 
+    /**
+     * @param $moduleName
+     * @return string
      */
-    public function getCommentsMaxRecords(): string {
-        if($this->tsConfig['comments.']['maxRecords'] == null
-            || !is_numeric($this->tsConfig['comments.']['maxRecords'])){
+    public function getMaxRecords($moduleName): string {
+        if($this->tsConfig[$moduleName.'.']['maxRecords'] == null
+            || !is_numeric($this->tsConfig[$moduleName.'.']['maxRecords'])){
             return '100';
         }
-        return $this->tsConfig['comments.']['maxRecords'];
+        return $this->tsConfig[$moduleName.'.']['maxRecords'];
     }
 
     /**
      * @return string
      */
-    public function getCommentsNumberOfSubPages() : string {
-        if($this->tsConfig['comments.']['numberOfSubPages'] == null
-            || !is_numeric($this->tsConfig['comments.']['numberOfSubPages'])){
+    public function getNumberOfSubPages($moduleName) : string {
+        if($this->tsConfig[$moduleName.'.']['numberOfSubPages'] == null
+            || !is_numeric($this->tsConfig[$moduleName.'.']['numberOfSubPages'])){
             return '50';
         }
-        return $this->tsConfig['comments.']['numberOfSubPages'];
+        return $this->tsConfig[$moduleName.'.']['numberOfSubPages'];
     }
 
-    /**
-     * @return string
-     */
-    public function getStatisticsMaxRecords(): string {
-        if($this->tsConfig['statistics.']['maxRecords'] == null
-            || !is_numeric($this->tsConfig['statistics.']['maxRecords'])){
-            return '30';
-        }
-        return $this->tsConfig['statistics.']['maxRecords'];
-    }
 
     /**
+     * @param $moduleName
      * @return bool
      */
-    public function showStatisticsForHiddenPage(): bool
+    public function showForHiddenPage($moduleName): bool
     {
-        return ($this->tsConfig['statistics.']['showStatisticsForHiddenPages'] ?? false) == '1';
-    }
-
-    /**
-     * @return bool
-     */
-    public function showCommentsForHiddenPage(): bool
-    {
-        return ($this->tsConfig['comments.']['showCommentsForHiddenPages'] ?? false) == '1';
+        return ($this->tsConfig[$moduleName.'.']['showRecordsForHiddenPages'] ?? false) == '1';
     }
 
     /**

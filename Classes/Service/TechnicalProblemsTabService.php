@@ -22,7 +22,7 @@ class TechnicalProblemsTabService extends QcBackendModuleService
     public function __construct()
     {
         parent::__construct();
-        $this->showCommentsForHiddenPage = $this->tsConfiguration->showCommentsForHiddenPage();
+        $this->showCommentsForHiddenPage = $this->tsConfiguration->showForHiddenPage("technicalProblems");
     }
 
     /**
@@ -35,11 +35,11 @@ class TechnicalProblemsTabService extends QcBackendModuleService
     {
         $pages_ids = $this->commentsRepository->getPageIdsList();
 
-        $maxRecords = $this->tsConfiguration->getCommentsMaxRecords();
+        $maxRecords = $this->tsConfiguration->getMaxRecords("technicalProblems");
 
-        $numberOfSubPages = $this->tsConfiguration->getCommentsNumberOfSubPages();
+        $numberOfSubPages = $this->tsConfiguration->getNumberOfSubPages("technicalProblems");
 
-        $orderType = $this->tsConfiguration->getCommentsOrderType();
+        $orderType = $this->tsConfiguration->getOrderType("technicalProblems");
 
         $tooMuchPages = count($pages_ids) > $numberOfSubPages;
         $pages_ids = array_slice(

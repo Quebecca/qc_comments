@@ -29,14 +29,14 @@ class StatisticsTabService extends QcBackendModuleService
     {
         parent::__construct();
         $this->showStatisticsForHiddenPage
-            = $this->tsConfiguration->showStatisticsForHiddenPage();
+            = $this->tsConfiguration->showForHiddenPage("statistics");
     }
 
     public function getPageStatistics(): array
     {
         $pages_ids = $this->commentsRepository->getPageIdsList();
         $currentPageId = $this->root_id;
-        $maxRecords = $this->tsConfiguration->getStatisticsMaxRecords();
+        $maxRecords = $this->tsConfiguration->getMaxRecords("statistics");
         $resultData = $this->commentsRepository
                         ->getStatistics(
                             $pages_ids,

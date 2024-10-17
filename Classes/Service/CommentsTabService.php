@@ -31,7 +31,7 @@ class CommentsTabService extends QcBackendModuleService
     public function __construct()
     {
         parent::__construct();
-        $this->showCommentsForHiddenPage = $this->tsConfiguration->showCommentsForHiddenPage();
+        $this->showCommentsForHiddenPage = $this->tsConfiguration->showForHiddenPage("comments");
     }
 
     /**
@@ -44,11 +44,11 @@ class CommentsTabService extends QcBackendModuleService
     {
         $pages_ids = $this->commentsRepository->getPageIdsList();
 
-        $maxRecords = $this->tsConfiguration->getCommentsMaxRecords();
+        $maxRecords = $this->tsConfiguration->getMaxRecords("comments");
 
-        $numberOfSubPages = $this->tsConfiguration->getCommentsNumberOfSubPages();
+        $numberOfSubPages = $this->tsConfiguration->getNumberOfSubPages("comments");
 
-        $orderType = $this->tsConfiguration->getCommentsOrderType();
+        $orderType = $this->tsConfiguration->getOrderType("comments");
 
         $tooMuchPages = count($pages_ids) > $numberOfSubPages;
         $pages_ids = array_slice(

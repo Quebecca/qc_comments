@@ -3,9 +3,9 @@ mod{
         technicalProblems {
           // Order by comment date
           orderType = DESC
-          maxRecords = 100
+          maxRecords = 50
           numberOfSubPages = 50
-          showTechnicalProblemsForHiddenPages = 1
+          showRecordsForHiddenPages = 1
           enableFixButton = 1
         }
         comments {
@@ -13,12 +13,12 @@ mod{
             orderType = DESC
             maxRecords = 100
             numberOfSubPages = 50
-            showCommentsForHiddenPages = 1
+            showRecordsForHiddenPages = 1
             enableDeleteButton = 1
         }
         statistics {
             maxRecords = 30
-            showStatisticsForHiddenPages = 1
+            showRecordsForHiddenPages = 0
         }
 
         csvExport {
