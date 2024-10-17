@@ -163,7 +163,8 @@ class CommentRepository extends Repository
                 ->fetchAllAssociative();
         $rows = [];
         foreach ($data as $item) {
-            $rows[$item['uid']][] = $item;
+            $rows[$item['uid']]['records'][] = $item;
+            $rows[$item['uid']]['title'] = $item['title'];
         }
         return $rows;
     }
@@ -217,9 +218,10 @@ class CommentRepository extends Repository
      * @param $page_ids
      * @param $limit
      * @param false $showForHiddenPages
+     * @param array $comments
      * @return array
      */
-    public function getStatistics($page_ids, $limit,bool $showForHiddenPages = false): array
+    public function getStatistics($page_ids, $limit,bool $showForHiddenPages = false, array $comments = []): array
     {
         $queryBuilder = $this->generateQueryBuilder();
         if($showForHiddenPages){
@@ -228,7 +230,7 @@ class CommentRepository extends Repository
         $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
         $constraints = $this->getConstraints($page_ids, false);
         //@todo : only for comments and problems module
-        $queryBuilder->getRestrictions()->removeByType(DeletedRestriction::class);
+        //$queryBuilder->getRestrictions()->removeByType(DeletedRestriction::class);
         $data =  $queryBuilder
             ->select('p.uid as page_uid', 'p.title as page_title')
             ->addSelectLiteral(
@@ -255,14 +257,15 @@ class CommentRepository extends Repository
         $rows =  $data
             ->execute()
             ->fetchAllAssociative();
-        // Check fo reason to get the dissatisfation result
-        if(get_class($this->filter) == "Qc\QcComments\Domain\Filter\StatisticsFilter"){
-            if($this->filter && $this->filter->getCommentReason() !== ""){
-
-
+        if(!empty($comments)){
+            foreach ($rows as $row){
+                $comments[$row['page_uid']]['avg'] = $row['avg'];
+                $comments[$row['page_uid']]['total_pos'] = $row['total_pos'];
+                $comments[$row['page_uid']]['total'] = $row['total'];
             }
+            return $comments;
         }
-        return $rows;
+       return $rows;
     }
 
     /**

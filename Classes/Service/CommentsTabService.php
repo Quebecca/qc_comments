@@ -56,10 +56,8 @@ class CommentsTabService extends QcBackendModuleService
             0,
             $numberOfSubPages
         );
-        $stats = $this->commentsRepository
-            ->getStatistics($pages_ids, $maxRecords, $this->showCommentsForHiddenPage);
 
-        $comments = $this->commentsRepository
+        $commentsRecords = $this->commentsRepository
             ->getComments(
                 $pages_ids,
                 $maxRecords,
@@ -67,17 +65,18 @@ class CommentsTabService extends QcBackendModuleService
                 $this->showCommentsForHiddenPage
             );
 
-        $stats = $this->statisticsDataFormatting($stats);
+        $commentsWithStats = $this->commentsRepository
+            ->getStatistics($pages_ids, $maxRecords, $this->showCommentsForHiddenPage, $commentsRecords);
+        $comments = $this->statisticsDataFormatting($commentsWithStats);
 
-        $tooMuchResults = $this->commentsRepository->getListCount() > $maxRecords
-                            || $tooMuchPages;
+        $tooMuchResults = $this->commentsRepository->getListCount() > $maxRecords || $tooMuchPages;
+
         $pagesId = $pages_ids;
         $currentPageId = $this->root_id;
         $commentHeaders = $this->getHeaders();
 
         return compact(
             'commentHeaders',
-            'stats',
             'comments',
             'pagesId',
             'currentPageId',

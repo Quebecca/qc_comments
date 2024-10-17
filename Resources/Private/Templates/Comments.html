@@ -28,12 +28,12 @@
                           resetButton:resetButton}"
                 />
                 <br>
-                <f:if condition="{stats -> f:count()} == 0">
+                <f:if condition="{comments -> f:count()} == 0">
                     <f:then>
                         <div class="no-page">{f:translate(key:'no-result')}</div>
                     </f:then>
                     <f:else>
-                        <f:render section="stats" arguments="{_all}"/>
+                        <f:render section="comments" arguments="{_all}"/>
                     </f:else>
                 </f:if>
 
@@ -41,13 +41,13 @@
         </f:else>
     </f:if>
 </f:section>
-<f:section name="stats">
-    <f:for as="stat" each="{stats}" iteration="iterator">
+<f:section name="comments">
+    <f:for as="item" each="{comments}" key="pageUid" iteration="iterator">
         <div class="panel panel-space panel-default recordlist">
             <div class="panel-heading">
-                {stat.page_uid} - {stat.page_title} ({stat.avg})
+                {pageUid} - {item.title} ({item.avg})
             </div>
-            <f:render partial="Tables/CommentsTable" arguments="{rows:'{comments.{stat.page_uid}}', headers:commentHeaders, isDeleteButtonEnabled:isDeleteButtonEnabled}"/>
+            <f:render partial="Tables/CommentsTable" arguments="{rows:'{item.records}', headers:commentHeaders, isDeleteButtonEnabled:isDeleteButtonEnabled}"/>
         </div>
     </f:for>
 </f:section>

@@ -2,18 +2,14 @@
 
 namespace Qc\QcComments\Controller\Backend;
 
-use Qc\QcComments\Domain\Filter\CommentsFilter;
 use Qc\QcComments\Domain\Filter\DeletedCommentsFilter;
 use Qc\QcComments\Service\CommentsTabService;
 use Qc\QcComments\Service\DeletedCommentsTabService;
-use Qc\QcComments\Service\TechnicalProblemsTabService;
-use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use TYPO3\CMS\Extbase\Http\ForwardResponse;
 
 
 class DeletedCommentBEController extends QcCommentsBEController
@@ -63,7 +59,6 @@ class DeletedCommentBEController extends QcCommentsBEController
                 ->assignMultiple(
                     [
                         'commentHeaders' => $data['commentHeaders'],
-                        'stats' => $data['stats'],
                         'comments' => $data['comments'],
                         'pagesId' => $data['pagesId'],
                         'currentPageId' => $data['currentPageId'],

@@ -58,8 +58,6 @@ class DeletedCommentsTabService extends QcBackendModuleService
             0,
             $numberOfSubPages
         );
-        $stats = $this->commentsRepository
-            ->getStatistics($pages_ids, $maxRecords, $this->showCommentsForHiddenPage);
 
         $comments = $this->commentsRepository
             ->getComments(
@@ -69,17 +67,13 @@ class DeletedCommentsTabService extends QcBackendModuleService
                 $this->showCommentsForHiddenPage
             );
 
-        $stats = $this->statisticsDataFormatting($stats);
-
         $tooMuchResults = $this->commentsRepository->getListCount() > $maxRecords
                             || $tooMuchPages;
         $pagesId = $pages_ids;
         $currentPageId = $this->root_id;
         $commentHeaders = $this->getHeaders();
-
         return compact(
             'commentHeaders',
-            'stats',
             'comments',
             'pagesId',
             'currentPageId',

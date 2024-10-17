@@ -10,6 +10,7 @@ use Qc\QcComments\Domain\Repository\CommentRepository;
 use Qc\QcComments\Domain\Session\BackendSession;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -191,16 +192,14 @@ class QcBackendModuleService
      */
     public function statisticsDataFormatting($data) : array{
         $rows = [];
-        foreach ($data as $item) {
+        foreach ($data as $key => $item) {
             $item['total_neg'] = $item['total'] - $item['total_pos'];
             $total = $item['total_pos'];
             $item['avg'] = $item['total'] > 0 ?
                 ' ' . number_format((($total) / $item['total']), 2) * 100 . ' %'
                 : '0 %';
 
-            $item['total_pos'] = $item['total_pos'] ?: '0';
-
-            $rows[] = $item;
+            $rows[$key] = $item;
         }
         return $rows;
     }
@@ -210,7 +209,7 @@ class QcBackendModuleService
      * This function is used to mark the technical problem as solved
      * @param $recordUid
      * @return bool
-     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
+     * @throws AspectNotFoundException
      */
     public function deletedComment($recordUid) : bool
     {
