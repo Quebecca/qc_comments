@@ -18,7 +18,7 @@
         <f:else>
             <div class="statistic_sections">
                 <f:flashMessages/>
-                <f:render partial="StatisticsFilters"
+                <f:render partial="Filters/StatisticsFilters"
                           arguments="{
                               action: 'statistics',
                               filter: filter,
@@ -54,7 +54,7 @@
         <div class="panel-heading">
             {f:translate(key: 'comments', extensionName : 'qc_comments')}
         </div>
-        <f:render partial="StatsTable" arguments="{rows:rows, headers:headers, settings:settings}"/>
+        <f:render partial="Tables/StatsTable" arguments="{rows:rows, headers:headers, settings:settings}"/>
     </div>
 </f:section>
 

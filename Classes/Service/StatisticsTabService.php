@@ -166,7 +166,7 @@ class StatisticsTabService extends QcBackendModuleService
             // Get filter from session if available
             $filter = $this->backendSession->get('statisticsFilter');
             if ($filter == null) {
-                $filter = new CommentsFilter();
+                $filter = new StatisticsFilter();
             }
         } else {
             if ($filter->getDateRange() != 'userDefined') {

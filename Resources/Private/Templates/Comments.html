@@ -17,7 +17,7 @@
         <f:else>
             <div class="comments-sections">
                 <f:flashMessages/>
-                <f:render partial="CommentsFilters"
+                <f:render partial="Filters/CommentsFilters"
                           arguments="{
                           action: 'comments',
                           currentPageId : currentPageId,
@@ -47,7 +47,7 @@
             <div class="panel-heading">
                 {stat.page_uid} - {stat.page_title} ({stat.avg})
             </div>
-            <f:render partial="CommentsTable" arguments="{rows:'{comments.{stat.page_uid}}', headers:commentHeaders}"/>
+            <f:render partial="Tables/CommentsTable" arguments="{rows:'{comments.{stat.page_uid}}', headers:commentHeaders}"/>
         </div>
     </f:for>
 </f:section>
