@@ -67,15 +67,13 @@ class Comment extends AbstractEntity
      */
     protected string $reasonShortLabel = '';
 
-    /**
-     * @var int
-     */
-    protected int $userUidFixingProblem = 0;
+
+    protected int $deletedByUserUid = 0;
 
     /**
      * @var string
      */
-    protected string $fixingDate = '';
+    protected string $deletingDate = '';
 
     /**
      * @var int
@@ -179,6 +177,21 @@ class Comment extends AbstractEntity
     }
 
     /**
+     * @param int $deletedByUserUid
+     */
+    public function setDeletedByUserUid(int $deletedByUserUid): void
+    {
+        $this->deletedByUserUid = $deletedByUserUid;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDeletedByUserUid(): int
+    {
+        return $this->deletedByUserUid;
+    }
+    /**
      * @return string
      */
     public function getReasonCode(): string
@@ -241,36 +254,21 @@ class Comment extends AbstractEntity
         return $this->submittedFormUid;
     }
 
-    /**
-     * @return int
-     */
-    public function getUserUidFixingProblem(): int
-    {
-        return $this->userUidFixingProblem;
-    }
-
-    /**
-     * @param int $userUidFixingProblem
-     */
-    public function setUserUidFixingProblem(int $userUidFixingProblem): void
-    {
-        $this->userUidFixingProblem = $userUidFixingProblem;
-    }
 
     /**
      * @return string
      */
-    public function getFixingDate(): string
+    public function getDeletingDate(): string
     {
-        return $this->fixingDate;
+        return $this->deletingDate;
     }
 
     /**
-     * @param string $fixingDate
+     * @param string $deletingDate
      */
-    public function setFixingDate(string $fixingDate): void
+    public function setDeletingDate(string $deletingDate): void
     {
-        $this->fixingDate = $fixingDate;
+        $this->deletingDate = $deletingDate;
     }
 
     /**

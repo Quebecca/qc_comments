@@ -22,5 +22,7 @@ services:
   Qc\QcComments\Controller\Backend\CommentsBEController:
     tags: [ 'backend.controller' ]
 
+  Qc\QcComments\Controller\Backend\DeletedCommentsBEController:
+    tags: [ 'backend.controller' ]
 
 

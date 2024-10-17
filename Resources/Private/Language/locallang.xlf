@@ -9,6 +9,9 @@
 			<trans-unit id="comments">
 				<source>Comments</source>
 			</trans-unit>
+			<trans-unit id="deleted_comments">
+				<source>Deleted comments</source>
+			</trans-unit>
 			<trans-unit id="stats">
 				<source>Statistics</source>
 			</trans-unit>
@@ -116,6 +119,12 @@
 			</trans-unit>
 			<trans-unit id="comments.h.comment">
 				<source>Comment</source>
+			</trans-unit>
+			<trans-unit id="comments.h.deleted_by">
+				<source>Deleted by</source>
+			</trans-unit>
+			<trans-unit id="comments.h.deleted_on">
+				<source>Deleted on</source>
 			</trans-unit>
 			<trans-unit id="comments.h.comment_option">
 				<source>Comment</source>

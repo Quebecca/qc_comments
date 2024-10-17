@@ -9,6 +9,9 @@
             <trans-unit id="comments">
                 <target>Commentaires</target>
             </trans-unit>
+			<trans-unit id="deleted_comments">
+				<target>Commentaires supprimés</target>
+			</trans-unit>
             <trans-unit id="stats">
                 <target>Statistiques</target>
             </trans-unit>
@@ -124,6 +127,12 @@
             <trans-unit id="comments.h.comment">
                 <target>Commentaire</target>
             </trans-unit>
+			<trans-unit id="comments.h.deleted_by">
+				<target>Retiré par</target>
+			</trans-unit>
+			<trans-unit id="comments.h.deleted_on">
+				<target>Retiré le</target>
+			</trans-unit>
 		   <trans-unit id="comments.h.comment_option">
 				<target>Option sélectionnée</target>
 			</trans-unit>

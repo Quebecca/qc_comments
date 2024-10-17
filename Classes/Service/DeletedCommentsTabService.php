@@ -2,15 +2,26 @@
 
 namespace Qc\QcComments\Service;
 
+/***
+ *
+ * This file is part of Qc Comments project.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ *  (c) 2023 <techno@quebec.ca>
+ *
+ ***/
+
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
+use Qc\QcComments\Domain\Filter\CommentsFilter;
+use Qc\QcComments\Domain\Filter\DeletedCommentsFilter;
 use Qc\QcComments\Domain\Filter\Filter;
-use Qc\QcComments\Domain\Filter\TechnicalProblemsFilter;
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Psr\Http\Message\ServerRequestInterface;
 
-class TechnicalProblemsTabService extends QcBackendModuleService
+class DeletedCommentsTabService extends QcBackendModuleService
 {
     /**
      * @var bool
@@ -22,7 +33,7 @@ class TechnicalProblemsTabService extends QcBackendModuleService
     public function __construct()
     {
         parent::__construct();
-        $this->showCommentsForHiddenPage = $this->tsConfiguration->showForHiddenPage("technicalProblems");
+        $this->showCommentsForHiddenPage = $this->tsConfiguration->showForHiddenPage("deletedComments");
     }
 
     /**
@@ -35,11 +46,11 @@ class TechnicalProblemsTabService extends QcBackendModuleService
     {
         $pages_ids = $this->commentsRepository->getPageIdsList();
 
-        $maxRecords = $this->tsConfiguration->getMaxRecords("technicalProblems");
+        $maxRecords = $this->tsConfiguration->getMaxRecords("deletedComments");
 
-        $numberOfSubPages = $this->tsConfiguration->getNumberOfSubPages("technicalProblems");
+        $numberOfSubPages = $this->tsConfiguration->getNumberOfSubPages("deletedComments");
 
-        $orderType = $this->tsConfiguration->getOrderType("technicalProblems");
+        $orderType = $this->tsConfiguration->getOrderType("deletedComments");
 
         $tooMuchPages = count($pages_ids) > $numberOfSubPages;
         $pages_ids = array_slice(
@@ -58,10 +69,10 @@ class TechnicalProblemsTabService extends QcBackendModuleService
                 $this->showCommentsForHiddenPage
             );
 
-
         $stats = $this->statisticsDataFormatting($stats);
+
         $tooMuchResults = $this->commentsRepository->getListCount() > $maxRecords
-            || $tooMuchPages;
+                            || $tooMuchPages;
         $pagesId = $pages_ids;
         $currentPageId = $this->root_id;
         $commentHeaders = $this->getHeaders();
@@ -79,7 +90,6 @@ class TechnicalProblemsTabService extends QcBackendModuleService
 
     }
 
-
     /**
      * This function is used to generate a filter object from the ServerRequest
      * @param ServerRequestInterface $request
@@ -87,15 +97,19 @@ class TechnicalProblemsTabService extends QcBackendModuleService
      */
     public function getFilterFromRequest(ServerRequestInterface $request): Filter
     {
-        $filter = new TechnicalProblemsFilter();
+        $filter = new DeletedCommentsFilter();
         $filter->setLang($request->getQueryParams()['parameters']['lang']);
         $filter->setDepth(intval($request->getQueryParams()['parameters']['depth']));
         $filter->setDateRange($request->getQueryParams()['parameters']['selectDateRange']);
         $filter->setStartDate($request->getQueryParams()['parameters']['startDate'] ?? '');
         $filter->setEndDate($request->getQueryParams()['parameters']['endDate'] ?? '');
-        $filter->setIncludeFixedTechnicalProblem($request->getQueryParams()['parameters']['includeFixedTechnicalProblem'] ?? '');
+        $filter->setIncludeEmptyPages(
+            $request->getQueryParams()['parameters']['includeEmptyPages'] === 'true'
+        );
+        $filter->setUseful($request->getQueryParams()['parameters']['useful'] ?? '');
         return $filter;
     }
+
     /**
      * This function is used to get the filter from the backend session
      * @param Filter|null $filter
@@ -103,31 +117,31 @@ class TechnicalProblemsTabService extends QcBackendModuleService
      */
     public function processFilter(Filter $filter = null): ?Filter
     {
-        // Add filtering to records
-        if ($filter === null) {
-            // Get filter from session if available
-            $filter = $this->backendSession->get('technicalProblemsFilter');
-            if ($filter == null) {
-                $filter = new TechnicalProblemsFilter();
-            }
-        } else {
-            if ($filter->getDateRange() != 'userDefined') {
-                $filter->setStartDate(null);
-                $filter->setEndDate(null);
-            }
+       // Add filtering to records
+          if ($filter === null) {
+              // Get filter from session if available
+              $filter = $this->backendSession->get('deletedCommentsFilter');
+              if ($filter == null) {
+                  $filter = new CommentsFilter();
+              }
+          } else {
+              if ($filter->getDateRange() != 'userDefined') {
+                  $filter->setStartDate(null);
+                  $filter->setEndDate(null);
+              }
 
-            $this->backendSession->store('technicalProblemsFilter', $filter);
-        }
-        $this->commentsRepository->setFilter($filter);
-        $this->commentsRepository->setRootId($this->root_id);
-        return $filter;
+              $this->backendSession->store('deletedCommentsFilter', $filter);
+          }
+          $this->commentsRepository->setFilter($filter);
+          $this->commentsRepository->setRootId($this->root_id);
+          return $filter;
     }
 
     /**
      * @return bool
      */
-    public function isFixButtonEnabled() : bool {
-        return $this->tsConfiguration->isFixButtonEnabled();
+    public function isDeleteButtonEnabled() : bool {
+        return $this->tsConfiguration->isDeleteButtonEnabled();
     }
 
     /**
@@ -138,12 +152,11 @@ class TechnicalProblemsTabService extends QcBackendModuleService
     protected function getHeaders(bool $include_csv_headers = false): array
     {
         $headers = [];
-
-        foreach (['date_hour', 'description', 'type_problem','be_user_name', 'fix_date', ''] as $col) {
+        foreach (['date_hour', 'comment', 'useful', 'comment_option', 'deleted_by', 'deleted_on'] as $col) {
             $headers[$col] = $this->localizationUtility
                 ->translate(self::QC_LANG_FILE . 'comments.h.' . $col);
         }
-       if ($include_csv_headers) {
+        if ($include_csv_headers) {
             $headers = array_merge([
                 'page_uid' => $this->localizationUtility
                     ->translate(self::QC_LANG_FILE . 'csv.h.page_uid'),
@@ -154,6 +167,10 @@ class TechnicalProblemsTabService extends QcBackendModuleService
         return $headers;
     }
 
+    public function deleteComment($commentUid) {
+
+        $this->commentsRepository->deleteComment($commentUid);
+    }
 
     /**
      * @param Filter $filter

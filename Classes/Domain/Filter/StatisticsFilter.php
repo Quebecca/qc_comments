@@ -128,7 +128,7 @@ class StatisticsFilter extends Filter
     /**
      * @return bool
      */
-     public function getRecordVisbility() :bool{
+     public function getRecordVisibility() :bool{
         return false;
     }
 

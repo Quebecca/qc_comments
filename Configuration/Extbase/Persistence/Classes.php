@@ -13,7 +13,7 @@ return [
         'reason_long_label' => 'reasonLongLabel',
         'reason_short_label' => 'reasonShortLabel',
         'submitted_form_uid' => 'submittedFormUid',
-        'user_uid_fixing_problem' => 'userUidFixingProblem',
-        'fixing_date' => 'fixingDate'
+        'deleted_by_user_uid' => 'deletedByUserUid',
+        'deleting_date' => 'deletingDate'
     ],
 ];

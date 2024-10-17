@@ -16,6 +16,14 @@ mod{
             showRecordsForHiddenPages = 1
             enableDeleteButton = 1
         }
+        deletedComments {
+          // Order by comment date
+          orderType = DESC
+          maxRecords = 100
+          numberOfSubPages = 50
+          showRecordsForHiddenPages = 1
+          enableDeleteButton = 1
+        }
         statistics {
             maxRecords = 30
             showRecordsForHiddenPages = 0

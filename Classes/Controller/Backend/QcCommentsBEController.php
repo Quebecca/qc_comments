@@ -117,6 +117,12 @@ class QcCommentsBEController extends ActionController
                 ->setHref($this->uriBuilder->uriFor('technicalProblems', [], 'Backend\TechnicalProblemsBE'))
                 ->setActive($currentAction === 'technicalProblems')
         );
+        $menu->addMenuItem(
+            $menu->makeMenuItem()
+                ->setTitle('Deleted comments')
+                ->setHref($this->uriBuilder->uriFor('deletedComments', [], 'Backend\DeletedCommentBE'))
+                ->setActive($currentAction === 'deletedComments')
+        );
         $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
     }
 

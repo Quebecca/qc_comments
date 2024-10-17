@@ -1,4 +1,3 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:if condition="{rows -> f:count()} == 1 and !{rows.0.date_hour} ">
     <f:then>
         <div class="no-comment">
@@ -24,13 +23,18 @@
                 <f:for as="row" each="{rows}" iteration="iterator">
                     <tr class="t3js-entity{f:if(condition:iterator.isFirst, then:' firstcol', else:'')}">
                         <td>{row.date_hour}</td>
-                        <td >
+                        <td class="comment-row">
                             <div class="text-hover">
                                 {row.comment}
                             </div>
                         </td>
+                        <td>{row.useful}</td>
                         <td>
-                            {row.reason_short_label}
+                            <f:if condition="{row.reason_short_label} != ''">
+                                <f:then>{row.reason_short_label}</f:then>
+                                <f:else>--</f:else>
+                            </f:if>
+
                         </td>
                         <td>
                             <f:if condition="{row.realName}">
@@ -40,26 +44,6 @@
                         </td>
                         <td>
                             {row.deleting_date}
-                        </td>
-                        <td>
-                            <f:if condition="{row.deleted} == 1">
-                                <f:then>
-                                    <span style="color:green" class="font-weight-bold">Traité </span>
-                                </f:then>
-                                <f:else>
-                                    <f:if condition="{isFixButtonEnabled}">
-                                        <f:then>
-                                            <f:form action="markProblemAsFixed" >
-                                                <input type="hidden" name="technicalProblemUid" value="{row.recordUid}">
-                                                <f:form.submit value="Traité" class="btn btn-default"/>
-                                            </f:form>
-                                        </f:then>
-                                        <f:else>
-                                            --
-                                        </f:else>
-                                    </f:if>
-                                </f:else>
-                            </f:if>
                         </td>
                     </tr>
                 </f:for>

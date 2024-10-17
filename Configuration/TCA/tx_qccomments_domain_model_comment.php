@@ -171,16 +171,16 @@ return [
                 'type' => 'input',
             ],
         ],
-        'user_uid_fixing_problem' => [
+        'deleted_by_user_uid' => [
             'exclude' => true,
-            'label' => 'user_uid_fixing_problem',
+            'label' => 'deleted_by_user_uid',
             'config' => [
                 'type' => 'input',
             ],
         ],
-        'fixing_date' => [
+        'deleting_date' => [
             'exclude' => true,
-            'label' => 'fixing_date',
+            'label' => 'deleting_date',
             'config' => [
                 'type' => 'input',
             ],

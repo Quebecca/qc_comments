@@ -104,26 +104,6 @@
     </div>
     <br>
     <div class="row">
-        <div class="col-md-3">
-            <f:form.checkbox property="includeEmptyPages"
-                             value="1"
-                             id="includeEmptyPages"
-            />
-            <label class="form-check-label" for="includeEmptyPages">{f:translate(key: 'filter.includeEmptyPages', extensionName : 'qc_comments')}</label>
-
-        </div>
-        <f:comment>
-            <div class="col-md-3">
-                <f:form.checkbox property="includeDeletedComments"
-                                 value="1"
-                                 id="includeDeletedComments"
-                />
-                <label class="form-check-label" for="includeDeletedComments">Afficher les commentaires retirés</label>
-
-            </div>
-        </f:comment>
-
-
         <div class="col-md-4">
             <f:render section="buttons" arguments="{_all}"/>
         </div>

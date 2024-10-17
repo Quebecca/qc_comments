@@ -6,17 +6,9 @@ use Qc\QcComments\Configuration\TyposcriptConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
-class CommentsFilter extends Filter
+class DeletedCommentsFilter extends Filter
 {
-    protected const KEY_INCLUDE_DELETED_COMMENTS= false;
-
     protected const KEY_COMMENT_REASON= "commentReason";
-
-
-    /**
-     * @var bool
-     */
-    protected bool $includeDeletedComments = false;
 
     /**
      * @var string
@@ -34,7 +26,7 @@ class CommentsFilter extends Filter
      * @param int $depth
      * @param bool $includeEmptyPages
      * @param string $useful
-     * @param bool $includeDeletedComments
+
      * @param string $commentReason
      */
     public function __construct(
@@ -45,7 +37,6 @@ class CommentsFilter extends Filter
         int $depth = 1,
         bool $includeEmptyPages = false,
         string $useful = '%',
-        bool $includeDeletedComments = false,
         string $commentReason = "%"
     ) {
         parent::__construct(
@@ -57,7 +48,7 @@ class CommentsFilter extends Filter
             $includeEmptyPages,
             $useful
         );
-        $this->includeDeletedComments = $includeDeletedComments;
+
         $this->commentReason = $commentReason;
         $this->typoscriptConfiguration = GeneralUtility::makeInstance(TyposcriptConfiguration::class);
         $this->typoscriptConfiguration->setConfigurationType(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
@@ -87,7 +78,6 @@ class CommentsFilter extends Filter
         return array_merge(
             parent::toArray(),
             [
-                self::KEY_INCLUDE_DELETED_COMMENTS => $this->getIncludeDeletedComments() ?? false,
                 self::KEY_COMMENT_REASON => $this->getCommentReason() ?? "%"
             ]
         );
@@ -98,9 +88,9 @@ class CommentsFilter extends Filter
      * @param array $values
      * @return CommentsFilter
      */
-    public static function getInstanceFromArray(array $values): CommentsFilter
+    public static function getInstanceFromArray(array $values): DeletedCommentsFilter
     {
-        return  new CommentsFilter(
+        return  new DeletedCommentsFilter(
             $values[parent::KEY_LANG],
             $values[parent::KEY_START_DATE],
             $values[parent::KEY_END_DATE],
@@ -108,27 +98,10 @@ class CommentsFilter extends Filter
             $values[parent::KEY_DEPTH],
             $values[parent::KEY_INCLUDE_EMPTY_PAGES],
             $values[parent::KEY_USEFUL],
-            $values[self::KEY_INCLUDE_DELETED_COMMENTS] ?? false,
             $values[self::KEY_COMMENT_REASON] ?? "%",
         );
     }
 
-
-    /**
-     * @return bool
-     */
-    public function getIncludeDeletedComments(): bool
-    {
-        return $this->includeDeletedComments;
-    }
-
-    /**
-     * @param bool $includeDeletedComments
-     */
-    public function setIncludeDeletedComments(bool $includeDeletedComments): void
-    {
-        $this->includeDeletedComments = $includeDeletedComments;
-    }
 
     /**
      * @return string
@@ -164,7 +137,7 @@ class CommentsFilter extends Filter
      */
     public function getUsibiltyCriteria(): string
     {
-        $criteria =  " useful like '".$this->getUseful()."'";
+        $criteria =  " useful like '".$this->getUseful()."' and tx_qccomments_domain_model_comment.deleted = 1 and useful not like 'NA'";
         // we apply the reason only if the comment is negative
         if($this->getUseful() == '0'){
             $criteria .= "AND reason_short_label like '".$this->getCommentReason()."'";
@@ -176,6 +149,6 @@ class CommentsFilter extends Filter
      * @return bool
      */
     public function getRecordVisibility() :bool {
-        return $this->getIncludeDeletedComments();
+        return true;
     }
 }

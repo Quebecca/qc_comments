@@ -9,6 +9,7 @@ use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Domain\Repository\CommentRepository;
 use Qc\QcComments\Domain\Session\BackendSession;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -204,6 +205,27 @@ class QcBackendModuleService
         return $rows;
     }
 
+
+    /**
+     * This function is used to mark the technical problem as solved
+     * @param $recordUid
+     * @return bool
+     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
+     */
+    public function deletedComment($recordUid) : bool
+    {
+        $context = GeneralUtility::makeInstance(Context::class);
+        $userBeUid = $context->getPropertyFromAspect('backend.user', 'id');
+        $comment = $this->commentsRepository->findByUid($recordUid);
+        if($comment != null){
+            $comment->setDeletedByUserUid($userBeUid);
+            $comment->setDeletingDate(date('Y-m-d H:i:s'));
+            $comment->setDeleted(1);
+            $this->updateComment($comment);
+            $this->commentsRepository->persistenceManager->persistAll();
+        }
+        return true;
+    }
 
 
     public function getComment($commentUid){

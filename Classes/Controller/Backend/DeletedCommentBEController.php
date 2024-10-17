@@ -1,38 +1,41 @@
 <?php
+
 namespace Qc\QcComments\Controller\Backend;
 
-use Doctrine\DBAL\Driver\Exception;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Domain\Filter\CommentsFilter;
+use Qc\QcComments\Domain\Filter\DeletedCommentsFilter;
 use Qc\QcComments\Service\CommentsTabService;
+use Qc\QcComments\Service\DeletedCommentsTabService;
 use Qc\QcComments\Service\TechnicalProblemsTabService;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 
-class CommentsBEController extends QcCommentsBEController
+
+class DeletedCommentBEController extends QcCommentsBEController
 {
     /**
-     * @param CommentsFilter|null $filter
+     * @param DeletedCommentsFilter|null $filter
      * @param string $operation
      * @return ResponseInterface
      * @throws Exception
      */
-    public function commentsAction(CommentsFilter $filter = null, string $operation = ''): ResponseInterface {
-        $this->addMainMenu('comments');
+    public function deletedCommentsAction(DeletedCommentsFilter $filter = null, string $operation = ''): ResponseInterface {
+        $this->addMainMenu('deletedComments');
         if($operation === 'reset-filters'){
-            $filter = new CommentsFilter();
+            $filter = new DeletedCommentsFilter();
         }
         $this->qcBeModuleService
-            = GeneralUtility::makeInstance(CommentsTabService::class);
+            = GeneralUtility::makeInstance(DeletedCommentsTabService::class);
         $this->qcBeModuleService->getBackendSession()->store(
             'lastAction',
             [
                 'controllerName' => $this->controllerName,
-                'actionName' => 'comments'
+                'actionName' => 'deletedComments'
             ]);
 
 
@@ -70,25 +73,9 @@ class CommentsBEController extends QcCommentsBEController
         }
         $filter = $this->qcBeModuleService->processFilter($filter);
         $this->moduleTemplate->assign('filter', $filter);
-        return $this->moduleTemplate->renderResponse('Comments');
+        return $this->moduleTemplate->renderResponse('DeletedComments');
     }
 
-
-    /**
-     * This function is used to delete the comment
-     * @return ForwardResponse
-     * @throws AspectNotFoundException
-     */
-    public function deleteCommentAction()
-    {
-        $this->qcBeModuleService
-            = GeneralUtility::makeInstance(CommentsTabService::class);
-        $recordUid = $this->request->getArguments()['commentUid'];
-        if($recordUid){
-            $this->qcBeModuleService->deletedComment($recordUid);
-        }
-        return new ForwardResponse('comments');
-    }
 
     /**
      * This function is used to export comments records on a csv file
@@ -105,5 +92,6 @@ class CommentsBEController extends QcCommentsBEController
         $currentPageId = intval($request->getQueryParams()['parameters']['currentPageId']);
         return $this->qcBeModuleService->exportCommentsData($filter, $currentPageId);
     }
+
 
 }

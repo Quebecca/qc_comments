@@ -126,14 +126,14 @@ class CommentRepository extends Repository
 
         $constraints = $this->getConstraints($pages_ids);
 
-        if($this->filter->getRecordVisbility() === true){
+        if($this->filter->getRecordVisibility() === true){
             $queryBuilder->getRestrictions()->removeByType(DeletedRestriction::class);
         }
         $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
         $data= $queryBuilder
                 ->select(
                     'p.uid', $this->tableName.'.uid as recordUid',
-                    'beUsers.realName', 'beUsers.email',  'p.title', 'date_hour', 'comment', 'useful', 'fixing_date',
+                    'beUsers.realName', 'beUsers.email',  'p.title', 'date_hour', 'comment', 'useful', 'deleting_date',
                     'reason_short_label', $this->tableName.".deleted"
 
                 )
@@ -148,7 +148,7 @@ class CommentRepository extends Repository
                     $this->tableName,
                     'be_users',
                     'beUsers',
-                    'beUsers.uid = user_uid_fixing_problem'
+                    'beUsers.uid = deleted_by_user_uid'
                 )
                 ->where(
                     $constraints['whereClause']

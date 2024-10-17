@@ -18,6 +18,7 @@ namespace Qc\QcComments\Domain\Session;
 use __PHP_Incomplete_Class;
 use phpDocumentor\Reflection\Types\String_;
 use Qc\QcComments\Domain\Filter\CommentsFilter;
+use Qc\QcComments\Domain\Filter\DeletedCommentsFilter;
 use Qc\QcComments\Domain\Filter\StatisticsFilter;
 use Qc\QcComments\Domain\Filter\TechnicalProblemsFilter;
 use Qc\QcComments\Util\Arrayable;
@@ -50,6 +51,7 @@ class BackendSession
         $this->sessionObject = $GLOBALS['BE_USER'];
         $this->registerFilterKey('commentsFilter', CommentsFilter::class);
         $this->registerFilterKey('technicalProblemsFilter', TechnicalProblemsFilter::class);
+        $this->registerFilterKey('deletedCommentsFilter', DeletedCommentsFilter::class);
         $this->registerFilterKey('statisticsFilter', StatisticsFilter::class);
         $this->registerFilterKey('lastAction', String_::class);
     }

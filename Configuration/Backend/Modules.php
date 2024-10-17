@@ -1,6 +1,7 @@
 <?php
 
 use Qc\QcComments\Controller\Backend\CommentsBEController;
+use Qc\QcComments\Controller\Backend\DeletedCommentBEController;
 use Qc\QcComments\Controller\Backend\QcCommentsBEController;
 use Qc\QcComments\Controller\Backend\StatisticsBEController;
 use Qc\QcComments\Controller\Backend\TechnicalProblemsBEController;
@@ -31,6 +32,9 @@ return [
             TechnicalProblemsBEController::class => [
                 'technicalProblems',
                 'markProblemAsFixed'
+            ],
+            DeletedCommentBEController::class => [
+                'deletedComments',
             ]
         ]
     ],
