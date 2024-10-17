@@ -1,12 +1,20 @@
 mod{
     qcComments {
+        technicalProblems {
+          // Order by comment date
+          orderType = DESC
+          maxRecords = 100
+          numberOfSubPages = 50
+          showTechnicalProblemsForHiddenPages = 1
+          enableFixButton = 1
+        }
         comments {
             // Order by comment date
             orderType = DESC
             maxRecords = 100
             numberOfSubPages = 50
             showCommentsForHiddenPages = 1
-
+            enableDeleteButton = 1
         }
         statistics {
             maxRecords = 30

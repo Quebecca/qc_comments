@@ -68,7 +68,8 @@ class TechnicalProblemsBEController extends QcCommentsBEController
                      'stats' => $data['stats'],
                      'comments' => $data['comments'],
                      'pagesId' => $data['pagesId'],
-                     'currentPageId' => $data['currentPageId']
+                     'currentPageId' => $data['currentPageId'],
+                     'isFixButtonEnabled' => $this->qcBeModuleService->isFixButtonEnabled()
                  ]
              );
         }

@@ -62,7 +62,8 @@ class CommentsBEController extends QcCommentsBEController
                         'stats' => $data['stats'],
                         'comments' => $data['comments'],
                         'pagesId' => $data['pagesId'],
-                        'currentPageId' => $data['currentPageId']
+                        'currentPageId' => $data['currentPageId'],
+                        'isDeleteButtonEnabled' => $this->qcBeModuleService->isDeleteButtonEnabled()
                     ]
                 );
         }

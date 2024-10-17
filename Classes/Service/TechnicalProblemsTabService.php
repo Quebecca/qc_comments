@@ -123,6 +123,12 @@ class TechnicalProblemsTabService extends QcBackendModuleService
         return $filter;
     }
 
+    /**
+     * @return bool
+     */
+    public function isFixButtonEnabled() : bool {
+        return $this->tsConfiguration->isFixButtonEnabled();
+    }
 
     /**
      * This function is used to return the headers used in the exported file and the BE module table

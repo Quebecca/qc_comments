@@ -47,14 +47,19 @@
                                     <span style="color:green" class="font-weight-bold">Traité </span>
                                 </f:then>
                                 <f:else>
-                                    <f:form action="markProblemAsFixed" >
-                                        <input type="hidden" name="technicalProblemUid" value="{row.recordUid}">
-                                        <f:form.submit value="Traité" class="btn btn-default"/>
-                                    </f:form>
-
+                                    <f:if condition="{isFixButtonEnabled}">
+                                        <f:then>
+                                            <f:form action="markProblemAsFixed" >
+                                                <input type="hidden" name="technicalProblemUid" value="{row.recordUid}">
+                                                <f:form.submit value="Traité" class="btn btn-default"/>
+                                            </f:form>
+                                        </f:then>
+                                        <f:else>
+                                            --
+                                        </f:else>
+                                    </f:if>
                                 </f:else>
                             </f:if>
-
                         </td>
                     </tr>
                 </f:for>

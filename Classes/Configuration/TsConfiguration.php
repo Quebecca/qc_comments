@@ -137,5 +137,17 @@ class TsConfiguration
         return $GLOBALS['BE_USER'];
     }
 
+    /**
+     * @return bool
+     */
+    public function isFixButtonEnabled(): bool {
+        return ($this->tsConfig['technicalProblems.']['enableFixButton'] ?? false) == '1';
+    }
 
+    /**
+     * @return bool
+     */
+    public function isDeleteButtonEnabled(): bool {
+        return ($this->tsConfig['comments.']['enableDeleteButton'] ?? false) == '1';
+    }
 }

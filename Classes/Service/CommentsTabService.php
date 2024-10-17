@@ -136,6 +136,13 @@ class CommentsTabService extends QcBackendModuleService
     }
 
     /**
+     * @return bool
+     */
+    public function isDeleteButtonEnabled() : bool {
+        return $this->tsConfiguration->isDeleteButtonEnabled();
+    }
+
+    /**
      * This function is used to return the headers used in the exported file and the BE module table
      * @param false $include_csv_headers
      * @return array
