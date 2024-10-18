@@ -116,7 +116,7 @@ class DeletedCommentsTabService extends QcBackendModuleService
               // Get filter from session if available
               $filter = $this->backendSession->get('deletedCommentsFilter');
               if ($filter == null) {
-                  $filter = new CommentsFilter();
+                  $filter = new DeletedCommentsFilter();
               }
           } else {
               if ($filter->getDateRange() != 'userDefined') {
