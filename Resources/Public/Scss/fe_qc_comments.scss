@@ -129,3 +129,20 @@
     font-size: 0.875rem;
     color: #223654;
 }
+
+@media screen and (max-width: 991px) {
+    #comments-form-section .comment-section-elements {
+        padding: 24px !important;
+    }
+}
+@media screen and (max-width: 767px) {
+    #comments-form-section .btn-option {
+        margin-right : 24px !important;
+    }
+}
+
+@media screen and (max-width: 454px) {
+    .report-problem {
+        margin-top : 20px;
+    }
+}
