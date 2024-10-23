@@ -261,6 +261,39 @@
             <trans-unit id="stats-by-depth">
                 <source>Statistics by depth</source>
             </trans-unit>
+			<trans-unit id="chooseAnOption">
+				<source>You must select an option</source>
+			</trans-unit>
+			<trans-unit id="nextFields">
+				<source>Fields followed by a</source>
+			</trans-unit>
+			<trans-unit id="mandatoryFields">
+				<source>are mandatory.</source>
+			</trans-unit>
+			<trans-unit id="whatsTheProblem">
+				<source>What's the problem ?</source>
+			</trans-unit>
+			<trans-unit id="chooseProblemType">
+				<source>Specify the nature of the problem</source>
+			</trans-unit>
+			<trans-unit id="doNotInsertPersonalData">
+				<source>Do not enter personal information (e.g.: social insurance number (SIN), email, telephone, address, etc.).</source>
+			</trans-unit>
+			<trans-unit id="responseNoReceived">
+				<source>You will not receive any response.</source>
+			</trans-unit>
+			<trans-unit id="addComment">
+				<source>Do you want to add a comment?</source>
+			</trans-unit>
+			<trans-unit id="whyInfoNotUseful">
+				<source>Why was the information not useful?</source>
+			</trans-unit>
+			<trans-unit id="reportProblem">
+				<source>Report a problem</source>
+			</trans-unit>
+			<trans-unit id="tooManyChars">
+				<source>characters too many</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

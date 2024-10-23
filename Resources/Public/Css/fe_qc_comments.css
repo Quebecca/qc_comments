@@ -93,4 +93,23 @@
     vertical-align: middle;
     margin-bottom: 6px;
 }
+.mandatoryMark {
+    color : #CB381F;
+}
+.fieldLabel {
+    font-weight: bold;
+    margin-bottom: 0;
+    margin-top: 1rem;
+}
+.submitted-form-message ul {
+    padding : 0;
+}
+.complementLabel {
+    font-size : 14px;
+}
+.maxChars {
+    text-align: right;
+    font-size: 0.875rem;
+    color: #223654;
+}
 

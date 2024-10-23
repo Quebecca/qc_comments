@@ -81,7 +81,7 @@ class CommentsController extends ActionController
         ];
         $reasonOptions = $this->typoscriptConfiguration->getReasonOptions();
         $this->view->assignMultiple([
-            'submitted' => $this->request->getArguments()['submitted'] ?? '',
+            'submitted' => $this->request->getArguments()['submitted'] ?? false,
             'submittedFormUid' => strval($this->request->getArguments()['formUid']) ?? '',
             'submittedFormType' => $this->request->getArguments()['useful'] ?? null,
             'formUpdated' => $this->request->getArguments()['formUpdated'] ?? null,
@@ -112,7 +112,7 @@ class CommentsController extends ActionController
                 return (
                     new ForwardResponse('show'))
                         ->withArguments([
-                            'submitted' => 'false',
+                            'submitted' => false,
                             'validationResults' => $validationResults
                         ]);
             }
@@ -164,15 +164,20 @@ class CommentsController extends ActionController
             $submittedFormUid = strval($comment->getUid());
             return (new ForwardResponse('show'))
                 ->withArguments([
-                    'submitted' => 'true',
+                    'submitted' => true,
                     'formUid' => $submittedFormUid,
                     'useful' => $comment->getUseful(),
                     'formUpdated' => $formUpdated
                 ]);
-
+            return (new ForwardResponse('show'))
+                ->withArguments(['submitted' => true]);
         }
-        return (new ForwardResponse('show'))
-                ->withArguments(['submitted' => 'true']);
+        else{
+            return (new ForwardResponse('show'))
+                ->withArguments(['submitted' => false]);
+        }
+
+
     }
 
     /**

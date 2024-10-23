@@ -256,6 +256,42 @@
             <trans-unit id="stats-by-depth">
                 <target>Statistique selon la profondeur</target>
             </trans-unit>
+			<trans-unit id="chooseAnOption">
+				<target>Vous devez sélectionner une option</target>
+			</trans-unit>
+			<trans-unit id="nextFields">
+				<target>Les champs suivis d’un</target>
+			</trans-unit>
+			<trans-unit id="mandatoryFields">
+				<target>sont obligatoires.</target>
+			</trans-unit>
+			<trans-unit id="whatsTheProblem">
+				<target>Quel est le problème ?</target>
+			</trans-unit>
+			<trans-unit id="chooseProblemType">
+				<target>Précisez la nature du problème</target>
+			</trans-unit>
+			<trans-unit id="doNotInsertPersonalData">
+				<target>N’inscrivez pas de renseignements personnels (ex. : numéro d’assurance sociale (NAS), courriel, téléphone, adresse, etc.).</target>
+			</trans-unit>
+			<trans-unit id="responseNoReceived">
+				<target>Vous ne recevrez aucune réponse.</target>
+			</trans-unit>
+			<trans-unit id="addComment">
+				<target>Voulez-vous ajouter un commentaire?</target>
+			</trans-unit>
+			<trans-unit id="addDetails">
+				<target>Veuillez ajouter des précisions</target>
+			</trans-unit>
+			<trans-unit id="whyInfoNotUseful">
+				<target>Pourquoi l’information n’a pas été utile ?</target>
+			</trans-unit>
+			<trans-unit id="reportProblem">
+				<target>Signaler un problème</target>
+			</trans-unit>
+			<trans-unit id="tooManyChars">
+				<target>caractères en trop</target>
+			</trans-unit>
         </body>
     </file>
 </xliff>
