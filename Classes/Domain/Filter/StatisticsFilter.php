@@ -122,7 +122,7 @@ class StatisticsFilter extends Filter
      */
      public function getUsibiltyCriteria(): string
      {
-        return "true";
+        return " useful not like 'NA'";
     }
 
     /**

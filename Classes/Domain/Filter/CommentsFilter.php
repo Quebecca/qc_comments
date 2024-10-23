@@ -164,7 +164,7 @@ class CommentsFilter extends Filter
      */
     public function getUsibiltyCriteria(): string
     {
-        $criteria =  " useful like '".$this->getUseful()."'";
+        $criteria =  " useful like '".$this->getUseful()."' and useful not like 'NA'";
         // we apply the reason only if the comment is negative
         if($this->getUseful() == '0'){
             $criteria .= "AND reason_short_label like '".$this->getCommentReason()."'";

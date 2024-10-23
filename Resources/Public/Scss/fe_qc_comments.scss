@@ -16,17 +16,18 @@
 }
 
 .error-textarea {
-  border : 0.3rem solid #d6330bE6 !important;
+  border : 0.3rem solid #CB381F !important;
 }
-#error-message-too-short, .options-error-message {
-  font-size: 0.875rem;
-  font-family : 'Open Sans',sans-serif;
-  line-height: 1.14;
-  font-weight: 600;
-  color: #d6330b;
-  padding: 5px 10px 0 0;
-  margin : 5px 0 25px 0;
+#error-message-empty-comment, .options-error-message {
+    font-size: 0.875rem;
+    font-family : 'Open Sans',sans-serif;
+    line-height: 1.14;
+    font-weight: 600;
+    color: #CB381F;
+    padding: 0 10px 0 0;
+    margin : 0.5rem 0 2rem 0;
 }
+
 .spam-details {
   color : #d6330b;
   margin-top : 2rem;
@@ -90,4 +91,22 @@
             margin-right : 1rem;
         }
     }
+}
+#maxExceeded {
+    color: #CB381F;
+    font-size: 0.875rem;
+    font-family : 'Open Sans',sans-serif;
+    line-height: 1.14;
+    font-weight: 600;
+}
+.parsley-custom-error-message:before {
+    content: "";
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background-image: url("../Icons/error-triangle.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    margin-bottom: 6px;
 }

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="25.024" height="24" viewBox="0 0 25.024 24">
+  <g id="Icône" transform="translate(0.512)">
+    <rect id="Support_à_icône" data-name="Support à icône" width="24" height="24" transform="translate(0)" fill="none"/>
+    <path id="Icône_erreur" data-name="Icône erreur" d="M.633,21a.632.632,0,0,1-.545-.307.6.6,0,0,1-.005-.615L11.45.315a.638.638,0,0,1,1.1,0L23.918,20.079a.6.6,0,0,1,0,.615.631.631,0,0,1-.545.307Zm1.08-1.236H22.288L12,1.879Zm9.651-1.953V16.536a.638.638,0,1,1,1.275,0v1.275a.638.638,0,1,1-1.275,0Zm0-3.515V7.919a.638.638,0,1,1,1.275,0V14.3a.638.638,0,1,1-1.275,0Z" transform="translate(0 1)" fill="#cb381f" stroke="rgba(0,0,0,0)" stroke-width="1"/>
+  </g>
+</svg>

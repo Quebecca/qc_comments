@@ -75,7 +75,7 @@ $( document ).ready(function() {
             let commentLength = textareaElement.val().length;
             let validComment = ( minCharacters <= commentLength && commentLength <= maxCharacters ) || commentLength === 0;
             $('#submitButton').attr('disabled', !validComment)
-            $('#error-message-too-short').toggleClass('d-none', validComment)
+            $('#error-message-empty-comment').toggleClass('d-none', validComment)
             $(textareaElement).toggleClass('error-textarea',!validComment)
             return validComment;
         }

@@ -229,8 +229,6 @@ class CommentRepository extends Repository
         }
         $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
         $constraints = $this->getConstraints($page_ids, false);
-        //@todo : only for comments and problems module
-        //$queryBuilder->getRestrictions()->removeByType(DeletedRestriction::class);
         $data =  $queryBuilder
             ->select('p.uid as page_uid', 'p.title as page_title')
             ->addSelectLiteral(
@@ -308,8 +306,8 @@ class CommentRepository extends Repository
         $reasonTotal = $data
             ->execute()
             ->fetchAllAssociative()[0]['total'];
+        return  $total <= 0 ? 1 : $reasonTotal / $total;
 
-        return $reasonTotal / $total;
     }
 
     /**

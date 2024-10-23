@@ -231,15 +231,12 @@
             <trans-unit id="pages.mode4">
                 <source>Hide for this page only</source>
             </trans-unit>
-            <trans-unit id="max">
-                <source>Limit is </source>
-            </trans-unit>
             <trans-unit id="characters">
                 <source> characters</source>
             </trans-unit>
-            <trans-unit id="too-short-comment">
-                <source>The value entered is either too short or too long.</source>
-            </trans-unit>
+        	<trans-unit id="empty-comment">
+				<source>Please describe the problem</source>
+			</trans-unit>
             <trans-unit id="select-page">
                 <source>Please click on the page title in the tree on the left to see the comments on the page.</source>
             </trans-unit>

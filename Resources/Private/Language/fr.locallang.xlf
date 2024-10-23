@@ -232,15 +232,12 @@
             <trans-unit id="pages.mode4">
                 <target>Masquer pour cette page seulement</target>
             </trans-unit>
-            <trans-unit id="max">
-                <target>Maximum </target>
-            </trans-unit>
             <trans-unit id="characters">
-                <target> caractères</target>
+                <target> caractères restants</target>
             </trans-unit>
-            <trans-unit id="too-short-comment">
-                <target>La valeur entrée est trop courte ou trop longue.</target>
-            </trans-unit>
+			<trans-unit id="empty-comment">
+				<target>Veuillez préciser la nature du problème</target>
+			</trans-unit>
             <trans-unit id="select-page">
                 <target>Veuillez cliquer sur le titre de la page dans l'arborescence à gauche pour voir les commentaires sur la page.</target>
             </trans-unit>
