@@ -32,7 +32,12 @@ define(['jquery'], function($) {
                 'startDate' : $('#startDate').val(),
                 'endDate' : $('#endDate').val(),
             }
-            let url = actionName === 'comments' ? TYPO3.settings.ajaxUrls.export_comments : TYPO3.settings.ajaxUrls.export_statistics;
+            let url = '';
+            switch (actionName){
+              case 'comments' :  url = TYPO3.settings.ajaxUrls.export_comments; break;
+              case 'statistics' :  url = TYPO3.settings.ajaxUrls.export_statistics; break;
+              case 'technicalProblems' :  url = TYPO3.settings.ajaxUrls.export_technicalProblems; break;
+            }
             require(['TYPO3/CMS/Core/Ajax/AjaxRequest'], function (AjaxRequest) {
                 new AjaxRequest(url)
                     .withQueryArguments({parameters: parameters})

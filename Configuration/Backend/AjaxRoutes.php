@@ -23,6 +23,11 @@ return [
         'path' => '/problem_fixed',
         'referrer' => 'required, refresh-empty',
         'target' => TechnicalProblemsBEController::class. '::technicalProblemFixedAction'
+    ],
+    'export_technicalProblems' => [
+        'path' => '/export_technicalProblems',
+        'referrer' => 'required,refresh-empty',
+        'target' => TechnicalProblemsBEController::class . '::exportTechnicalProblemsAction'
     ]
 
 ];

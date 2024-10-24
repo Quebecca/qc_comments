@@ -7,8 +7,7 @@ use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Domain\Filter\TechnicalProblemsFilter;
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Http\Response;
 
 class TechnicalProblemsTabService extends QcBackendModuleService
 {
@@ -88,7 +87,7 @@ class TechnicalProblemsTabService extends QcBackendModuleService
         $filter->setDateRange($request->getQueryParams()['parameters']['selectDateRange']);
         $filter->setStartDate($request->getQueryParams()['parameters']['startDate'] ?? '');
         $filter->setEndDate($request->getQueryParams()['parameters']['endDate'] ?? '');
-        $filter->setIncludeFixedTechnicalProblem($request->getQueryParams()['parameters']['includeFixedTechnicalProblem'] ?? '');
+        //$filter->setIncludeFixedTechnicalProblem($request->getQueryParams()['parameters']['includeFixedTechnicalProblem'] ?? '');
         return $filter;
     }
     /**
@@ -133,29 +132,27 @@ class TechnicalProblemsTabService extends QcBackendModuleService
     protected function getHeaders(bool $include_csv_headers = false): array
     {
         $headers = [];
-
-        foreach (['date_hour', 'description', 'type_problem','be_user_name', 'fix_date', ''] as $col) {
-            $headers[$col] = $this->localizationUtility
-                ->translate(self::QC_LANG_FILE . 'comments.h.' . $col);
-        }
        if ($include_csv_headers) {
-            $headers = array_merge([
-                'page_uid' => $this->localizationUtility
-                    ->translate(self::QC_LANG_FILE . 'csv.h.page_uid'),
-                'page_title' => $this->localizationUtility
-                    ->translate(self::QC_LANG_FILE . 'stats.h.page_title'),
-            ], $headers);
+           foreach (['page_uid','page_title', 'date_hour', 'reason', 'comment'] as $col) {
+               $headers[$col] = $this->localizationUtility
+                   ->translate(self::QC_LANG_FILE . 'comments.h.' . $col);
+           }
         }
+       else{
+           foreach (['date_hour', 'description', 'type_problem','be_user_name', 'fix_date', ''] as $col) {
+               $headers[$col] = $this->localizationUtility
+                   ->translate(self::QC_LANG_FILE . 'comments.h.' . $col);
+           }
+       }
         return $headers;
     }
-
 
     /**
      * @param Filter $filter
      * @param int $currentPageId
-     * @return ResponseInterface
+     * @return Response
      */
-    public function exportCommentsData(Filter  $filter, int $currentPageId): ResponseInterface
+    public function exportTechnicalProblemsData(Filter  $filter, int $currentPageId): Response
     {
         $pagesIds = $this->getPagesIds($filter, $currentPageId);
 
@@ -167,13 +164,22 @@ class TechnicalProblemsTabService extends QcBackendModuleService
             );
 
         $headers = $this->getHeaders(true);
+        $items = [];
+        $i = 0;
+
         foreach ($data as $row) {
-            array_walk($row, function (&$field) {
-                $field = str_replace("\r", ' ', $field);
-                $field = str_replace("\n", ' ', $field);
-            });
+            foreach ($row['records'] as $item){
+                $items[$i]['page_uid'] = $item['uid'];
+                $items[$i]['page_title'] = $item['title'];
+                $items[$i]['date_hour'] = $item['date_hour'];
+                $items[$i]['reason'] = $item['reason_short_label'];
+                $comment = str_replace("\r", ' ', $item['comment']) ;
+                $comment = str_replace("\t", ' ', $comment);
+                $items[$i]['comment'] = $comment;
+                $i++;
+            }
         }
-        return parent::export($filter,$currentPageId,'comments', $headers, $data);
+        return parent::export($filter,$currentPageId,'technicalProblems', $headers, $items);
     }
 
 }
