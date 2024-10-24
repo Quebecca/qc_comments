@@ -312,6 +312,9 @@
 			<trans-unit id="tooManyChars">
 				<source>characters too many</source>
 			</trans-unit>
+			<trans-unit id="technicalProblems">
+				<source>technical-problems</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

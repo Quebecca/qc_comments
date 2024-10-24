@@ -145,9 +145,9 @@ class QcBackendModuleService
             $sheet->fromArray($row, NULL, 'A'.$rowIndex, true);
             $rowIndex++;
         }
-          $writer = new Xlsx($spreadsheet);
+        $writer = new Xlsx($spreadsheet);
          $dateFormat =$this->tsConfiguration->getDateFormat();
-         $fileName = $this->getFilename($filter, $fileName, $dateFormat, $currentPageId);
+        $fileName = $this->getFilename($filter, $fileName, $dateFormat, $currentPageId);
           header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
           header("Content-Disposition: attachment;filename=\"$fileName\"");
           $writer->save("php://output");
@@ -156,7 +156,7 @@ class QcBackendModuleService
               200,
               ['Content-Type' => 'application/vnd.ms-excel',
                   'Content-Description' => 'File transfer',
-                  'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
+                  'Content-Disposition' => 'attachment; filename="' . $fileName
               ]
           );
     }

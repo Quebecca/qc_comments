@@ -310,6 +310,9 @@
 			<trans-unit id="tooManyChars">
 				<target>caractères en trop</target>
 			</trans-unit>
+			<trans-unit id="technicalProblems">
+				<target>problèmes-techniques</target>
+			</trans-unit>
         </body>
     </file>
 </xliff>
