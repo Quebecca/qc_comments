@@ -15,7 +15,6 @@ namespace Qc\QcComments\Service;
 
 
 use Psr\Http\Message\ResponseInterface;
-use Qc\QcComments\Domain\Filter\CommentsFilter;
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Domain\Filter\StatisticsFilter;
 use TYPO3\CMS\Core\Http\Response;
@@ -66,7 +65,7 @@ class StatisticsTabService extends QcBackendModuleService
      * @param bool $exportRequest
      * @return array
      */
-    public function statisticsDataFormatting($data, $exportRequest = false) : array {
+    public function statisticsDataFormatting($data, bool $exportRequest = false) : array {
         $rows = [];
 
         foreach ($data as $item) {
@@ -187,9 +186,10 @@ class StatisticsTabService extends QcBackendModuleService
 
     /**
      * This function is used to return the headers used in the exported file and the BE module table
+     * @param bool $headersForExport
      * @return array
      */
-    protected function getHeaders(): array
+    protected function getHeaders(bool $headersForExport = false): array
     {
         $headers = [];
         $columns = [
@@ -198,9 +198,12 @@ class StatisticsTabService extends QcBackendModuleService
             'total_pos',
             'total_neg',
             'total',
-            'avg',
-            'technicalProblems'
+            'avg'
         ];
+        if($headersForExport){
+            $columns[] = 'technicalProblems';
+        }
+
         foreach ($columns as $col) {
             $headers[$col] = $this->localizationUtility
                 ->translate(self::QC_LANG_FILE . 'stats.h.' . $col);
@@ -224,7 +227,7 @@ class StatisticsTabService extends QcBackendModuleService
             );
         $formattedData = $this->statisticsDataFormatting($data, true);
 
-        $headers = $this->getHeaders();
+        $headers = $this->getHeaders(true);
 
         // Resort the array elements for export
         $mappedData = [];
@@ -237,6 +240,7 @@ class StatisticsTabService extends QcBackendModuleService
             $mappedData[$record['pages_uid']][$i]['technicalProblems'] = $this->commentsRepository->getCountTechnicalProblemsByPageUid($pageUid);
             $i++;
         }
+
         return parent::export($filter,$currentPageId,'stats', $headers, $mappedData);
     }
 

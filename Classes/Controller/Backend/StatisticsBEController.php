@@ -5,7 +5,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Domain\Filter\StatisticsFilter;
 use Qc\QcComments\Service\StatisticsTabService;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -56,12 +55,6 @@ class StatisticsBEController extends QcCommentsBEController
             }
             $statsByDepth = $this->qcBeModuleService->getStatisticsByDepth();
 
-
-            $dissatisfactionShare = [];
-          /*  if($filter->getCommentReason() != ""){
-
-            }*/
-
             $this->moduleTemplate->assignMultiple([
                 'headers' => $data['headers'],
                 'rows' => $data['rows'],
@@ -82,7 +75,7 @@ class StatisticsBEController extends QcCommentsBEController
     /**
      * This function is used to export statistics records on a csv file
      * @param ServerRequestInterface $request
-     * @return Response
+     * @return ResponseInterface
      */
     public function exportStatisticsAction(ServerRequestInterface $request): ResponseInterface
     {

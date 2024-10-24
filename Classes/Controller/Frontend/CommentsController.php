@@ -99,10 +99,10 @@ class CommentsController extends ActionController
     /**
      * This function is used to save comment
      * @param Comment|null $comment
-     * @return ResponseInterface
+     * @return ForwardResponse
      * @throws IllegalObjectTypeException
      */
-    public function saveCommentAction(Comment $comment = null): ResponseInterface
+    public function saveCommentAction(Comment $comment = null): ForwardResponse
     {
         if($this->isSpamShieldEnabled){
             $validator = GeneralUtility::makeInstance(SpamShieldValidator::class);
@@ -169,14 +169,11 @@ class CommentsController extends ActionController
                     'useful' => $comment->getUseful(),
                     'formUpdated' => $formUpdated
                 ]);
-            return (new ForwardResponse('show'))
-                ->withArguments(['submitted' => true]);
         }
         else{
             return (new ForwardResponse('show'))
                 ->withArguments(['submitted' => false]);
         }
-
 
     }
 

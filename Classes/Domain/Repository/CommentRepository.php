@@ -347,7 +347,7 @@ class CommentRepository extends Repository
         if($showForHiddenPages){
             $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
         }
-        return  $queryBuilder
+        return $queryBuilder
             ->count($this->tableName.'.uid')
             ->from($this->tableName)
             ->$joinMethod(

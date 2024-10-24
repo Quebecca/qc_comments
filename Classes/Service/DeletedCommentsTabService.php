@@ -16,10 +16,10 @@ namespace Qc\QcComments\Service;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
-use Qc\QcComments\Domain\Filter\CommentsFilter;
 use Qc\QcComments\Domain\Filter\DeletedCommentsFilter;
 use Qc\QcComments\Domain\Filter\Filter;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\Response;
 
 class DeletedCommentsTabService extends QcBackendModuleService
 {
@@ -169,9 +169,9 @@ class DeletedCommentsTabService extends QcBackendModuleService
     /**
      * @param Filter $filter
      * @param int $currentPageId
-     * @return ResponseInterface
+     * @return Response
      */
-    public function exportCommentsData(Filter  $filter, int $currentPageId): ResponseInterface
+    public function exportCommentsData(Filter  $filter, int $currentPageId): Response
     {
         $pagesIds = $this->getPagesIds($filter, $currentPageId);
 

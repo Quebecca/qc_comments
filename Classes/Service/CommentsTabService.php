@@ -144,21 +144,20 @@ class CommentsTabService extends QcBackendModuleService
 
     /**
      * This function is used to return the headers used in the exported file and the BE module table
-     * @param false $include_csv_headers
+     * @param false $headersForExport
      * @return array
      */
-    protected function getHeaders(bool $include_csv_headers = false): array
+    protected function getHeaders(bool $headersForExport = false): array
     {
         $headers = [];
 
-        if ($include_csv_headers) {
+        if ($headersForExport) {
             foreach (['page_uid', 'page_title','date_hour','reason', 'comment', 'useful','deleted'] as $col) {
                 $headers[$col] = $this->localizationUtility
                     ->translate(self::QC_LANG_FILE . 'comments.h.' . $col);
             }
         }
         else{
-
             foreach (['date_hour', 'comment', 'useful', 'comment_option', ''] as $col) {
                 $headers[$col] = $this->localizationUtility
                     ->translate(self::QC_LANG_FILE . 'comments.h.' . $col);

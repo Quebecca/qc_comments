@@ -3,7 +3,6 @@
 namespace Qc\QcComments\Service;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -65,31 +64,14 @@ class QcBackendModuleService
      */
     public function processFilter(Filter $filter = null): ?Filter
     {
-      /*  // Add filtering to records
-        if ($filter === null) {
-            // Get filter from session if available
-            $filter = $this->backendSession->get('filter');
-            if ($filter == null) {
-                $filter = new Filter();
-            }
-        } else {
-            if ($filter->getDateRange() != 'userDefined') {
-                $filter->setStartDate(null);
-                $filter->setEndDate(null);
-            }
-
-            $this->backendSession->store('filter', $filter);
-        }
-        $this->commentsRepository->setFilter($filter);
-        $this->commentsRepository->setRootId($this->root_id);
-        return $filter;*/
+        return null;
     }
 
 
     /**
      * @param Filter $filter
      * @param $fileName
-     * @param $csvDateFormat
+     * @param $dateFormat
      * @param $pageId
      * @return string
      */
@@ -138,7 +120,7 @@ class QcBackendModuleService
     {
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setTitle($fileName); // This is where you set the title
+        $sheet->setTitle($fileName);
         $sheet->fromArray($headers, NULL, 'A1');
         $rowIndex = 2;
         foreach ($data as $row) {
@@ -169,10 +151,8 @@ class QcBackendModuleService
      */
     public function getPagesIds(Filter $filter,int $currentPageId): array
     {
-
         $this->commentsRepository->setRootId($currentPageId);
         $this->commentsRepository->setFilter($filter);
-
         $pagesData = $this->commentsRepository->getPageIdsList();
         if($filter->getDepth() == 0){
             $pagesData = [$currentPageId];
@@ -183,9 +163,10 @@ class QcBackendModuleService
     /**
      * This function is used to format the statistics data
      * @param $data
+     * @param bool $exportRequest
      * @return array
      */
-    public function statisticsDataFormatting($data, $exportRequest = false) : array{
+    public function statisticsDataFormatting($data, bool $exportRequest = false) : array{
         $rows = [];
         foreach ($data as $key => $item) {
             $item['total_neg'] = $item['total'] - $item['total_pos'];

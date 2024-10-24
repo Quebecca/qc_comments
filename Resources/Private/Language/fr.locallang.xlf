@@ -310,7 +310,7 @@
 			<trans-unit id="tooManyChars">
 				<target>caractères en trop</target>
 			</trans-unit>
-			<trans-unit id="technicalProblems">
+			<trans-unit id="stats.h.technicalProblems">
 				<target>problèmes-techniques</target>
 			</trans-unit>
         </body>

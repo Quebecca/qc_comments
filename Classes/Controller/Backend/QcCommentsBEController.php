@@ -59,12 +59,7 @@ class QcCommentsBEController extends ActionController
         $this->localizationUtility = GeneralUtility::makeInstance(LocalizationUtility::class);
     }
 
-    /**
-     * Init module state.
-     * This isn't done within __construct() since the controller
-     * object is only created once in extbase when multiple actions are called in
-     * one call. When those change module state, the second action would see old state.
-     */
+
     public function initializeAction(): void
     {
         $this->moduleData = $this->request->getAttribute('moduleData');
@@ -129,7 +124,7 @@ class QcCommentsBEController extends ActionController
     /**
      * This function is used to handle requests, when no action selected
      */
-    public function handleRequestsAction(): ResponseInterface
+    public function handleRequestsAction(): ForwardResponse
     {
         $this->qcBeModuleService
             = GeneralUtility::makeInstance(QcBackendModuleService::class);

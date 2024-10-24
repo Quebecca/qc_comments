@@ -5,7 +5,6 @@ namespace Qc\QcComments\Controller\Backend;
 use Qc\QcComments\Domain\Filter\TechnicalProblemsFilter;
 use Qc\QcComments\Service\TechnicalProblemsTabService;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
-use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Psr\Http\Message\ResponseInterface;
@@ -107,7 +106,6 @@ class TechnicalProblemsBEController extends QcCommentsBEController
             = GeneralUtility::makeInstance(TechnicalProblemsTabService::class);
         $filter = $this->qcBeModuleService->getFilterFromRequest($request);
         $filter->setDepth( intval($request->getQueryParams()['parameters']['depth']));
-        //$filter->setUseful($request->getQueryParams()['parameters']['useful']);
         $currentPageId = intval($request->getQueryParams()['parameters']['currentPageId']);
         return $this->qcBeModuleService->exportTechnicalProblemsData($filter, $currentPageId);
     }
