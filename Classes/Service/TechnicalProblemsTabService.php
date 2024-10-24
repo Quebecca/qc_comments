@@ -80,7 +80,7 @@ class TechnicalProblemsTabService extends QcBackendModuleService
      * @param ServerRequestInterface $request
      * @return Filter
      */
-    public function getFilterFromRequest(ServerRequestInterface $request): Filter
+    public function getFilterFromRequest($request): Filter
     {
         $filter = new TechnicalProblemsFilter();
         $filter->setLang($request->getQueryParams()['parameters']['lang']);

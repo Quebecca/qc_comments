@@ -89,7 +89,7 @@ class DeletedCommentsTabService extends QcBackendModuleService
      * @param ServerRequestInterface $request
      * @return Filter
      */
-    public function getFilterFromRequest(ServerRequestInterface $request): Filter
+    public function getFilterFromRequest($request): Filter
     {
         $filter = new DeletedCommentsFilter();
         $filter->setLang($request->getQueryParams()['parameters']['lang']);

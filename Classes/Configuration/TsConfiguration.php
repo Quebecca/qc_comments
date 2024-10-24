@@ -64,7 +64,7 @@ class TsConfiguration
         return $this->tsConfig['csvExport.']['escape'] ?? '\\';
     }
 
-    public function getCsvDateFormat(){
+    public function getDateFormat(){
         return $this->tsConfig['csvExport.']['filename.']['dateFormat'] ?? 'YmdHi';
     }
 

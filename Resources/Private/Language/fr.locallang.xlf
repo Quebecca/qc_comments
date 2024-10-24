@@ -94,6 +94,9 @@
             <trans-unit id="stats.h.page_uid">
                 <target>Id</target>
             </trans-unit>
+			<trans-unit id="stats.h.technicalProblems">
+				<target>Problèmes</target>
+			</trans-unit>
             <trans-unit id="csv.h.page_uid">
                 <target>Id de la page</target>
             </trans-unit>
@@ -127,6 +130,21 @@
             <trans-unit id="comments.h.comment">
                 <target>Commentaire</target>
             </trans-unit>
+			<trans-unit id="comments.h.page_uid">
+				<target>Id de la page</target>
+			</trans-unit>
+			<trans-unit id="comments.h.page_title">
+				<target>Titre de la page</target>
+			</trans-unit>
+			<trans-unit id="comments.h.reason">
+				<target>Raison</target>
+			</trans-unit>
+			<trans-unit id="comments.h.useful">
+				<target>Utile</target>
+			</trans-unit>
+			<trans-unit id="comments.h.deleted">
+				<target>Supprimer</target>
+			</trans-unit>
 			<trans-unit id="comments.h.deleted_by">
 				<target>Retiré par</target>
 			</trans-unit>

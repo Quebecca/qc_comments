@@ -108,6 +108,9 @@
 			<trans-unit id="stats.h.avg">
 				<source>Average</source>
 			</trans-unit>
+			<trans-unit id="stats.h.technicalProblems">
+				<source>Problems</source>
+			</trans-unit>
 			<trans-unit id="stats.h.nonEmptyComment">
 				<source>Total comments</source>
 			</trans-unit>
@@ -140,6 +143,21 @@
 			</trans-unit>
 			<trans-unit id="comments.h.description">
 				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="comments.h.page_uid">
+				<source>Page Uid</source>
+			</trans-unit>
+			<trans-unit id="comments.h.page_title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="comments.h.reason">
+				<source>Reason</source>
+			</trans-unit>
+			<trans-unit id="comments.h.useful">
+				<source>Useful</source>
+			</trans-unit>
+			<trans-unit id="comments.h.deleted">
+				<source>Delete</source>
 			</trans-unit>
 			<trans-unit id="positive">
 				<source>Yes</source>

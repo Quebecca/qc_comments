@@ -18,6 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Qc\QcComments\Domain\Filter\CommentsFilter;
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Domain\Filter\StatisticsFilter;
+use TYPO3\CMS\Core\Http\Response;
 
 class StatisticsTabService extends QcBackendModuleService
 {
@@ -62,10 +63,12 @@ class StatisticsTabService extends QcBackendModuleService
     /**
      * This function is used to format the statistics data and the avg of dissatisfaction by page and reason
      * @param $data
+     * @param bool $exportRequest
      * @return array
      */
-    public function statisticsDataFormatting($data) : array {
+    public function statisticsDataFormatting($data, $exportRequest = false) : array {
         $rows = [];
+
         foreach ($data as $item) {
             $item['total_neg'] = $item['total'] - $item['total_pos'];
             $total = $item['total_pos'];
@@ -73,7 +76,7 @@ class StatisticsTabService extends QcBackendModuleService
                 ' ' . number_format((($total) / $item['total']), 2) * 100 . ' %'
                 : '0 %';
             $item['total_pos'] = $item['total_pos'] ?: '0';
-            if($this->filter->getCommentReason() !== '%'){
+            if(!$exportRequest && $this->filter->getCommentReason() !== '%'){
                 $avg = $this->commentsRepository->getDissatisfactionAvg($item['page_uid']);
                 $item['dissatisfaction'] = number_format(($avg), 2) * 100 . ' %';
             }
@@ -105,7 +108,6 @@ class StatisticsTabService extends QcBackendModuleService
             if($item['page_uid'] == $this->root_id){
                 $page_title = $item['page_title'];
             }
-            $itemAvg = trim(' ', $item['avg']);
             $itemAvg = floatval(str_replace('%', '', $item['avg']));
             $avg += $itemAvg;
             $total_pos += intval($item['total_pos']);
@@ -143,7 +145,7 @@ class StatisticsTabService extends QcBackendModuleService
      * @param ServerRequestInterface $request
      * @return Filter
      */
-    public function getFilterFromRequest(ServerRequestInterface $request): Filter
+    public function getFilterFromRequest($request): Filter
     {
         $filter = new StatisticsFilter();
         $filter->setLang($request->getQueryParams()['parameters']['lang']);
@@ -196,7 +198,8 @@ class StatisticsTabService extends QcBackendModuleService
             'total_pos',
             'total_neg',
             'total',
-            'avg'
+            'avg',
+            'technicalProblems'
         ];
         foreach ($columns as $col) {
             $headers[$col] = $this->localizationUtility
@@ -208,9 +211,9 @@ class StatisticsTabService extends QcBackendModuleService
     /**
      * @param Filter $filter
      * @param int $currentPageId
-     * @return ResponseInterface
+     * @return Response
      */
-    public function exportStatisticsData(Filter  $filter, int $currentPageId): ResponseInterface
+    public function exportStatisticsData(Filter  $filter, int $currentPageId): Response
     {
         $pagesIds = $this->getPagesIds($filter, $currentPageId);
         $data = $this->commentsRepository
@@ -219,7 +222,8 @@ class StatisticsTabService extends QcBackendModuleService
                 false,
                 $this->showStatisticsForHiddenPage
             );
-        $formattedData = $this->statisticsDataFormatting($data);
+        $formattedData = $this->statisticsDataFormatting($data, true);
+
         $headers = $this->getHeaders();
 
         // Resort the array elements for export
@@ -229,10 +233,11 @@ class StatisticsTabService extends QcBackendModuleService
             foreach ($headers as $headerKey => $header) {
                 $mappedData[$record['pages_uid'] ?? ''][$i][$headerKey] = $record[$headerKey] ?? '';
             }
+            $pageUid = $mappedData[$record['pages_uid']][$i]['page_uid'];
+            $mappedData[$record['pages_uid']][$i]['technicalProblems'] = $this->commentsRepository->getCountTechnicalProblemsByPageUid($pageUid);
             $i++;
         }
         return parent::export($filter,$currentPageId,'stats', $headers, $mappedData);
-
     }
 
 

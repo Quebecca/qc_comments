@@ -18,6 +18,7 @@ use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
 use Qc\QcComments\Domain\Filter\CommentsFilter;
 use Qc\QcComments\Domain\Filter\Filter;
+use TYPO3\CMS\Core\Http\Response;
 
 class CommentsTabService extends QcBackendModuleService
 {
@@ -92,7 +93,7 @@ class CommentsTabService extends QcBackendModuleService
      * @param ServerRequestInterface $request
      * @return Filter
      */
-    public function getFilterFromRequest(ServerRequestInterface $request): Filter
+    public function getFilterFromRequest($request): Filter
     {
         $filter = new CommentsFilter();
         $filter->setLang($request->getQueryParams()['parameters']['lang']);
@@ -149,17 +150,19 @@ class CommentsTabService extends QcBackendModuleService
     protected function getHeaders(bool $include_csv_headers = false): array
     {
         $headers = [];
-        foreach (['date_hour', 'comment', 'useful', 'comment_option', ''] as $col) {
-            $headers[$col] = $this->localizationUtility
-                ->translate(self::QC_LANG_FILE . 'comments.h.' . $col);
-        }
+
         if ($include_csv_headers) {
-            $headers = array_merge([
-                'page_uid' => $this->localizationUtility
-                    ->translate(self::QC_LANG_FILE . 'csv.h.page_uid'),
-                'page_title' => $this->localizationUtility
-                    ->translate(self::QC_LANG_FILE . 'stats.h.page_title'),
-            ], $headers);
+            foreach (['page_uid', 'page_title','date_hour','reason', 'comment', 'useful','deleted'] as $col) {
+                $headers[$col] = $this->localizationUtility
+                    ->translate(self::QC_LANG_FILE . 'comments.h.' . $col);
+            }
+        }
+        else{
+
+            foreach (['date_hour', 'comment', 'useful', 'comment_option', ''] as $col) {
+                $headers[$col] = $this->localizationUtility
+                    ->translate(self::QC_LANG_FILE . 'comments.h.' . $col);
+            }
         }
         return $headers;
     }
@@ -172,9 +175,9 @@ class CommentsTabService extends QcBackendModuleService
     /**
      * @param Filter $filter
      * @param int $currentPageId
-     * @return ResponseInterface
+     * @return Response
      */
-    public function exportCommentsData(Filter  $filter, int $currentPageId): ResponseInterface
+    public function exportCommentsData(Filter  $filter, int $currentPageId): Response
     {
         $pagesIds = $this->getPagesIds($filter, $currentPageId);
 
@@ -186,13 +189,25 @@ class CommentsTabService extends QcBackendModuleService
             );
 
         $headers = $this->getHeaders(true);
+        $items = [];
+        $i = 0;
+
         foreach ($data as $row) {
-            array_walk($row, function (&$field) {
-                $field = str_replace("\r", ' ', $field);
-                $field = str_replace("\n", ' ', $field);
-            });
+            foreach ($row['records'] as $item){
+                $items[$i]['page_uid'] = $item['uid'];
+                $items[$i]['page_title'] = $item['title'];
+                $items[$i]['date_hour'] = $item['date_hour'];
+                $items[$i]['reason'] = $item['reason_short_label'];
+                $comment = str_replace("\r", ' ', $item['comment']) ;
+                $comment = str_replace("\t", ' ', $comment);
+                $items[$i]['comment'] = $comment;
+                $items[$i]['useful'] = $item['useful'];
+                $items[$i]['deleted'] = $item['deleted'] ?? 'todo';
+                $i++;
+            }
         }
-        return parent::export($filter,$currentPageId,'comments', $headers, $data);
+
+        return parent::export($filter,$currentPageId,'comments', $headers, $items);
     }
 
 }

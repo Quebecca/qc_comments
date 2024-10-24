@@ -266,6 +266,28 @@ class CommentRepository extends Repository
        return $rows;
     }
 
+
+    /**
+     * This function is used to get the number of technical problems by page
+     * @param $pageUid
+     * @return int|mixed
+     */
+    public function getCountTechnicalProblemsByPageUid($pageUid){
+        $queryBuilder = $this->generateQueryBuilder();
+        $data = $queryBuilder
+            ->addSelectLiteral(
+                $queryBuilder->expr()->count('uid_orig', 'technicalProblemsCount'),
+            )
+            ->from($this->tableName)
+
+            ->where(
+                "uid_orig = ".$pageUid . " and useful like 'NA' "
+            )
+            ->groupBy('uid_orig');
+        return $data->execute()
+            ->fetchAssociative()['technicalProblemsCount'] ?? 0;
+    }
+
     /**
      * This function is used to get the average dissatisfaction by page
      * @param $pageUid

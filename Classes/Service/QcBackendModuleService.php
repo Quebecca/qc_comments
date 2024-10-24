@@ -2,6 +2,9 @@
 
 namespace Qc\QcComments\Service;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Configuration\TsConfiguration;
@@ -90,9 +93,9 @@ class QcBackendModuleService
      * @param $pageId
      * @return string
      */
-    protected function getCSVFilename(Filter $filter, $fileName, $csvDateFormat, $pageId): string
+    protected function getFilename(Filter $filter, $fileName, $dateFormat, $pageId): string
     {
-        $format = $csvDateFormat;
+        $format = $dateFormat;
         if($filter->getDateRange() == 'userDefined'){
             $from = date($format,strtotime($filter->getStartDate()));
             $now = date($format,strtotime($filter->getEndDate()));
@@ -113,7 +116,7 @@ class QcBackendModuleService
                 'uid-' . $pageId,
                 $from ?? '',
                 $now,
-            ])) . '.csv';
+            ])) . '.xlsx';
     }
 
 
@@ -123,7 +126,7 @@ class QcBackendModuleService
      * @param string $fileName
      * @param array $headers
      * @param array $data
-     * @return ResponseInterface
+     * @return Response
      */
     public function export(
         Filter $filter,
@@ -131,40 +134,32 @@ class QcBackendModuleService
         string $fileName,
         array $headers,
         array $data
-    ): ResponseInterface
+    ): Response
     {
-        $separator = $this->tsConfiguration->getCsvSeparator();
-        $enclosure = $this->tsConfiguration->getCsvEnclosure();
-        $escape = $this->tsConfiguration->getCsvEscape();
-        $csvDateFormat =$this->tsConfiguration->getCsvDateFormat();
-
-        $fileName = $this->getCSVFilename($filter, $fileName, $csvDateFormat, $currentPageId);
-
-        $response = new Response(
-            'php://output',
-            200,
-            ['Content-Type' => 'text/csv; charset=utf-8',
-                'Content-Description' => 'File transfer',
-                'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
-            ]
-        );
-
-        $fp = fopen('php://output', 'wb');
-        // BOM utf-8 pour excel
-        fwrite($fp, "\xEF\xBB\xBF");
-        fputcsv($fp, $headers, $separator, $enclosure, $escape);
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle($fileName); // This is where you set the title
+        $sheet->fromArray($headers, NULL, 'A1');
+        $rowIndex = 2;
         foreach ($data as $row) {
-            foreach ($row as $item) {
-                fputcsv($fp, $item, $separator, $enclosure, $escape);
-            }
+            $sheet->fromArray($row, NULL, 'A'.$rowIndex, true);
+            $rowIndex++;
         }
-        //  rewind($fp);
-        rtrim(stream_get_contents($fp), "\n");
-        fclose($fp);
-        return $response;
+          $writer = new Xlsx($spreadsheet);
+         $dateFormat =$this->tsConfiguration->getDateFormat();
+         $fileName = $this->getFilename($filter, $fileName, $dateFormat, $currentPageId);
+          header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+          header("Content-Disposition: attachment;filename=\"$fileName\"");
+          $writer->save("php://output");
+          return new Response(
+              'php://output',
+              200,
+              ['Content-Type' => 'application/vnd.ms-excel',
+                  'Content-Description' => 'File transfer',
+                  'Content-Disposition' => 'attachment; filename="' . $fileName . '"'
+              ]
+          );
     }
-
-
 
     /**
      * This function is used to get the pages IDs
@@ -190,7 +185,7 @@ class QcBackendModuleService
      * @param $data
      * @return array
      */
-    public function statisticsDataFormatting($data) : array{
+    public function statisticsDataFormatting($data, $exportRequest = false) : array{
         $rows = [];
         foreach ($data as $key => $item) {
             $item['total_neg'] = $item['total'] - $item['total_pos'];
