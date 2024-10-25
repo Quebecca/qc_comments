@@ -94,27 +94,39 @@ class QcCommentsBEController extends ActionController
         $this->uriBuilder->setRequest($this->request);
         $menu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $menu->setIdentifier('QcCommentsMenu');
+        $statisticsTitle = $this->localizationUtility->translate(
+            self::QC_LANG_FILE . 'statisticsTitle'
+        );
+        $commentsTitle = $this->localizationUtility->translate(
+            self::QC_LANG_FILE . 'commentsTitle'
+        );
+        $technicalProblemsTitle = $this->localizationUtility->translate(
+            self::QC_LANG_FILE . 'technicalProblemsTitle'
+        );
+        $deletedCommentsTitle = $this->localizationUtility->translate(
+            self::QC_LANG_FILE . 'deletedCommentsTitle'
+        );
         $menu->addMenuItem(
             $menu->makeMenuItem()
-                ->setTitle('Statistics')
+                ->setTitle($statisticsTitle)
                 ->setHref($this->uriBuilder->uriFor('statistics', [],'Backend\StatisticsBE'))
                 ->setActive($currentAction === 'statistics')
         );
         $menu->addMenuItem(
             $menu->makeMenuItem()
-                ->setTitle('Comments')
+                ->setTitle($commentsTitle)
                 ->setHref($this->uriBuilder->uriFor('comments', [], 'Backend\CommentsBE'))
                 ->setActive($currentAction === 'comments')
         );
         $menu->addMenuItem(
             $menu->makeMenuItem()
-                ->setTitle('Technical problems')
+                ->setTitle($technicalProblemsTitle)
                 ->setHref($this->uriBuilder->uriFor('technicalProblems', [], 'Backend\TechnicalProblemsBE'))
                 ->setActive($currentAction === 'technicalProblems')
         );
         $menu->addMenuItem(
             $menu->makeMenuItem()
-                ->setTitle('Deleted comments')
+                ->setTitle($deletedCommentsTitle)
                 ->setHref($this->uriBuilder->uriFor('deletedComments', [], 'Backend\DeletedCommentBE'))
                 ->setActive($currentAction === 'deletedComments')
         );

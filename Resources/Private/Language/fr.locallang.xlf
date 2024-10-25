@@ -313,6 +313,18 @@
 			<trans-unit id="stats.h.technicalProblems">
 				<target>problèmes-techniques</target>
 			</trans-unit>
+			<trans-unit id="statisticsTitle">
+				<target>Statistiques</target>
+			</trans-unit>
+			<trans-unit id="commentsTitle">
+				<target>Commentaires</target>
+			</trans-unit>
+			<trans-unit id="technicalProblemsTitle">
+				<target>Problèmes techniques</target>
+			</trans-unit>
+			<trans-unit id="deletedCommentsTitle">
+				<target>Commentaires retirés</target>
+			</trans-unit>
         </body>
     </file>
 </xliff>
