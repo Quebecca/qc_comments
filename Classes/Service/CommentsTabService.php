@@ -105,6 +105,7 @@ class CommentsTabService extends QcBackendModuleService
             $request->getQueryParams()['parameters']['includeEmptyPages'] === 'true'
         );
         $filter->setUseful($request->getQueryParams()['parameters']['useful'] ?? '');
+        $filter->setCommentReason($request->getQueryParams()['parameters']['commentReason'] ?? '');
         return $filter;
     }
 

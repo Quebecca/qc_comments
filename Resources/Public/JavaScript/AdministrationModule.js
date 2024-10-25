@@ -31,6 +31,7 @@ define(['jquery'], function($) {
                 'currentPageId' : $('#currentPageId').attr('data-tr-label'),
                 'startDate' : $('#startDate').val(),
                 'endDate' : $('#endDate').val(),
+                'commentReason' : $('#commentReason').val()
             }
             let url = '';
             switch (actionName){
