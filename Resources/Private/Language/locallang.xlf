@@ -315,6 +315,9 @@
 			<trans-unit id="stats.h.technicalProblems">
 				<source>technical-problems</source>
 			</trans-unit>
+			<trans-unit id="technicalProblems">
+				<source>technical-problems</source>
+			</trans-unit>
 			<trans-unit id="statisticsTitle">
 				<source>Statistics</source>
 			</trans-unit>

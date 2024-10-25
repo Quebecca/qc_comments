@@ -313,6 +313,9 @@
 			<trans-unit id="stats.h.technicalProblems">
 				<target>problèmes-techniques</target>
 			</trans-unit>
+			<trans-unit id="technicalProblems">
+				<target>problèmes-techniques</target>
+			</trans-unit>
 			<trans-unit id="statisticsTitle">
 				<target>Statistiques</target>
 			</trans-unit>
