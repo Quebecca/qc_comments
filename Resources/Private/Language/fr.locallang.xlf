@@ -328,6 +328,9 @@
 			<trans-unit id="deletedCommentsTitle">
 				<target>Commentaires retirés</target>
 			</trans-unit>
+			<trans-unit id="spamMessage">
+				<source>Impossible de prouver que vous êtes un humain. Votre avis n’a pas pu être envoyé.</source>
+			</trans-unit>
         </body>
     </file>
 </xliff>

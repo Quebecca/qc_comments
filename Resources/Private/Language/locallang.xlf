@@ -283,7 +283,7 @@
 				<source>You must select an option</source>
 			</trans-unit>
 			<trans-unit id="nextFields">
-				<source>Fields followed by a</source>
+				<source>Fields followed by </source>
 			</trans-unit>
 			<trans-unit id="mandatoryFields">
 				<source>are mandatory.</source>
@@ -299,6 +299,9 @@
 			</trans-unit>
 			<trans-unit id="responseNoReceived">
 				<source>You will not receive any response.</source>
+			</trans-unit>
+			<trans-unit id="addDetails">
+				<source>Add details</source>
 			</trans-unit>
 			<trans-unit id="addComment">
 				<source>Do you want to add a comment?</source>
@@ -329,6 +332,9 @@
 			</trans-unit>
 			<trans-unit id="deletedCommentsTitle">
 				<source>Deleted comments</source>
+			</trans-unit>
+			<trans-unit id="spamMessage">
+				<source>Can't prove you're human. Your review could not be sent.</source>
 			</trans-unit>
 		</body>
 	</file>

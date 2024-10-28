@@ -19,6 +19,8 @@ use Qc\QcComments\Domain\Model\Comment;
 use Qc\QcComments\Domain\Repository\CommentRepository;
 use Qc\QcComments\SpamShield\SpamShieldValidator;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -44,6 +46,16 @@ class CommentsController extends ActionController
     protected LocalizationUtility $localizationUtility;
 
     /**
+     * @var Context
+     */
+    protected Context $context;
+
+    /**
+     * @var string
+     */
+    protected string $currentLanguage = "fr";
+
+    /**
      * @var bool
      */
     protected bool $isSpamShieldEnabled = false;
@@ -60,6 +72,8 @@ class CommentsController extends ActionController
         $this->typoscriptConfiguration =
             GeneralUtility::makeInstance(TyposcriptConfiguration::class);
         $this->isSpamShieldEnabled = $this->typoscriptConfiguration->isSpamShieldEnabled();
+        $this->context = GeneralUtility::makeInstance(Context::class);
+        $this->currentLanguage = $this->getCurrentLanguage();
     }
 
 
@@ -67,6 +81,7 @@ class CommentsController extends ActionController
      * This function is used to render the comments form
      * @param array $args
      * @return ResponseInterface
+     * @throws AspectNotFoundException
      */
     public function showAction(array $args = []): ResponseInterface
     {
@@ -79,7 +94,7 @@ class CommentsController extends ActionController
             'sitekey' => $this->typoscriptConfiguration->getRecaptchaSitekey(),
             'secret' => $this->typoscriptConfiguration->getRecaptchaSecretKey()
         ];
-        $reasonOptions = $this->typoscriptConfiguration->getReasonOptions();
+        $reasonOptions = $this->typoscriptConfiguration->getReasonOptions($this->currentLanguage);
         $this->view->assignMultiple([
             'submitted' => $this->request->getArguments()['submitted'] ?? false,
             'submittedFormUid' => strval($this->request->getArguments()['formUid']) ?? '',
@@ -184,7 +199,7 @@ class CommentsController extends ActionController
      * @return array
      */
     public function getSelectedReasonOption($reasonType, $reason_code) : array {
-        $options = $this->typoscriptConfiguration->getReasonOptions()[$reasonType];
+        $options = $this->typoscriptConfiguration->getReasonOptions($this->currentLanguage)[$reasonType];
         foreach ($options as $item) {
             if ($item['code'] === $reason_code) {
                 return $item;
@@ -192,6 +207,22 @@ class CommentsController extends ActionController
         }
         return [];
     }
+
+    /**
+     * @throws AspectNotFoundException
+     */
+    public function getCurrentLanguage() : string {
+
+        $languageId = $this->context->getPropertyFromAspect('language', 'id');
+        if($languageId == 0){
+            return "fr";
+        }
+        if($languageId == 1){
+            return "en";
+        }
+        return BackendUtility::getRecord('sys_language', $languageId, 'language_isocode')['language_isocode'] ?? "";
+    }
+
     /**
      * This function is used to anonymat sensible information in a comment
      * @param $comment

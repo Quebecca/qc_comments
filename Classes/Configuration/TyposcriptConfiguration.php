@@ -168,8 +168,8 @@ class TyposcriptConfiguration
         return $this->settings['comments']['anonymizeComment']['pattern'] ?? '';
     }
 
-    public function getReasonOptions() : array {
-        return $this->settings['options'] ?? [];
+    public function getReasonOptions($lang) : array {
+        return $this->settings['options'][$lang] ?? [];
     }
 
     public function getNegativeCommentsReasonsForBE() :array {
