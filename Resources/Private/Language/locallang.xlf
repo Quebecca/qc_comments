@@ -336,6 +336,9 @@
 			<trans-unit id="spamMessage">
 				<source>Can't prove you're human. Your review could not be sent.</source>
 			</trans-unit>
+			<trans-unit id="atLeastXChars">
+				<source>Please write a message of at least %s characters</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

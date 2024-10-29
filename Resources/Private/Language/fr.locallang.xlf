@@ -329,7 +329,10 @@
 				<target>Commentaires retirés</target>
 			</trans-unit>
 			<trans-unit id="spamMessage">
-				<source>Impossible de prouver que vous êtes un humain. Votre avis n’a pas pu être envoyé.</source>
+				<target>Impossible de prouver que vous êtes un humain. Votre avis n’a pas pu être envoyé.</target>
+			</trans-unit>
+			<trans-unit id="atLeastXChars">
+				<target>Veuillez écrire un message d'au moins %s caractères</target>
 			</trans-unit>
         </body>
     </file>
