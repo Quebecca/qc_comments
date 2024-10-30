@@ -202,7 +202,7 @@ class CommentsTabService extends QcBackendModuleService
                 $comment = str_replace("\t", ' ', $comment);
                 $items[$i]['comment'] = $comment;
                 $items[$i]['useful'] = $item['useful'];
-                $items[$i]['deleted'] = $item['deleted'] ?? 'todo';
+                $items[$i]['deleted'] = $item['deleted'] ?? '';
                 $i++;
             }
         }

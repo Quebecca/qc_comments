@@ -26,7 +26,7 @@ mod{
         }
         statistics {
             maxRecords = 30
-            showRecordsForHiddenPages = 0
+            showRecordsForHiddenPages = 1
         }
 
         csvExport {

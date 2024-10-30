@@ -152,6 +152,7 @@ class StatisticsTabService extends QcBackendModuleService
         $filter->setDateRange($request->getQueryParams()['parameters']['selectDateRange']);
         $filter->setStartDate($request->getQueryParams()['parameters']['startDate'] ?? '');
         $filter->setEndDate($request->getQueryParams()['parameters']['endDate'] ?? '');
+        $filter->setIncludeEmptyPages($request->getQueryParams()['parameters']['includeEmptyPages'] ?? false);
         return $filter;
     }
 
@@ -225,10 +226,9 @@ class StatisticsTabService extends QcBackendModuleService
                 false,
                 $this->showStatisticsForHiddenPage
             );
+
         $formattedData = $this->statisticsDataFormatting($data, true);
-
         $headers = $this->getHeaders(true);
-
         // Resort the array elements for export
         $mappedData = [];
         $i = 0;
