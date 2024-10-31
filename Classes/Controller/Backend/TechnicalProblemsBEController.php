@@ -105,7 +105,6 @@ class TechnicalProblemsBEController extends QcCommentsBEController
         $this->qcBeModuleService
             = GeneralUtility::makeInstance(TechnicalProblemsTabService::class);
         $filter = $this->qcBeModuleService->getFilterFromRequest($request);
-        $filter->setDepth( intval($request->getQueryParams()['parameters']['depth']));
         $currentPageId = intval($request->getQueryParams()['parameters']['currentPageId']);
         return $this->qcBeModuleService->exportTechnicalProblemsData($filter, $currentPageId);
     }

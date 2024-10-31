@@ -87,7 +87,7 @@ class TechnicalProblemsTabService extends QcBackendModuleService
         $filter->setDateRange($request->getQueryParams()['parameters']['selectDateRange']);
         $filter->setStartDate($request->getQueryParams()['parameters']['startDate'] ?? '');
         $filter->setEndDate($request->getQueryParams()['parameters']['endDate'] ?? '');
-        //$filter->setIncludeFixedTechnicalProblem($request->getQueryParams()['parameters']['includeFixedTechnicalProblem'] ?? '');
+        $filter->setIncludeFixedTechnicalProblems($request->getQueryParams()['parameters']['includeFixedTechnicalProblems'] ?? false);
         return $filter;
     }
     /**
