@@ -13,6 +13,8 @@ namespace Qc\QcComments\Domain\Filter;
  *
  ***/
 
+use DateTime;
+use DateTimeZone;
 use Qc\QcComments\Util\Arrayable;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -275,7 +277,13 @@ abstract class Filter implements Arrayable
 
     public function getStartDate(): string
     {
+        if($this->startDate != ''){
+            $date = new DateTime($this->startDate, new DateTimeZone('UTC'));
+            $date->modify('+1 day');
+            return $date->format('Y-m-d\TH:i:s\Z');
+        }
         return $this->startDate;
+
     }
 
     /**
@@ -288,7 +296,13 @@ abstract class Filter implements Arrayable
 
     public function getEndDate(): string
     {
+        if($this->endDate != ''){
+            $date = new DateTime($this->endDate, new DateTimeZone('UTC'));
+            $date->modify('+1 day');
+            return $date->format('Y-m-d\TH:i:s\Z');
+        }
         return $this->endDate;
+
     }
 
     /**
