@@ -27,6 +27,9 @@
             <trans-unit id="filter.includeEmptyPages">
                 <target>Inclure les pages sans commentaire</target>
             </trans-unit>
+			<trans-unit id="filter.showFixedProblems">
+				<target>Afficher les problèmes techniques traités</target>
+			</trans-unit>
             <trans-unit id="filter.lang.all">
                 <target>Toutes langues</target>
             </trans-unit>
@@ -164,7 +167,7 @@
 				<target>Description</target>
 			</trans-unit>
 			<trans-unit id="comments.h.type_problem">
-				<target>Problem type</target>
+				<target>Type de problème</target>
 			</trans-unit>
             <trans-unit id="positive">
                 <target>Oui</target>
@@ -333,6 +336,21 @@
 			</trans-unit>
 			<trans-unit id="atLeastXChars">
 				<target>Veuillez écrire un message d'au moins %s caractères</target>
+			</trans-unit>
+			<trans-unit id="technical-problems">
+				<target>Les Problèmes techniques</target>
+			</trans-unit>
+			<trans-unit id="fixed">
+				<target>Traité</target>
+			</trans-unit>
+			<trans-unit id="fix">
+				<target>Traiter</target>
+			</trans-unit>
+			<trans-unit id="delete">
+				<target>Supprimer</target>
+			</trans-unit>
+			<trans-unit id="deleted">
+				<target>Supprimé</target>
 			</trans-unit>
         </body>
     </file>

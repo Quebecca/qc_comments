@@ -33,25 +33,37 @@
                             {row.reason_short_label}
                         </td>
                         <td>
-                            <f:if condition="{row.realName}">
-                                <f:then>{row.realName}</f:then>
-                                <f:else>{row.email}</f:else>
+                            <f:if condition="{row.deleted} == 1">
+                                {row.deleting_date}
                             </f:if>
-                        </td>
-                        <td>
-                            {row.deleting_date}
+                            <f:else>
+                                --
+                            </f:else>
                         </td>
                         <td>
                             <f:if condition="{row.deleted} == 1">
                                 <f:then>
-                                    <span style="color:green" class="font-weight-bold">Traité </span>
+                                    <f:if condition="{row.realName}">
+                                        <f:then>{row.realName}</f:then>
+                                        <f:else>{row.email}</f:else>
+                                    </f:if>
+                                </f:then>
+                                <f:else>
+                                    --
+                                </f:else>
+                            </f:if>
+                        </td>
+                        <td>
+                            <f:if condition="{row.deleted} == 1">
+                                <f:then>
+                                    <span style="color:green" class="font-weight-bold"> {f:translate(key:'fixed')} </span>
                                 </f:then>
                                 <f:else>
                                     <f:if condition="{isFixButtonEnabled}">
                                         <f:then>
                                             <f:form action="markProblemAsFixed" >
                                                 <input type="hidden" name="technicalProblemUid" value="{row.recordUid}">
-                                                <f:form.submit value="Traité" class="btn btn-default"/>
+                                                <f:form.submit value="{f:translate(key:'fix')}" class="btn btn-default"/>
                                             </f:form>
                                         </f:then>
                                         <f:else>

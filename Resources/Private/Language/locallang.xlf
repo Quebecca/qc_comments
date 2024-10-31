@@ -24,6 +24,9 @@
 			<trans-unit id="filter.includeEmptyPages">
 				<source>Include pages without comment</source>
 			</trans-unit>
+			<trans-unit id="filter.showFixedProblems">
+				<source>Show fixed problems</source>
+			</trans-unit>
 			<trans-unit id="filter.lang">
 				<source>Language</source>
 			</trans-unit>
@@ -133,7 +136,7 @@
 				<source>Comment</source>
 			</trans-unit>
 			<trans-unit id="comments.h.type_problem">
-				<source>Type de problème</source>
+				<source>Problem type</source>
 			</trans-unit>
 			<trans-unit id="comments.h.be_user_name">
 				<source>Fixed by</source>
@@ -338,6 +341,21 @@
 			</trans-unit>
 			<trans-unit id="atLeastXChars">
 				<source>Please write a message of at least %s characters</source>
+			</trans-unit>
+			<trans-unit id="technical-problems">
+				<source>Technical problems</source>
+			</trans-unit>
+			<trans-unit id="fixed">
+				<source>Fixed</source>
+			</trans-unit>
+			<trans-unit id="fix">
+				<source>Fix</source>
+			</trans-unit>
+			<trans-unit id="delete">
+				<source>Delete</source>
+			</trans-unit>
+			<trans-unit id="deleted">
+				<source>Deleted</source>
 			</trans-unit>
 		</body>
 	</file>
