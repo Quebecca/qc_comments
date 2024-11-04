@@ -74,17 +74,32 @@ class CommentsBEController extends QcCommentsBEController
 
 
     /**
-     * This function is used to delete the comment
+     * This function is used to delete the comment (deleted = 1)
      * @return ForwardResponse
      * @throws AspectNotFoundException
      */
-    public function deleteCommentAction()
+    public function deleteCommentAction(): ForwardResponse
     {
         $this->qcBeModuleService
             = GeneralUtility::makeInstance(CommentsTabService::class);
         $recordUid = $this->request->getArguments()['commentUid'];
         if($recordUid){
-            $this->qcBeModuleService->deletedComment($recordUid);
+            $this->qcBeModuleService->deleteComment($recordUid);
+        }
+        return new ForwardResponse('comments');
+    }
+
+    /**
+     * This function is used to remove the comment (remove = 1)
+     * @return ForwardResponse
+     * @throws AspectNotFoundException
+     */
+    public function hideCommentAction(){
+        $this->qcBeModuleService
+            = GeneralUtility::makeInstance(CommentsTabService::class);
+        $recordUid = $this->request->getArguments()['commentUid'];
+        if($recordUid){
+            $this->qcBeModuleService->hideComment($recordUid);
         }
         return new ForwardResponse('comments');
     }

@@ -7,7 +7,10 @@ use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Domain\Filter\TechnicalProblemsFilter;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class TechnicalProblemsTabService extends QcBackendModuleService
 {
@@ -55,7 +58,7 @@ class TechnicalProblemsTabService extends QcBackendModuleService
                 $this->showCommentsForHiddenPage
             );
 
-        $tooMuchResults = $this->commentsRepository->getListCount() > $maxRecords
+        $tooMuchResults = $this->commentsRepository->getListCount("  And useful like 'NA'") > $maxRecords
             || $tooMuchPages;
         $pagesId = $pages_ids;
         $currentPageId = $this->root_id;
@@ -180,6 +183,25 @@ class TechnicalProblemsTabService extends QcBackendModuleService
             }
         }
         return parent::export($filter,$currentPageId,'technicalProblems', $headers, $items);
+    }
+
+    /**
+     * @param $problemUid
+     * @return true
+     * @throws AspectNotFoundException
+     */
+    public function markProblemAsFixed($problemUid){
+        $context = GeneralUtility::makeInstance(Context::class);
+        $userBeUid = $context->getPropertyFromAspect('backend.user', 'id');
+        $comment = $this->commentsRepository->findByUid($problemUid);
+        if($comment != null){
+            $comment->setFixedByUserUid($userBeUid);
+            $comment->setFixedDate(date('Y-m-d H:i:s'));
+            $comment->setFixed(1);
+            $this->updateComment($comment);
+            $this->commentsRepository->persistenceManager->persistAll();
+        }
+        return true;
     }
 
 }

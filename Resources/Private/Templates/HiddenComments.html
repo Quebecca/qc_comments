@@ -17,7 +17,7 @@
         <f:else>
             <div class="comments-sections">
                 <f:flashMessages/>
-                <f:render partial="Filters/DeletedCommentsFilters"
+                <f:render partial="Filters/HiddenCommentsFilters"
                           arguments="{
                           action: 'comments',
                           currentPageId : currentPageId,
@@ -47,7 +47,7 @@
             <div class="panel-heading">
                 {pageUid} - {item.title}
             </div>
-            <f:render partial="Tables/DeletedCommentsTable" arguments="{rows:'{item.records}', headers:commentHeaders, isFixButtonEnabled:isFixButtonEnabled}"/>
+            <f:render partial="Tables/HiddenCommentsTable" arguments="{rows:'{item.records}', headers:commentHeaders, isFixButtonEnabled:isFixButtonEnabled}"/>
         </div>
     </f:for>
 </f:section>

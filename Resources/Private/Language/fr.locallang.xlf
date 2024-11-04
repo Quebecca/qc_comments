@@ -328,7 +328,7 @@
 			<trans-unit id="technicalProblemsTitle">
 				<target>Problèmes techniques</target>
 			</trans-unit>
-			<trans-unit id="deletedCommentsTitle">
+			<trans-unit id="removedCommentsTitle">
 				<target>Commentaires retirés</target>
 			</trans-unit>
 			<trans-unit id="spamMessage">
@@ -351,6 +351,12 @@
 			</trans-unit>
 			<trans-unit id="deleted">
 				<target>Supprimé</target>
+			</trans-unit>
+			<trans-unit id="remove">
+				<target>Retirer</target>
+			</trans-unit>
+			<trans-unit id="removed">
+				<target>Retiré</target>
 			</trans-unit>
         </body>
     </file>

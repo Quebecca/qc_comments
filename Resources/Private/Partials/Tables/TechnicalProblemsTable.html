@@ -33,7 +33,7 @@
                             {row.reason_short_label}
                         </td>
                         <td>
-                            <f:if condition="{row.deleted} == 1">
+                            <f:if condition="{row.fixed} == 1">
                                 {row.deleting_date}
                             </f:if>
                             <f:else>
@@ -41,7 +41,7 @@
                             </f:else>
                         </td>
                         <td>
-                            <f:if condition="{row.deleted} == 1">
+                            <f:if condition="{row.fixed} == 1">
                                 <f:then>
                                     <f:if condition="{row.realName}">
                                         <f:then>{row.realName}</f:then>
@@ -54,7 +54,7 @@
                             </f:if>
                         </td>
                         <td>
-                            <f:if condition="{row.deleted} == 1">
+                            <f:if condition="{row.fixed} == 1">
                                 <f:then>
                                     <span style="color:green" class="font-weight-bold"> {f:translate(key:'fixed')} </span>
                                 </f:then>

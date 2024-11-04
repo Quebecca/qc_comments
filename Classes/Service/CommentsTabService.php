@@ -167,11 +167,6 @@ class CommentsTabService extends QcBackendModuleService
         return $headers;
     }
 
-    public function deleteComment($commentUid) {
-
-        $this->commentsRepository->deleteComment($commentUid);
-    }
-
     /**
      * @param Filter $filter
      * @param int $currentPageId

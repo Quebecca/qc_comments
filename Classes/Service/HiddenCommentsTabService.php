@@ -16,12 +16,12 @@ namespace Qc\QcComments\Service;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
-use Qc\QcComments\Domain\Filter\DeletedCommentsFilter;
+use Qc\QcComments\Domain\Filter\HiddenCommentsFilter;
 use Qc\QcComments\Domain\Filter\Filter;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\Response;
 
-class DeletedCommentsTabService extends QcBackendModuleService
+class HiddenCommentsTabService extends QcBackendModuleService
 {
     /**
      * @var bool
@@ -46,11 +46,11 @@ class DeletedCommentsTabService extends QcBackendModuleService
     {
         $pages_ids = $this->commentsRepository->getPageIdsList();
 
-        $maxRecords = $this->tsConfiguration->getMaxRecords("deletedComments");
+        $maxRecords = $this->tsConfiguration->getMaxRecords("hiddenComments");
 
-        $numberOfSubPages = $this->tsConfiguration->getNumberOfSubPages("deletedComments");
+        $numberOfSubPages = $this->tsConfiguration->getNumberOfSubPages("hiddenComments");
 
-        $orderType = $this->tsConfiguration->getOrderType("deletedComments");
+        $orderType = $this->tsConfiguration->getOrderType("hiddenComments");
 
         $tooMuchPages = count($pages_ids) > $numberOfSubPages;
         $pages_ids = array_slice(
@@ -67,7 +67,7 @@ class DeletedCommentsTabService extends QcBackendModuleService
                 $this->showCommentsForHiddenPage
             );
 
-        $tooMuchResults = $this->commentsRepository->getListCount() > $maxRecords
+        $tooMuchResults = $this->commentsRepository->getListCount(" And hidden_comment = 1") > $maxRecords
                             || $tooMuchPages;
         $pagesId = $pages_ids;
         $currentPageId = $this->root_id;
@@ -91,7 +91,7 @@ class DeletedCommentsTabService extends QcBackendModuleService
      */
     public function getFilterFromRequest($request): Filter
     {
-        $filter = new DeletedCommentsFilter();
+        $filter = new HiddenCommentsFilter();
         $filter->setLang($request->getQueryParams()['parameters']['lang']);
         $filter->setDepth(intval($request->getQueryParams()['parameters']['depth']));
         $filter->setDateRange($request->getQueryParams()['parameters']['selectDateRange']);
@@ -114,9 +114,9 @@ class DeletedCommentsTabService extends QcBackendModuleService
        // Add filtering to records
           if ($filter === null) {
               // Get filter from session if available
-              $filter = $this->backendSession->get('deletedCommentsFilter');
+              $filter = $this->backendSession->get('hiddenCommentsFilter');
               if ($filter == null) {
-                  $filter = new DeletedCommentsFilter();
+                  $filter = new HiddenCommentsFilter();
               }
           } else {
               if ($filter->getDateRange() != 'userDefined') {
@@ -124,7 +124,7 @@ class DeletedCommentsTabService extends QcBackendModuleService
                   $filter->setEndDate(null);
               }
 
-              $this->backendSession->store('deletedCommentsFilter', $filter);
+              $this->backendSession->store('hiddenCommentsFilter', $filter);
           }
           $this->commentsRepository->setFilter($filter);
           $this->commentsRepository->setRootId($this->root_id);
@@ -159,11 +159,6 @@ class DeletedCommentsTabService extends QcBackendModuleService
             ], $headers);
         }
         return $headers;
-    }
-
-    public function deleteComment($commentUid) {
-
-        $this->commentsRepository->deleteComment($commentUid);
     }
 
     /**

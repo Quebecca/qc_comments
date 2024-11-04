@@ -2,36 +2,38 @@
 
 namespace Qc\QcComments\Controller\Backend;
 
-use Qc\QcComments\Domain\Filter\DeletedCommentsFilter;
+use Qc\QcComments\Domain\Filter\HiddenCommentsFilter;
 use Qc\QcComments\Service\CommentsTabService;
-use Qc\QcComments\Service\DeletedCommentsTabService;
+use Qc\QcComments\Service\HiddenCommentsTabService;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 
 
-class DeletedCommentBEController extends QcCommentsBEController
+class HiddenCommentsBEController extends QcCommentsBEController
 {
     /**
-     * @param DeletedCommentsFilter|null $filter
+     * @param HiddenCommentsFilter|null $filter
      * @param string $operation
      * @return ResponseInterface
      * @throws Exception
      */
-    public function deletedCommentsAction(DeletedCommentsFilter $filter = null, string $operation = ''): ResponseInterface {
-        $this->addMainMenu('deletedComments');
+    public function hiddenCommentsAction(HiddenCommentsFilter $filter = null, string $operation = ''): ResponseInterface {
+        $this->addMainMenu('hiddenComments');
         if($operation === 'reset-filters'){
-            $filter = new DeletedCommentsFilter();
+            $filter = new HiddenCommentsFilter();
         }
         $this->qcBeModuleService
-            = GeneralUtility::makeInstance(DeletedCommentsTabService::class);
+            = GeneralUtility::makeInstance(HiddenCommentsTabService::class);
         $this->qcBeModuleService->getBackendSession()->store(
             'lastAction',
             [
                 'controllerName' => $this->controllerName,
-                'actionName' => 'deletedComments'
+                'actionName' => 'hiddenComments'
             ]);
 
 
@@ -68,8 +70,25 @@ class DeletedCommentBEController extends QcCommentsBEController
         }
         $filter = $this->qcBeModuleService->processFilter($filter);
         $this->moduleTemplate->assign('filter', $filter);
-        return $this->moduleTemplate->renderResponse('DeletedComments');
+        return $this->moduleTemplate->renderResponse('HiddenComments');
     }
+
+
+    /**
+     * This function is used to remove the comment (remove = 1)
+     * @return ForwardResponse
+     * @throws AspectNotFoundException
+     */
+    public function deleteCommentAction(){
+        $this->qcBeModuleService
+            = GeneralUtility::makeInstance(HiddenCommentsTabService::class);
+        $recordUid = $this->request->getArguments()['commentUid'];
+        if($recordUid){
+            $this->qcBeModuleService->deleteComment($recordUid);
+        }
+        return new ForwardResponse('hiddenComments');
+    }
+
 
 
     /**

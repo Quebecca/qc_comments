@@ -10,7 +10,7 @@
 				<source>Comments</source>
 			</trans-unit>
 			<trans-unit id="deleted_comments">
-				<source>Deleted comments</source>
+				<source>Removed comments</source>
 			</trans-unit>
 			<trans-unit id="stats">
 				<source>Statistics</source>
@@ -333,8 +333,8 @@
 			<trans-unit id="technicalProblemsTitle">
 				<source>Technical problems</source>
 			</trans-unit>
-			<trans-unit id="deletedCommentsTitle">
-				<source>Deleted comments</source>
+			<trans-unit id="removedCommentsTitle">
+				<source>Removed comments</source>
 			</trans-unit>
 			<trans-unit id="spamMessage">
 				<source>Can't prove you're human. Your review could not be sent.</source>
@@ -353,6 +353,12 @@
 			</trans-unit>
 			<trans-unit id="delete">
 				<source>Delete</source>
+			</trans-unit>
+			<trans-unit id="remove">
+				<source>Remove</source>
+			</trans-unit>
+			<trans-unit id="removed">
+				<source>Removed</source>
 			</trans-unit>
 			<trans-unit id="deleted">
 				<source>Deleted</source>

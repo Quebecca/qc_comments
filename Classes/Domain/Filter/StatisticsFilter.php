@@ -126,10 +126,10 @@ class StatisticsFilter extends Filter
     }
 
     /**
-     * @return bool
+     * @return string
      */
-     public function getRecordVisibility() :bool{
-        return false;
+     public function getRecordVisibility() :string{
+        return "and hidden_comment = 0";
     }
 
 }

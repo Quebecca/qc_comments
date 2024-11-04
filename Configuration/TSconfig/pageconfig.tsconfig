@@ -16,7 +16,7 @@ mod{
             showRecordsForHiddenPages = 1
             enableDeleteButton = 1
         }
-        deletedComments {
+        hiddenComments {
           // Order by comment date
           orderType = DESC
           maxRecords = 100

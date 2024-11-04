@@ -6,7 +6,7 @@ use Qc\QcComments\Configuration\TyposcriptConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
-class DeletedCommentsFilter extends Filter
+class HiddenCommentsFilter extends Filter
 {
     protected const KEY_COMMENT_REASON= "commentReason";
 
@@ -88,9 +88,9 @@ class DeletedCommentsFilter extends Filter
      * @param array $values
      * @return CommentsFilter
      */
-    public static function getInstanceFromArray(array $values): DeletedCommentsFilter
+    public static function getInstanceFromArray(array $values): HiddenCommentsFilter
     {
-        return  new DeletedCommentsFilter(
+        return  new HiddenCommentsFilter(
             $values[parent::KEY_LANG],
             $values[parent::KEY_START_DATE],
             $values[parent::KEY_END_DATE],
@@ -137,7 +137,7 @@ class DeletedCommentsFilter extends Filter
      */
     public function getUsibiltyCriteria(): string
     {
-        $criteria =  " useful like '".$this->getUseful()."' and tx_qccomments_domain_model_comment.deleted = 1 and useful not like 'NA'";
+        $criteria =  " useful like '".$this->getUseful()."'and useful not like 'NA'";
         // we apply the reason only if the comment is negative
         if($this->getUseful() == '0'){
             $criteria .= "AND reason_short_label like '".$this->getCommentReason()."'";
@@ -146,9 +146,9 @@ class DeletedCommentsFilter extends Filter
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    public function getRecordVisibility() :bool {
-        return true;
+    public function getRecordVisibility() :string {
+        return ' and hidden_comment = 1';
     }
 }

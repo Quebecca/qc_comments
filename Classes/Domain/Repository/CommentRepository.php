@@ -117,16 +117,14 @@ class CommentRepository extends Repository
         }
 
         $constraints = $this->getConstraints($pages_ids);
+        $constraints['joinCond'] .= $this->filter->getRecordVisibility() ;
 
-        if($this->filter->getRecordVisibility() === true){
-            $queryBuilder->getRestrictions()->removeByType(DeletedRestriction::class);
-        }
         $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
         $data= $queryBuilder
                 ->select(
                     'p.uid', $this->tableName.'.uid as recordUid',
                     'beUsers.realName', 'beUsers.email',  'p.title', 'date_hour', 'comment', 'useful', 'deleting_date',
-                    'reason_short_label', $this->tableName.".deleted"
+                    'reason_short_label', $this->tableName.".deleted", 'fixed'
 
                 )
                 ->from($this->tableName)
@@ -163,10 +161,10 @@ class CommentRepository extends Repository
 
     /**
      * This function is used to get the number of records by the depth for BE rendering verification
+     * @param bool $hiddenComment
      * @return int
-     * @throws \Doctrine\DBAL\Exception
      */
-    public function getListCount(): int
+    public function getListCount(string $constraint  = ''): int
     {
         $ids_list = $this->getPageIdsList();
         $queryBuilder = $this->generateQueryBuilder();
@@ -178,7 +176,7 @@ class CommentRepository extends Repository
                     ConnectionAlias::PARAM_INT_ARRAY
                 )
             );
-        $constraints .= $this->date_criteria . ' ' . $this->lang_criteria;
+        $constraints .= $this->date_criteria . ' ' . $this->lang_criteria . $constraint;
         return $queryBuilder
             ->count('*')
             ->from($this->tableName)
@@ -187,6 +185,7 @@ class CommentRepository extends Repository
             )
             ->execute()
             ->fetchAssociative()['COUNT(*)'];
+
     }
 
 
@@ -233,13 +232,12 @@ class CommentRepository extends Repository
                 $this->tableName,
                 'pages',
                 'p',
-                $constraints['joinCond']
+                $constraints['joinCond'] . ' and hidden_comment = 0'
             )
             ->where(
                 $constraints['whereClause']
             )
             ->groupBy('p.uid', 'p.title');
-
         if ($limit) {
             // we add one more record to check if there are more than rendering results
             $data = $data->setMaxResults($limit + 1);

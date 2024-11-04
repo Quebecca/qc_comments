@@ -104,7 +104,7 @@ class QcCommentsBEController extends ActionController
             self::QC_LANG_FILE . 'technicalProblemsTitle'
         );
         $deletedCommentsTitle = $this->localizationUtility->translate(
-            self::QC_LANG_FILE . 'deletedCommentsTitle'
+            self::QC_LANG_FILE . 'removedCommentsTitle'
         );
         $menu->addMenuItem(
             $menu->makeMenuItem()
@@ -120,15 +120,15 @@ class QcCommentsBEController extends ActionController
         );
         $menu->addMenuItem(
             $menu->makeMenuItem()
-                ->setTitle($technicalProblemsTitle)
-                ->setHref($this->uriBuilder->uriFor('technicalProblems', [], 'Backend\TechnicalProblemsBE'))
-                ->setActive($currentAction === 'technicalProblems')
+                ->setTitle($deletedCommentsTitle)
+                ->setHref($this->uriBuilder->uriFor('hiddenComments', [], 'Backend\HiddenCommentsBE'))
+                ->setActive($currentAction === 'hiddenComments')
         );
         $menu->addMenuItem(
             $menu->makeMenuItem()
-                ->setTitle($deletedCommentsTitle)
-                ->setHref($this->uriBuilder->uriFor('deletedComments', [], 'Backend\DeletedCommentBE'))
-                ->setActive($currentAction === 'deletedComments')
+                ->setTitle($technicalProblemsTitle)
+                ->setHref($this->uriBuilder->uriFor('technicalProblems', [], 'Backend\TechnicalProblemsBE'))
+                ->setActive($currentAction === 'technicalProblems')
         );
         $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($menu);
     }

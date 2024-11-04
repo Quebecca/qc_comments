@@ -182,12 +182,12 @@ class QcBackendModuleService
 
 
     /**
-     * This function is used to mark the technical problem as solved
+     * This function is used to mark the technical problem as solved (deleted = 1)
      * @param $recordUid
      * @return bool
      * @throws AspectNotFoundException
      */
-    public function deletedComment($recordUid) : bool
+    public function deleteComment($recordUid) : bool
     {
         $context = GeneralUtility::makeInstance(Context::class);
         $userBeUid = $context->getPropertyFromAspect('backend.user', 'id');
@@ -201,6 +201,30 @@ class QcBackendModuleService
         }
         return true;
     }
+
+
+
+    /**
+     * This function is used to mark the comment as (removed = 1)
+     * @param $recordUid
+     * @return bool
+     * @throws AspectNotFoundException
+     */
+    public function hideComment($recordUid) : bool
+    {
+        $context = GeneralUtility::makeInstance(Context::class);
+        $userBeUid = $context->getPropertyFromAspect('backend.user', 'id');
+        $comment = $this->commentsRepository->findByUid($recordUid);
+        if($comment != null){
+            $comment->setHiddenByUserUid($userBeUid);
+            $comment->setHiddenDate(date('Y-m-d H:i:s'));
+            $comment->setHiddenComment(1);
+            $this->updateComment($comment);
+            $this->commentsRepository->persistenceManager->persistAll();
+        }
+        return true;
+    }
+
 
 
     public function getComment($commentUid){

@@ -89,7 +89,7 @@ class TechnicalProblemsBEController extends QcCommentsBEController
             = GeneralUtility::makeInstance(TechnicalProblemsTabService::class);
         $recordUid = $this->request->getArguments()['technicalProblemUid'];
         if($recordUid){
-            $this->qcBeModuleService->deletedComment($recordUid);
+            $this->qcBeModuleService->markProblemAsFixed($recordUid);
         }
         return new ForwardResponse('technicalProblems');
     }

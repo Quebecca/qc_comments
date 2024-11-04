@@ -361,7 +361,7 @@ abstract class Filter implements Arrayable
      * This function is used to check if we display the deleted record or not
      * @return bool
      */
-    abstract public function getRecordVisibility():bool;
+    abstract public function getRecordVisibility():string;
 
 
     /**

@@ -17,6 +17,8 @@
                     <f:for as="header" key="col" each="{headers}" iteration="iterator">
                         <th>{header}</th>
                     </f:for>
+                    <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -37,6 +39,14 @@
 
                         </td>
                         <td>
+                            <f:if condition="{row.removed} != 1">
+                                <f:form action="hideComment">
+                                    <input type="hidden" name="commentUid" value="{row.recordUid}">
+                                    <f:form.submit value="{f:translate(key:'remove')}" class="btn btn-default"/>
+                                </f:form>
+                            </f:if>
+                        </td>
+                        <td>
                             <f:if condition="{row.deleted} == 1">
                                 <f:then>
                                     <span style="color:red" class="font-weight-bold">{f:translate(key:'deleted')}</span>
@@ -48,6 +58,7 @@
                                                 <input type="hidden" name="commentUid" value="{row.recordUid}">
                                                 <f:form.submit value="{f:translate(key:'delete')}" class="btn btn-default"/>
                                             </f:form>
+
                                         </f:then>
                                         <f:else>
                                             --

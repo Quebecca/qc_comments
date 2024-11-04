@@ -78,7 +78,88 @@ class Comment extends AbstractEntity
     /**
      * @var int
      */
+    protected int $hiddenByUserUid = 0;
+
+    /**
+     * @var string
+     */
+    protected string $hiddenDate = '';
+
+    /**
+     * @var int
+     */
     protected int $deleted = 0;
+
+    /**
+     * @var int
+     */
+    protected int $fixed = 0;
+
+    protected int $fixedByUserUid = 0;
+
+    /**
+     * @var string
+     */
+    protected string $fixedDate = '';
+
+    /**
+     * @param int $hiddenByUserUid
+     */
+
+    /**
+     * @var int
+     */
+    protected int $hidden = 0;
+
+    protected int $hiddenComment = 0;
+
+    /**
+     * @return int
+     */
+    public function getHiddenComment(): int
+    {
+        return $this->hiddenComment;
+    }
+
+    public function getHiddenByUserUid(): int
+    {
+        return $this->hiddenByUserUid;
+    }
+
+    public function setHiddenByUserUid(int $hiddenByUserUid): void
+    {
+        $this->hiddenByUserUid = $hiddenByUserUid;
+    }
+
+    public function getHiddenDate(): string
+    {
+        return $this->hiddenDate;
+    }
+
+    public function setHiddenDate(string $hiddenDate): void
+    {
+        $this->hiddenDate = $hiddenDate;
+    }
+
+
+
+    /**
+     * @param int $hiddenComment
+     */
+    public function setHiddenComment(int $hiddenComment): void
+    {
+        $this->hiddenComment = $hiddenComment;
+    }
+
+    public function getHidden(): int
+    {
+        return $this->hidden;
+    }
+
+    public function setHidden(int $hidden): void
+    {
+        $this->hidden = $hidden;
+    }
 
     /**
      * @return int
@@ -286,4 +367,36 @@ class Comment extends AbstractEntity
     {
         return $this->deleted;
     }
+
+    public function getFixed(): int
+    {
+        return $this->fixed;
+    }
+
+    public function setFixed(int $fixed): void
+    {
+        $this->fixed = $fixed;
+    }
+
+    public function getFixedByUserUid(): int
+    {
+        return $this->fixedByUserUid;
+    }
+
+    public function setFixedByUserUid(int $fixedByUserUid): void
+    {
+        $this->fixedByUserUid = $fixedByUserUid;
+    }
+
+    public function getFixedDate(): string
+    {
+        return $this->fixedDate;
+    }
+
+    public function setFixedDate(string $fixedDate): void
+    {
+        $this->fixedDate = $fixedDate;
+    }
+
+
 }

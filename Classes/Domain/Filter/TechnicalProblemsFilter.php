@@ -99,9 +99,14 @@ class TechnicalProblemsFilter extends Filter
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    public function getRecordVisibility() :bool{
-        return $this->getIncludeFixedTechnicalProblems();
+    public function getRecordVisibility() :string{
+        if($this->getIncludeFixedTechnicalProblems()){
+            return "";
+        }
+        else{
+            return ' and fixed = 0';
+        }
     }
 }

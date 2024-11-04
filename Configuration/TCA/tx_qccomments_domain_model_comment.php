@@ -184,6 +184,48 @@ return [
             'config' => [
                 'type' => 'input',
             ],
-        ]
+        ],
+        'hidden_comment' => [
+            'exclude' => true,
+            'label' => 'hidden_comment',
+            'config' => [
+                'type' => 'input',
+            ],
+        ],
+        'hidden_by_user_uid' => [
+            'exclude' => true,
+            'label' => 'hidden_by_user_uid',
+            'config' => [
+                'type' => 'input',
+            ],
+        ],
+        'hidden_date' => [
+            'exclude' => true,
+            'label' => 'hidden_date',
+            'config' => [
+                'type' => 'input',
+            ],
+        ],
+        'fixed' => [
+            'exclude' => true,
+            'label' => 'fixed',
+            'config' => [
+                'type' => 'input',
+            ],
+        ],
+        'fixed_by_user_uid' => [
+            'exclude' => true,
+            'label' => 'fixed_by_user_uid',
+            'config' => [
+                'type' => 'input',
+            ],
+        ],
+        'fixed_date' => [
+            'exclude' => true,
+            'label' => 'fixed_date',
+            'config' => [
+                'type' => 'input',
+            ],
+        ],
     ],
 ];

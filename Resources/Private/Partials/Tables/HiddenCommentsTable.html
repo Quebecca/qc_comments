@@ -17,6 +17,7 @@
                     <f:for as="header" key="col" each="{headers}" iteration="iterator">
                         <th>{header}</th>
                     </f:for>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -44,6 +45,12 @@
                         </td>
                         <td>
                             {row.deleting_date}
+                        </td>
+                        <td>
+                            <f:form action="deleteComment">
+                                <input type="hidden" name="commentUid" value="{row.recordUid}">
+                                <f:form.submit value="{f:translate(key:'delete')}" class="btn btn-default"/>
+                            </f:form>
                         </td>
                     </tr>
                 </f:for>

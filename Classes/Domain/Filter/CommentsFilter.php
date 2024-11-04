@@ -8,7 +8,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 
 class CommentsFilter extends Filter
 {
-    protected const KEY_INCLUDE_DELETED_COMMENTS= false;
+    protected const KEY_INCLUDE_HIDDEN_COMMENTS= false;
 
     protected const KEY_COMMENT_REASON= "commentReason";
 
@@ -16,13 +16,16 @@ class CommentsFilter extends Filter
     /**
      * @var bool
      */
-    protected bool $includeDeletedComments = false;
+    protected bool $includeHiddenComments = false;
 
     /**
      * @var string
      */
     protected string $commentReason = "%";
 
+    /**
+     * @var TyposcriptConfiguration
+     */
     protected TyposcriptConfiguration $typoscriptConfiguration;
 
 
@@ -34,7 +37,7 @@ class CommentsFilter extends Filter
      * @param int $depth
      * @param bool $includeEmptyPages
      * @param string $useful
-     * @param bool $includeDeletedComments
+     * @param bool $includeHiddenComments
      * @param string $commentReason
      */
     public function __construct(
@@ -45,7 +48,7 @@ class CommentsFilter extends Filter
         int $depth = 1,
         bool $includeEmptyPages = false,
         string $useful = '%',
-        bool $includeDeletedComments = false,
+        bool $includeHiddenComments = false,
         string $commentReason = "%"
     ) {
         parent::__construct(
@@ -57,7 +60,7 @@ class CommentsFilter extends Filter
             $includeEmptyPages,
             $useful
         );
-        $this->includeDeletedComments = $includeDeletedComments;
+        $this->includeHiddenComments = $includeHiddenComments;
         $this->commentReason = $commentReason;
         $this->typoscriptConfiguration = GeneralUtility::makeInstance(TyposcriptConfiguration::class);
         $this->typoscriptConfiguration->setConfigurationType(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
@@ -87,7 +90,7 @@ class CommentsFilter extends Filter
         return array_merge(
             parent::toArray(),
             [
-                self::KEY_INCLUDE_DELETED_COMMENTS => $this->getIncludeDeletedComments() ?? false,
+                self::KEY_INCLUDE_HIDDEN_COMMENTS => $this->getIncludeHiddenComments() ?? false,
                 self::KEY_COMMENT_REASON => $this->getCommentReason() ?? "%"
             ]
         );
@@ -108,7 +111,7 @@ class CommentsFilter extends Filter
             $values[parent::KEY_DEPTH],
             $values[parent::KEY_INCLUDE_EMPTY_PAGES],
             $values[parent::KEY_USEFUL],
-            $values[self::KEY_INCLUDE_DELETED_COMMENTS] ?? false,
+            $values[self::KEY_INCLUDE_HIDDEN_COMMENTS] ?? false,
             $values[self::KEY_COMMENT_REASON] ?? "%",
         );
     }
@@ -117,17 +120,17 @@ class CommentsFilter extends Filter
     /**
      * @return bool
      */
-    public function getIncludeDeletedComments(): bool
+    public function getIncludeHiddenComments(): bool
     {
-        return $this->includeDeletedComments;
+        return $this->includeHiddenComments;
     }
 
     /**
-     * @param bool $includeDeletedComments
+     * @param bool $includeHiddenComments
      */
-    public function setIncludeDeletedComments(bool $includeDeletedComments): void
+    public function setIncludeHiddenComments(bool $includeHiddenComments): void
     {
-        $this->includeDeletedComments = $includeDeletedComments;
+        $this->includeHiddenComments = $includeHiddenComments;
     }
 
     /**
@@ -173,9 +176,9 @@ class CommentsFilter extends Filter
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    public function getRecordVisibility() :bool {
-        return $this->getIncludeDeletedComments();
+    public function getRecordVisibility() :string {
+        return ' and hidden_comment = 0';
     }
 }
