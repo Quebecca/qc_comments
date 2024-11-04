@@ -140,17 +140,17 @@ class HiddenCommentsTabService extends QcBackendModuleService
 
     /**
      * This function is used to return the headers used in the exported file and the BE module table
-     * @param false $include_csv_headers
+     * @param false $include_headers
      * @return array
      */
-    protected function getHeaders(bool $include_csv_headers = false): array
+    protected function getHeaders(bool $include_headers = false): array
     {
         $headers = [];
         foreach (['date_hour', 'comment', 'useful', 'comment_option', 'deleted_by', 'deleted_on'] as $col) {
             $headers[$col] = $this->localizationUtility
                 ->translate(self::QC_LANG_FILE . 'comments.h.' . $col);
         }
-        if ($include_csv_headers) {
+        if ($include_headers) {
             $headers = array_merge([
                 'page_uid' => $this->localizationUtility
                     ->translate(self::QC_LANG_FILE . 'csv.h.page_uid'),
@@ -166,9 +166,9 @@ class HiddenCommentsTabService extends QcBackendModuleService
      * @param int $currentPageId
      * @return Response
      */
-    public function exportCommentsData(Filter  $filter, int $currentPageId): Response
+    public function exportCommentsData(Filter  $filter): Response
     {
-        $pagesIds = $this->getPagesIds($filter, $currentPageId);
+        $pagesIds = $this->getPagesIds($filter, $this->root_id);
 
         $data = $this->commentsRepository
             ->getComments(
@@ -184,7 +184,7 @@ class HiddenCommentsTabService extends QcBackendModuleService
                 $field = str_replace("\n", ' ', $field);
             });
         }
-        return parent::export($filter,$currentPageId,'comments', $headers, $data);
+        return parent::export($filter,$this->root_id,'comments', $headers, $data);
     }
 
 }

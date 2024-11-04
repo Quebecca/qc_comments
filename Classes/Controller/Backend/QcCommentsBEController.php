@@ -160,4 +160,11 @@ class QcCommentsBEController extends ActionController
         }
     }
 
+    /**
+     * @param int $root_id
+     */
+    public function setRootId(int $root_id): void
+    {
+        $this->root_id = $root_id;
+    }
 }

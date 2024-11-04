@@ -100,11 +100,10 @@ class HiddenCommentsBEController extends QcCommentsBEController
     {
         $this->qcBeModuleService
             = GeneralUtility::makeInstance(CommentsTabService::class);
-        $filter = $this->qcBeModuleService->getFilterFromRequest($request);
-        $filter->setDepth( intval($request->getQueryParams()['parameters']['depth']));
-        $filter->setUseful($request->getQueryParams()['parameters']['useful']);
-        $currentPageId = intval($request->getQueryParams()['parameters']['currentPageId']);
-        return $this->qcBeModuleService->exportCommentsData($filter, $currentPageId);
+        $root_id = intval($request->getQueryParams()['parameters']['currentPageId']);
+        $this->qcBeModuleService->setRootId($root_id);
+        $filter = $this->qcBeModuleService->processFilter();
+        return $this->qcBeModuleService->exportCommentsData($filter);
     }
 
 

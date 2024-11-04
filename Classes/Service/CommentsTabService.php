@@ -172,9 +172,9 @@ class CommentsTabService extends QcBackendModuleService
      * @param int $currentPageId
      * @return Response
      */
-    public function exportCommentsData(Filter  $filter, int $currentPageId): Response
+    public function exportCommentsData(Filter  $filter): Response
     {
-        $pagesIds = $this->getPagesIds($filter, $currentPageId);
+        $pagesIds = $this->getPagesIds($filter, $this->root_id);
 
         $data = $this->commentsRepository
             ->getComments(
@@ -202,7 +202,7 @@ class CommentsTabService extends QcBackendModuleService
             }
         }
 
-        return parent::export($filter,$currentPageId,'comments', $headers, $items);
+        return parent::export($filter,$this->root_id,'comments', $headers, $items);
     }
 
 }

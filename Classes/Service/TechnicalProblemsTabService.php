@@ -155,9 +155,9 @@ class TechnicalProblemsTabService extends QcBackendModuleService
      * @param int $currentPageId
      * @return Response
      */
-    public function exportTechnicalProblemsData(Filter  $filter, int $currentPageId): Response
+    public function exportTechnicalProblemsData(Filter  $filter): Response
     {
-        $pagesIds = $this->getPagesIds($filter, $currentPageId);
+        $pagesIds = $this->getPagesIds($filter, $this->root_id);
 
         $data = $this->commentsRepository
             ->getComments(
@@ -182,7 +182,7 @@ class TechnicalProblemsTabService extends QcBackendModuleService
                 $i++;
             }
         }
-        return parent::export($filter,$currentPageId,'technicalProblems', $headers, $items);
+        return parent::export($filter,$this->root_id,'technicalProblems', $headers, $items);
     }
 
     /**

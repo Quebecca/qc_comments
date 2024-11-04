@@ -81,10 +81,10 @@ class StatisticsBEController extends QcCommentsBEController
     {
         $this->qcBeModuleService
             = GeneralUtility::makeInstance(StatisticsTabService::class);
-        $filter = $this->qcBeModuleService->getFilterFromRequest($request);
-        $filter->setDepth( intval($request->getQueryParams()['parameters']['depth']));
-        $currentPageId = intval($request->getQueryParams()['parameters']['currentPageId']);
-        return $this->qcBeModuleService->exportStatisticsData($filter, $currentPageId);
+        $root_id = intval($request->getQueryParams()['parameters']['currentPageId']);
+        $this->qcBeModuleService->setRootId($root_id);
+        $filter = $this->qcBeModuleService->processFilter();
+        return $this->qcBeModuleService->exportStatisticsData($filter);
     }
 
 }

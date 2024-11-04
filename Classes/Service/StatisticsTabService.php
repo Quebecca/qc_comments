@@ -217,9 +217,9 @@ class StatisticsTabService extends QcBackendModuleService
      * @param int $currentPageId
      * @return Response
      */
-    public function exportStatisticsData(Filter  $filter, int $currentPageId): Response
+    public function exportStatisticsData(Filter  $filter): Response
     {
-        $pagesIds = $this->getPagesIds($filter, $currentPageId);
+        $pagesIds = $this->getPagesIds($filter, $this->root_id);
         $data = $this->commentsRepository
             ->getStatistics(
                 $pagesIds,
@@ -241,7 +241,7 @@ class StatisticsTabService extends QcBackendModuleService
             $i++;
         }
 
-        return parent::export($filter,$currentPageId,'stats', $headers, $mappedData);
+        return parent::export($filter,$this->root_id,'stats', $headers, $mappedData);
     }
 
 
