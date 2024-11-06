@@ -1,13 +1,12 @@
 <?php
 
+defined('TYPO3') || die();
+
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
-defined('TYPO3') or die();
-$lll = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
-
-ExtensionManagementUtility::addTCAcolumns(
-    'pages',
-    [
+call_user_func(function () {
+    $lll = 'LLL:EXT:qc_comments/Resources/Private/Language/locallang.xlf:';
+    $newFields = [
         'tx_select_comments_form_page_mode' => [
             'exclude' => 1,
             'label' => $lll . 'pages.tx_select_comments_form_page_mode',
@@ -24,18 +23,8 @@ ExtensionManagementUtility::addTCAcolumns(
                 ],
             ],
         ],
-    ]
-);
-
-ExtensionManagementUtility::addFieldsToPalette(
-    'pages',
-    'commentsSection',
-    'tx_select_comments_form_page_mode'
-);
-
-ExtensionManagementUtility::addToAllTCAtypes(
-    'pages',
-    '--palette--;;commentsSection',
-    '',
-    'after:pid_navigation_administratif'
-);
+    ];
+    ExtensionManagementUtility::addTCAcolumns('pages', $newFields);
+    ExtensionManagementUtility::addToAllTCAtypes('pages', 'tx_select_comments_form_page_mode'
+    );
+});
