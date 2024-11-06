@@ -283,7 +283,7 @@ class CommentRepository extends Repository
             ->from($this->tableName)
 
             ->where(
-                "uid_orig = ".$pageUid . " and useful like 'NA' "
+                "uid_orig = ".$pageUid . " and useful like 'NA' and fixed = 0"
             )
             ->groupBy('uid_orig');
         return $data->execute()

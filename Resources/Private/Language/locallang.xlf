@@ -13,10 +13,10 @@
 				<source>Removed comments</source>
 			</trans-unit>
 			<trans-unit id="stats">
-				<source>Statistics</source>
+				<source>Satisfaction statistics</source>
 			</trans-unit>
 			<trans-unit id="menu.stats">
-				<source>Statistics</source>
+				<source>Satisfaction statistics</source>
 			</trans-unit>
 			<trans-unit id="menu.list">
 				<source>Comments</source>
@@ -91,7 +91,7 @@
 				<source>Reset</source>
 			</trans-unit>
 			<trans-unit id="links.exportCsv">
-				<source>Export to CSV</source>
+				<source>Export to Xlsx</source>
 			</trans-unit>
 			<trans-unit id="stats.h.page_uid">
 				<source>Page id</source>
@@ -328,7 +328,7 @@
 				<source>technical-problems</source>
 			</trans-unit>
 			<trans-unit id="statisticsTitle">
-				<source>Statistics</source>
+				<source>Satisfaction statistics</source>
 			</trans-unit>
 			<trans-unit id="commentsTitle">
 				<source>Comments</source>

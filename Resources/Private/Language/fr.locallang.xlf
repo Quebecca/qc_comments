@@ -13,10 +13,10 @@
 				<target>Commentaires retirés</target>
 			</trans-unit>
             <trans-unit id="stats">
-                <target>Statistiques</target>
+                <target>Statistiques de satisfaction</target>
             </trans-unit>
             <trans-unit id="menu.stats">
-                <target>Statistiques</target>
+                <target>Statistiques de satisfaction</target>
             </trans-unit>
             <trans-unit id="menu.list">
                 <target>Commentaires</target>
@@ -92,7 +92,7 @@
                 <target>Réinitialiser</target>
             </trans-unit>
             <trans-unit id="links.exportCsv">
-                <target>Exporter en CSV</target>
+                <target>Exporter en Xlsx</target>
             </trans-unit>
             <trans-unit id="stats.h.page_uid">
                 <target>Id</target>
@@ -323,7 +323,7 @@
 				<target>problèmes-techniques</target>
 			</trans-unit>
 			<trans-unit id="statisticsTitle">
-				<target>Statistiques</target>
+				<target>Statistiques de satisfaction</target>
 			</trans-unit>
 			<trans-unit id="commentsTitle">
 				<target>Commentaires</target>
