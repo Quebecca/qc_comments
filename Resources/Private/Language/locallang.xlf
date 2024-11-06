@@ -129,10 +129,10 @@
 			<trans-unit id="comments.h.comment">
 				<source>Comment</source>
 			</trans-unit>
-			<trans-unit id="comments.h.deleted_by">
-				<source>Deleted by</source>
+			<trans-unit id="comments.h.removed_by">
+				<source>Removed by</source>
 			</trans-unit>
-			<trans-unit id="comments.h.deleted_on">
+			<trans-unit id="comments.h.removed_on">
 				<source>Deleted on</source>
 			</trans-unit>
 			<trans-unit id="comments.h.comment_option">
@@ -141,7 +141,7 @@
 			<trans-unit id="comments.h.type_problem">
 				<source>Problem type</source>
 			</trans-unit>
-			<trans-unit id="comments.h.be_user_name">
+			<trans-unit id="comments.h.fixed_by">
 				<source>Fixed by</source>
 			</trans-unit>
 			<trans-unit id="comments.h.fix_date">
@@ -365,6 +365,9 @@
 			</trans-unit>
 			<trans-unit id="deleted">
 				<source>Deleted</source>
+			</trans-unit>
+			<trans-unit id="hiddenComments">
+				<target>Hidden comments</target>
 			</trans-unit>
 		</body>
 	</file>

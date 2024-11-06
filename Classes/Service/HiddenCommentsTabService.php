@@ -66,7 +66,6 @@ class HiddenCommentsTabService extends QcBackendModuleService
                 $orderType,
                 $this->showCommentsForHiddenPage
             );
-
         $tooMuchResults = $this->commentsRepository->getListCount(" And hidden_comment = 1") > $maxRecords
                             || $tooMuchPages;
         $pagesId = $pages_ids;
@@ -146,18 +145,26 @@ class HiddenCommentsTabService extends QcBackendModuleService
     protected function getHeaders(bool $include_headers = false): array
     {
         $headers = [];
-        foreach (['date_hour', 'comment', 'useful', 'comment_option', 'deleted_by', 'deleted_on'] as $col) {
-            $headers[$col] = $this->localizationUtility
-                ->translate(self::QC_LANG_FILE . 'comments.h.' . $col);
-        }
         if ($include_headers) {
-            $headers = array_merge([
+            $headers = [
                 'page_uid' => $this->localizationUtility
                     ->translate(self::QC_LANG_FILE . 'csv.h.page_uid'),
                 'page_title' => $this->localizationUtility
                     ->translate(self::QC_LANG_FILE . 'stats.h.page_title'),
-            ], $headers);
+            ];
+            foreach (['date_hour', 'comment','reason', 'url_orig', 'useful', 'removed_by', 'removed_on'] as $col) {
+                $headers[$col] = $this->localizationUtility
+                    ->translate(self::QC_LANG_FILE . 'comments.h.' . $col);
+            }
         }
+        else {
+            foreach (['date_hour', 'comment', 'useful', 'comment_option', 'removed_by', 'removed_on'] as $col) {
+                $headers[$col] = $this->localizationUtility
+                    ->translate(self::QC_LANG_FILE . 'comments.h.' . $col);
+            }
+        }
+
+
         return $headers;
     }
 
@@ -176,27 +183,27 @@ class HiddenCommentsTabService extends QcBackendModuleService
                 false,
                 self::DEFAULT_ORDER_TYPES, $this->showCommentsForHiddenPage
             );
-
         $headers = $this->getHeaders(true);
+
         $items = [];
         $i = 0;
-
         foreach ($data as $row) {
             foreach ($row['records'] as $item){
                 $items[$i]['page_uid'] = $item['uid'];
                 $items[$i]['page_title'] = $item['title'];
                 $items[$i]['date_hour'] = $item['date_hour'];
-                $items[$i]['reason'] = $item['reason_short_label'];
                 $comment = str_replace("\r", ' ', $item['comment']) ;
                 $comment = str_replace("\t", ' ', $comment);
                 $items[$i]['comment'] = $comment;
+                $items[$i]['reason'] = $item['reason_short_label'];
                 // Do not export the url parameters
                 $items[$i]['url_orig'] = explode('?', $item['url_orig'])[0];
                 $items[$i]['useful'] = $item['useful'];
+                $items[$i]['realName'] = $item['realName'];
+                $items[$i]['hidden_date'] = $item['hidden_date'];
                 $i++;
             }
         }
-
         return parent::export($filter,$this->root_id,'hiddenComments', $headers, $items);
     }
 

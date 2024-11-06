@@ -136,13 +136,13 @@ class TechnicalProblemsTabService extends QcBackendModuleService
     {
         $headers = [];
        if ($headersForExport) {
-           foreach (['page_uid','page_title', 'date_hour', 'reason', 'comment'] as $col) {
+           foreach (['page_uid','page_title', 'date_hour', 'reason', 'comment', 'url_orig', 'fixed', 'fixed_by', 'fix_date'] as $col) {
                $headers[$col] = $this->localizationUtility
                    ->translate(self::QC_LANG_FILE . 'comments.h.' . $col);
            }
         }
        else{
-           foreach (['date_hour', 'description', 'type_problem','be_user_name', 'fix_date', ''] as $col) {
+           foreach (['date_hour', 'description', 'type_problem','fixed_by', 'fix_date', ''] as $col) {
                $headers[$col] = $this->localizationUtility
                    ->translate(self::QC_LANG_FILE . 'comments.h.' . $col);
            }
@@ -179,9 +179,16 @@ class TechnicalProblemsTabService extends QcBackendModuleService
                 $comment = str_replace("\r", ' ', $item['comment']) ;
                 $comment = str_replace("\t", ' ', $comment);
                 $items[$i]['comment'] = $comment;
+                // Do not export the url parameters
+                $items[$i]['url_orig'] = explode('?', $item['url_orig'])[0];
+                $items[$i]['fixed'] = $item['fixed'];
+                $items[$i]['realName'] = $item['realName'];
+                $items[$i]['fixed_date'] = $item['fixed_date'];
+
                 $i++;
             }
         }
+
         return parent::export($filter,$this->root_id,'technicalProblems', $headers, $items);
     }
 

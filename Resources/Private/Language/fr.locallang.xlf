@@ -151,16 +151,16 @@
 			<trans-unit id="comments.h.removed">
 				<target>Retiré</target>
 			</trans-unit>
-			<trans-unit id="comments.h.deleted_by">
+			<trans-unit id="comments.h.removed_by">
 				<target>Retiré par</target>
 			</trans-unit>
-			<trans-unit id="comments.h.deleted_on">
+			<trans-unit id="comments.h.removed_on">
 				<target>Retiré le</target>
 			</trans-unit>
 		   <trans-unit id="comments.h.comment_option">
 				<target>Option sélectionnée</target>
 			</trans-unit>
-			<trans-unit id="comments.h.be_user_name">
+			<trans-unit id="comments.h.fixed_by">
 				<target>Traité par</target>
 			</trans-unit>
 			<trans-unit id="comments.h.fix_date">
@@ -360,6 +360,9 @@
 			</trans-unit>
 			<trans-unit id="removed">
 				<target>Retiré</target>
+			</trans-unit>
+			<trans-unit id="hiddenComments">
+				<target>Commentaires retirés</target>
 			</trans-unit>
         </body>
     </file>

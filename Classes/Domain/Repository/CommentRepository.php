@@ -92,6 +92,12 @@ class CommentRepository extends Repository
         $constrains['joinCond'] = " p.uid = uid_orig $this->date_criteria $this->lang_criteria";
         $constrains['whereClause'] = " p.uid in ($ids_csv)";
         $constrains['joinCond'] .= " AND ". $this->filter->getUsibiltyCriteria();
+        if($this->filter->getUsibiltyCriteria() == " useful like 'NA'"){
+            $constrains['user'] = 'fixed_by_user_uid';
+        }
+        else {
+            $constrains['user'] = 'hidden_by_user_uid';
+        }
         return $constrains;
     }
 
@@ -116,7 +122,7 @@ class CommentRepository extends Repository
         }
 
         $constraints = $this->getConstraints($pages_ids);
-        $constraints['joinCond'] .= $this->filter->getRecordVisibility() ;
+        $constraints['joinCond'] .= $this->filter->getRecordVisibility();
         $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
         $data= $queryBuilder
                 ->select(
@@ -125,7 +131,8 @@ class CommentRepository extends Repository
                     $this->tableName.'.date_hour',
                     $this->tableName.'.comment',
                     $this->tableName.'.useful',
-                    $this->tableName.'.deleting_date',
+                    $this->tableName.'.hidden_date',
+                    $this->tableName.'.fixed_date',
                     $this->tableName.'.reason_short_label',
                     $this->tableName.'.url_orig',
                     $this->tableName.".deleted",
@@ -143,7 +150,7 @@ class CommentRepository extends Repository
                     $this->tableName,
                     'be_users',
                     'beUsers',
-                    'beUsers.uid = deleted_by_user_uid'
+                    'beUsers.uid = '.$constraints["user"]
                 )
                 ->where(
                     $constraints['whereClause']
