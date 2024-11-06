@@ -121,8 +121,15 @@ class CommentRepository extends Repository
         $data= $queryBuilder
                 ->select(
                     'p.uid', $this->tableName.'.uid as recordUid',
-                    'beUsers.realName', 'beUsers.email',  'p.title', 'date_hour', 'comment', 'useful', 'deleting_date',
-                    'reason_short_label', $this->tableName.".deleted", 'fixed'
+                    'beUsers.realName', 'beUsers.email',  'p.title',
+                    $this->tableName.'.date_hour',
+                    $this->tableName.'.comment',
+                    $this->tableName.'.useful',
+                    $this->tableName.'.deleting_date',
+                    $this->tableName.'.reason_short_label',
+                    $this->tableName.'.url_orig',
+                    $this->tableName.".deleted",
+                    $this->tableName.'.fixed'
 
                 )
                 ->from($this->tableName)

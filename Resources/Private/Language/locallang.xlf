@@ -120,6 +120,9 @@
 			<trans-unit id="comments.h.comment_uid">
 				<source>Uid</source>
 			</trans-unit>
+			<trans-unit id="comments.h.url_orig">
+				<source>URL</source>
+			</trans-unit>
 			<trans-unit id="comments.h.date_hour">
 				<source>Date/Time</source>
 			</trans-unit>
@@ -159,8 +162,8 @@
 			<trans-unit id="comments.h.useful">
 				<source>Useful</source>
 			</trans-unit>
-			<trans-unit id="comments.h.deleted">
-				<source>Delete</source>
+			<trans-unit id="comments.h.removed">
+				<source>Removed</source>
 			</trans-unit>
 			<trans-unit id="positive">
 				<source>Yes</source>

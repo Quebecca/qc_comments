@@ -153,7 +153,7 @@ class CommentsTabService extends QcBackendModuleService
         $headers = [];
 
         if ($headersForExport) {
-            foreach (['page_uid', 'page_title','date_hour','reason', 'comment', 'useful','deleted'] as $col) {
+            foreach (['page_uid', 'page_title','date_hour','reason', 'comment','url_orig','useful','removed'] as $col) {
                 $headers[$col] = $this->localizationUtility
                     ->translate(self::QC_LANG_FILE . 'comments.h.' . $col);
             }
@@ -196,6 +196,7 @@ class CommentsTabService extends QcBackendModuleService
                 $comment = str_replace("\r", ' ', $item['comment']) ;
                 $comment = str_replace("\t", ' ', $comment);
                 $items[$i]['comment'] = $comment;
+                $items[$i]['url_orig'] = $item['url_orig'];
                 $items[$i]['useful'] = $item['useful'];
                 $items[$i]['deleted'] = $item['deleted'] ?? '';
                 $i++;

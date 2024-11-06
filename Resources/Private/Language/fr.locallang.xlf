@@ -142,11 +142,14 @@
 			<trans-unit id="comments.h.reason">
 				<target>Raison</target>
 			</trans-unit>
+			<trans-unit id="comments.h.url_orig">
+				<target>URL</target>
+			</trans-unit>
 			<trans-unit id="comments.h.useful">
 				<target>Utile</target>
 			</trans-unit>
-			<trans-unit id="comments.h.deleted">
-				<target>Supprimer</target>
+			<trans-unit id="comments.h.removed">
+				<target>Retiré</target>
 			</trans-unit>
 			<trans-unit id="comments.h.deleted_by">
 				<target>Retiré par</target>
