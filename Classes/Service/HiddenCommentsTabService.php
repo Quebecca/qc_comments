@@ -166,7 +166,7 @@ class HiddenCommentsTabService extends QcBackendModuleService
      * @param int $currentPageId
      * @return Response
      */
-    public function exportCommentsData(Filter  $filter): Response
+    public function exportHiddenCommentsData(Filter  $filter): Response
     {
         $pagesIds = $this->getPagesIds($filter, $this->root_id);
 
@@ -178,13 +178,26 @@ class HiddenCommentsTabService extends QcBackendModuleService
             );
 
         $headers = $this->getHeaders(true);
+        $items = [];
+        $i = 0;
+
         foreach ($data as $row) {
-            array_walk($row, function (&$field) {
-                $field = str_replace("\r", ' ', $field);
-                $field = str_replace("\n", ' ', $field);
-            });
+            foreach ($row['records'] as $item){
+                $items[$i]['page_uid'] = $item['uid'];
+                $items[$i]['page_title'] = $item['title'];
+                $items[$i]['date_hour'] = $item['date_hour'];
+                $items[$i]['reason'] = $item['reason_short_label'];
+                $comment = str_replace("\r", ' ', $item['comment']) ;
+                $comment = str_replace("\t", ' ', $comment);
+                $items[$i]['comment'] = $comment;
+                // Do not export the url parameters
+                $items[$i]['url_orig'] = explode('?', $item['url_orig'])[0];
+                $items[$i]['useful'] = $item['useful'];
+                $i++;
+            }
         }
-        return parent::export($filter,$this->root_id,'comments', $headers, $data);
+
+        return parent::export($filter,$this->root_id,'hiddenComments', $headers, $items);
     }
 
 }

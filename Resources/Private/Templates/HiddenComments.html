@@ -8,7 +8,7 @@
         }"
     />
     <h1>
-        {f:translate(key: 'deleted_comments')}
+        {f:translate(key: 'removed_comments')}
     </h1>
     <f:if condition="{noPageSelected}">
         <f:then>
@@ -19,7 +19,7 @@
                 <f:flashMessages/>
                 <f:render partial="Filters/HiddenCommentsFilters"
                           arguments="{
-                          action: 'comments',
+                          action: 'hiddenComments',
                           currentPageId : currentPageId,
                           pagesId: pagesId,
                           csvSettings : settings.csvExport,

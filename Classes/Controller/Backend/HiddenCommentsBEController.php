@@ -94,16 +94,16 @@ class HiddenCommentsBEController extends QcCommentsBEController
     /**
      * This function is used to export comments records on a csv file
      * @param ServerRequestInterface $request
-     * @return Response
+     * @return ResponseInterface
      */
-    public function exportCommentsAction(ServerRequestInterface $request): ResponseInterface
+    public function exportHiddenCommentsAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->qcBeModuleService
-            = GeneralUtility::makeInstance(CommentsTabService::class);
+            = GeneralUtility::makeInstance(HiddenCommentsTabService::class);
         $root_id = intval($request->getQueryParams()['parameters']['currentPageId']);
         $this->qcBeModuleService->setRootId($root_id);
         $filter = $this->qcBeModuleService->processFilter();
-        return $this->qcBeModuleService->exportCommentsData($filter);
+        return $this->qcBeModuleService->exportHiddenCommentsData($filter);
     }
 
 

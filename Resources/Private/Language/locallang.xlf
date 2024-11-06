@@ -9,7 +9,7 @@
 			<trans-unit id="comments">
 				<source>Comments</source>
 			</trans-unit>
-			<trans-unit id="deleted_comments">
+			<trans-unit id="removed_comments">
 				<source>Removed comments</source>
 			</trans-unit>
 			<trans-unit id="stats">

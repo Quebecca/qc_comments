@@ -37,6 +37,7 @@ define(['jquery'], function($) {
             let url = '';
             switch (actionName){
               case 'comments' :  url = TYPO3.settings.ajaxUrls.export_comments; break;
+              case 'hiddenComments' :  url = TYPO3.settings.ajaxUrls.export_hiddenComments; break;
               case 'statistics' :  url = TYPO3.settings.ajaxUrls.export_statistics; break;
               case 'technicalProblems' :  url = TYPO3.settings.ajaxUrls.export_technicalProblems; break;
             }

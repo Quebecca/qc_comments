@@ -9,8 +9,8 @@
             <trans-unit id="comments">
                 <target>Commentaires</target>
             </trans-unit>
-			<trans-unit id="deleted_comments">
-				<target>Commentaires supprimés</target>
+			<trans-unit id="removed_comments">
+				<target>Commentaires retirés</target>
 			</trans-unit>
             <trans-unit id="stats">
                 <target>Statistiques</target>
