@@ -1,7 +1,8 @@
 {namespace v=FluidTYPO3\Vhs\ViewHelpers}
 <f:if condition="{validationResults.flattenedErrors -> f:count()} > 0">
-    <div class="spam-error-message">
-        <ul>
+    <div class=" spam-error-message">
+        <ul class="submit-message d-flex">
+            <li class="icon-message"></li>
             <li><f:translate key="spamMessage"/></li>
         </ul>
     </div>
