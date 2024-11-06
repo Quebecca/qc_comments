@@ -14,6 +14,10 @@ declare(strict_types=1);
 
 namespace Qc\QcComments\Configuration;
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\ArrayUtility as CoreArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -29,6 +33,8 @@ class TyposcriptConfiguration
     public function __construct()
     {
         $this->setSettings('QcComments');
+        $this->context = GeneralUtility::makeInstance(Context::class);
+
     }
 
     /**
@@ -40,6 +46,11 @@ class TyposcriptConfiguration
      * @var array
      */
     protected array $configuration = [];
+
+    /**
+     * @var Context
+     */
+    protected Context $context;
 
     /**
      * @param string $pluginName
@@ -169,10 +180,47 @@ class TyposcriptConfiguration
     }
 
     public function getReasonOptions($lang) : array {
-        return $this->settings['options'][$lang] ?? [];
+        $options = $this->settings['options'];
+        $optionsByLang = [];
+        foreach ($options as $category => $items) {
+            $optionsByLang[$category] = [];
+
+            foreach ($items as $item) {
+                if (isset($item[$lang])) {
+                    $optionsByLang[$category][] = [
+                        'code' => $item['code'],
+                        'short_label' => $item[$lang]['short_label'],
+                        'long_label' => $item[$lang]['long_label'],
+
+                    ];
+                }
+            }
+        }
+        return $optionsByLang;
     }
 
+
     public function getNegativeCommentsReasonsForBE() :array {
-        return $this->settings['plugin.']['tx_qccomments.']['settings.']['options.']['negative_reasons.'] ??  [];
+        $currentLang = $GLOBALS['LANG']->lang ?? 'en';
+
+        $options = $this->settings['plugin.']['tx_qccomments.']['settings.']['options.'];
+        $optionsByLang = [];
+
+        if (isset($options['negative_reasons.'])) {
+
+            // Loop through each item in the negative reasons
+            foreach ($options['negative_reasons.'] as $item) {
+                if (isset($item[$currentLang.'.'])) {
+                    // Add the item for the specified language to the result
+                    $optionsByLang[] = [
+                        'code' => $item['code'], // Keep the code for reference
+                        'short_label' => $item[$currentLang.'.']['short_label'], // Directly include short_label
+                        'long_label' => $item[$currentLang.'.']['long_label'],   // Directly include long_label
+                    ];
+                }
+            }
+        }
+        return $optionsByLang;
     }
+
 }

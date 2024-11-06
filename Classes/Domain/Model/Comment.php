@@ -292,7 +292,7 @@ class Comment extends AbstractEntity
      */
     public function setReasonShortLabel(string $reasonShortLabel): void
     {
-        $this->reasonShortLabel = $reasonShortLabel;
+        $this->reasonShortLabel = str_replace("'", "’", $reasonShortLabel);
     }
 
     /**
@@ -300,7 +300,7 @@ class Comment extends AbstractEntity
      */
     public function setReasonLongLabel(string $reasonLongLabel): void
     {
-        $this->reasonLongLabel = $reasonLongLabel;
+        $this->reasonLongLabel = str_replace("'", "’", $reasonLongLabel);
     }
 
     /**
@@ -308,7 +308,7 @@ class Comment extends AbstractEntity
      */
     public function getReasonLongLabel(): string
     {
-        return $this->reasonLongLabel;
+        return str_replace("'", "’", $this->reasonLongLabel);
     }
 
     /**
@@ -316,7 +316,7 @@ class Comment extends AbstractEntity
      */
     public function getReasonShortLabel(): string
     {
-        return $this->reasonShortLabel;
+        return str_replace("'", "’", $this->reasonShortLabel);
     }
 
     /**

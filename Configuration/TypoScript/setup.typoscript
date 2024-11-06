@@ -62,17 +62,17 @@ plugin.tx_qccomments {
         en {
           negative_reasons {
             1 {
-              code = NEGATIG_CODE1 Eng
+              code = NEGATIG_CODE1
               short_label = I can't find what i'm looking for
               long_label = I can't find what i'm looking for
             }
             2 {
-              code = NEGATIG_CODE2 En
+              code = NEGATIG_CODE2
               short_label = I'm not sur to understand the inforamtion
               long_label = I'm not sur to understand the inforamtion
             }
             3 {
-              code = NEGATIG_CODE3 En
+              code = NEGATIG_CODE3
               short_label = The information is no longer up to date
               long_label = The information is no longer up to date, incorrect or incomplete
             }

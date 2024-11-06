@@ -60,9 +60,9 @@ class StatisticsFilter extends Filter
     {
         $options = $this->typoscriptConfiguration->getNegativeCommentsReasonsForBE();
         $filterOptions = [];
-        $filterOptions[''] = 'Tous';
+        $filterOptions[''] = '--';
         foreach ($options as $key => $values) {
-            $filterOptions[$values['short_label']] = $values['short_label'];
+            $filterOptions[$values['code']] = $values['short_label'];
         }
         return $filterOptions;
     }
@@ -73,6 +73,7 @@ class StatisticsFilter extends Filter
     public function getCommentReason(): string
     {
         return $this->commentReason;
+        //return str_replace("'", "", $this->commentReason);
     }
 
     /**

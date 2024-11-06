@@ -75,9 +75,9 @@ class CommentsFilter extends Filter
     {
         $options = $this->typoscriptConfiguration->getNegativeCommentsReasonsForBE();
         $filterOptions = [];
-        $filterOptions[''] = 'Tous';
+        $filterOptions[''] = '--';
         foreach ($options as $key => $values) {
-            $filterOptions[$values['short_label']] = $values['short_label'];
+            $filterOptions[$values['code']] = $values['short_label'];
         }
         return $filterOptions;
     }
@@ -139,6 +139,7 @@ class CommentsFilter extends Filter
     public function getCommentReason(): string
     {
         return $this->commentReason;
+       // return str_replace("'", "’", $this->commentReason);
     }
 
     /**
@@ -170,7 +171,7 @@ class CommentsFilter extends Filter
         $criteria =  " useful like '".$this->getUseful()."' and useful not like 'NA'";
         // we apply the reason only if the comment is negative
         if($this->getUseful() == '0'){
-            $criteria .= "AND reason_short_label like '".$this->getCommentReason()."'";
+            $criteria .= "AND reason_code like '".$this->getCommentReason()."'";
         }
         return $criteria;
     }

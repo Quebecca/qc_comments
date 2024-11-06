@@ -63,7 +63,7 @@ class HiddenCommentsFilter extends Filter
     {
         $options = $this->typoscriptConfiguration->getNegativeCommentsReasonsForBE();
         $filterOptions = [];
-        $filterOptions[''] = 'Tous';
+        $filterOptions[''] = '--';
         foreach ($options as $key => $values) {
             $filterOptions[$values['short_label']] = $values['short_label'];
         }
@@ -108,7 +108,7 @@ class HiddenCommentsFilter extends Filter
      */
     public function getCommentReason(): string
     {
-        return $this->commentReason;
+        return str_replace("'", "\\'", $this->commentReason);
     }
 
     /**

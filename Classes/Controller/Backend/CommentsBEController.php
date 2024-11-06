@@ -107,7 +107,7 @@ class CommentsBEController extends QcCommentsBEController
     /**
      * This function is used to export comments records on a csv file
      * @param ServerRequestInterface $request
-     * @return Response
+     * @return ResponseInterface
      */
     public function exportCommentsAction(ServerRequestInterface $request): ResponseInterface
     {

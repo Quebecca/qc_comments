@@ -88,7 +88,6 @@ class CommentRepository extends Repository
             'whereClause' => ''
         ];
         $ids_list = $page_ids ?: $this->getPageIdsList();
-
         $ids_csv = implode(',', $ids_list);
         $constrains['joinCond'] = " p.uid = uid_orig $this->date_criteria $this->lang_criteria";
         $constrains['whereClause'] = " p.uid in ($ids_csv)";
@@ -118,7 +117,6 @@ class CommentRepository extends Repository
 
         $constraints = $this->getConstraints($pages_ids);
         $constraints['joinCond'] .= $this->filter->getRecordVisibility() ;
-
         $joinMethod = $this->filter->getIncludeEmptyPages() ? 'rightJoin' : 'join';
         $data= $queryBuilder
                 ->select(
@@ -301,10 +299,9 @@ class CommentRepository extends Repository
             ->execute()
             ->fetchAllAssociative()[0]['total'];
 
-
         $queryBuilder = $this->generateQueryBuilder();
         $queryBuilder->getRestrictions()->removeByType(DeletedRestriction::class);
-
+        $reason = str_replace("'", "\\'", $this->filter->getCommentReason());
         $data =  $queryBuilder
             ->select()
             ->addSelectLiteral(
@@ -313,7 +310,7 @@ class CommentRepository extends Repository
             ->from($this->tableName)
 
             ->where(
-                "uid_orig = ".$pageUid." and useful like '0' and reason_short_label like '".$this->filter->getCommentReason(). "'"
+                "uid_orig = ".$pageUid." and useful like '0' and reason_code like '".$reason. "'"
             );
         $reasonTotal = $data
             ->execute()
