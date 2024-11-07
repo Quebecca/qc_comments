@@ -39,7 +39,7 @@
 
                         </td>
                         <td>
-                            <f:if condition="{row.removed} != 1">
+                            <f:if condition="{isRemoveButtonEnabled} && {row.removed} != 1">
                                 <f:form action="hideComment">
                                     <input type="hidden" name="commentUid" value="{row.recordUid}">
                                     <f:form.submit value="{f:translate(key:'remove')}" class="btn btn-default"/>
@@ -58,11 +58,8 @@
                                                 <input type="hidden" name="commentUid" value="{row.recordUid}">
                                                 <f:form.submit value="{f:translate(key:'delete')}" class="btn btn-default"/>
                                             </f:form>
-
                                         </f:then>
-                                        <f:else>
-                                            --
-                                        </f:else>
+
                                     </f:if>
 
                                 </f:else>

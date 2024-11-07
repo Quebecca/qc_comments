@@ -47,10 +47,12 @@
                             {row.hidden_date}
                         </td>
                         <td>
-                            <f:form action="deleteComment">
-                                <input type="hidden" name="commentUid" value="{row.recordUid}">
-                                <f:form.submit value="{f:translate(key:'delete')}" class="btn btn-default"/>
-                            </f:form>
+                            <f:if condition="{isDeleteButtonEnabled}">
+                                <f:form action="deleteComment">
+                                    <input type="hidden" name="commentUid" value="{row.recordUid}">
+                                    <f:form.submit value="{f:translate(key:'delete')}" class="btn btn-default"/>
+                                </f:form>
+                            </f:if>
                         </td>
                     </tr>
                 </f:for>

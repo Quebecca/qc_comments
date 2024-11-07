@@ -47,7 +47,7 @@
             <div class="panel-heading">
                 {pageUid} - {item.title} ({item.avg})
             </div>
-            <f:render partial="Tables/CommentsTable" arguments="{rows:'{item.records}', headers:commentHeaders, isDeleteButtonEnabled:isDeleteButtonEnabled}"/>
+            <f:render partial="Tables/CommentsTable" arguments="{rows:'{item.records}', headers:commentHeaders, isRemoveButtonEnabled:isRemoveButtonEnabled, isDeleteButtonEnabled:isDeleteButtonEnabled}"/>
         </div>
     </f:for>
 </f:section>

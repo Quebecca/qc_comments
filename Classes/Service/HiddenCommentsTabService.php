@@ -130,12 +130,6 @@ class HiddenCommentsTabService extends QcBackendModuleService
           return $filter;
     }
 
-    /**
-     * @return bool
-     */
-    public function isDeleteButtonEnabled() : bool {
-        return $this->tsConfiguration->isDeleteButtonEnabled();
-    }
 
     /**
      * This function is used to return the headers used in the exported file and the BE module table

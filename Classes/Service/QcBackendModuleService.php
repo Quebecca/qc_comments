@@ -257,4 +257,19 @@ class QcBackendModuleService
     {
         $this->root_id = $root_id;
     }
+
+    /**
+     * @return bool
+     */
+    public function isRemoveButtonEnabled() : bool {
+        return $this->tsConfiguration->isRemoveButtonEnabled();
+    }
+
+    /**
+     * @param $section
+     * @return bool
+     */
+    public function isDeleteButtonEnabled($section) : bool {
+        return $this->tsConfiguration->isDeleteButtonEnabled($section);
+    }
 }

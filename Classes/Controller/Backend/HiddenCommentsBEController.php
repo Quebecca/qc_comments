@@ -64,7 +64,7 @@ class HiddenCommentsBEController extends QcCommentsBEController
                         'comments' => $data['comments'],
                         'pagesId' => $data['pagesId'],
                         'currentPageId' => $data['currentPageId'],
-                        'isDeleteButtonEnabled' => $this->qcBeModuleService->isDeleteButtonEnabled()
+                        'isDeleteButtonEnabled' => $this->qcBeModuleService->isDeleteButtonEnabled('hiddenComments')
                     ]
                 );
         }

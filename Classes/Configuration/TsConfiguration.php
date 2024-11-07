@@ -132,7 +132,15 @@ class TsConfiguration
     /**
      * @return bool
      */
-    public function isDeleteButtonEnabled(): bool {
-        return ($this->tsConfig['comments.']['enableDeleteButton'] ?? false) == '1';
+    public function isRemoveButtonEnabled(): bool {
+        return ($this->tsConfig['comments.']['enableRemoveButton'] ?? false) == '1';
+    }
+
+    /**
+     * @param $section
+     * @return bool
+     */
+    public function isDeleteButtonEnabled($section): bool {
+        return ($this->tsConfig[$section.'.']['enableDeleteButton'] ?? false) == '1';
     }
 }
