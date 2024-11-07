@@ -133,10 +133,10 @@
 				<source>Removed by</source>
 			</trans-unit>
 			<trans-unit id="comments.h.removed_on">
-				<source>Deleted on</source>
+				<source>Removed on</source>
 			</trans-unit>
 			<trans-unit id="comments.h.comment_option">
-				<source>Comment</source>
+				<source>Selected option</source>
 			</trans-unit>
 			<trans-unit id="comments.h.type_problem">
 				<source>Problem type</source>
@@ -367,7 +367,7 @@
 				<source>Deleted</source>
 			</trans-unit>
 			<trans-unit id="hiddenComments">
-				<target>Hidden comments</target>
+				<source>Hidden comments</source>
 			</trans-unit>
 		</body>
 	</file>
