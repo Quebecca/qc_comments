@@ -182,10 +182,10 @@
                 <target>Aucun résultat</target>
             </trans-unit>
             <trans-unit id="tooMuchPages">
-                <target>Il y a trop de résultats, seules les %s premières lignes sont affichées. Choisissez plutôt l'export CSV ou modifiez vos filtres.</target>
+                <target>Il y a trop de résultats, seules les %s premières lignes sont affichées. Choisissez plutôt l'export Xlsx ou modifiez vos filtres.</target>
             </trans-unit>
             <trans-unit id="tooMuchResults">
-                <target>Il y a trop de résultats: l'affichage a été limité à %s pages et %s commentaires. Choisissez plutôt l'export CSV ou modifiez vos filtres.</target>
+                <target>Il y a trop de résultats: l'affichage a été limité à %s pages et %s commentaires. Choisissez plutôt l'export Xlsx ou modifiez vos filtres.</target>
             </trans-unit>
             <trans-unit id="userDefined">
                 <target>Défini par l'utilisateur</target>

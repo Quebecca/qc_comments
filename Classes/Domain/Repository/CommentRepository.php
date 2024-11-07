@@ -116,6 +116,8 @@ class CommentRepository extends Repository
         bool $showForHiddenPages = false
     ): array
     {
+        // We increment the limit to see if we have more the maximum limit, if so we show an alert message
+        $limit = intval($limit) + 1;
         $queryBuilder = $this->generateQueryBuilder();
         if($showForHiddenPages === true){
             $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
@@ -164,16 +166,26 @@ class CommentRepository extends Repository
                 ->execute()
                 ->fetchAllAssociative();
         $rows = [];
+        $count = 0;
         foreach ($data as $item) {
-            $rows[$item['uid']]['records'][] = $item;
-            $rows[$item['uid']]['title'] = $item['title'];
+            if($item['recordUid'] != null){
+                $count++;
+            }
+            if($count < $limit){
+                $rows[$item['uid']]['records'][] = $item;
+                $rows[$item['uid']]['title'] = $item['title'];
+            }
         }
-        return $rows;
+
+        return [
+            'rows' => $rows,
+            'count' => $count
+        ];
     }
 
     /**
      * This function is used to get the number of records by the depth for BE rendering verification
-     * @param bool $hiddenComment
+     * @param string $constraint
      * @return int
      */
     public function getListCount(string $constraint  = ''): int

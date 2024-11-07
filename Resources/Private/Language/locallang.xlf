@@ -193,10 +193,10 @@
                 <source>Useful</source>
             </trans-unit>
 			<trans-unit id="tooMuchPages">
-				<source>Too much results: only the first %s rows are displayed. Please choose csv export, or change your filters.</source>
+				<source>Too much results: only the first %s rows are displayed. Please choose xlsx export, or change your filters.</source>
 			</trans-unit>
 			<trans-unit id="tooMuchResults">
-				<source>Too much result. Display has been limited to %s pages and %s comments. Please choose csv export, or change your filters.</source>
+				<source>Too much result. Display has been limited to %s pages and %s comments. Please choose xlsx export, or change your filters.</source>
 			</trans-unit>
 			<trans-unit id="userDefined">
                 <source>User defined</source>

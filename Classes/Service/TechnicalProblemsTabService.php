@@ -50,15 +50,15 @@ class TechnicalProblemsTabService extends QcBackendModuleService
             $numberOfSubPages
         );
 
-        $comments = $this->commentsRepository
+        $records = $this->commentsRepository
             ->getComments(
                 $pages_ids,
                 $maxRecords,
                 $orderType,
                 $this->showCommentsForHiddenPage
             );
-
-        $tooMuchResults = $this->commentsRepository->getListCount("  And useful like 'NA'") > $maxRecords
+        $comments = $records['rows'];
+        $tooMuchResults = $records['count'] > $maxRecords
             || $tooMuchPages;
         $pagesId = $pages_ids;
         $currentPageId = $this->root_id;
@@ -152,7 +152,6 @@ class TechnicalProblemsTabService extends QcBackendModuleService
 
     /**
      * @param Filter $filter
-     * @param int $currentPageId
      * @return Response
      */
     public function exportTechnicalProblemsData(Filter  $filter): Response
@@ -164,7 +163,7 @@ class TechnicalProblemsTabService extends QcBackendModuleService
                 $pagesIds,
                 false,
                 self::DEFAULT_ORDER_TYPES, $this->showCommentsForHiddenPage
-            );
+            )['rows'];
 
         $headers = $this->getHeaders(true);
         $items = [];
@@ -188,7 +187,6 @@ class TechnicalProblemsTabService extends QcBackendModuleService
                 $i++;
             }
         }
-
         return parent::export($filter,$this->root_id,'technicalProblems', $headers, $items);
     }
 

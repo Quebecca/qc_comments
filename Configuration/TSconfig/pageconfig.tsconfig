@@ -3,7 +3,7 @@ mod{
         technicalProblems {
           // Order by comment date
           orderType = DESC
-          maxRecords = 50
+          maxRecords = 100
           numberOfSubPages = 50
           showRecordsForHiddenPages = 1
           enableFixButton = 1

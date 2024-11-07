@@ -51,26 +51,25 @@ class CommentsTabService extends QcBackendModuleService
 
         $orderType = $this->tsConfiguration->getOrderType("comments");
 
-        $tooMuchPages = count($pages_ids) > $numberOfSubPages;
+        $tooMuchPages = count($pages_ids) > intval($numberOfSubPages);
         $pages_ids = array_slice(
             $pages_ids,
             0,
             $numberOfSubPages
         );
 
-        $commentsRecords = $this->commentsRepository
+        $records = $this->commentsRepository
             ->getComments(
                 $pages_ids,
                 $maxRecords,
                 $orderType,
                 $this->showCommentsForHiddenPage
             );
-
+        $commentsRecords = $records['rows'];
         $commentsWithStats = $this->commentsRepository
             ->getStatistics($pages_ids, $maxRecords, $this->showCommentsForHiddenPage, $commentsRecords);
         $comments = $this->statisticsDataFormatting($commentsWithStats);
-
-        $tooMuchResults = $this->commentsRepository->getListCount() > $maxRecords || $tooMuchPages;
+        $tooMuchResults = ($records['count'] > intval($maxRecords)) || $tooMuchPages;
 
         $pagesId = $pages_ids;
         $currentPageId = $this->root_id;
@@ -176,7 +175,7 @@ class CommentsTabService extends QcBackendModuleService
                 $pagesIds,
                 false,
                 self::DEFAULT_ORDER_TYPES, $this->showCommentsForHiddenPage
-            );
+            )['rows'];
 
         $headers = $this->getHeaders(true);
         $items = [];
