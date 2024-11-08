@@ -104,20 +104,18 @@ class CommentRepository extends Repository
     /**
      * This function is used to get pages comments for BE rendering and for export as well
      * @param array $pages_ids
-     * @param string $limit
+     * @param $limit
      * @param string $orderType
      * @param bool $showForHiddenPages
      * @return array
      */
     public function getComments(
         array $pages_ids,
-        string $limit,
+        $limit,
         string $orderType,
         bool $showForHiddenPages = false
     ): array
     {
-        // We increment the limit to see if we have more the maximum limit, if so we show an alert message
-        $limit = intval($limit) + 1;
         $queryBuilder = $this->generateQueryBuilder();
         if($showForHiddenPages === true){
             $queryBuilder->getRestrictions()->removeByType(HiddenRestriction::class);
@@ -159,6 +157,8 @@ class CommentRepository extends Repository
                 );
 
         if ($limit) {
+            // We increment the limit to see if we have more the maximum limit, if so, we show an alert message
+            $limit = intval($limit) + 1;
             $data = $data->setMaxResults($limit);
         }
         $data = $data
@@ -171,7 +171,7 @@ class CommentRepository extends Repository
             if($item['recordUid'] != null){
                 $count++;
             }
-            if($count < $limit){
+            if($limit == false || $count < $limit ){
                 $rows[$item['uid']]['records'][] = $item;
                 $rows[$item['uid']]['title'] = $item['title'];
             }
