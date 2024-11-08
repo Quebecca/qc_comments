@@ -343,6 +343,9 @@
 			<trans-unit id="technical-problems">
 				<target>Les Problèmes techniques</target>
 			</trans-unit>
+			<trans-unit id="comments.h.fixed">
+				<target>Traité</target>
+			</trans-unit>
 			<trans-unit id="fixed">
 				<target>Traité</target>
 			</trans-unit>

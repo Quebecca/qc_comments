@@ -351,6 +351,9 @@
 			<trans-unit id="fixed">
 				<source>Fixed</source>
 			</trans-unit>
+			<trans-unit id="comments.h.fixed">
+				<source>Fixed</source>
+			</trans-unit>
 			<trans-unit id="fix">
 				<source>Fix</source>
 			</trans-unit>
