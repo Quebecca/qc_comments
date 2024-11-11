@@ -4,7 +4,7 @@
         <header/>
         <body>
             <trans-unit id="qc_comments">
-                <target>Qc comments</target>
+                <target>Qc commentaires</target>
             </trans-unit>
             <trans-unit id="comments">
                 <target>Commentaires</target>
