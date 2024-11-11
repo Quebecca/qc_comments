@@ -139,7 +139,6 @@ class CommentsFilter extends Filter
     public function getCommentReason(): string
     {
         return $this->commentReason;
-       // return str_replace("'", "’", $this->commentReason);
     }
 
     /**

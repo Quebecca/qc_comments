@@ -57,25 +57,5 @@ define(['jquery'], function($) {
                     });
             })
         }
-         $('.technicalProblemFixed').on('click', function(){
-           let technicalProblemUid = $(this).attr('technical-probelm-uid');
-           let url = TYPO3.settings.ajaxUrls.problem_fixed;
-           require(['TYPO3/CMS/Core/Ajax/AjaxRequest'], function (AjaxRequest) {
-             new AjaxRequest(url)
-               .withQueryArguments({technicalProblemUid: technicalProblemUid})
-               .get()
-               .then(async function (response) {
-                 response.resolve().then(function (result){
-                   if(result != null){
-                     alert('success')
-                     var link=document.getElementById('problem-'+technicalProblemUid);
-                     link.href=response.response.url
-                     console.log(link.href)
-                     link.click();
-                   }
-                 });
-               });
-           })
-         })
     })
 })

@@ -275,12 +275,29 @@ abstract class Filter implements Arrayable
         $this->startDate = $startDate ?? '';
     }
 
+    /**
+     * @return string
+     * @throws \Exception
+     */
+    public function getEndDate(): string
+    {
+        if($this->endDate != ''){
+            $date = new DateTime($this->endDate, new DateTimeZone('UTC'));
+            return $date->format('Y-m-d');
+        }
+        return $this->endDate;
+
+    }
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
     public function getStartDate(): string
     {
         if($this->startDate != ''){
             $date = new DateTime($this->startDate, new DateTimeZone('UTC'));
-            $date->modify('+1 day');
-            return $date->format('Y-m-d\TH:i:s\Z');
+            return $date->format('Y-m-d');
         }
         return $this->startDate;
 
@@ -294,16 +311,6 @@ abstract class Filter implements Arrayable
         $this->endDate = $endDate ?? '';
     }
 
-    public function getEndDate(): string
-    {
-        if($this->endDate != ''){
-            $date = new DateTime($this->endDate, new DateTimeZone('UTC'));
-            $date->modify('+1 day');
-            return $date->format('Y-m-d\TH:i:s\Z');
-        }
-        return $this->endDate;
-
-    }
 
     /**
      * @return bool
