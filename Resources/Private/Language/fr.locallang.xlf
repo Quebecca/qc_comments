@@ -367,6 +367,9 @@
 			<trans-unit id="hiddenComments">
 				<target>Commentaires retirés</target>
 			</trans-unit>
+			<trans-unit id="dissatisfactionPart">
+				<target>Part d’insatisfaction</target>
+			</trans-unit>
         </body>
     </file>
 </xliff>

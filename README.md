@@ -126,7 +126,8 @@ Note: The options displayed in the form for the “Negative Comments” and “R
 ## Backend module
 
 This module comes with four tabs, with the ability to export the displayed data to an XLS file.
-### Statistics
+
+### Satisfaction statistics
 This tab allows the administrator to get an idea of the page’s usefulness for frontend users, based on positive and negative comments. This module is configured using the following TSconfig:
 
     mod.qcComments.comments {
@@ -135,6 +136,8 @@ This tab allows the administrator to get an idea of the page’s usefulness for 
         // Enable/Disable display of records for hidden pages
         showRecordsForHiddenPages = 1
     }
+
+![FE comments form](Documentation/Images/statistics.png)
 
 ### Comments
 In this module, the user can list the comments submitted for the selected page, and will also have the option to remove or delete a comment. This module is configured using the following TSconfig:
@@ -156,6 +159,9 @@ In this module, the user can list the comments submitted for the selected page, 
 
 Note : if a comment is removed, that means that it will be shown in the "Removed comments" module.
 
+![FE comments form](Documentation/Images/comments.png)
+
+
 ### Removed Comments
 This module displays the list of comments that have been removed by the user by clicking the “Remove” button in the “Comments” module. It is configured using the following TSconfig:
 
@@ -172,6 +178,9 @@ This module displays the list of comments that have been removed by the user by 
         enableDeleteButton = 1
     }
 
+![FE comments form](Documentation/Images/removedComments.png)
+
+
 ### Technical Problems
 This module seres to display the list of submitted technical problems, and the user will have the option to address a problem by clicking the “Fix” button. TSconfig configuration:
 
@@ -187,6 +196,8 @@ This module seres to display the list of submitted technical problems, and the u
         // Enable/Disable the "Fix" button
         enableFixButton = 1
     }
+
+![FE comments form](Documentation/Images/technicalProblems.png)
 
 [Version française]
 # Documentation Qc Comments
@@ -310,7 +321,7 @@ en Typoscript :
 ## Backend module
 Ce module vient avec quatre tabulations, avec la possibilité d'exporter les données affichées en fichier XLS.
 
-#### Statistiques
+#### Statistiques de satisfaction
 Cette tabulation permet l'administrateur d'avoir une idée sur l'utilité de la page pour les utilisateurs frontend, en se basant sur les commentaires positifs et les commentaires
 négatifs.
 Ce module est configuré en utilisant la configuration TSconfig suivante :

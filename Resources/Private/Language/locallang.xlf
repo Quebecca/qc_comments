@@ -372,6 +372,9 @@
 			<trans-unit id="hiddenComments">
 				<source>Hidden comments</source>
 			</trans-unit>
+			<trans-unit id="dissatisfactionPart">
+				<source>Part of dissatisfaction</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
