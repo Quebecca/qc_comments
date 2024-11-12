@@ -36,36 +36,16 @@ class TsConfiguration
     }
 
     /**
-     * @param mixed[] $tsConfig
+     * @param array $tsConfig
      */
     public function setTsConfig(array $tsConfig): void
     {
         $this->tsConfig = $tsConfig;
     }
 
-    /**
-     * @return string
-     */
-    public function getCsvSeparator() : string {
-        return $this->tsConfig['csvExport.']['separator'] ?? ',';
-    }
-
-    /**
-     * @return string
-     */
-    public function getCsvEnclosure() : string {
-        return $this->tsConfig['csvExport.']['enclosure'] ?? '"';
-    }
-
-    /**
-     * @return string
-     */
-    public function getCsvEscape() : string{
-        return $this->tsConfig['csvExport.']['escape'] ?? '\\';
-    }
-
-    public function getDateFormat(){
-        return $this->tsConfig['csvExport.']['filename.']['dateFormat'] ?? 'YmdHi';
+    public function getDateFormat(): string
+    {
+        return 'YmdHi';
     }
 
     /**
@@ -94,6 +74,7 @@ class TsConfiguration
     }
 
     /**
+     * @param $moduleName
      * @return string
      */
     public function getNumberOfSubPages($moduleName) : string {

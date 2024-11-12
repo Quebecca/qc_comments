@@ -1,6 +1,6 @@
 Qc Comments
 ==============================================================
-*La [version française](#documentation-qc-references) de la documentation suit le texte anglais*
+*La [version française](#documentation-qc-comments) de la documentation suit le texte anglais*
 
 ## About
 This extension can be used for managing comments section for frontend pages.
@@ -18,7 +18,7 @@ Note : The option can be changed using the input that cames with the extension n
 If the option isn't specified in a page by the administrator, the option will be inherited from the parent page.
 
 Note : To add the comments form component to your frontend pages, you will have to add the current component to your TypoScript configuration:
-    
+
     lib.commentForm = COA
     lib.commentForm {
         10 = USER
@@ -35,15 +35,15 @@ In the Fluid pages:
 
 ### Form Controls
 #### Recaptcha
-By default, the recaptcha control is disabled, you can enable it by using the Typoscript configuration :  
+By default, the recaptcha control is disabled, you can enable it by using the Typoscript configuration :
 
-    plugin.commentsForm {
+    plugin.tx_qccomments {
         settings {
             recaptcha {
                 // enabled = 1, disabled = 0
                 enabled = 1
                 // Your recpatcha site key
-                sitekey = 
+                sitekey =
             }
         }
     }
@@ -51,7 +51,7 @@ By default, the recaptcha control is disabled, you can enable it by using the Ty
 #### Form validation
 You can also control the size of the submitted comments, by controlling the minimum and the maximum number of characters that a comment can contain.
 
-    plugin.commentsForm {
+    plugin.tx_qccomments {
         settings {
             comments {
                 maxCharacters = 500
@@ -62,8 +62,8 @@ You can also control the size of the submitted comments, by controlling the mini
 
 #### Anonymize sensitive information
 If you hope to hide the sensitive data from the submitted comments like email adresses or phone numbers, you can apply any patten you want by using the following configuration :
-    
-    plugin.commentsForm {
+
+    plugin.tx_qccomments {
         settings {
             comments {
                  anonymizeComment {
@@ -83,83 +83,127 @@ The extension cames also with a spam shield with three protections :
 
 * Link check
 
-You can configure this protection with the typoscript configuration that cames with the extension, in the setup.typoscript file.
+You can configure this protection with the Typoscript configuration that cames with the extension, in the "setup.typoscript" file.
 
 
 #### Screenshot of the comments form in a front end page
 
 ![FE comments form](Documentation/Images/commentsFormFE.PNG)
 
+## FrontEnd section
 
-## Backend module
-This module contains two different tabs:
+The frontend comments plugin supports three different types of comments:
 
-#### Statistics tab
-
-
-This tab is used to give the administrator an idea of how much a selected page is useful for frontend users by using a table
-with analytics data.
-#### Screenshot of the statistics tab
-
-![Statistics tab](Documentation/Images/statistics.PNG)
-
-
-#### Comments tab
-By using this tab, the administrator can list the comments records that are sent for each selected page by the users.
-
-#### Screenshot of the comments tab
-
-![Comments tab](Documentation/Images/comments.PNG)
+* A Positive Comment
+By clicking the “Yes” button, the form is submitted, and a message will be displayed indicating that the form has been sent. You can then add a comment explaining how this page was useful.
+* A Negative Comment
+If the user clicks “No,” the form displays a text field and options to explain why the page was not useful.
+* Reporting a Technical Problem
+The user will also have the option to report a technical issue by clicking the “Report a Problem” link. In this case, the form displays a text field and options to select the type of problem encountered.
+Note: The options displayed in the form for the “Negative Comments” and “Report a Problem” sections can be configured in TypoScript:
 
 
-The extension also came with an export function that allow user to export comment or statistiques based on the filter options.
-
-The rendering result can be controlled by Typoscript configuration:
-
-    module.tx_qccomments {
-        settings {
-            comments {
-                // Order by comment date field
-                orderType = DESC
-                // Max records that will be shown in the comments table
-                maxRecords = 100
-                // Number of subpages that will be parsed
-                numberOfSubPages = 50
-            }
-            statistics {
-                // Max records that will be showed in the statistics table
-                maxRecords = 30
-            }
-    
-            csvExport {
-                filename {
-                    // This date will added to the exported file name
-                    dateFormat = YmdHi
+    options {
+        en {
+            negative_reasons {
+                1 {
+                    code = NEGATIG_CODE1
+                    short_label = I can't find what i'm looking for
+                    long_label = I can't find what i'm looking for
                 }
-                // Csv parameters
-                separator = ;
-                enclosure = "
-                escape = \\
+            }
+            reporting_problem {
+                1 {
+                    code = PROBLEM_CODE1 Eng
+                    short_label = problem with display
+                    long_label = There is a problem with the page display
+                }
             }
         }
+    }
+
+
+## Backend module
+
+This module comes with four tabs, with the ability to export the displayed data to an XLS file.
+### Statistics
+This tab allows the administrator to get an idea of the page’s usefulness for frontend users, based on positive and negative comments. This module is configured using the following TSconfig:
+
+    mod.qcComments.comments {
+        // Maximum number of records displayed
+        maxRecords = 30
+        // Enable/Disable display of records for hidden pages
+        showRecordsForHiddenPages = 1
+    }
+
+### Comments
+In this module, the user can list the comments submitted for the selected page, and will also have the option to remove or delete a comment. This module is configured using the following TSconfig:
+
+    mod.qcComments.comments {
+        // Sort type (by date)
+        orderType = DESC
+        // Maximum number of records displayed
+        maxRecords = 100
+        // Maximum number of child pages considered
+        numberOfSubPages = 50
+        // Enable/Disable display of records for hidden pages
+        showRecordsForHiddenPages = 1
+        // Enable/Disable the button to Remove a comment
+        enableRemoveButton = 1
+        // Enable/Disable the button to Delete a comment
+        enableDeleteButton = 1
+    }
+
+Note : if a comment is removed, that means that it will be shown in the "Removed comments" module.
+
+### Removed Comments
+This module displays the list of comments that have been removed by the user by clicking the “Remove” button in the “Comments” module. It is configured using the following TSconfig:
+
+    mod.qcComments.hiddenComments {
+        // Sort type (by date)
+        orderType = DESC
+        // Maximum number of records displayed
+        maxRecords = 100
+        // Maximum number of child pages considered
+        numberOfSubPages = 50
+        // Enable/Disable display of records for hidden pages
+        showRecordsForHiddenPages = 1
+        // Enable/Disable the button to Delete a comment
+        enableDeleteButton = 1
+    }
+
+### Technical Problems
+This module seres to display the list of submitted technical problems, and the user will have the option to address a problem by clicking the “Fix” button. TSconfig configuration:
+
+    mod.qcComments.technicalProblems {
+        // Sort type (by date)
+        orderType = DESC
+        // Maximum number of records displayed
+        maxRecords = 100
+        // Maximum number of child pages considered
+        numberOfSubPages = 50
+        // Enable/Disable display of records for hidden pages
+        showRecordsForHiddenPages = 1
+        // Enable/Disable the "Fix" button
+        enableFixButton = 1
     }
 
 [Version française]
 # Documentation Qc Comments
 
 ## À propos
-Cette extension propose une solution pour gérer la partie commentaires pour les pages frontend, pour cela il vient avec deux fonctionnalités importantes :
+Cette extension propose une solution pour gérer la partie commentaires pour les pages frontend :
 
 ## Frontend plugin
-Cette plugin permet l'administrateur d'ajouter le composant de commentaires sous forme d'un formulaire frontend, où les utilisateur peuvent envoyer leurs commentaires et avis.
-L'affichage de formulaire de commentaires dans le frontend peut être controller 
-par quatre différents choix:
+Ce plugin permet l'administrateur d'ajouter le composant de commentaires sous forme d'un formulaire frontend, où les utilisateurs peuvent envoyer leurs commentaires et avis.
+L'affichage de formulaire de commentaires dans le frontend peut être controller
+par quatre différents choix :
 - Afficher pour cette page et ses sous-pages
 - Afficher pour cette page seulement
 - Masquer pour cette page et ses sous-pages
 - Masquer pour cette page seulement
 
-NB : Le choix de mode d'affichage peut être sélectionner à partir d'un champ nommé "Sélectionner le mode d'affichage de la section commentaires" dans le module "Page".
+NB : Le choix de mode d'affichage peut être sélectionné à partir d'un champ nommé "Sélectionner le mode d'affichage de la section commentaires" dans le module "Page".
 Si le choix d'affichage n'est pas choisie manuellement par l'administrateur le choix de la page parent sera hérité.
 
 NB : Pour intégrer le composant dans vos pages front end, il faut ajouter l'élément suivant dans votre configuration TypoScript :
@@ -174,30 +218,29 @@ NB : Pour intégrer le composant dans vos pages front end, il faut ajouter l'él
         }
     }
 
-Dans les pages Fluid pages fluid :
+Dans les pages Fluid :
 
     <f:cObject typoscriptObjectPath="lib.commentForm" />
 
-
 ### Les contrôles de formulaire
 #### Recaptcha
-Par défaut, le control recaptcha est désactivé, vous pouvez l'activer et le configurer en utilisant la configuration suivante : 
-       
-     plugin.commentsForm {
+Par défaut, le control recaptcha est désactivé, vous pouvez l'activer et le configurer en utilisant la configuration suivante :
+
+     plugin.tx_qccomments {
             settings {
                 recaptcha {
                     // enabled = 1, disabled = 0
                     enabled = 1
                     // Your recpatcha site key
-                    sitekey = 
+                    sitekey =
                 }
             }
-        }
+     }
 
 #### Partie validation de formulaire
-L'extension vous permet aussi de controller la taille des commentaires envoyés par les utilisateurs, en spécifiant le nombre minimum et maximum des caractères autorisé à chaque commentaire envoyé :  
+L'extension vous permet aussi de controller la taille des commentaires envoyés par les utilisateurs, en spécifiant le nombre minimum et maximum des caractères autorisé à chaque commentaire envoyé :
 
-    plugin.commentsForm {
+    plugin.tx_qccomments {
         settings {
             comments {
                 maxCharacters = 500
@@ -207,9 +250,9 @@ L'extension vous permet aussi de controller la taille des commentaires envoyés 
     }
 
 #### Anonymiser les informations sensibles
-Si vous souhaitez cacher les informations qui sont considéré sensibles pour vous dans les commentaires envoyés par les utilisateurs, vous pouvez appliquer un pattern qui permet de filtrer le contenu des commentaires en cachant les données sensibles :
+Si vous souhaitez cacher les informations qui sont considérées sensibles pour vous dans les commentaires envoyés par les utilisateurs, vous pouvez appliquer un pattern qui permet de filtrer le contenu des commentaires en cachant les données sensibles :
 
-    plugin.commentsForm {
+    plugin.tx_qccomments {
         settings {
             comments {
                  anonymizeComment {
@@ -221,7 +264,7 @@ Si vous souhaitez cacher les informations qui sont considéré sensibles pour vo
     }
 
 #### Le control de Spam
-L'extension vous fournit un contrôle de spam avec trois différentes méthodes : 
+L'extension vous fournit un contrôle de spam avec trois différentes méthodes :
 
 * Honeypot check
 
@@ -231,74 +274,105 @@ L'extension vous fournit un contrôle de spam avec trois différentes méthodes 
 
 Vous pouvez configurer ces contrôles directement dans le fichier setup.typoscript de l'extension.
 
-### Additional content element
-L'affichage de plugin qc_comment porte deux section sepéarées, une pour afficher le formulaire de commentaire,
-la deuxième est optionnelle, vous pouvez choisir un tt_content pour l'affiché à coté de commentaire, la capture d'écran montre 
-un exemple d'affichage de cette section : 
+## Fonctionnement FE
+Le plugin des commentaires en FE porte 3 différent type de commentaires :
+* Un commentaire positif
+  En cliquant sur le bouton « Oui », le formulaire s’envoi, un message par la suite sera affiché qui indique que le formulaire a été envoyé.
+  et on peut ajouter ensuite un commentaire qui explique comment cette page était utile.
 
-![Additional content element](Documentation/Images/additionalTtContent.PNG)
+* Un commentaire négatif
+  Si l'internaute a cliqué sur « Non », le formulaire affiche un champ text et des options pour expliquer pourquoi la page n'était pas utile.
+* Reporter un problème techniques
+  L'internaute aura aussi la possibilité de reporter un problème technique, en cliquant sur le lien « Signaler un problème », dans ce cas le formulaire affiche
+  un champ text et des options pour sélectionner le type de problème rencontré.
 
-Pour faire référencer à un tt_content (text, titre, etc.), vous pouvez ajouter la configuration Typoscript suivante :
+Note : les options affichées dans le formulaire pour la section "Commentaires négatifs" et "Signaler un problème" peuvent être configurés
+en Typoscript :
 
-
-    lib.qcCommentsAdditionalContent = COA
-    lib.qcCommentsAdditionalContent {
-        20 = CONTENT
-        20 {
-            table = tt_content
-            select {
-                max = 1
-                # L'UID de la page ou de repertoir parent qui pourte le tt_content à afficher
-                pidInList = 12
-                # L'UID de tt_content à afficher
-                where = (uid = 8)
+        options {
+            fr {
+                negative_reasons {
+                1 {
+                    code = NEGATIG_CODE1
+                    short_label = Je ne trouve pas ce que je cherche
+                    long_label = Je ne trouve pas ce que je cherche
+                    }
+                }
+                reporting_problem {
+                1 {
+                    code = PROBLEM_CODE1
+                    short_label = problème avec l’affichage
+                    long_label = Il y a un problème avec l’affichage de la page
+                }
             }
         }
-    }
-
-La configuration Typoscript ci-dessus montre un exemple d'integration d'un elemente tt_content pour l'afficher dans la partie optionnelle de pluguin.
-
-Note : Il est important de garder le nom de définition 'lib.qcCommentsAdditionalContent'.
 
 ## Backend module
-Ce module vient avec deux tabulations :
+Ce module vient avec quatre tabulations, avec la possibilité d'exporter les données affichées en fichier XLS.
 
 #### Statistiques
 Cette tabulation permet l'administrateur d'avoir une idée sur l'utilité de la page pour les utilisateurs frontend, en se basant sur les commentaires positifs et les commentaires
 négatifs.
+Ce module est configuré en utilisant la configuration TSconfig suivante :
+
+        mod.qcComments.comments {
+            // Nombre maximum des enregistrements affichés
+            maxRecords = 30
+            // Activer/Descativer l'affichage des enregistrements pour les pages cachées
+            showRecordsForHiddenPages = 1
+        }
 
 #### Commentaires
-En utilisant cette tabulation, l'administrateur peut lister les commentaires envoyés par page.
+Dans ce module, l'utilisateur peut lister les commentaires envoyés pour la page sélectionnée, il aura aussi la possibilité de retirer ou supprimer un commentaire.
+Ce module est configuré en utilisant la configuration TSconfig suivante :
 
-NB : Tous les données listés dans les deux tabulations peuvent être filtré or exporter sous format csv.
-NB : L'extension support aussi une fonctionnalité qui permet d'exporter les commentaires ou les résultats des statistiques en se basant sur les options de filtres sélectionnées.
-
-L'affichage dans deux tabulations peut être controller en utilisant la configuration typoscript ce dessous :
-
-    module.tx_qccomments {
-        settings {
-            comments {
-                // Trier par champ de date de commentaire
-                orderType = DESC
-                // Nombre d'enregistrements qui seront affichés dans le tableau de commentaires
-                maxRecords = 100
-                // Nombre de sous-pages qui seront analysées
-                numberOfSubPages = 50
-            }
-            statistics {
-                // Nombre d'enregistrements qui seront affichés dans le tableau de statistiques
-                maxRecords = 30
-            }
-
-            csvExport {
-                filename {
-                    // Cette date sera ajoutée au nom du fichier exporté
-                    dateFormat = YmdHi
-                }
-                // Les Paramètres CSV
-                separator = ;
-                enclosure = "
-                escape = \\
-            }
+        mod.qcComments.comments {
+            // Type de tri (par date)
+            orderType = DESC
+            // Nombre maximum des enregistrements affichés
+            maxRecords = 100
+            // Nombre maximum des pages filles considérées
+            numberOfSubPages = 50
+            // Activer/Descativer l'affichage des enregistrements pour les pages cachées
+            showRecordsForHiddenPages = 1
+            // Activer/Descativer le boutton pour Retirer un commentaire
+            enableRemoveButton = 1
+            // Activer/Descativer le bouton pour Supprimer un commentaire
+            enableDeleteButton = 1
         }
-    }
+
+Note : si un commentaire est retiré, cela signifie qu'il sera affiché dans le module "Commentaires retirés".
+
+#### Commentaires retirés
+Ce module affiche la liste des commentaires qui ont été retirés par l'utilisateur en cliquant sur le bouton "Retirer" dans le module des "Commentaires". Il est configuré en utilisant
+la configuration TSconfig suivante :
+
+         mod.qcComments.hiddenComments {
+            // Type de tri (par date)
+            orderType = DESC
+            // Nombre maximum des enregistrements affichés
+            maxRecords = 100
+            // Nombre maximum des pages filles considérées
+            numberOfSubPages = 50
+            // Activer/Descativer l'affichage des enregistrements pour les pages cachées
+            showRecordsForHiddenPages = 1
+            // Activer/Descativer le bouton pour Supprimer un commentaire
+            enableDeleteButton = 1
+         }
+
+#### Problèmes téchniques
+Ce module sert à afficher la liste des problèmes techniques envoyés, l'utilisateur aura la possibilité de traiter un problème en cliquant sur le bouton "Traiter".
+Configuration TSconfig :
+
+          mod.qcComments.technicalProblems {
+            // Type de tri (par date)
+            orderType = DESC
+            // Nombre maximum des enregistrements affichés
+            maxRecords = 100
+            // Nombre maximum des pages filles considérées
+            numberOfSubPages = 50
+            // Activer/Descativer l'affichage des enregistrements pour les pages cachées
+            showRecordsForHiddenPages = 1
+            // Activer/Descativer le boutton "Traiter"
+            enableFixButton = 1
+          }
