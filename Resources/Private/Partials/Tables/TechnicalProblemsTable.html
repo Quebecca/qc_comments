@@ -34,14 +34,6 @@
                         </td>
                         <td>
                             <f:if condition="{row.fixed} == 1">
-                                {row.fixed_date}
-                            </f:if>
-                            <f:else>
-                                --
-                            </f:else>
-                        </td>
-                        <td>
-                            <f:if condition="{row.fixed} == 1">
                                 <f:then>
                                     <f:if condition="{row.realName}">
                                         <f:then>{row.realName}</f:then>
@@ -52,6 +44,14 @@
                                     --
                                 </f:else>
                             </f:if>
+                        </td>
+                        <td>
+                            <f:if condition="{row.fixed} == 1">
+                                {row.fixed_date}
+                            </f:if>
+                            <f:else>
+                                --
+                            </f:else>
                         </td>
                         <td>
                             <f:if condition="{row.fixed} == 1">
