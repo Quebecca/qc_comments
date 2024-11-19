@@ -49,9 +49,6 @@
                             <f:if condition="{row.fixed} == 1">
                                 {row.fixed_date}
                             </f:if>
-                            <f:else>
-                                --
-                            </f:else>
                         </td>
                         <td>
                             <f:if condition="{row.fixed} == 1">
@@ -66,9 +63,6 @@
                                                 <f:form.submit value="{f:translate(key:'fix')}" class="btn btn-default"/>
                                             </f:form>
                                         </f:then>
-                                        <f:else>
-                                            --
-                                        </f:else>
                                     </f:if>
                                 </f:else>
                             </f:if>
