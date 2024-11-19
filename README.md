@@ -86,10 +86,6 @@ The extension cames also with a spam shield with three protections :
 You can configure this protection with the Typoscript configuration that cames with the extension, in the "setup.typoscript" file.
 
 
-#### Screenshot of the comments form in a front end page
-
-![FE comments form](Documentation/Images/commentsFormFE.PNG)
-
 ## FrontEnd section
 
 The frontend comments plugin supports three different types of comments:
@@ -126,6 +122,8 @@ Note: The options displayed in the form for the “Negative Comments” and “R
 ## Backend module
 
 This module comes with four tabs, with the ability to export the displayed data to an XLS file.
+
+Note: The TSconfig configuration used for the Backend is a **User/Group TSconfig** configuration.
 
 ### Satisfaction statistics
 This tab allows the administrator to get an idea of the page’s usefulness for frontend users, based on positive and negative comments. This module is configured using the following TSconfig:
@@ -320,6 +318,8 @@ en Typoscript :
 
 ## Backend module
 Ce module vient avec quatre tabulations, avec la possibilité d'exporter les données affichées en fichier XLS.
+
+Note : La configuration TSconfig utilisée pour le Backend, est une configuration **TSconfig d'utilisateur ou groupe**.
 
 #### Statistiques de satisfaction
 Cette tabulation permet l'administrateur d'avoir une idée sur l'utilité de la page pour les utilisateurs frontend, en se basant sur les commentaires positifs et les commentaires
