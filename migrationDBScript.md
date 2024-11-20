@@ -3,12 +3,16 @@
 Les enregistrements de qc_comments sont enregistrés dans la table **tx_qccomments_domain_model_comment**, d’où il faut copier les commentaires stockés dans la table **tx_gabarit_pgu_form_comments_problems** par pgu_commentaires.
 Pour cela, avant d’installer l’extension qc_comments, il faut lancer les Scripts SQL suivants :
 
+Note : Ces scripts SQL ont été testé sur dev4 sur plus de 300K enregistrements migrés de la table tx_gabarit_pgu_form_comments_problems vers tx_qccomments_domain_model_comment.
+Le script n'a pas pris plus que 3min pour terminer son exécution.
+
 ## Création de la table :
 
         CREATE TABLE tx_qccomments_domain_model_comment LIKE tx_gabarit_pgu_form_comments_problems;
 
 ## Copie les valeurs enregistrées par pgu_commentaires dans la nouvelle table :
         INSERT INTO tx_qccomments_domain_model_comment SELECT * FROM tx_gabarit_pgu_form_comments_problems;
+
 
 ## Ajouter des colonnes de plus
 
