@@ -55,12 +55,3 @@ Ce script cache la section des commentaires sur les pages suivantes, en se basan
             set tx_select_comments_form_page_mode = "mode 2"
             where uid in (1345 , 2212 , 4351 , 5069 , 5635 , 2211 , 4508,
                                         4502 , 4499 , 2631 , 1608 , 4753 , 5056 , 5391);
-
-
-/*
-    ['Non précisé', 'not specified', ''],
-    ['Afficher pour cette page et ses sous-pages', 'mode 1', ''],
-    ['Afficher pour cette page seulement', 'mode 2', ''],
-    ['Masquer pour cette page et ses sous-pages', 'mode 3', ''],
-    ['Masquer pour cette page seulement', 'mode 4', ''],
-*/
