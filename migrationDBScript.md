@@ -34,7 +34,9 @@ Pour cela, avant d’installer l’extension qc_comments, il faut lancer les Scr
                 CHANGE note_suivi note_follow_up text;
 
 ## Cacher la section des commentaires pour les pages suivantes :
-### Ce script cache la section des commentaires sur les pages suivantes, en se basant sur la configuration typoscript utilisée lors d’utilisation de pgu_commentaire
+
+Ce script cache la section des commentaires sur les pages suivantes, en se basant sur la configuration typoscript utilisée lors d’utilisation de pgu_commentaire
+
 # cf ticket 3053 de gitlab
             Update pages
             set tx_select_comments_form_page_mode = "mode 3"
