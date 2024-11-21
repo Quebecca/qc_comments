@@ -44,7 +44,7 @@ class StatisticsTabService extends QcBackendModuleService
                             $this->showStatisticsForHiddenPage
                         );
         $formattedData = $this->statisticsDataFormatting($resultData);
-        $tooMuchResults = count($resultData) > $maxRecords && $this->showStatisticsForHiddenPage;
+        $tooMuchResults = count($resultData) > $maxRecords;
         $headers = $this->getHeaders();
         return [
             'tooMuchResults' => $tooMuchResults,
