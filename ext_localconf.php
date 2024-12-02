@@ -1,6 +1,7 @@
 <?php
 
 use Qc\QcComments\Controller\Frontend\CommentsController;
+use Qc\QcComments\Controller\FrontendController;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
@@ -13,11 +14,24 @@ call_user_func(
         ExtensionUtility::configurePlugin(
             'QcComments',
             'commentsForm',
-            [CommentsController::class => 'show,saveComment'], //With cash - prevent storing cashed data
-            [CommentsController::class  => 'show,saveComment'] // storing without using cash
+            [
+                CommentsController::class => 'show,saveComment',
+            ], //With cash - prevent storing cashed data
+            [
+                CommentsController::class  => 'show,saveComment',
+            ] // storing without using cash
+        );
+        ExtensionUtility::configurePlugin(
+            'QcComments',
+            'commentsFormAjax',
+            [
+                CommentsController::class => 'savePositifComment',
+            ],
+            [
+                CommentsController::class => 'savePositifComment',
+            ]
         );
     }
-
 );
 
 ExtensionManagementUtility::addUserTSConfig(

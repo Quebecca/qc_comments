@@ -26,7 +26,7 @@ use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-
+use TYPO3\CMS\Core\Http\JsonResponse;
 // FrontEnd Controller
 class CommentsController extends ActionController
 {
@@ -168,7 +168,7 @@ class CommentsController extends ActionController
             $comment->setDateHour(date('Y-m-d H:i:s'));
 
             if($comment->getSubmittedFormUid() != '0'){
-                 $exisitingComment= $this->commentsRepository->findByUid(intval($comment->getSubmittedFormUid()));
+                $exisitingComment= $this->commentsRepository->findByUid(intval($comment->getSubmittedFormUid()));
                 $exisitingComment->setComment($comment->getComment());
                 $this->commentsRepository->update($exisitingComment);
                 $formUpdated = true;
@@ -235,6 +235,33 @@ class CommentsController extends ActionController
             $anonymatInfo = substr($match[0], strlen($match[0]) - 4);
             return '[...'.$anonymatInfo.' ]';
         }, $comment);
+    }
+
+    /**
+     * @return JsonResponse
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws Exception
+     * @throws IllegalObjectTypeException
+     */
+    public function savePositifCommentAction()
+    {
+        $comment = new Comment();
+        $comment->setUseful('1');
+        $comment->setUidOrig($GLOBALS['TSFE']->id);
+        $comment->setDateHour(date('Y-m-d H:i:s'));
+        $this->commentsRepository->add($comment);
+        $this->commentsRepository->persistenceManager->persistAll();
+        $data = [
+            'status' => 'success',
+            'message' => 'Comment saved',
+            'data' => [
+                'commentUid' => $comment->getUid(),
+                'pageUid' => $GLOBALS['TSFE']->id,
+            ],
+        ];
+
+        // Return a JSON response
+        return new JsonResponse($data);
     }
 
 }
