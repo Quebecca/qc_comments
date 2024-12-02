@@ -27,6 +27,8 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use Psr\Http\Message\ServerRequestInterface;
+
 // FrontEnd Controller
 class CommentsController extends ActionController
 {
@@ -247,8 +249,9 @@ class CommentsController extends ActionController
     {
         $comment = new Comment();
         $comment->setUseful('1');
-        $comment->setUidOrig($GLOBALS['TSFE']->id);
+        $comment->setUidOrig($this->request->getParsedBody()['pageUid']);
         $comment->setDateHour(date('Y-m-d H:i:s'));
+        $comment->setUrlOrig($this->request->getParsedBody()['pageUrl']);
         $this->commentsRepository->add($comment);
         $this->commentsRepository->persistenceManager->persistAll();
         $data = [
