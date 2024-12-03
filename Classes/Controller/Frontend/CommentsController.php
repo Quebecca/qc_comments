@@ -170,9 +170,15 @@ class CommentsController extends ActionController
             $comment->setDateHour(date('Y-m-d H:i:s'));
 
             if($comment->getSubmittedFormUid() != '0'){
-                $exisitingComment= $this->commentsRepository->findByUid(intval($comment->getSubmittedFormUid()));
-                $exisitingComment->setComment($comment->getComment());
-                $this->commentsRepository->update($exisitingComment);
+                $existingComment= $this->commentsRepository->findByUid(intval($comment->getSubmittedFormUid()));
+                if($existingComment){
+                    $existingComment->setComment($comment->getComment());
+                    $this->commentsRepository->update($existingComment);
+                }
+                else{
+                    $this->commentsRepository->add($comment);
+                    $this->commentsRepository->persistenceManager->persistAll();
+                }
                 $formUpdated = true;
             }else{
                 $this->commentsRepository->add($comment);
