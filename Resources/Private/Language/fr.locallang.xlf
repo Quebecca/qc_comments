@@ -224,7 +224,7 @@
                 <target>Avez-vous un commentaire à nous transmettre ou un problème à signaler ?</target>
             </trans-unit>
             <trans-unit id="haveYouACommentDescription">
-                <target>Évitez d’inscrire des renseignements  personnels. Notez que vous ne recevrez aucune réponse.</target>
+                <target>N’inscrivez pas de renseignements personnels. Vous ne recevrez aucune réponse.</target>
             </trans-unit>
             <trans-unit id="limitCharacter">
                 <target>Maximum 500 caractères</target>

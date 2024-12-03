@@ -223,7 +223,7 @@
                 <source>Did you encounter any problems while navigating?</source>
             </trans-unit>
             <trans-unit id="haveYouACommentDescription">
-                <source>Please send us your observations and help us improve our website. Please do not enter any personal information in this field. Note that you will not receive a reply.</source>
+                <source>Do not include any personal information. Please note that we will not be able to provide individual responses.</source>
             </trans-unit>
             <trans-unit id="limitCharacter">
                 <source>Limit is 500 characters</source>
