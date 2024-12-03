@@ -340,7 +340,7 @@
 				<source>Removed comments</source>
 			</trans-unit>
 			<trans-unit id="spamMessage">
-				<source>Can't prove you're human. Your review could not be sent.</source>
+				<source>We were unable to verify that you are a human. Your feedback could not be submitted.</source>
 			</trans-unit>
 			<trans-unit id="atLeastXChars">
 				<source>Please write a message of at least %s characters</source>
