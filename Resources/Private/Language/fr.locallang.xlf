@@ -308,7 +308,7 @@
 				<target>Veuillez ajouter des précisions</target>
 			</trans-unit>
 			<trans-unit id="whyInfoNotUseful">
-				<target>Pourquoi l’information n’a pas été utile?</target>
+				<target>Pourquoi l’information n’a pas été utile? </target>
 			</trans-unit>
 			<trans-unit id="reportProblem">
 				<target>Signaler un problème</target>
