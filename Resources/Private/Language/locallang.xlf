@@ -211,13 +211,13 @@
                 <source>No</source>
             </trans-unit>
             <trans-unit id="submit">
-                <source>Send</source>
+                <source>Submit</source>
             </trans-unit>
             <trans-unit id="formSectionTitle">
                 <source>Comments</source>
             </trans-unit>
             <trans-unit id="isThePageUseful">
-                <source>Was the information on this page useful to you?</source>
+                <source>Was the information on this page helpful?</source>
             </trans-unit>
             <trans-unit id="haveYouAComment">
                 <source>Did you encounter any problems while navigating?</source>
@@ -256,7 +256,7 @@
                 <source>Hide for this page only</source>
             </trans-unit>
             <trans-unit id="characters">
-                <source> characters</source>
+                <source> characters maximum</source>
             </trans-unit>
         	<trans-unit id="empty-comment">
 				<source>Please describe the problem</source>
@@ -289,31 +289,31 @@
 				<source>You must select an option</source>
 			</trans-unit>
 			<trans-unit id="nextFields">
-				<source>Fields followed by </source>
+				<source>Fields marked with </source>
 			</trans-unit>
 			<trans-unit id="mandatoryFields">
-				<source>are mandatory.</source>
+				<source>are required</source>
 			</trans-unit>
 			<trans-unit id="whatsTheProblem">
-				<source>What's the problem ?</source>
+				<source>What issue are you experiencing?</source>
 			</trans-unit>
 			<trans-unit id="chooseProblemType">
-				<source>Specify the nature of the problem</source>
+				<source>Describe the issue</source>
 			</trans-unit>
 			<trans-unit id="doNotInsertPersonalData">
-				<source>Do not enter personal information (e.g.: social insurance number (SIN), email, telephone, address, etc.).</source>
+				<source>Do not include any personal information (such as your Social Insurance Number [SIN], email address, phone number or mailing address).</source>
 			</trans-unit>
 			<trans-unit id="responseNoReceived">
-				<source>You will not receive any response.</source>
+				<source>Please note that we will not be able to provide individual responses.</source>
 			</trans-unit>
 			<trans-unit id="addDetails">
-				<source>Add details</source>
+				<source>Please provide more details</source>
 			</trans-unit>
 			<trans-unit id="addComment">
-				<source>Do you want to add a comment?</source>
+				<source>Want to add a comment?</source>
 			</trans-unit>
 			<trans-unit id="whyInfoNotUseful">
-				<source>Why was the information not useful?</source>
+				<source>Why was this information unhelpful?</source>
 			</trans-unit>
 			<trans-unit id="reportProblem">
 				<source>Report a problem</source>
