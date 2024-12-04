@@ -27,6 +27,9 @@
     padding: 0 10px 0 0;
     margin : 0.5rem 0 2rem 0;
 }
+.options-error-message {
+    margin : 0 0 2rem 0;
+}
 
 .spam-details {
   color : #d6330b;
@@ -109,7 +112,7 @@
     line-height: 1.14;
     font-weight: 600;
 }
-.parsley-custom-error-message:before {
+.custom-error-message:before {
     content: "";
     display: inline-block;
     width: 24px;
@@ -138,6 +141,9 @@
     text-align: right;
     font-size: 0.875rem;
     color: #223654;
+}
+.comments-form .options-area legend {
+    margin-bottom : 0!important;
 }
 
 @media screen and (max-width: 991px) {
