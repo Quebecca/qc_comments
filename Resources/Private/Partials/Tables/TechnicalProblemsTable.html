@@ -33,13 +33,14 @@
                             {row.reason_short_label}
                         </td>
                         <td>
-                            <f:if condition="{row.fixed} == 1">
-                                <f:then>
-                                    <f:if condition="{row.realName}">
-                                        <f:then>{row.realName}</f:then>
-                                        <f:else>{row.email}</f:else>
+                            <f:if condition="{row.fixed} == 1 && {row.realName}">
+                                <f:then>{row.realName}</f:then>
+                                <f:else>
+                                    <f:if condition="{row.email}">
+                                        <f:then>{row.email}</f:then>
+                                        <f:else>{row.username}</f:else>
                                     </f:if>
-                                </f:then>
+                                </f:else>
                             </f:if>
                         </td>
                         <td>

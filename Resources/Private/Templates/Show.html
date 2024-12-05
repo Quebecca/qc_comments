@@ -2,115 +2,264 @@
 {namespace qcComments=Qc\QcComments\ViewHelpers}
 
 <f:variable name="pageUid" value="{v:page.info(field: 'uid')}"/>
-<f:variable name="checkPageMode" value="{modePage -> qcComments:CheckPageMode(pageUid: pageUid)}"/>
-<div class="d-none" id="lang" data-ts="{v:page.language(languages: 'en', pageUid: '0', normalWhenNoLanguage: 'en')}"></div>
-<f:if condition="{checkPageMode}">
-    <div class="col-12">
-        <div class="d-none" id="isFormSubmitted" data-ts="{submitted}"></div>
-        <div class="frame frame-default frame-type-list frame-layout-0" id="comments-form-section">
-            <h2>
-                <f:translate key="formSectionTitle"/>
-            </h2>
-            <div>
-                <f:if condition="{submitted} === 'true'">
+<f:variable name="checkBasPageMode" value="{modeBasPage -> qcComments:CheckPageMode(pageUid: pageUid)}"/>
+<f:variable name="doNotInsertPersonalData" value="{f:translate(key:'doNotInsertPersonalData')}" />
+<f:variable name="responseNoReceived" value="{f:translate(key:'responseNoReceived')}" />
+<f:variable name="commentSectionMandatoryField" value="true" />
+
+<f:if condition="{checkBasPageMode} || {settings.activeModeBasPage} = 'true'">
+    <div class="d-none" id="lang"
+         data-ts="{v:page.language(languages: 'fr,en', pageUid: '0', normalWhenNoLanguage: 'fr')}"></div>
+    <div class="frame frame-default frame-type-list frame-layout-0" id="comments-form-section">
+        <div class="comments-form sansBorder">
+            <div class="comment-section-elements" id="comments-section">
+                <div class="form-submission-success d-none">
+                    <f:render section="submitted-form-message" arguments="{_all}"/>
+                </div>
+                <f:if condition="{formUpdated} == true || ({submittedFormType} != '1' && {submitted}">
                     <f:then>
-                        <div role="alert">
-                            <p>
-                                <f:translate key="formSubmittedSuccessfully"/>
-                            </p>
-                        </div>
+                        <f:render section="submitted-form-message" arguments="{_all}"/>
                     </f:then>
                     <f:else>
-                        <f:variable name="absUrl" value="{v:page.absoluteUrl()}"/>
-                        <div class="row">
-                            <div class="comments-form col-12 col-lg-8">
-                                <f:form action="saveComment" object="{comment}" objectName="comment" id="commentForm">
-
-                                    <f:render partial="SpamShieldComponents/FormError" arguments="{_all}"/>
-
-                                    <f:form.hidden property="urlOrig" value="{absUrl}"/>
+                        <f:if condition="{validationResults.flattenedErrors}">
+                            <f:then>
+                                <f:render partial="SpamShieldComponents/FormError" arguments="{_all}"/>
+                            </f:then>
+                            <f:else>
+                                <f:variable name="absUrl" value="{v:page.absoluteUrl()}"/>
+                                <f:form action="saveComment" object="{comment}" objectName="comment" id="QcCommentForm"
+                                        class="comments-form">
+                                    <f:form.hidden id="comment-type" property="useful" value="1"/>
+                                    <f:form.hidden id="urlOrig" property="urlOrig" value="{absUrl}"/>
+                                    <f:variable name="tt" value="1500"/>
+                                    <f:form.hidden property="submittedFormUid" id="submittedFormUid"/>
                                     <f:form.hidden property="uidOrig" value="{v:page.info(field: 'uid')}"/>
-                                    <div class="form-inline form-group col-md-12">
-                                        <legend class="control-label">
-                                            <f:translate key="isThePageUseful"/>
-                                        </legend>
-                                        <div class="form-group radio mt-1 flex-row useful-block" >
-                                            <f:form.radio property="useful" value="1" id="usefulY" checked="false"/>
-                                            <label for="usefulY" class="useful-label">
-                                                <f:translate key="yes"/>
-                                            </label>
+                                    <div class="d-flex flex-row flex-wrap bd-highlight mb-3 useful-block ">
+                                        <div class="w-100">
+                                            <p class="comments-from-label">
+                                                <f:translate key="isThePageUseful"/>
+                                            </p>
                                         </div>
-                                        <div class="form-group radio mt-1 flex-row useful-block">
-                                            <f:form.radio property="useful" value="0" id="usefulN" checked="false"/>
-                                            <label for="usefulN" class="useful-label">
-                                                <f:translate key="no"/>
-                                            </label>
+                                        <div class="p-2">
+
+                                            <button
+                                                    id="positif-button"
+                                                    data-sitekey="{recaptchaConfig.sitekey}"
+                                                    data-size="invisible"
+                                                    class="btn btn-info btn-option g-recaptcha"
+                                                    type="button"
+                                                    onclick="addInputType(this.form); setForm(this.form);"
+                                                    value="1">{f:translate(key='positive')}</button>
+                                        </div>
+                                        <div class="p-2">
+                                            <button class="btn btn-info btn-option" id="negative-button"><f:translate key="negative"/></button>
+                                        </div>
+                                        <div class="pt-3 report-problem">
+                                            <a href="#" class="link-option" id="report-problem"><f:translate key="reportProblem"/></a>
                                         </div>
                                     </div>
+                                    <div class="form-section">
 
-                                    <div id="comment-section" class="form-group d-none">
-                                        <p>
-                                            <label for="comment-textarea" class="control-label" style="font-weight : bold;">
-                                                <f:translate key="haveYouAComment" />
-                                            </label>
-                                            <br>
-                                            <span>
-                                                <f:translate key="haveYouACommentDescription" />
-                                            </span>
-                                        </p>
-                                        <f:form.textarea
-                                                property="comment"
-                                                class="form-control"
-                                                id="comment-textarea"
-                                                rows="10"
-                                                cols="10"
-                                                name="qc_comments_comment"
-                                        />
-                                        <span id="error-message-empty-comment" class="d-none"><f:translate key="too-short-comment"/></span>
-
-                                        <div class="d-none" id="maxLabel" data-ts="{f:translate(key: 'max')}"></div>
                                         <div class="d-none" id="charLabel" data-ts="{f:translate(key='characters')}"></div>
+                                        <div class="d-none" id="atLeastXChars" data-ts="{f:translate(key='atLeastXChars',arguments:'{0:config.minCharacters}')}"></div>
+                                        <div class="d-none" id="tooManyChars" data-ts="{f:translate(key='tooManyChars')}"></div>
                                         <div class="d-none" id="sitekey" data-ts="{recaptchaConfig.sitekey}"></div>
                                         <div class="d-none" id="maxCharacters" data-ts="{config.maxCharacters}"></div>
                                         <div class="d-none" id="minCharacters" data-ts="{config.minCharacters}"></div>
-                                        <div class="d-none" id="skipRecaptcha" data-ts="{recaptchaConfig.enabled}"></div>
-                                        <f:render partial="SpamShieldComponents/HoneyPot" arguments="{_all}"/>
+                                        <div class="d-none" id="enableRecaptcha" data-ts="{recaptchaConfig.enabled}"></div>
+                                        <div class="d-none" id="pageUid" data-ts="{pageUid}"></div>
 
-                                        <div id="infoMaxCaracteres" class="infoSupplJs" aria-hidden="true">
-                                        <span id="limitLabel">
-                                          <f:translate key="max"/> {config.maxCharacters} <f:translate key="characters"/>
-                                        </span>
+                                        <div class="d-none" id="isUsfulFormSubmitted"
+                                             data-useful-form-submitted="{submittedFormType}"></div>
+                                        <div class="d-none" id="submittedFormUidVal"
+                                             data-submitted-for-uid="{submittedFormUid}"></div>
+
+                                        <div
+                                                class="text-area-comments {f:if(condition: '{submittedFormType} == 1 && {submittedFormUid} != 0', then: '', else: 'd-none')}">
+                                            <div class="submitted-form-message-section d-none">
+                                                <f:render section="submitted-form-message" arguments="{_all}"/>
+                                            </div>
+
+                                            <f:if condition="{submittedFormUid} == ''">
+                                                <div class="form-instruction">
+                                                    <span> <f:translate key="nextFields"/><span class="mandatoryMark"> * </span><f:translate key="mandatoryFields"/> </span>
+                                                </div>
+                                            </f:if>
+
+                                            <f:render section="negative-report" arguments="{_all}"/>
+                                            <f:render section="report-problem" arguments="{_all}"/>
+                                            <f:render section="positif-report" arguments="{_all}"/>
+
+                                            <f:form.textarea
+                                                    property="comment"
+                                                    class="form-control"
+                                                    id="comment-textarea"
+                                                    rows="4" cols="5"
+                                                    aria-describedby="error-message-empty-comment"
+                                            />
+                                            <div class=" col-md-12 displayBlock">
+                                                <div class="col-sm-offset-2">
+                                                    <div class="maxChars " aria-hidden="true" role="alert" >
+                                                        <span id="limitLabel" >
+                                                          <f:translate key="max"/> {config.maxCharacters} <f:translate
+                                                                key="characters"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <ul id="error-message-empty-comment" class="d-none">
+                                                <li class="custom-error-message" role="alert">
+                                                    <f:translate key="empty-comment"/>
+                                                </li>
+                                            </ul>
+
                                         </div>
-                                        <br>
-                                        <f:if condition="{recaptchaConfig.enabled}">
-                                            <f:then>
-                                                <input id="submitButton"
-                                                       data-sitekey="{recaptchaConfig.sitekey}"
-                                                       data-size="invisible"
-                                                       class="btn btn-primary displayBlock g-recaptcha submit-button"
-                                                       type="button"
-                                                       value="{f:translate(key: 'submit')}" />
-                                            </f:then>
-                                            <f:else>
-                                                <f:form.submit
-                                                        id="submitButton"
-                                                        value="{f:translate(key: 'submit')}"
-                                                        class="btn btn-primary displayBlock submit-button"
-                                                />
-                                            </f:else>
-                                        </f:if>
+                                        <f:render section="submit-button" arguments="{_all}"/>
+                                        <f:render partial="SpamShieldComponents/HoneyPot" arguments="{_all}"/>
                                     </div>
-
                                 </f:form>
-                            </div>
-                            <div class="col-12 col-lg-4 flex-wrap flex-lg-wrap-reverse d-none" id="questionsLink-section">
-                                <f:cObject typoscriptObjectPath="lib.qcCommentsAdditionalContent" />
-                            </div>
-
-                        </div>
+                            </f:else>
+                        </f:if>
                     </f:else>
                 </f:if>
             </div>
         </div>
     </div>
+
+    <div class="d-none" id="isFormSubmitted" data-ts="{submitted}"></div>
 </f:if>
+
+<f:section name="submit-button">
+    <div
+            class="submit-section {f:if(condition: '{submittedFormType} == 1 && {submittedFormUid} != 0 && {formUpdated} == false', then: '', else: 'd-none')}">
+        <f:if condition="{recaptchaConfig.enabled}">
+            <f:then>
+                <input id="submitButton"
+                       data-sitekey="{recaptchaConfig.sitekey}"
+                       data-size="invisible"
+                       class="btn btn-primary displayBlock g-recaptcha submit-button"
+                       type="button"
+                       onclick="setForm(this.form);"
+                       value="{f:translate(key: 'submit')}"/>
+            </f:then>
+            <f:else>
+                <f:form.submit
+                        id="submitButton"
+                        value="{f:translate(key: 'submit')}"
+                        class="btn btn-primary displayBlock submit-button"
+                />
+            </f:else>
+        </f:if>
+    </div>
+</f:section>
+<f:section name="negative-report">
+    <div class="negative-report-section d-none">
+        <div class="options-area">
+            <fieldset>
+                <legend>
+                    <p class="font-weight-bold options-label"><f:translate key="whyInfoNotUseful"/><span class="mandatoryMark"> *</span></p>
+                </legend>
+                <f:for each="{reasonOptions.negative_reasons}" as="option" iteration="iteration">
+                    <div class="option negative-report-options form-group radio">
+                        <f:form.radio id="{option.code}"
+                                      class="radio"
+                                      property="reasonCode"
+                                      value="{option.code}"
+                                      aria-describedby="select-negativeReport-error-message"
+                        />
+                        <label for="{option.code}" class="option-label">{option.long_label}</label>
+                    </div>
+                </f:for>
+
+            </fieldset>
+            <ul id="select-negativeReport-error-message" class="options-error-message d-none">
+                <li class="custom-error-message" role="alert">
+                    <f:translate key="chooseAnOption"/>
+                </li>
+            </ul>
+        </div>
+
+        <f:variable value="{f:translate(key:'addDetails')}" name="addDetails" />
+
+        <f:render section="comments-area-label" arguments="{
+            add-comment-label : addDetails,
+            note-label : doNotInsertPersonalData,
+            response-label  : responseNoReceived,
+            commentSectionMandatoryField : commentSectionMandatoryField
+            }"/>
+    </div>
+</f:section>
+<f:section name="report-problem">
+    <div class="report-problem-section d-none">
+        <div class="options-area">
+            <fieldset>
+                <legend>
+                    <p class="font-weight-bold options-label"> <f:translate key="whatsTheProblem"/><span class="mandatoryMark"> *</span></p>
+                </legend>
+                <f:for each="{reasonOptions.reporting_problem}" as="option" iteration="iteration">
+                    <div class="option report-problem-options form-group radio">
+                        <f:form.radio id="{option.code}"
+                                      class="radio"
+                                      property="reasonCode"
+                                      value="{option.code}"
+                                      aria-describedby="select-technicalProblems-error-message"
+                        />
+                        <label for="{option.code}" class="option-label">{option.long_label}</label>
+                    </div>
+                </f:for>
+            </fieldset>
+
+            <ul id="select-technicalProblems-error-message"  class="options-error-message d-none">
+                <li class="custom-error-message" role="alert">
+                    <f:translate key="chooseAnOption"/>
+                </li>
+            </ul>
+            <f:variable value="{f:translate(key:'chooseProblemType')}" name="chooseProblemType" />
+            <f:render section="comments-area-label" arguments="{
+                add-comment-label : chooseProblemType,
+                note-label : doNotInsertPersonalData,
+                response-label  : responseNoReceived,
+                commentSectionMandatoryField : commentSectionMandatoryField
+                }"/>
+        </div>
+    </div>
+</f:section>
+<f:section name="positif-report">
+    <f:variable value="false" name="commentSectionMandatoryField" />
+    <div class="positif-comment-section d-none">
+        <f:variable value="{f:translate(key:'addComment')}" name="addComment" />
+        <f:render section="comments-area-label" arguments="{
+        add-comment-label : addComment,
+        note-label : doNotInsertPersonalData,
+        response-label  : responseNoReceived,
+        commentSectionMandatoryField : commentSectionMandatoryField
+        }"/>
+    </div>
+</f:section>
+<f:section name="comments-area-label">
+    <div class="comment-area">
+        <label for="comment-textarea" class="control-label" title="">
+            <p class="fieldLabel">
+                {add-comment-label}<f:if condition="{commentSectionMandatoryField} == 'true'"> <span class="mandatoryMark"> *</span></f:if>
+            </p>
+            <div class="complementLabel">
+                {note-label} <span class="font-weight-bold">{response-label}</span>
+            </div>
+        </label>
+
+    </div>
+</f:section>
+<f:section name="submitted-form-message">
+    <div
+            class="submitted-form-message {f:if(condition: '{submittedFormUid} != \'\' &&  {submitted}', then: 'submitted-success-message')}"
+            aria-live="assertive" role="status"
+    >
+        <ul class="submit-message d-flex">
+            <li class="icon-message">
+            </li>
+            <li>
+                <f:translate key="formSubmittedSuccessfully"/>
+            </li>
+        </ul>
+    </div>
+</f:section>

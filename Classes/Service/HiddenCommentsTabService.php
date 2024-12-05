@@ -194,7 +194,7 @@ class HiddenCommentsTabService extends QcBackendModuleService
                 // Do not export the url parameters
                 $items[$i]['url_orig'] = explode('?', $item['url_orig'])[0];
                 $items[$i]['useful'] = $item['useful'];
-                $items[$i]['realName'] = $item['realName'];
+                $items[$i]['realName'] = $item['realName'] ?: $item['email'] ?: $item['username'];
                 $items[$i]['hidden_date'] = $item['hidden_date'];
                 $i++;
             }

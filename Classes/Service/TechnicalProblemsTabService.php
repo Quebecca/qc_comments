@@ -181,7 +181,7 @@ class TechnicalProblemsTabService extends QcBackendModuleService
                 // Do not export the url parameters
                 $items[$i]['url_orig'] = explode('?', $item['url_orig'])[0];
                 $items[$i]['fixed'] = $item['fixed'];
-                $items[$i]['realName'] = $item['realName'];
+                $items[$i]['realName'] = $item['realName'] ?: $item['email'] ?: $item['username'];
                 $items[$i]['fixed_date'] = $item['fixed_date'];
 
                 $i++;

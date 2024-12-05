@@ -133,7 +133,7 @@
     <f:form.button type="submit" name="operation" value="reset-filters" class="btn btn-default">
         {f:translate(key:'filter.reset', extensionName : 'qc_comments')}
     </f:form.button>
-    <button class="btn btn-default" onclick="exportFunction(event, '{action}')" id="cc">
+    <button class="btn btn-default" data-action="{action}"  id="exportBtn">
         {csvButton.icon -> f:format.raw()} {f:translate(key:'links.exportCsv', extensionName : 'qc_comments')}
     </button>
 </f:section>

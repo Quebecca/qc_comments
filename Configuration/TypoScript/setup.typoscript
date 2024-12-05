@@ -16,93 +16,118 @@ plugin.tx_qccomments {
             }
 
         }
-      options {
-        fr {
-          negative_reasons {
-            1 {
-              code = NEGATIG_CODE1
-              short_label = Je ne trouve pas ce que je cherche
-              long_label = Je ne trouve pas ce que je cherche
-            }
-            2 {
-              code = NEGATIG_CODE2
-              short_label = Je ne suis pas sûr de comprendre l’information
-              long_label = Je ne suis pas sûr de comprendre l’information
-            }
-            3 {
-              code = NEGATIG_CODE3
-              short_label = L’information n’est plus à jour
-              long_label = L’information n’est plus à jour, est erronée ou est incomplète
-            }
-          }
-          reporting_problem {
-            1 {
-              code = PROBLEM_CODE1
-              short_label = problème avec l’affichage
-              long_label = Il y a un problème avec l’affichage de la page
+        options {
+            negative_reasons {
+                1 {
+                    code = NEGATIG_CODE1
+                    fr {
+                        short_label = Information introuvable
+                        long_label = Je ne trouve pas ce que je cherche
+                    }
+                    en {
+                        short_label = I couldn’t find what I was looking for
+                        long_label = I couldn’t find what I was looking for
+                    }
 
+                }
+                2 {
+                    code = NEGATIG_CODE2
+                    fr {
+                        short_label = Information confusante
+                        long_label = L’information présentée porte à confusion
+                    }
+                    en {
+                        short_label = Confusing information
+                        long_label = The information is unclear
+                    }
+
+                }
+                3 {
+                    code = NEGATIG_CODE3
+                    fr {
+                        short_label = Information erronée
+                        long_label = L’information n’est plus à jour, est erronée ou est incomplète
+                    }
+                    en {
+                        short_label = Wrong information
+                        long_label = The information is outdated, incorrect or incomplete
+                    }
+                }
+                99 {
+                    code = NEGATIG_CODE4
+                    fr {
+                        short_label = Autre
+                        long_label = Autre
+                    }
+                    en {
+                        short_label = Other
+                        long_label = Other
+                    }
+                }
             }
-            2 {
-              code = PROBLEM_CODE2
-              short_label = Un lien ne fonctionne pas
-              long_label = Un lien ne fonctionne pas ou n’est plus à jour
+            reporting_problem {
+                1 {
+                    code = PROBLEM_CODE1
+                    fr {
+                        short_label = Problème d’affichage
+                        long_label = Il y a un problème avec l’affichage de la page
+                    }
+                    en {
+                        short_label = Display problem
+                        long_label = There is a problem with the page display
+                    }
+
+                }
+                2 {
+                    code = PROBLEM_CODE2
+                    fr {
+                        short_label = Lien brisé
+                        long_label = Un lien ne fonctionne pas ou n’est plus à jour
+                    }
+                    en {
+                        short_label = Broken link
+                        long_label = There is a broken or outdated link
+                    }
+
+                }
+                3 {
+                    code = PROBLEM_CODE3
+                    fr {
+                        short_label = Faute de français
+                        long_label = Il y a une erreur d’orthographe ou de grammaire
+                    }
+                    en {
+                        short_label = French spelling mistake
+                        long_label = There is a spelling or grammar error
+                    }
+
+                }
+                4 {
+                    code = PROBLEM_CODE4
+                    fr {
+                        short_label = Service en ligne brisé
+                        long_label = Il y a un problème avec le service en ligne
+                    }
+                    en {
+                        short_label = Broken Online Service
+                        long_label = There is a problem with the online service
+                    }
+
+                }
+                99 {
+                    code = AUTRE
+                    fr {
+                        short_label = Autre
+                        long_label = Autre
+                    }
+                    en {
+                        short_label = Other
+                        long_label = Other
+                    }
+
+                }
             }
-            3 {
-              code = PROBLEM_CODE3
-              short_label = Il y a une erreur d’orthographe
-              long_label = Il y a une erreur d’orthographe ou de grammaire
-            }
-            99 {
-              code = AUTRE
-              short_label = Autre
-              long_label = Autre
-            }
-          }
         }
-        en {
-          negative_reasons {
-            1 {
-              code = NEGATIG_CODE1
-              short_label = I can't find what i'm looking for
-              long_label = I can't find what i'm looking for
-            }
-            2 {
-              code = NEGATIG_CODE2
-              short_label = I'm not sur to understand the inforamtion
-              long_label = I'm not sur to understand the inforamtion
-            }
-            3 {
-              code = NEGATIG_CODE3
-              short_label = The information is no longer up to date
-              long_label = The information is no longer up to date, incorrect or incomplete
-            }
-          }
-          reporting_problem {
-            1 {
-              code = PROBLEM_CODE1 Eng
-              short_label = problem with display
-              long_label = There is a problem with the page display
-
-            }
-            2 {
-              code = PROBLEM_CODE2 Eng
-              short_label = A link does not work
-              long_label = A link does not work or is no longer up to date
-            }
-            3 {
-              code = PROBLEM_CODE3 Eng
-              short_label = There is a spelling error
-              long_label = There is a spelling or grammar error
-            }
-            99 {
-              code = AUTRE Eng
-              short_label = Other
-              long_label = Other
-            }
-          }
-        }
-
-      }
 
         // Activate recaptcha
         recaptcha {
@@ -157,9 +182,28 @@ plugin.tx_qccomments {
 
     }
 }
-lib.qcCommentsAdditionalContent = COA
-lib.qcCommentsAdditionalContent {
+
+savePositifCommentAjax = PAGE
+savePositifCommentAjax {
+    typeNum = 123456
+    config {
+        disableAllHeaderCode = 1
+        xhtml_cleaning = 0
+        admPanel = 0
+        debug = 0
+        no_cache = 1
+    }
+    10 = USER
+    10 {
+        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+        extensionName = QcComments
+        pluginName = commentsFormAjax
+        controller = Frontend
+        action = csvExport
+    }
 }
+
+
 
 page {
     includeJSLibs.jquery = https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js

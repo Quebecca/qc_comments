@@ -127,7 +127,7 @@ class CommentRepository extends Repository
         $data= $queryBuilder
                 ->select(
                     'p.uid', $this->tableName.'.uid as recordUid',
-                    'beUsers.realName', 'beUsers.email',  'p.title',
+                    'beUsers.realName', 'beUsers.email', 'beUsers.username', 'p.title',
                     $this->tableName.'.date_hour',
                     $this->tableName.'.comment',
                     $this->tableName.'.useful',

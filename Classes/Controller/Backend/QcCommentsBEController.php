@@ -75,12 +75,10 @@ class QcCommentsBEController extends ActionController
      */
     protected function initializeView(): void
     {
-        $this->pageRenderer->loadRequireJsModule(
-            'TYPO3/CMS/QcComments/AdministrationModule'
+        $this->pageRenderer->loadJavaScriptModule(
+            '@qc/qccomments/AdministrationModule.js'
         );
-        $this->pageRenderer->loadRequireJsModule(
-            'TYPO3/CMS/Backend/DateTimePicker'
-        );
+
         $this->pageRenderer->addCssFile(
             'EXT:qc_comments/Resources/Public/Css/be_qc_comments.css'
         );
