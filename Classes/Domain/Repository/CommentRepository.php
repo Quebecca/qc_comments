@@ -13,6 +13,7 @@ namespace Qc\QcComments\Domain\Repository;
 
 use Doctrine\DBAL\Connection as ConnectionAlias;
 use Doctrine\DBAL\Driver\Exception;
+use Qc\QcComments\Configuration\TyposcriptConfiguration;
 use Qc\QcComments\Domain\Filter\Filter;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -20,6 +21,7 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 class CommentRepository extends Repository
@@ -54,6 +56,15 @@ class CommentRepository extends Repository
      * @var string
      */
     protected string $date_criteria = '';
+
+    protected TyposcriptConfiguration $typoscriptConfiguration;
+
+    public function __construct()
+    {
+        $this->typoscriptConfiguration = GeneralUtility::makeInstance(TyposcriptConfiguration::class);
+        $this->typoscriptConfiguration->setConfigurationType(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+        $this->typoscriptConfiguration->setSettings('tx_qccomments');
+    }
 
     /**
      * @param Filter $filter
@@ -128,6 +139,7 @@ class CommentRepository extends Repository
                 ->select(
                     'p.uid', $this->tableName.'.uid as recordUid',
                     'beUsers.realName', 'beUsers.email', 'beUsers.username', 'p.title',
+                    $this->tableName.'.reason_code',
                     $this->tableName.'.date_hour',
                     $this->tableName.'.comment',
                     $this->tableName.'.useful',
@@ -172,6 +184,7 @@ class CommentRepository extends Repository
                 $count++;
             }
             if($limit == false || $count < $limit ){
+                $item['reason_short_label'] =  $this->typoscriptConfiguration->getOptionByCodeFrBE($item['reason_code']);
                 $rows[$item['uid']]['records'][] = $item;
                 $rows[$item['uid']]['title'] = $item['title'];
             }

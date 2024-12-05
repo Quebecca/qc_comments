@@ -223,4 +223,25 @@ class TyposcriptConfiguration
         return $optionsByLang;
     }
 
+    /**
+     * This function is used to get the short label based on the current language for BE modules
+     * @param $code
+     * @return mixed|string
+     */
+    public function getOptionByCodeFrBE($code) {
+        $currentLang = $GLOBALS['LANG']->lang ?? 'en';
+        $optionsType = $this->settings['plugin.']['tx_qccomments.']['settings.']['options.'];
+        if (!empty($optionsType)) {
+            // Loop through each item
+            foreach ($optionsType as $options){
+                foreach ($options as $item) {
+                    if($item['code'] == $code){
+                        return $item[$currentLang.'.']['short_label'];
+                    }
+                }
+            }
+
+        }
+        return "";
+    }
 }
