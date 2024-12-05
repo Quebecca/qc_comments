@@ -61,6 +61,7 @@ class CommentRepository extends Repository
 
     public function __construct()
     {
+        parent::__construct();
         $this->typoscriptConfiguration = GeneralUtility::makeInstance(TyposcriptConfiguration::class);
         $this->typoscriptConfiguration->setConfigurationType(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
         $this->typoscriptConfiguration->setSettings('tx_qccomments');
