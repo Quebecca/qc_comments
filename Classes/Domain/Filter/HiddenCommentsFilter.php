@@ -50,7 +50,7 @@ class HiddenCommentsFilter extends Filter
         );
 
         $this->commentReason = $commentReason;
-        $this->typoscriptConfiguration = GeneralUtility::makeInstance(TyposcriptConfiguration::class);
+        $this->typoscriptConfiguration = new TyposcriptConfiguration();
         $this->typoscriptConfiguration->setConfigurationType(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
         $this->typoscriptConfiguration->setSettings('tx_qccomments');
     }

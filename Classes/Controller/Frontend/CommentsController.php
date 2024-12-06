@@ -71,8 +71,7 @@ class CommentsController extends ActionController
     ) {
         $this->localizationUtility =
             GeneralUtility::makeInstance(LocalizationUtility::class);
-        $this->typoscriptConfiguration =
-            GeneralUtility::makeInstance(TyposcriptConfiguration::class);
+        $this->typoscriptConfiguration = new TyposcriptConfiguration();
         $this->isSpamShieldEnabled = $this->typoscriptConfiguration->isSpamShieldEnabled();
         $this->context = GeneralUtility::makeInstance(Context::class);
         $this->currentLanguage = $this->getCurrentLanguage();

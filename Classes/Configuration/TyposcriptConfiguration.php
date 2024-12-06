@@ -57,12 +57,13 @@ class TyposcriptConfiguration
      * @return void
      */
 
-    public function setSettings(string $pluginName): void
+    public function setSettings(string $extensionName): void
     {
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManagerInterface::class);
         $this->settings =  $configurationManager->getConfiguration(
             $this->configurationType,
-            $pluginName
+            $extensionName
+
         );
     }
 
