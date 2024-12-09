@@ -227,7 +227,7 @@ class TyposcriptConfiguration
      * @return mixed|string
      */
     public function getOptionByCodeFrBE($code) {
-        $currentLang = $GLOBALS['LANG']->lang ?? 'en';
+        $currentLang = $GLOBALS['BE_USER']->user['lang'];
         $optionsType = $this->settings['plugin.']['tx_qccomments.']['settings.']['options.'];
         if (!empty($optionsType)) {
             // Loop through each item
