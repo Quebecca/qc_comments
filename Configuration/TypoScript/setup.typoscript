@@ -17,112 +17,117 @@ plugin.tx_qccomments {
 
         }
         options {
-            negative_reasons {
-                1 {
-                    code = NEGATIG_CODE1
-                    default {
-                        short_label = I couldn’t find what I was looking for
-                        long_label = I couldn’t find what I was looking for
-                    }
-                    fr {
-                        short_label = Information introuvable
-                        long_label = Je ne trouve pas ce que je cherche
-                    }
-                }
-                2 {
-                    code = NEGATIG_CODE2
-                    default {
-                        short_label = Confusing information
-                        long_label = The information is unclear
-                    }
-                    fr {
-                        short_label = Information confusante
-                        long_label = L’information présentée porte à confusion
-                    }
-
-                }
-                3 {
-                    code = NEGATIG_CODE3
-                    default {
-                        short_label = Wrong information
-                        long_label = The information is outdated, incorrect or incomplete
-                    }
-                    fr {
-                        short_label = Information erronée
-                        long_label = L’information n’est plus à jour, est erronée ou est incomplète
-                    }
-                }
-                99 {
-                    code = NEGATIG_CODE4
-                    default {
-                        short_label = Other
-                        long_label = Other
-                    }
-                    fr {
-                        short_label = Autre
-                        long_label = Autre
-                    }
-                }
+        negative_reasons {
+          1 {
+            code = NEGATIG_CODE1
+            fr {
+              short_label = Information introuvable
+              long_label = Je ne trouve pas ce que je cherche
             }
-            reporting_problem {
-                1 {
-                    code = PROBLEM_CODE1
-                    default {
-                        short_label = Display problem
-                        long_label = There is a problem with the page display
-                    }
-                    fr {
-                        short_label = Problème d’affichage
-                        long_label = Il y a un problème avec l’affichage de la page
-                    }
-
-                }
-                2 {
-                    code = PROBLEM_CODE2
-                    default {
-                        short_label = Broken link
-                        long_label = There is a broken or outdated link
-                    }
-                    fr {
-                        short_label = Lien brisé
-                        long_label = Un lien ne fonctionne pas ou n’est plus à jour
-                    }
-                }
-                3 {
-                    code = PROBLEM_CODE3
-                    default {
-                        short_label = French spelling mistake
-                        long_label = There is a spelling or grammar error
-                    }
-                    fr {
-                        short_label = Faute de français
-                        long_label = Il y a une erreur d’orthographe ou de grammaire
-                    }
-                }
-                4 {
-                    code = PROBLEM_CODE4
-                    default {
-                        short_label = Broken Online Service
-                        long_label = There is a problem with the online service
-                    }
-                    fr {
-                        short_label = Service en ligne brisé
-                        long_label = Il y a un problème avec le service en ligne
-                    }
-                }
-                99 {
-                    code = PROBLEM_CODE5
-                    default {
-                        short_label = Other
-                        long_label = Other
-                    }
-                    fr {
-                        short_label = Autre
-                        long_label = Autre
-                    }
-                }
+            default {
+              short_label = I couldn’t find what I was looking for
+              long_label = I couldn’t find what I was looking for
             }
+
+          }
+          2 {
+            code = NEGATIG_CODE2
+            fr {
+              short_label = Information confusante
+              long_label = L’information présentée porte à confusion
+            }
+            default {
+              short_label = Confusing information
+              long_label = The information is unclear
+            }
+
+          }
+          3 {
+            code = NEGATIG_CODE3
+            fr {
+              short_label = Information erronée
+              long_label = L’information n’est plus à jour, est erronée ou est incomplète
+            }
+            default {
+              short_label = Wrong information
+              long_label = The information is outdated, incorrect or incomplete
+            }
+          }
+          99 {
+            code = NEGATIG_CODE4
+            fr {
+              short_label = Autre
+              long_label = Autre
+            }
+            default {
+              short_label = Other
+              long_label = Other
+            }
+          }
         }
+        reporting_problem {
+          1 {
+            code = PROBLEM_CODE1
+            fr {
+              short_label = Problème d’affichage
+              long_label = Il y a un problème avec l’affichage de la page
+            }
+            default {
+              short_label = Display problem
+              long_label = There is a problem with the page display
+            }
+
+          }
+          2 {
+            code = PROBLEM_CODE2
+            fr {
+              short_label = Lien brisé
+              long_label = Un lien ne fonctionne pas ou n’est plus à jour
+            }
+            default {
+              short_label = Broken link
+              long_label = There is a broken or outdated link
+            }
+
+          }
+          3 {
+            code = PROBLEM_CODE3
+            fr {
+              short_label = Faute de français
+              long_label = Il y a une erreur d’orthographe ou de grammaire
+            }
+            default {
+              short_label = French spelling mistake
+              long_label = There is a spelling or grammar error
+            }
+
+          }
+          4 {
+            code = PROBLEM_CODE4
+            fr {
+              short_label = Service en ligne brisé
+              long_label = Il y a un problème avec le service en ligne
+            }
+            default {
+              short_label = Broken Online Service
+              long_label = There is a problem with the online service
+            }
+
+          }
+          99 {
+            code = AUTRE
+            fr {
+              short_label = Autre
+              long_label = Autre
+            }
+            default {
+              short_label = Other
+              long_label = Other
+            }
+
+          }
+        }
+      }
 
         // Activate recaptcha
         recaptcha {

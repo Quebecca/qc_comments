@@ -221,12 +221,6 @@ class CommentsController extends ActionController
      * @throws AspectNotFoundException
      */
     public function getCurrentLanguage() : string {
-
-        $languageId = $this->context->getPropertyFromAspect('language','id');
-        if($languageId == 0){
-            return "default";
-        }
-
         return $this->getSiteLanguage()->getLocale()->getLanguageCode();
     }
 
