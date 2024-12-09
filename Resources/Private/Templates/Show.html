@@ -27,6 +27,7 @@
                             </f:then>
                             <f:else>
                                 <f:variable name="absUrl" value="{v:page.absoluteUrl()}"/>
+
                                 <f:form action="saveComment" object="{comment}" objectName="comment" id="QcCommentForm"
                                         class="comments-form">
                                     <f:form.hidden id="comment-type" property="useful" value="1"/>
@@ -41,15 +42,7 @@
                                             </p>
                                         </div>
                                         <div class="p-2">
-
-                                            <button
-                                                    id="positif-button"
-                                                    data-sitekey="{recaptchaConfig.sitekey}"
-                                                    data-size="invisible"
-                                                    class="btn btn-info btn-option g-recaptcha"
-                                                    type="button"
-                                                    onclick="addInputType(this.form); setForm(this.form);"
-                                                    value="1">{f:translate(key='positive')}</button>
+                                            <button class="btn btn-info btn-option" id="positif-button"><f:translate key="positive"/></button>
                                         </div>
                                         <div class="p-2">
                                             <button class="btn btn-info btn-option" id="negative-button"><f:translate key="negative"/></button>
@@ -150,6 +143,7 @@
                 />
             </f:else>
         </f:if>
+        <button type="button" class="btn btn-outline-warning displayBlock cancel-button" >Cancel</button>
     </div>
 </f:section>
 <f:section name="negative-report">
