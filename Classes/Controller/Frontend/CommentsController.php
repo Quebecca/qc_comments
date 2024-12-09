@@ -21,6 +21,8 @@ use Qc\QcComments\SpamShield\SpamShieldValidator;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -55,7 +57,7 @@ class CommentsController extends ActionController
     /**
      * @var string
      */
-    protected string $currentLanguage = "fr";
+    protected string $currentLanguage;
 
     /**
      * @var bool
@@ -220,14 +222,28 @@ class CommentsController extends ActionController
      */
     public function getCurrentLanguage() : string {
 
-        $languageId = $this->context->getPropertyFromAspect('language', 'id');
+        $languageId = $this->context->getPropertyFromAspect('language','id');
         if($languageId == 0){
-            return "fr";
+            return "default";
         }
-        if($languageId == 1){
-            return "en";
+
+        return $this->getSiteLanguage()->getLocale()->getLanguageCode();
+    }
+
+    /**
+     * @return SiteLanguage
+     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
+     */
+    protected  function getSiteLanguage()
+    {
+        if (($request = $GLOBALS['TYPO3_REQUEST'] ?? false)
+            && ($siteLanguage = $request->getAttribute('language') ?? false)) {
+            return $siteLanguage;
         }
-        return BackendUtility::getRecord('sys_language', $languageId, 'language_isocode')['language_isocode'] ?? "";
+        return GeneralUtility::makeInstance(SiteFinder::class)
+            ->getSiteByRootPageId(1)
+            ->getDefaultLanguage()
+            ;
     }
 
     /**
