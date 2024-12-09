@@ -112,6 +112,15 @@ $(document).ready(function(){
         });
 
         function commentValidation() {
+            if($('input[type=radio]:visible:checked').length > 0){
+                $('.options-error-message').attr('class', 'options-error-message d-none');
+                optionsSelected = true;
+            }
+            else {
+                $('.options-error-message').show()
+                $('.options-error-message').attr('class', 'options-error-message');
+            }
+
             let valid = true;
             if (positifFormUpdate === false) {
                 valid = checkIfCommentEmpty()
@@ -123,8 +132,6 @@ $(document).ready(function(){
                     && checkMinCommentLength();
             }
             $('#submitButton').attr('disabled', !valid);
-            $('.options-error-message').show();
-            $('.options-error-message').toggleClass('d-none', optionsSelected);
 
             let messageError = $('.maxChars:visible, .parsley-custom-error-message:visible').first()
 
@@ -269,6 +276,13 @@ $(document).ready(function(){
         $('#error-message-empty-comment').hide()
         $('.options-error-message').hide()
         $("#comment-textarea").attr('class', 'form-control');
+        $("#comment-textarea").val('');
+        $('.report-problem-options input[type=radio]:visible, .negative-report-options input[type=radio]:visible').each(function () {
+            if ($(this).prop('checked')) {
+                $(this).prop('checked', false);
+            }
+        });
+
         $('#submitButton').attr('disabled', false);
 
     })
