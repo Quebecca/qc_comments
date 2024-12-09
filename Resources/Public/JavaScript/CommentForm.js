@@ -39,11 +39,11 @@ $(document).ready(function(){
         $('#submitButtonYes').on('click', function () {
             clickedButtonId = $(this).attr('id')
         })
-
+        let usefulBlock = $('.useful-block')
         // Show success message
         let isUsefulFormSubmitted = document.getElementById('isUsfulFormSubmitted').getAttribute('data-useful-form-submitted') ?? '';
         if (isUsefulFormSubmitted === '1') {
-            $('.useful-block').attr('class',$('.useful-block').attr('class') + 'd-none');
+            usefulBlock.attr('class',usefulBlock.attr('class') + 'd-none');
             $('.submit-section').attr('class', 'submit-section d-none');
             $('.text-area-comments ').hide()
             $('.form-submission-success').attr('class', 'form-submission-success')
@@ -53,9 +53,9 @@ $(document).ready(function(){
             event.preventDefault();
             $('.submit-section').attr('class', 'submit-section');
             $('.text-area-comments').attr('class', 'text-area-comments');
-
-            let usefulBlockClass = $('.useful-block').attr('class')
-            $('.useful-block').attr('class',usefulBlockClass + 'd-none');
+            let commentType = $('#comment-type')
+            let usefulBlockClass = usefulBlock.attr('class')
+            usefulBlock.attr('class',usefulBlockClass + 'd-none');
 
             $('.form-section').show()
             $('.comment-textarea').hide()
@@ -63,16 +63,18 @@ $(document).ready(function(){
             isPositifCommentSubmitted = false;
             positifFormUpdate = false;
             if($(this).attr('id') === 'report-problem'){
-                $('.report-problem-section').attr('class', 'report-problem-section');
-                $('#comment-type').attr('value', 'NA');
-                $('.report-problem-section').show()
+                let reportProblemSection = $('.report-problem-section')
+                reportProblemSection.attr('class', 'report-problem-section');
+                commentType.attr('value', 'NA');
+                reportProblemSection.show()
                 $('.negative-report-options').hide();
                 $('.report-problem-options').show();
             }
             else {
-                $('.negative-report-section').attr('class', 'negative-report-section');
-                $('#comment-type').attr('value', '0');
-                $('.negative-report-section').show()
+                let negatifReportSection = $('.negative-report-section')
+                negatifReportSection.attr('class', 'negative-report-section');
+                commentType.attr('value', '0');
+                negatifReportSection.show()
                 $('.report-problem-options').hide();
                 $('.negative-report-options').show();
             }
@@ -102,23 +104,25 @@ $(document).ready(function(){
 
         // Trigger the validation error css on keyup
         $(textareaElement).on('keyup', function () {
-            $('#submitButton').attr('disabled', !checkMaxCommentLength());
+            let submitButton = $('#submitButton')
+            submitButton.attr('disabled', !checkMaxCommentLength());
 
             if (clickedButtonId !== 'submitButtonYes' && isPositifCommentSubmitted === false) {
-                $('#submitButton').attr('disabled', !checkIfCommentEmpty());
-                //checkIfCommentEmpty()
+                submitButton.attr('disabled', !checkIfCommentEmpty());
             }
 
         });
 
         function commentValidation() {
+            let errorOptionsMessage = $('.options-error-message');
             if($('input[type=radio]:visible:checked').length > 0){
                 $('.options-error-message').attr('class', 'options-error-message d-none');
                 optionsSelected = true;
             }
             else {
-                $('.options-error-message').show()
-                $('.options-error-message').attr('class', 'options-error-message');
+                errorOptionsMessage.show()
+                errorOptionsMessage.attr('class', 'options-error-message');
+                optionsSelected = false;
             }
 
             let valid = true;
@@ -192,8 +196,9 @@ $(document).ready(function(){
          */
         function checkIfCommentEmpty(){
             let commentLength = textareaElement.val().length;
-            $('#error-message-empty-comment').show()
-            $('#error-message-empty-comment').toggleClass('d-none', commentLength !== 0);
+            let errorMessage =  $('#error-message-empty-comment')
+            errorMessage.show()
+            errorMessage.toggleClass('d-none', commentLength !== 0);
             (textareaElement).toggleClass('error-textarea',  commentLength === 0);
             return commentLength !== 0;
         }
@@ -265,9 +270,10 @@ $(document).ready(function(){
 
     $('.cancel-button').on('click', function(event){
         event.preventDefault()
-
-        let usefulBlockClass =  $('.useful-block').attr('class').replace('d-none','')
-        $('.useful-block').attr('class', usefulBlockClass);
+        let useFulBlock = $('.useful-block');
+        let commentField = $("#comment-textarea")
+        let usefulBlockClass =  useFulBlock.attr('class').replace('d-none','')
+        useFulBlock.attr('class', usefulBlockClass);
 
         $('.negative-report-section').hide()
         $('.report-problem-section').hide()
@@ -275,8 +281,8 @@ $(document).ready(function(){
         $('.form-section').hide();
         $('#error-message-empty-comment').hide()
         $('.options-error-message').hide()
-        $("#comment-textarea").attr('class', 'form-control');
-        $("#comment-textarea").val('');
+        commentField.attr('class', 'form-control');
+        commentField.val('');
         $('.report-problem-options input[type=radio]:visible, .negative-report-options input[type=radio]:visible').each(function () {
             if ($(this).prop('checked')) {
                 $(this).prop('checked', false);
@@ -293,12 +299,14 @@ $(document).ready(function(){
 
     $('#positif-button').on('click', function(event){
         event.preventDefault();
-        $('.positif-comment-section').attr('class', 'positif-comment-section')
-        $('.positif-comment-section').show()
+        let positifCommentSection = $('.positif-comment-section');
+        let useFulBlock = $('.useful-block');
+        positifCommentSection.attr('class', 'positif-comment-section')
+        positifCommentSection.show()
         $('.submit-section').attr('class', 'submit-section');
         $('.text-area-comments').attr('class', 'text-area-comments');
-        let usefulBlocClass = $('.useful-block').attr('class')
-        $('.useful-block').attr('class', usefulBlocClass+ ' d-none');
+        let usefulBlocClass = useFulBlock.attr('class')
+        useFulBlock.attr('class', usefulBlocClass+ ' d-none');
         $('.form-instruction').hide()
         $('.option').hide();
         $('.form-section').show()
@@ -311,9 +319,6 @@ $(document).ready(function(){
 })
 
 let onCompleted;
-let  addInputType = function () {
-    $('#comment-type').attr('value', '1')
-}
 var onloadCallback = function () {
     $(".g-recaptcha").each(function (index) {
         // widget-id : used for grecaptcha method, to know which form is being submitted
