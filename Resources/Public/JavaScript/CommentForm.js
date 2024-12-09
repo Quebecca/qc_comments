@@ -18,10 +18,6 @@ $(document).ready(function(){
         });
 
     };
-// Handle form submission
-    function addInputType(form) {
-        $('#comment-type').attr('value', '1')
-    }
     let textareaElement = $('#comment-textarea');
     let isFormSubmittedElement = document.getElementById('isFormSubmitted');
     let isPositifCommentSubmitted = false;
@@ -54,27 +50,32 @@ $(document).ready(function(){
         }
 
         $('#negative-button, #report-problem').on('click', function (event) {
-            let className = '';
-            let selectionsOptions = '';
-            switch ($(this).attr('id')) {
-                case 'report-problem' :
-                    className = "report-problem-section";
-                    $('#comment-type').attr('value', 'NA');
-                    selectionsOptions = "negative-report-options";
-                    break;
-                case 'negative-button' :
-                    className = "negative-report-section";
-                    $('#comment-type').attr('value', '0');
-                    selectionsOptions = "report-problem-options";
-                    break;
-            }
             event.preventDefault();
-            $('.options').hide();
-            $('.' + selectionsOptions).remove();
-            $('.' + className).attr('class', className);
             $('.submit-section').attr('class', 'submit-section');
             $('.text-area-comments').attr('class', 'text-area-comments');
-            $('.useful-block').attr('class',$('.useful-block').attr('class') + 'd-none');
+
+            let usefulBlockClass = $('.useful-block').attr('class')
+            $('.useful-block').attr('class',usefulBlockClass + 'd-none');
+
+            $('.form-section').show()
+            $('.comment-textarea').hide()
+            $('.positif-comment-section').hide()
+            isPositifCommentSubmitted = false;
+            positifFormUpdate = false;
+            if($(this).attr('id') === 'report-problem'){
+                $('.report-problem-section').attr('class', 'report-problem-section');
+                $('#comment-type').attr('value', 'NA');
+                $('.report-problem-section').show()
+                $('.negative-report-options').hide();
+                $('.report-problem-options').show();
+            }
+            else {
+                $('.negative-report-section').attr('class', 'negative-report-section');
+                $('#comment-type').attr('value', '0');
+                $('.negative-report-section').show()
+                $('.report-problem-options').hide();
+                $('.negative-report-options').show();
+            }
         })
 
 
@@ -122,7 +123,9 @@ $(document).ready(function(){
                     && checkMinCommentLength();
             }
             $('#submitButton').attr('disabled', !valid);
+            $('.options-error-message').show();
             $('.options-error-message').toggleClass('d-none', optionsSelected);
+
             let messageError = $('.maxChars:visible, .parsley-custom-error-message:visible').first()
 
             if (valid === false && messageError.length > 0) {
@@ -182,6 +185,7 @@ $(document).ready(function(){
          */
         function checkIfCommentEmpty(){
             let commentLength = textareaElement.val().length;
+            $('#error-message-empty-comment').show()
             $('#error-message-empty-comment').toggleClass('d-none', commentLength !== 0);
             (textareaElement).toggleClass('error-textarea',  commentLength === 0);
             return commentLength !== 0;
@@ -190,43 +194,6 @@ $(document).ready(function(){
     }
 
 
-    let submitPositifCommentCount = 0;
-    $('#positif-button').on('click', function (event) {
-        if(submitPositifCommentCount == 0){
-            submitPositifCommentCount++;
-            // Check if reCAPTCHA is enabled
-            let isRecaptchaEnabled = document.getElementById('enableRecaptcha')?.getAttribute('data-ts') ?? '';
-            if (isRecaptchaEnabled === '1') {
-                // Get the reCAPTCHA widget ID
-                let widgetId = $("#QcCommentForm").find('.g-recaptcha').data('widget-id');
-
-                if (typeof widgetId === 'undefined') {
-                    console.warn("reCAPTCHA widget ID is undefined.");
-                    return; // Stop further execution if widget ID is not found
-                }
-
-                // Check if the reCAPTCHA object exists
-                if (typeof grecaptcha === 'object') {
-                    // If the reCAPTCHA response is empty, execute the reCAPTCHA challenge
-                    if (!grecaptcha.getResponse(widgetId)) {
-                        event.preventDefault(); // Prevent the default action
-                        grecaptcha.execute(widgetId); // Trigger the reCAPTCHA
-                        isPositifCommentSubmitted = true;
-
-                        submitPositifComment()
-                    }
-                } else {
-                    console.error("reCAPTCHA object is not available.");
-                    event.preventDefault(); // Prevent the default action since reCAPTCHA is required
-                    return;
-                }
-            } else {
-                submitPositifComment()
-                return true;
-            }
-        }
-
-    });
     $('#submitButton').on('click', function(event){
         // Check if reCAPTCHA is enabled
         let isRecaptchaEnabled = document.getElementById('enableRecaptcha')?.getAttribute('data-ts') ?? '';
@@ -257,32 +224,6 @@ $(document).ready(function(){
             return true;
         }
     })
-    let submitPositifComment = function(){
-        let url = '?type=123456';
-        let pageUid = document.getElementById('pageUid').getAttribute('data-ts') ?? '';
-        let pageUrl = $("#urlOrig").attr('value');
-        let data = {
-            pageUid : pageUid,
-            pageUrl : pageUrl
-        }
-        $.post(
-            url,
-            data,
-            function (response) {
-                // Show textarea section...
-                $('.submitted-form-message-section').attr('class', 'submitted-form-message-section')
-                $('.positif-comment-section').attr('class', 'positif-comment-section')
-                $('.submit-section').attr('class', 'submit-section');
-                $('.text-area-comments').attr('class', 'text-area-comments');
-                $('.useful-block').attr('class',$('.useful-block').attr('class') + 'd-none');
-                $('.form-instruction').attr('class', 'form-instruction d-none')
-                $('#submittedFormUid').attr('value', response['data']['commentUid'])
-                $('.option').remove();
-                positifFormUpdate = true;
-            }).fail(function (xhr, status, error) {
-            console.error('Error:', error);
-        });
-    }
 
     $('#QcCommentForm').submit(function (event) {
         // After submission, we will point on the submission message
@@ -314,9 +255,51 @@ $(document).ready(function(){
         }
         grecaptcha.reset();
     }
+
+    $('.cancel-button').on('click', function(event){
+        event.preventDefault()
+
+        let usefulBlockClass =  $('.useful-block').attr('class').replace('d-none','')
+        $('.useful-block').attr('class', usefulBlockClass);
+
+        $('.negative-report-section').hide()
+        $('.report-problem-section').hide()
+        $('.submitted-form-message-section').hide()
+        $('.form-section').hide();
+        $('#error-message-empty-comment').hide()
+        $('.options-error-message').hide()
+        $("#comment-textarea").attr('class', 'form-control');
+        $('#submitButton').attr('disabled', false);
+
+    })
+    let  addInputType = function () {
+        $('#comment-type').attr('value', '1')
+    }
+
+
+    $('#positif-button').on('click', function(event){
+        event.preventDefault();
+        $('.positif-comment-section').attr('class', 'positif-comment-section')
+        $('.positif-comment-section').show()
+        $('.submit-section').attr('class', 'submit-section');
+        $('.text-area-comments').attr('class', 'text-area-comments');
+        let usefulBlocClass = $('.useful-block').attr('class')
+        $('.useful-block').attr('class', usefulBlocClass+ ' d-none');
+        $('.form-instruction').hide()
+        $('.option').hide();
+        $('.form-section').show()
+        $('.submitted-form-message-section').show()
+        $('.comment-textarea').hide()
+        isPositifCommentSubmitted = true;
+        positifFormUpdate = true;
+
+    })
 })
 
 let onCompleted;
+let  addInputType = function () {
+    $('#comment-type').attr('value', '1')
+}
 var onloadCallback = function () {
     $(".g-recaptcha").each(function (index) {
         // widget-id : used for grecaptcha method, to know which form is being submitted
@@ -334,7 +317,9 @@ function setForm(form) {
     selectedForm = form;
 }
 $(window).on("pageshow", function() {
-    $('#QcCommentForm')[0].reset();
+    if($('#QcCommentForm').length > 0){
+        $('#QcCommentForm')[0].reset();
+    }
 })
 
 
