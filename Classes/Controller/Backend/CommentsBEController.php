@@ -59,7 +59,7 @@ class CommentsBEController extends QcCommentsBEController
                 ->assignMultiple(
                     [
                         'commentHeaders' => $data['commentHeaders'],
-                        'stats' => $data['stats'],
+                        'stats' => $data['stats'] ?? [],
                         'comments' => $data['comments'],
                         'pagesId' => $data['pagesId'],
                         'currentPageId' => $data['currentPageId'],

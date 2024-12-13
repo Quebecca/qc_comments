@@ -140,7 +140,7 @@ class SpamShieldValidator extends ExtbaseAbstractValidator
                     $method['class'],
                     $comment,
                     $this->settings,
-                    $method['configuration']
+                    $method['configuration'] ?? []
                 );
                 if ((int)$method['indication'] > 0 && $methodInstance->spamCheck($comment)) {
                     $this->addMessage($method['name'] . ' failed');

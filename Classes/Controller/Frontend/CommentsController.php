@@ -100,7 +100,7 @@ class CommentsController extends ActionController
         $reasonOptions = $this->typoscriptConfiguration->getReasonOptions($this->currentLanguage);
         $this->view->assignMultiple([
             'submitted' => $this->request->getArguments()['submitted'] ?? false,
-            'submittedFormUid' => strval($this->request->getArguments()['formUid']) ?? '',
+            'submittedFormUid' => strval($this->request->getArguments()['formUid'] ?? '') ?? '',
             'submittedFormType' => $this->request->getArguments()['useful'] ?? null,
             'formUpdated' => $this->request->getArguments()['formUpdated'] ?? null,
             'validationResults' => $this->request->getArguments()['validationResults'] ?? '',
@@ -208,7 +208,7 @@ class CommentsController extends ActionController
      * @return array
      */
     public function getSelectedReasonOption($reasonType, $reason_code) : array {
-        $options = $this->typoscriptConfiguration->getReasonOptions($this->currentLanguage)[$reasonType];
+        $options = $this->typoscriptConfiguration->getReasonOptions($this->currentLanguage)[$reasonType] ?? [];
         foreach ($options as $item) {
             if ($item['code'] === $reason_code) {
                 return $item;
