@@ -24,7 +24,7 @@ plugin.tx_qccomments {
               short_label = Information introuvable
               long_label = Je ne trouve pas ce que je cherche
             }
-            default {
+            en {
               short_label = I couldn’t find what I was looking for
               long_label = I couldn’t find what I was looking for
             }
@@ -36,7 +36,7 @@ plugin.tx_qccomments {
               short_label = Information confusante
               long_label = L’information présentée porte à confusion
             }
-            default {
+            en {
               short_label = Confusing information
               long_label = The information is unclear
             }
@@ -48,7 +48,7 @@ plugin.tx_qccomments {
               short_label = Information erronée
               long_label = L’information n’est plus à jour, est erronée ou est incomplète
             }
-            default {
+            en {
               short_label = Wrong information
               long_label = The information is outdated, incorrect or incomplete
             }
@@ -59,7 +59,7 @@ plugin.tx_qccomments {
               short_label = Autre
               long_label = Autre
             }
-            default {
+            en {
               short_label = Other
               long_label = Other
             }
@@ -72,7 +72,7 @@ plugin.tx_qccomments {
               short_label = Problème d’affichage
               long_label = Il y a un problème avec l’affichage de la page
             }
-            default {
+            en {
               short_label = Display problem
               long_label = There is a problem with the page display
             }
@@ -84,7 +84,7 @@ plugin.tx_qccomments {
               short_label = Lien brisé
               long_label = Un lien ne fonctionne pas ou n’est plus à jour
             }
-            default {
+            en {
               short_label = Broken link
               long_label = There is a broken or outdated link
             }
@@ -96,7 +96,7 @@ plugin.tx_qccomments {
               short_label = Faute de français
               long_label = Il y a une erreur d’orthographe ou de grammaire
             }
-            default {
+            en {
               short_label = French spelling mistake
               long_label = There is a spelling or grammar error
             }
@@ -108,7 +108,7 @@ plugin.tx_qccomments {
               short_label = Service en ligne brisé
               long_label = Il y a un problème avec le service en ligne
             }
-            default {
+            en {
               short_label = Broken Online Service
               long_label = There is a problem with the online service
             }
@@ -120,7 +120,7 @@ plugin.tx_qccomments {
               short_label = Autre
               long_label = Autre
             }
-            default {
+            en {
               short_label = Other
               long_label = Other
             }
