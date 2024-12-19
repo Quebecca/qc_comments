@@ -23,7 +23,7 @@ class TechnicalProblemsBEController extends QcCommentsBEController
 
         $this->qcBeModuleService
             = GeneralUtility::makeInstance(TechnicalProblemsTabService::class);
-        if($this->request->getArguments()['recordUidToRemove'] != null){
+        if($this->request->getArguments()['recordUidToRemove'] ?? false) {
             $this->qcBeModuleService->technicalProblemFixed($this->request->getArguments()['recordUidToRemove']);
         }
 
@@ -65,7 +65,7 @@ class TechnicalProblemsBEController extends QcCommentsBEController
              ->assignMultiple(
                  [
                      'commentHeaders' => $data['commentHeaders'],
-                     'stats' => $data['stats'],
+                     'stats' => $data['stats'] ?? [],
                      'comments' => $data['comments'],
                      'pagesId' => $data['pagesId'],
                      'currentPageId' => $data['currentPageId'],

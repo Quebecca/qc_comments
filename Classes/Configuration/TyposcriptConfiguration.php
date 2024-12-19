@@ -228,17 +228,20 @@ class TyposcriptConfiguration
      */
     public function getOptionByCodeFrBE($code) {
         $currentLang = $GLOBALS['BE_USER']->user['lang'];
+        if($currentLang == 'default'){
+            $currentLang = 'en';
+        }
         $optionsType = $this->settings['plugin.']['tx_qccomments.']['settings.']['options.'];
         if (!empty($optionsType)) {
             // Loop through each item
             foreach ($optionsType as $options){
                 foreach ($options as $item) {
-                    if($item['code'] == $code){
-                        return $item[$currentLang.'.']['short_label'];
-                    }
+                    if($item['code'] == $code)
+                        if($item[$currentLang.'.'] ?? false) {
+                            return $item[$currentLang.'.']['short_label'];
+                        }
                 }
             }
-
         }
         return "";
     }
