@@ -1,0 +1,68 @@
+<f:if condition="{rows -> f:count()} == 1 and !{rows.0.date_hour} ">
+    <f:then>
+        <div class="no-comment">
+            {f:translate(key:'no-result')}
+        </div>
+    </f:then>
+    <f:else>
+        <f:render section="table" arguments="{_all}"/>
+    </f:else>
+</f:if>
+<f:section name="table">
+    <f:if condition="{rows}">
+        <div class="table-fit">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <f:for as="header" key="col" each="{headers}" iteration="iterator">
+                        <th>{header}</th>
+                    </f:for>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <f:for as="row" each="{rows}" iteration="iterator">
+                    <tr class="t3js-entity{f:if(condition:iterator.isFirst, then:' firstcol', else:'')}">
+                        <td>{row.date_hour}</td>
+                        <td class="comment-row">
+                            <div class="text-hover">
+                                {row.comment}
+                            </div>
+                        </td>
+                        <td>{row.useful}</td>
+                        <td>
+                            <f:if condition="{row.reason_short_label} != ''">
+                                <f:then>{row.reason_short_label}</f:then>
+                                <f:else>--</f:else>
+                            </f:if>
+
+                        </td>
+                        <td>
+                            <f:if condition="{row.realName}">
+                                <f:then>{row.realName}</f:then>
+                                <f:else>
+                                    <f:if condition="{row.email}">
+                                        <f:then>{row.email}</f:then>
+                                        <f:else>{row.username}</f:else>
+                                    </f:if>
+                                </f:else>
+                            </f:if>
+                        </td>
+                        <td>
+                            {row.hidden_date}
+                        </td>
+                        <td>
+                            <f:if condition="{isDeleteButtonEnabled}">
+                                <f:form action="deleteComment">
+                                    <input type="hidden" name="commentUid" value="{row.recordUid}">
+                                    <f:form.submit value="{f:translate(key:'delete')}" class="btn btn-default"/>
+                                </f:form>
+                            </f:if>
+                        </td>
+                    </tr>
+                </f:for>
+                </tbody>
+            </table>
+        </div>
+    </f:if>
+</f:section>

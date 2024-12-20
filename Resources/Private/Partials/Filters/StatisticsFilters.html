@@ -1,0 +1,142 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+<f:form action="{action}" object="{filter}" objectName="filter" id="filter-form">
+    <div class="row">
+        <div class="col-md-2">
+            <label>{f:translate(key: 'filter.lang', extensionName : 'qc_comments')}</label>
+            <f:form.select property="lang"
+                           options="{filter.langOptions}"
+                           optionLabelField="title"
+                           class="form-control form-select"
+                           id="lang"
+            />
+        </div>
+        <div class="col-md-2">
+            <label>{f:translate(key: 'filter.depth', extensionName : 'qc_comments')}</label>
+            <f:form.select property="depth"
+                           options="{filter.depthOptions}"
+                           optionLabelField="title"
+                           class="form-control form-select"
+                           id="depth"
+            />
+        </div>
+        <div class="col-md-2">
+            <label>Raison d'insatisfaction</label>
+            <f:form.select property="commentReason"
+                           options="{filter.commentsReasons}"
+                           optionLabelField="title"
+                           class="form-control form-select"
+                           id="commentReason"
+            />
+        </div>
+        <div class="col-md-2">
+            <label>{f:translate(key: 'filter.dateRange', extensionName : 'qc_comments')}</label>
+            <f:form.select property="dateRange"
+                           options="{filter.dateRangeOptions}"
+                           optionLabelField="title"
+                           additionalAttributes="{data-global-event='change', data-action-submit: '$form'}"
+                           class="form-control form-select"
+                           id="selectDateRange"
+            />
+
+        </div>
+
+        <div class="col-md-2">
+            <f:if condition="{filter.dateRange} == 'userDefined'">
+                <div class="datepicker">
+                    <label for="startDate">{f:translate(key:'filter.userDefined.from', extensionName : 'qc_comments')}</label>
+                    <div class="input-group ">
+                        <f:form.textfield
+                            name="startDate"
+                            class="form-control  t3js-datetimepicker t3js-clearable"
+                            additionalAttributes="{'autocomplete': 'off'}"
+                            data="{date-type: 'date'}"
+                            value="{f:if(condition: filter.startDate, then: \"{f:format.date(format:'Y-m-d', date: '{filter.startDate}')}\")}"
+
+                        />
+                        <f:form.hidden
+                            property="startDate"
+                            value="{f:if(condition: filter.startDate, then: \"{f:format.date(format:'Y-m-d', date: '{filter.startDate}')}\")}"
+
+                        />
+                        <label class="btn btn-default" for="startDate">
+                            <core:icon identifier="actions-calendar" />
+                        </label>
+                    </div>
+                </div>
+                <div class="datepicker">
+                    <label for="endDate">{f:translate(key:'filter.userDefined.to', extensionName : 'qc_comments')}</label>
+                    <div class="input-group">
+                        <f:form.textfield
+                            name="endDate"
+                            id="endDate"
+                            additionalAttributes="{'autocomplete': 'off'}"
+                            class="form-control  t3js-datetimepicker t3js-clearable"
+                            data="{date-type: 'date'}"
+                            value="{f:if(condition: filter.endDate, then: \"{f:format.date(format:'Y-m-d', date: '{filter.endDate}')}\")}"
+
+                        />
+                        <f:form.hidden
+                            property="endDate"
+                            value="{f:if(condition: filter.endDate, then: \"{f:format.date(format:'Y-m-d', date: '{filter.endDate}')}\")}"
+
+                        />
+                        <label class="btn btn-default" for="endDate">
+                            <core:icon identifier="actions-calendar" />
+                        </label>
+                    </div>
+                </div>
+            </f:if>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            <f:form.checkbox property="includeEmptyPages"
+                             value="1"
+                             id="includeEmptyPages"
+            />
+            <label class="form-check-label" for="includeEmptyPages">{f:translate(key: 'filter.includeEmptyPages',
+                extensionName : 'qc_comments')}</label>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-4">
+            <f:render section="buttons" arguments="{_all}"/>
+        </div>
+    </div>
+
+    <div class="d-none" id="pagesId"></div>
+    <f:for each="{pagesId}" as="id">
+        <div class="d-none pageId" data-tr-label="{id}"></div>
+    </f:for>
+    <div class="d-none" id="csvSettings" data-tr-label="{csvSettings}"></div>
+    <f:for each="{csvSettings}" key="key" as="prop">
+        <f:if condition="{key} == filename">
+            <f:then>
+                <div class="d-none" id="dateFormat" data-tr-label="{prop.dateFormat}"></div>
+            </f:then>
+            <f:else>
+                <div class="d-none" id="{key}" data-tr-label="{prop}"></div>
+            </f:else>
+        </f:if>
+    </f:for>
+    <div class="d-none" id="currentPageId" data-tr-label="{currentPageId}"></div>
+
+</f:form>
+<f:section name="buttons">
+    <f:form.submit value="{f:translate(key: 'filter.submit')}" class="btn btn-default"/>
+
+    <f:form.button type="submit" name="operation" value="reset-filters" class="btn btn-default">
+        {f:translate(key:'filter.reset', extensionName : 'qc_comments')}
+    </f:form.button>
+    <button class="btn btn-default" data-action="{action}"  id="exportBtn">
+        {csvButton.icon -> f:format.raw()} {f:translate(key:'links.exportCsv', extensionName : 'qc_comments')}
+    </button>
+</f:section>
+
+
+

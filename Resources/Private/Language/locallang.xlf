@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" product-name="qc_comments">
+		<header/>
+		<body>
+			<trans-unit id="qc_comments">
+				<source>Qc comments</source>
+			</trans-unit>
+			<trans-unit id="comments">
+				<source>Comments</source>
+			</trans-unit>
+			<trans-unit id="removed_comments">
+				<source>Removed comments</source>
+			</trans-unit>
+			<trans-unit id="stats">
+				<source>Satisfaction statistics</source>
+			</trans-unit>
+			<trans-unit id="menu.stats">
+				<source>Satisfaction statistics</source>
+			</trans-unit>
+			<trans-unit id="menu.list">
+				<source>Comments</source>
+			</trans-unit>
+			<trans-unit id="filter.includeEmptyPages">
+				<source>Include pages without comment</source>
+			</trans-unit>
+			<trans-unit id="filter.showFixedProblems">
+				<source>Show fixed problems</source>
+			</trans-unit>
+			<trans-unit id="filter.lang">
+				<source>Language</source>
+			</trans-unit>
+			<trans-unit id="filter.lang.all">
+				<source>All languages</source>
+			</trans-unit>
+			<trans-unit id="filter.lang.french">
+				<source>French</source>
+			</trans-unit>
+			<trans-unit id="filter.lang.english">
+				<source>English</source>
+			</trans-unit>
+			<trans-unit id="filter.depth">
+				<source>Depth</source>
+			</trans-unit>
+			<trans-unit id="filter.depth.limitless">
+				<source>Limitless</source>
+			</trans-unit>
+			<trans-unit id="filter.depth.level">
+				<source>level</source>
+			</trans-unit>
+			<trans-unit id="filter.depth.levels">
+				<source>levels</source>
+			</trans-unit>
+			<trans-unit id="filter.depth.thisPage">
+				<source>This page</source>
+			</trans-unit>
+			<trans-unit id="filter.dateRange">
+				<source>Since</source>
+			</trans-unit>
+			<trans-unit id="filter.dateRange.day">
+				<source>day</source>
+			</trans-unit>
+			<trans-unit id="filter.dateRange.days">
+				<source>days</source>
+			</trans-unit>
+			<trans-unit id="filter.dateRange.week">
+				<source>week</source>
+			</trans-unit>
+			<trans-unit id="filter.dateRange.weeks">
+				<source>weeks</source>
+			</trans-unit>
+			<trans-unit id="filter.dateRange.month">
+				<source>month</source>
+			</trans-unit>
+			<trans-unit id="filter.dateRange.months">
+				<source>months</source>
+			</trans-unit>
+			<trans-unit id="filter.dateRange.year">
+				<source>year</source>
+			</trans-unit>
+			<trans-unit id="filter.userDefined.from">
+				<source>From</source>
+			</trans-unit>
+			<trans-unit id="filter.userDefined.to">
+				<source>To</source>
+			</trans-unit>
+			<trans-unit id="filter.submit">
+				<source>Filter</source>
+			</trans-unit>
+			<trans-unit id="filter.reset">
+				<source>Reset</source>
+			</trans-unit>
+			<trans-unit id="links.exportCsv">
+				<source>Export to Xlsx</source>
+			</trans-unit>
+			<trans-unit id="stats.h.page_uid">
+				<source>Page id</source>
+			</trans-unit>
+			<trans-unit id="stats.h.page_title">
+				<source>Page title</source>
+			</trans-unit>
+			<trans-unit id="stats.h.total_pos">
+				<source>Number of positive comments</source>
+			</trans-unit>
+			<trans-unit id="stats.h.total_neg">
+				<source>Number of negative comments</source>
+			</trans-unit>
+			<trans-unit id="stats.h.total">
+				<source>Total</source>
+			</trans-unit>
+			<trans-unit id="stats.h.avg">
+				<source>Average</source>
+			</trans-unit>
+			<trans-unit id="stats.h.technicalProblems">
+				<source>Problems</source>
+			</trans-unit>
+			<trans-unit id="stats.h.nonEmptyComment">
+				<source>Total comments</source>
+			</trans-unit>
+			<trans-unit id="comments.h.comment_uid">
+				<source>Uid</source>
+			</trans-unit>
+			<trans-unit id="comments.h.url_orig">
+				<source>URL</source>
+			</trans-unit>
+			<trans-unit id="comments.h.date_hour">
+				<source>Date/Time</source>
+			</trans-unit>
+			<trans-unit id="comments.h.comment">
+				<source>Comment</source>
+			</trans-unit>
+			<trans-unit id="comments.h.removed_by">
+				<source>Removed by</source>
+			</trans-unit>
+			<trans-unit id="comments.h.removed_on">
+				<source>Removed on</source>
+			</trans-unit>
+			<trans-unit id="comments.h.comment_option">
+				<source>Selected option</source>
+			</trans-unit>
+			<trans-unit id="comments.h.type_problem">
+				<source>Problem type</source>
+			</trans-unit>
+			<trans-unit id="comments.h.fixed_by">
+				<source>Fixed by</source>
+			</trans-unit>
+			<trans-unit id="comments.h.fix_date">
+				<source>Fixed on</source>
+			</trans-unit>
+			<trans-unit id="comments.h.description">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="comments.h.page_uid">
+				<source>Page Uid</source>
+			</trans-unit>
+			<trans-unit id="comments.h.page_title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="comments.h.reason">
+				<source>Reason</source>
+			</trans-unit>
+			<trans-unit id="comments.h.useful">
+				<source>Useful</source>
+			</trans-unit>
+			<trans-unit id="comments.h.removed">
+				<source>Removed</source>
+			</trans-unit>
+			<trans-unit id="positive">
+				<source>Yes</source>
+			</trans-unit>
+			<trans-unit id="negative">
+				<source>No</source>
+			</trans-unit>
+			<trans-unit id="csv.h.page_uid">
+				<source>Page id</source>
+			</trans-unit>
+			<trans-unit id="csv.h.comment_uid">
+				<source>Comment id</source>
+			</trans-unit>
+			<trans-unit id="no-result">
+				<source>No result</source>
+			</trans-unit>
+			<trans-unit id="comments.h.useful">
+                <source>Useful</source>
+            </trans-unit>
+            <trans-unit id="notUseful">
+                <source>Not useful</source>
+            </trans-unit>
+            <trans-unit id="all">
+                <source>All</source>
+            </trans-unit>
+             <trans-unit id="utility">
+                <source>Useful</source>
+            </trans-unit>
+			<trans-unit id="tooMuchPages">
+				<source>Too much results: only the first %s rows are displayed. Please choose xlsx export, or change your filters.</source>
+			</trans-unit>
+			<trans-unit id="tooMuchResults">
+				<source>Too much result. Display has been limited to %s pages and %s comments. Please choose xlsx export, or change your filters.</source>
+			</trans-unit>
+			<trans-unit id="userDefined">
+                <source>User defined</source>
+            </trans-unit>
+            <trans-unit id="formSentSuccessfully">
+                <source>Form sent successfully!</source>
+            </trans-unit>
+            <trans-unit id="yes">
+                <source>Yes</source>
+            </trans-unit>
+            <trans-unit id="no">
+                <source>No</source>
+            </trans-unit>
+            <trans-unit id="submit">
+                <source>Submit</source>
+            </trans-unit>
+            <trans-unit id="formSectionTitle">
+                <source>Comments</source>
+            </trans-unit>
+            <trans-unit id="isThePageUseful">
+                <source>Was the information on this page helpful?</source>
+            </trans-unit>
+            <trans-unit id="haveYouAComment">
+                <source>Did you encounter any problems while navigating?</source>
+            </trans-unit>
+            <trans-unit id="haveYouACommentDescription">
+                <source>Do not include any personal information. Please note that we will not be able to provide individual responses.</source>
+            </trans-unit>
+            <trans-unit id="limitCharacter">
+                <source>Limit is 500 characters</source>
+            </trans-unit>
+            <trans-unit id="questionsOrHelp">
+                <source>You have questions or require additional information?</source>
+            </trans-unit>
+            <trans-unit id="formSubmittedSuccessfully">
+                <source>Thank you for helping us improve our website. Your comments are important to us.</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_select_comments_form_page_mode">
+                <source>Select comments section display mode</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_select_comments_form_page_mode.desc">
+                <source>By default, if the mode is not specified, the page inherits the mode from its parent page.</source>
+            </trans-unit>
+            <trans-unit id="pages.notSpecified">
+                <source>Not specified</source>
+            </trans-unit>
+             <trans-unit id="pages.mode1">
+                <source>Show for this page and its sub-pages</source>
+            </trans-unit>
+            <trans-unit id="pages.mode2">
+                <source>Show for this page only</source>
+            </trans-unit>
+            <trans-unit id="pages.mode3">
+                <source>Hide for this page and its subpages</source>
+            </trans-unit>
+            <trans-unit id="pages.mode4">
+                <source>Hide for this page only</source>
+            </trans-unit>
+            <trans-unit id="characters">
+                <source> characters maximum</source>
+            </trans-unit>
+        	<trans-unit id="empty-comment">
+				<source>Please describe the problem</source>
+			</trans-unit>
+            <trans-unit id="select-page">
+                <source>Please click on the page title in the tree on the left to see the comments on the page.</source>
+            </trans-unit>
+            <trans-unit id="comments-module">
+                <source>Comments module</source>
+            </trans-unit>
+            <trans-unit id="configuration.pid.title">
+                <source>No storage folder defined</source>
+            </trans-unit>
+            <trans-unit id="spam_detected">
+                <source>Spam detected : </source>
+            </trans-unit>
+            <trans-unit id="spam_details">
+                <source>(%s) Spam chance in this comment!</source>
+            </trans-unit>
+            <trans-unit id="honeypodLabel">
+				<source>Don't fill this field!</source>
+			</trans-unit>
+            <trans-unit id="spam-message">
+                <source>Warning: There are fields in the form containing errors. Please correct these errors.</source>
+            </trans-unit>
+            <trans-unit id="stats-by-depth">
+                <source>Statistics by depth</source>
+            </trans-unit>
+			<trans-unit id="chooseAnOption">
+				<source>You must select an option</source>
+			</trans-unit>
+			<trans-unit id="nextFields">
+				<source>Fields marked with </source>
+			</trans-unit>
+			<trans-unit id="mandatoryFields">
+				<source>are required</source>
+			</trans-unit>
+			<trans-unit id="whatsTheProblem">
+				<source>What issue are you experiencing?</source>
+			</trans-unit>
+			<trans-unit id="chooseProblemType">
+				<source>Describe the issue</source>
+			</trans-unit>
+			<trans-unit id="doNotInsertPersonalData">
+				<source>Do not include any personal information (such as your Social Insurance Number [SIN], email address, phone number or mailing address).</source>
+			</trans-unit>
+			<trans-unit id="responseNoReceived">
+				<source>Please note that we will not be able to provide individual responses.</source>
+			</trans-unit>
+			<trans-unit id="addDetails">
+				<source>Please provide more details</source>
+			</trans-unit>
+			<trans-unit id="addComment">
+				<source>Want to add a comment?</source>
+			</trans-unit>
+			<trans-unit id="whyInfoNotUseful">
+				<source>Why was this information unhelpful?</source>
+			</trans-unit>
+			<trans-unit id="reportProblem">
+				<source>Report a problem</source>
+			</trans-unit>
+			<trans-unit id="tooManyChars">
+				<source>characters too many</source>
+			</trans-unit>
+			<trans-unit id="stats.h.technicalProblems">
+				<source>technical-problems</source>
+			</trans-unit>
+			<trans-unit id="technicalProblems">
+				<source>technical-problems</source>
+			</trans-unit>
+			<trans-unit id="statisticsTitle">
+				<source>Satisfaction statistics</source>
+			</trans-unit>
+			<trans-unit id="commentsTitle">
+				<source>Comments</source>
+			</trans-unit>
+			<trans-unit id="technicalProblemsTitle">
+				<source>Technical problems</source>
+			</trans-unit>
+			<trans-unit id="removedCommentsTitle">
+				<source>Removed comments</source>
+			</trans-unit>
+			<trans-unit id="spamMessage">
+				<source>We were unable to verify that you are a human. Your feedback could not be submitted.</source>
+			</trans-unit>
+			<trans-unit id="atLeastXChars">
+				<source>Please write a message of at least %s characters</source>
+			</trans-unit>
+			<trans-unit id="technical-problems">
+				<source>Technical problems</source>
+			</trans-unit>
+			<trans-unit id="fixed">
+				<source>Fixed</source>
+			</trans-unit>
+			<trans-unit id="comments.h.fixed">
+				<source>Fixed</source>
+			</trans-unit>
+			<trans-unit id="fix">
+				<source>Fix</source>
+			</trans-unit>
+			<trans-unit id="delete">
+				<source>Delete</source>
+			</trans-unit>
+			<trans-unit id="remove">
+				<source>Remove</source>
+			</trans-unit>
+			<trans-unit id="removed">
+				<source>Removed</source>
+			</trans-unit>
+			<trans-unit id="deleted">
+				<source>Deleted</source>
+			</trans-unit>
+			<trans-unit id="hiddenComments">
+				<source>Hidden comments</source>
+			</trans-unit>
+			<trans-unit id="dissatisfactionPart">
+				<source>Part of dissatisfaction</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -1,0 +1,215 @@
+.useful-label {
+  font-weight : normal !important;
+  padding-left : 5px;
+}
+.useful-block {
+  margin-bottom : 4px !important;
+}
+.radio {
+  padding-right : 1rem;
+}
+.submit-button{
+  height : 3rem !important;
+  margin-top: 0.5rem !important;
+  padding: 0.75rem 6rem !important;
+  font-size: 1.125rem !important;
+}
+.cancel-button {
+    height : 3rem;
+    margin-top: 0.5rem;
+    font-size: 1.125rem;
+    margin-left : 1rem;
+}
+.custom-error-message {
+    list-style: none;
+}
+.error-textarea {
+  border : 0.3rem solid #CB381F !important;
+}
+#error-message-empty-comment, .options-error-message {
+    font-size: 0.875rem;
+    font-family : 'Open Sans',sans-serif;
+    line-height: 1.14;
+    font-weight: 600;
+    color: #CB381F;
+    padding: 0 10px 0 0;
+    margin : 0.5rem 0 2rem 0;
+}
+.options-error-message {
+    margin : 0 0 2rem 0;
+}
+
+.spam-details {
+  color : #d6330b;
+  margin-top : 2rem;
+}
+
+.d-none {
+  display : block !important;
+}
+.submitted-form-message {
+    border : none;
+    p {
+        margin-bottom : 0;
+        &:before {
+            content: "";
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-image: url("../Icons/submittedSuccess.svg") ;
+            background-size: contain;
+            background-repeat: no-repeat;
+            vertical-align: middle;
+            margin-right : 1rem;
+        }
+    }
+}
+.spam-error-message li, .submitted-form-message li {
+    display : inline;
+    list-style: none;
+}
+.submit-message {
+    padding : 0;
+    margin : 0;
+}
+.submitted-form-message {
+    border : none;
+    padding : 0;
+    margin : 0;
+    li {
+        margin : 0;
+    }
+    .icon-message {
+        margin-bottom : 0;
+        content: '';
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        background-image: url("../Icons/submittedSuccess.svg") ;
+        background-size: contain;
+        background-repeat: no-repeat;
+        vertical-align: middle;
+        margin-right : 1rem;
+    }
+}
+
+.spam-error-message {
+    border : none;
+    padding : 0;
+    margin : 0;
+    li {
+        margin : 0;
+    }
+    .icon-message {
+        margin-bottom : 0;
+        content: '';
+        display: inline-block;
+        width: 26px;
+        height: 24px;
+        background-image: url("../Icons/spamMessage.svg") ;
+        background-size: contain;
+        background-repeat: no-repeat;
+        vertical-align: middle;
+        margin-right : 1rem;
+    }
+}
+#maxExceeded {
+    color: #CB381F;
+    font-size: 0.875rem;
+    font-family : 'Open Sans',sans-serif;
+    line-height: 1.14;
+    font-weight: 600;
+}
+.custom-error-message:before {
+    content: "";
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background-image: url("../Icons/error-triangle.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    margin-bottom: 6px;
+}
+.mandatoryMark {
+    color : #CB381F;
+}
+.fieldLabel {
+    font-weight: bold;
+    margin-bottom: 0;
+    margin-top: 1rem;
+}
+.submitted-form-message ul {
+    padding : 0;
+}
+.complementLabel {
+    font-size : 14px;
+}
+.maxChars {
+    text-align: right;
+    font-size: 0.875rem;
+    color: #223654;
+}
+.comments-form .options-area legend {
+    margin-bottom : 0!important;
+}
+
+@media screen and (max-width: 991px) {
+    #comments-form-section .comment-section-elements {
+        padding: 24px !important;
+    }
+}
+@media screen and (max-width: 767px) {
+    #comments-form-section .btn-option {
+        margin-right : 24px !important;
+    }
+}
+
+@media screen and (max-width: 454px) {
+    .report-problem {
+        margin-top : 20px;
+    }
+}
+@media screen and (max-width: 1200px) {
+    .submitted-form-message {
+        border : none;
+        padding : 0;
+        margin : 0;
+        li {
+            margin : 0;
+        }
+        .icon-message {
+            margin-bottom : 0;
+            content: '';
+            display: inline-block;
+            width: 27px;
+            height: 24px;
+            background-image: url("../Icons/submittedSuccess.svg") ;
+            background-size: contain;
+            background-repeat: no-repeat;
+            vertical-align: middle;
+            margin-right : 1rem;
+        }
+    }
+
+    .spam-error-message {
+        border : none;
+        padding : 0;
+        margin : 0;
+        li {
+            margin : 0;
+        }
+        .icon-message {
+            margin-bottom : 0;
+            content: '';
+            display: inline-block;
+            width: 33px;
+            height: 24px;
+            background-image: url("../Icons/spamMessage.svg") ;
+            background-size: contain;
+            background-repeat: no-repeat;
+            vertical-align: middle;
+            margin-right : 1rem;
+        }
+    }
+}

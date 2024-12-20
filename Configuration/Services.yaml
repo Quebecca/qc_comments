@@ -1,0 +1,28 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: true
+
+  Qc\QcComments\:
+    resource: '../Classes/*'
+
+  Qc\QcComments\Domain\Repository\CommentRepository:
+    public: true
+
+  Qc\QcComments\Domain\Filter\Filter:
+    public: true
+
+  Qc\QcComments\Controller\Backend\QcCommentsBEController:
+    tags: [ 'backend.controller' ]
+
+  Qc\QcComments\Controller\Backend\StatisticsBEController:
+    tags: [ 'backend.controller' ]
+
+  Qc\QcComments\Controller\Backend\CommentsBEController:
+    tags: [ 'backend.controller' ]
+
+  Qc\QcComments\Controller\Backend\HiddenCommentsBEController:
+    tags: [ 'backend.controller' ]
+
+

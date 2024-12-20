@@ -1,0 +1,57 @@
+<html data-namespace-typo3-fluid="true" xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+
+<f:layout name="Module" />
+<f:section name="Content">
+    <f:be.pageRenderer
+            includeJavaScriptModules="{
+            0: '@typo3/belog/backend-log.js'
+        }"
+    />
+    <h1>
+        {f:translate(key:'technical-problems')}
+    </h1>
+    <f:if condition="{noPageSelected}">
+        <f:then>
+            <f:render partial="noPageSelected" />
+        </f:then>
+        <f:else>
+            <div class="comments-sections">
+                <f:flashMessages/>
+                <f:render partial="Filters/TechnicalProblemsFilters"
+                          arguments="{
+                          action: 'technicalProblems',
+                          currentPageId : currentPageId,
+                          pagesId: pagesId,
+                          csvSettings : settings.csvExport,
+                          filter: filter,
+                          csvButton:csvButton,
+                          resetButton:resetButton}"
+                />
+                <br>
+                <f:if condition="{comments -> f:count()} == 0">
+                    <f:then>
+                        <div class="no-page">{f:translate(key:'no-result')}</div>
+                    </f:then>
+                    <f:else>
+                        <f:render section="comments" arguments="{_all}"/>
+                    </f:else>
+                </f:if>
+
+            </div>
+        </f:else>
+    </f:if>
+</f:section>
+<f:section name="comments">
+    <f:for as="item" each="{comments}" key="pageUid" iteration="iterator">
+        <div class="panel panel-space panel-default recordlist">
+            <div class="panel-heading">
+                {pageUid} - {item.title}
+            </div>
+            <f:render partial="Tables/TechnicalProblemsTable" arguments="{rows:'{item.records}', headers:commentHeaders, isFixButtonEnabled:isFixButtonEnabled}"/>
+        </div>
+    </f:for>
+</f:section>
+</html>
+
+
+

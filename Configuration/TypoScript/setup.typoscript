@@ -1,0 +1,228 @@
+plugin.tx_qccomments {
+    view {
+        templateRootPaths = {$plugin.tx_qccomments.view.templateRootPath}
+        partialRootPaths = {$plugin.tx_qccomments.view.partialRootPath}
+        layoutRootPath = {$plugin.tx_qccomments.view.layoutRootPath}
+    }
+
+    settings {
+        comments {
+            // if empty default will be 500
+            maxCharacters = 500
+            minCharacters = 2
+            anonymizeComment {
+                enabled = 1
+                pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/
+            }
+
+        }
+        options {
+        negative_reasons {
+          1 {
+            code = NEGATIG_CODE1
+            fr {
+              short_label = Information introuvable
+              long_label = Je ne trouve pas ce que je cherche
+            }
+            en {
+              short_label = I couldn’t find what I was looking for
+              long_label = I couldn’t find what I was looking for
+            }
+
+          }
+          2 {
+            code = NEGATIG_CODE2
+            fr {
+              short_label = Information confusante
+              long_label = L’information présentée porte à confusion
+            }
+            en {
+              short_label = Confusing information
+              long_label = The information is unclear
+            }
+
+          }
+          3 {
+            code = NEGATIG_CODE3
+            fr {
+              short_label = Information erronée
+              long_label = L’information n’est plus à jour, est erronée ou est incomplète
+            }
+            en {
+              short_label = Wrong information
+              long_label = The information is outdated, incorrect or incomplete
+            }
+          }
+          99 {
+            code = NEGATIG_CODE4
+            fr {
+              short_label = Autre
+              long_label = Autre
+            }
+            en {
+              short_label = Other
+              long_label = Other
+            }
+          }
+        }
+        reporting_problem {
+          1 {
+            code = PROBLEM_CODE1
+            fr {
+              short_label = Problème d’affichage
+              long_label = Il y a un problème avec l’affichage de la page
+            }
+            en {
+              short_label = Display problem
+              long_label = There is a problem with the page display
+            }
+
+          }
+          2 {
+            code = PROBLEM_CODE2
+            fr {
+              short_label = Lien brisé
+              long_label = Un lien ne fonctionne pas ou n’est plus à jour
+            }
+            en {
+              short_label = Broken link
+              long_label = There is a broken or outdated link
+            }
+
+          }
+          3 {
+            code = PROBLEM_CODE3
+            fr {
+              short_label = Faute de français
+              long_label = Il y a une erreur d’orthographe ou de grammaire
+            }
+            en {
+              short_label = French spelling mistake
+              long_label = There is a spelling or grammar error
+            }
+
+          }
+          4 {
+            code = PROBLEM_CODE4
+            fr {
+              short_label = Service en ligne brisé
+              long_label = Il y a un problème avec le service en ligne
+            }
+            en {
+              short_label = Broken Online Service
+              long_label = There is a problem with the online service
+            }
+
+          }
+          99 {
+            code = AUTRE
+            fr {
+              short_label = Autre
+              long_label = Autre
+            }
+            en {
+              short_label = Other
+              long_label = Other
+            }
+
+          }
+        }
+      }
+
+        // Activate recaptcha
+        recaptcha {
+            enabled = 0
+            sitekey =
+            secret =
+        }
+
+        spamshield {
+            _enable = 1
+            methods{
+                # Honeypot check
+                1 {
+                    _enable = 1
+                    name = Honey Pot
+                    # Class
+                    class = Qc\QcComments\SpamShield\Methods\HoneyPotMethod
+                    indication = 5
+                }
+
+                # Value blacklist check
+                2 {
+                    _enable = 1
+                    name = Value blacklist check
+                    # Class
+                    class = Qc\QcComments\SpamShield\Methods\ValueBlacklistMethod
+                    indication = 7
+                    # method configuration
+                    configuration {
+                        # Blacklisted values (could also get read from a file - simply with FLUIDTEMPLATE)
+                        values = TEXT
+                        values.value = viagra,sex,porn,p0rn
+                    }
+                }
+
+                # Link check : Check the number of allowed links
+                3 {
+                    _enable = 1
+                    name = Link check
+                    # Class
+                    class = Qc\QcComments\SpamShield\Methods\LinkMethod
+                    indication = 3
+                    # method configuration
+                    configuration {
+                        # number of allowed links
+                        linkLimit = 2
+                    }
+                }
+            }
+        }
+
+
+    }
+}
+
+savePositifCommentAjax = PAGE
+savePositifCommentAjax {
+    typeNum = 123456
+    config {
+        disableAllHeaderCode = 1
+        xhtml_cleaning = 0
+        admPanel = 0
+        debug = 0
+        no_cache = 1
+    }
+    10 = USER
+    10 {
+        userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+        extensionName = QcComments
+        pluginName = commentsFormAjax
+        controller = Frontend
+        action = csvExport
+    }
+}
+
+
+
+page {
+    includeJSLibs.jquery = https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js
+    includeJS.recaptcha = https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit
+    includeJS.commentsForm = EXT:qc_comments/Resources/Public/JavaScript/CommentForm.js
+    includeCSS.commentsFormCss = EXT:qc_comments/Resources/Public/Css/fe_qc_comments.css
+}
+
+module.tx_qccomments {
+    persistence {
+        storagePid =
+    }
+
+    view {
+        templateRootPaths.0 = EXT:qc_comments/Resources/Private/Templates/
+        templateRootPaths.1 = {$module.tx_qccomments.view.templateRootPath}
+        partialRootPaths.0 = EXT:qc_comments/Resources/Private/Partials/
+        partialRootPaths.1 = {$module.tx_qccomments.view.partialRootPath}
+        layoutRootPaths.0 = EXT:qc_comments/Resources/Private/Layouts/
+        layoutRootPaths.1 = {$module.tx_qccomments.view.layoutRootPath}
+    }
+}

@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file target-language="en" datatype="plaintext" original="messages" product-name="qc_comments">
+        <header/>
+        <body>
+            <trans-unit id="qc_comments">
+                <target>Qc commentaires</target>
+            </trans-unit>
+            <trans-unit id="comments">
+                <target>Commentaires</target>
+            </trans-unit>
+			<trans-unit id="removed_comments">
+				<target>Commentaires retirés</target>
+			</trans-unit>
+            <trans-unit id="stats">
+                <target>Statistiques de satisfaction</target>
+            </trans-unit>
+            <trans-unit id="menu.stats">
+                <target>Statistiques de satisfaction</target>
+            </trans-unit>
+            <trans-unit id="menu.list">
+                <target>Commentaires</target>
+            </trans-unit>
+            <trans-unit id="filter.lang">
+                <target>Langue</target>
+            </trans-unit>
+            <trans-unit id="filter.includeEmptyPages">
+                <target>Inclure les pages sans commentaire</target>
+            </trans-unit>
+			<trans-unit id="filter.showFixedProblems">
+				<target>Afficher les problèmes techniques traités</target>
+			</trans-unit>
+            <trans-unit id="filter.lang.all">
+                <target>Toutes langues</target>
+            </trans-unit>
+            <trans-unit id="filter.lang.french">
+                <target>Français</target>
+            </trans-unit>
+            <trans-unit id="filter.lang.english">
+                <target>Anglais</target>
+            </trans-unit>
+            <trans-unit id="filter.depth">
+                <target>Profondeur</target>
+            </trans-unit>
+            <trans-unit id="filter.depth.limitless">
+                <target>Infinie</target>
+            </trans-unit>
+            <trans-unit id="filter.depth.level">
+                <target>niveau</target>
+            </trans-unit>
+            <trans-unit id="filter.depth.levels">
+                <target>niveaux</target>
+            </trans-unit>
+            <trans-unit id="filter.depth.thisPage">
+                <target>Cette page</target>
+            </trans-unit>
+
+            <trans-unit id="filter.dateRange">
+                <target>Période</target>
+            </trans-unit>
+            <trans-unit id="filter.dateRange.day">
+                <target>jour</target>
+            </trans-unit>
+            <trans-unit id="filter.dateRange.days">
+                <target>jours</target>
+            </trans-unit>
+            <trans-unit id="filter.dateRange.week">
+                <target>semaine</target>
+            </trans-unit>
+            <trans-unit id="filter.dateRange.weeks">
+                <target>semaines</target>
+            </trans-unit>
+            <trans-unit id="filter.dateRange.month">
+                <target>mois</target>
+            </trans-unit>
+            <trans-unit id="filter.dateRange.months">
+                <target>mois</target>
+            </trans-unit>
+            <trans-unit id="filter.dateRange.year">
+                <target>an</target>
+            </trans-unit>
+            <trans-unit id="filter.userDefined.from">
+                <target>Du</target>
+            </trans-unit>
+            <trans-unit id="filter.userDefined.to">
+                <target>Au</target>
+            </trans-unit>
+            <trans-unit id="filter.submit">
+                <target>Filtrer</target>
+            </trans-unit>
+            <trans-unit id="filter.reset">
+                <target>Réinitialiser</target>
+            </trans-unit>
+            <trans-unit id="links.exportCsv">
+                <target>Exporter en Xlsx</target>
+            </trans-unit>
+            <trans-unit id="stats.h.page_uid">
+                <target>Id</target>
+            </trans-unit>
+			<trans-unit id="stats.h.technicalProblems">
+				<target>Problèmes</target>
+			</trans-unit>
+            <trans-unit id="csv.h.page_uid">
+                <target>Id de la page</target>
+            </trans-unit>
+            <trans-unit id="stats.h.page_title">
+                <target>Titre de la page</target>
+            </trans-unit>
+            <trans-unit id="stats.h.total_pos">
+                <target>Total positif</target>
+            </trans-unit>
+            <trans-unit id="stats.h.total_neg">
+                <target>Total négatif</target>
+            </trans-unit>
+            <trans-unit id="stats.h.total">
+                <target>Total</target>
+            </trans-unit>
+            <trans-unit id="stats.h.avg">
+                <target>Moyenne</target>
+            </trans-unit>
+            <trans-unit id="stats.h.nonEmptyComment">
+                <target>Total des commentaires</target>
+            </trans-unit>
+            <trans-unit id="comments.h.comment_uid">
+                <target>Id</target>
+            </trans-unit>
+            <trans-unit id="csv.h.comment_uid">
+                <target>Id du commentaire</target>
+            </trans-unit>
+            <trans-unit id="comments.h.date_hour">
+                <target>Date et heure</target>
+            </trans-unit>
+            <trans-unit id="comments.h.comment">
+                <target>Commentaire</target>
+            </trans-unit>
+			<trans-unit id="comments.h.page_uid">
+				<target>Id de la page</target>
+			</trans-unit>
+			<trans-unit id="comments.h.page_title">
+				<target>Titre de la page</target>
+			</trans-unit>
+			<trans-unit id="comments.h.reason">
+				<target>Raison</target>
+			</trans-unit>
+			<trans-unit id="comments.h.url_orig">
+				<target>URL</target>
+			</trans-unit>
+			<trans-unit id="comments.h.useful">
+				<target>Utile</target>
+			</trans-unit>
+			<trans-unit id="comments.h.removed">
+				<target>Retiré</target>
+			</trans-unit>
+			<trans-unit id="comments.h.removed_by">
+				<target>Retiré par</target>
+			</trans-unit>
+			<trans-unit id="comments.h.removed_on">
+				<target>Retiré le</target>
+			</trans-unit>
+		   <trans-unit id="comments.h.comment_option">
+				<target>Option sélectionnée</target>
+			</trans-unit>
+			<trans-unit id="comments.h.fixed_by">
+				<target>Traité par</target>
+			</trans-unit>
+			<trans-unit id="comments.h.fix_date">
+				<target>Traité le</target>
+			</trans-unit>
+		   <trans-unit id="comments.h.description">
+				<target>Description</target>
+			</trans-unit>
+			<trans-unit id="comments.h.type_problem">
+				<target>Type de problème</target>
+			</trans-unit>
+            <trans-unit id="positive">
+                <target>Oui</target>
+            </trans-unit>
+            <trans-unit id="negative">
+                <target>Non</target>
+            </trans-unit>
+            <trans-unit id="no-result">
+                <target>Aucun résultat</target>
+            </trans-unit>
+            <trans-unit id="tooMuchPages">
+                <target>Il y a trop de résultats, seules les %s premières lignes sont affichées. Choisissez plutôt l'export Xlsx ou modifiez vos filtres.</target>
+            </trans-unit>
+            <trans-unit id="tooMuchResults">
+                <target>Il y a trop de résultats: l'affichage a été limité à %s pages et %s commentaires. Choisissez plutôt l'export Xlsx ou modifiez vos filtres.</target>
+            </trans-unit>
+            <trans-unit id="userDefined">
+                <target>Défini par l'utilisateur</target>
+            </trans-unit>
+            <trans-unit id="comments.h.useful">
+                <target>Utile</target>
+            </trans-unit>
+            <trans-unit id="notUseful">
+                <target>Pas utile</target>
+            </trans-unit>
+            <trans-unit id="utility">
+                <target>Utilité</target>
+            </trans-unit>
+            <trans-unit id="all">
+                <target>Tous</target>
+            </trans-unit>
+           <trans-unit id="formSentSuccessfully">
+                <target>Formulaire envoyé avec succès!</target>
+            </trans-unit>
+            <trans-unit id="yes">
+                <target>Oui</target>
+            </trans-unit>
+            <trans-unit id="no">
+                <target>Non</target>
+            </trans-unit>
+            <trans-unit id="submit">
+                <target>Soumettre</target>
+            </trans-unit>
+            <trans-unit id="formSectionTitle">
+                <target>Évaluation de page</target>
+            </trans-unit>
+            <trans-unit id="isThePageUseful">
+                <target>L’information sur cette page vous a-t-elle été utile?</target>
+            </trans-unit>
+            <trans-unit id="haveYouAComment">
+                <target>Avez-vous un commentaire à nous transmettre ou un problème à signaler ?</target>
+            </trans-unit>
+            <trans-unit id="haveYouACommentDescription">
+                <target>N’inscrivez pas de renseignements personnels. Vous ne recevrez aucune réponse.</target>
+            </trans-unit>
+            <trans-unit id="limitCharacter">
+                <target>Maximum 500 caractères</target>
+            </trans-unit>
+            <trans-unit id="questionsOrHelp">
+                <target>Des questions ou besoin de renseignements ?</target>
+            </trans-unit>
+            <trans-unit id="formSubmittedSuccessfully">
+                <target>Votre message a été envoyé. Merci de nous aider à améliorer notre site. Vos commentaires sont importants pour nous.</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_select_comments_form_page_mode">
+                <target>Sélectionner le mode d'affichage de la section des commentaires</target>
+            </trans-unit>
+            <trans-unit id="pages.tx_select_comments_form_page_mode.desc">
+                <target>Par défaut si le mode n'est pas précisé la page hérite du mode de sa page parente.</target>
+            </trans-unit>
+            <trans-unit id="pages.notSpecified">
+                <target>Non précisé</target>
+            </trans-unit>
+             <trans-unit id="pages.mode1">
+                <target>Afficher pour cette page et ses sous-pages</target>
+            </trans-unit>
+            <trans-unit id="pages.mode2">
+                <target>Afficher pour cette page seulement</target>
+            </trans-unit>
+            <trans-unit id="pages.mode3">
+                <target>Masquer pour cette page et ses sous-pages</target>
+            </trans-unit>
+            <trans-unit id="pages.mode4">
+                <target>Masquer pour cette page seulement</target>
+            </trans-unit>
+            <trans-unit id="characters">
+                <target> caractères restants</target>
+            </trans-unit>
+			<trans-unit id="empty-comment">
+				<target>Veuillez préciser la nature du problème</target>
+			</trans-unit>
+            <trans-unit id="select-page">
+                <target>Veuillez cliquer sur le titre de la page dans l'arborescence à gauche pour voir les commentaires sur la page.</target>
+            </trans-unit>
+            <trans-unit id="comments-module">
+                <target>Module des commentaires</target>
+            </trans-unit>
+            <trans-unit id="spam_detected">
+                <target>Spam détecté : </target>
+            </trans-unit>
+            <trans-unit id="spam_details">
+                <target>%s de chance de spam dans ce commentaire</target>
+            </trans-unit>
+            <trans-unit id="spam-message">
+                <target>Avertissement : Le formulaire comporte 1 champ(s) en erreur. Veuillez s'il vous plaît les corriger.</target>
+            </trans-unit>
+            <trans-unit id="stats-by-depth">
+                <target>Statistique selon la profondeur</target>
+            </trans-unit>
+			<trans-unit id="chooseAnOption">
+				<target>Vous devez sélectionner une option</target>
+			</trans-unit>
+			<trans-unit id="nextFields">
+				<target>Les champs suivis d’un</target>
+			</trans-unit>
+			<trans-unit id="mandatoryFields">
+				<target>sont obligatoires.</target>
+			</trans-unit>
+			<trans-unit id="whatsTheProblem">
+				<target>Quel est le problème?</target>
+			</trans-unit>
+			<trans-unit id="chooseProblemType">
+				<target>Précisez la nature du problème</target>
+			</trans-unit>
+			<trans-unit id="doNotInsertPersonalData">
+				<target>N’inscrivez pas de renseignements personnels (ex. : numéro d’assurance sociale (NAS), courriel, téléphone, adresse, etc.).</target>
+			</trans-unit>
+			<trans-unit id="responseNoReceived">
+				<target>Vous ne recevrez aucune réponse.</target>
+			</trans-unit>
+			<trans-unit id="addComment">
+				<target>Voulez-vous ajouter un commentaire?</target>
+			</trans-unit>
+			<trans-unit id="addDetails">
+				<target>Veuillez ajouter des précisions</target>
+			</trans-unit>
+			<trans-unit id="whyInfoNotUseful">
+				<target>Pourquoi l’information n’a pas été utile? </target>
+			</trans-unit>
+			<trans-unit id="reportProblem">
+				<target>Signaler un problème</target>
+			</trans-unit>
+			<trans-unit id="tooManyChars">
+				<target>caractères en trop</target>
+			</trans-unit>
+			<trans-unit id="stats.h.technicalProblems">
+				<target>problèmes-techniques</target>
+			</trans-unit>
+			<trans-unit id="technicalProblems">
+				<target>problèmes-techniques</target>
+			</trans-unit>
+			<trans-unit id="statisticsTitle">
+				<target>Statistiques de satisfaction</target>
+			</trans-unit>
+			<trans-unit id="commentsTitle">
+				<target>Commentaires</target>
+			</trans-unit>
+			<trans-unit id="technicalProblemsTitle">
+				<target>Problèmes techniques</target>
+			</trans-unit>
+			<trans-unit id="removedCommentsTitle">
+				<target>Commentaires retirés</target>
+			</trans-unit>
+			<trans-unit id="spamMessage">
+				<target>Impossible de prouver que vous êtes un humain. Votre avis n’a pas pu être envoyé.</target>
+			</trans-unit>
+			<trans-unit id="atLeastXChars">
+				<target>Veuillez écrire un message d'au moins %s caractères</target>
+			</trans-unit>
+			<trans-unit id="technical-problems">
+				<target>Les Problèmes techniques</target>
+			</trans-unit>
+			<trans-unit id="comments.h.fixed">
+				<target>Traité</target>
+			</trans-unit>
+			<trans-unit id="fixed">
+				<target>Traité</target>
+			</trans-unit>
+			<trans-unit id="fix">
+				<target>Traiter</target>
+			</trans-unit>
+			<trans-unit id="delete">
+				<target>Supprimer</target>
+			</trans-unit>
+			<trans-unit id="deleted">
+				<target>Supprimé</target>
+			</trans-unit>
+			<trans-unit id="remove">
+				<target>Retirer</target>
+			</trans-unit>
+			<trans-unit id="removed">
+				<target>Retiré</target>
+			</trans-unit>
+			<trans-unit id="hiddenComments">
+				<target>Commentaires retirés</target>
+			</trans-unit>
+			<trans-unit id="dissatisfactionPart">
+				<target>Part d’insatisfaction</target>
+			</trans-unit>
+        </body>
+    </file>
+</xliff>

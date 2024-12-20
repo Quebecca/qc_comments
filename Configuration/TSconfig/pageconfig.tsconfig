@@ -1,0 +1,48 @@
+mod{
+    qcComments {
+        technicalProblems {
+          // Sort type (by date)
+          orderType = DESC
+          // Maximum number of records displayed
+          maxRecords = 100
+          // Maximum number of child pages considered
+          numberOfSubPages = 50
+          // Enable/Disable display of records for hidden pages
+          showRecordsForHiddenPages = 1
+          // Enable Fix button
+          enableFixButton = 1
+        }
+        comments {
+          // Sort type (by date)
+            orderType = DESC
+          // Maximum number of records displayed
+            maxRecords = 100
+          // Maximum number of child pages considered
+            numberOfSubPages = 50
+          // Enable/Disable display of records for hidden pages
+            showRecordsForHiddenPages = 1
+            // Enable "Remove" button
+            enableRemoveButton = 1
+            // Enable "Delete" Button
+            enableDeleteButton = 1
+        }
+        hiddenComments {
+          // Sort type (by date)
+          orderType = DESC
+          // Maximum number of records displayed
+          maxRecords = 100
+          // Maximum number of child pages considered
+          numberOfSubPages = 50
+          // Enable/Disable display of records for hidden pages
+          showRecordsForHiddenPages = 1
+          // Enable "Delete" Button
+          enableDeleteButton = 1
+        }
+        statistics {
+          // Maximum number of records displayed
+            maxRecords = 30
+          // Enable/Disable display of records for hidden pages
+            showRecordsForHiddenPages = 1
+        }
+    }
+}
