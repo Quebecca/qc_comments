@@ -214,7 +214,6 @@ class StatisticsTabService extends QcBackendModuleService
 
     /**
      * @param Filter $filter
-     * @param int $currentPageId
      * @return Response
      */
     public function exportStatisticsData(Filter  $filter): Response

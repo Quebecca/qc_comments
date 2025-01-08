@@ -33,7 +33,7 @@ plugin.tx_qccomments {
           2 {
             code = NEGATIG_CODE2
             fr {
-              short_label = Information confusante
+              short_label = Information confuse
               long_label = L’information présentée porte à confusion
             }
             en {

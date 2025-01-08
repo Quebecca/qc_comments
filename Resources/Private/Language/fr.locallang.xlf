@@ -15,6 +15,9 @@
             <trans-unit id="stats">
                 <target>Statistiques de satisfaction</target>
             </trans-unit>
+            <trans-unit id="stats-per-page">
+                <target>Statistiques par page</target>
+            </trans-unit>
             <trans-unit id="menu.stats">
                 <target>Statistiques de satisfaction</target>
             </trans-unit>
@@ -92,7 +95,7 @@
                 <target>Réinitialiser</target>
             </trans-unit>
             <trans-unit id="links.exportCsv">
-                <target>Exporter en Xlsx</target>
+                <target>Exporter en XLSX</target>
             </trans-unit>
             <trans-unit id="stats.h.page_uid">
                 <target>Id</target>
@@ -278,7 +281,7 @@
                 <target>Avertissement : Le formulaire comporte 1 champ(s) en erreur. Veuillez s'il vous plaît les corriger.</target>
             </trans-unit>
             <trans-unit id="stats-by-depth">
-                <target>Statistique selon la profondeur</target>
+                <target>Statistiques totales selon le niveau</target>
             </trans-unit>
 			<trans-unit id="chooseAnOption">
 				<target>Vous devez sélectionner une option</target>
@@ -370,6 +373,9 @@
 			<trans-unit id="dissatisfactionPart">
 				<target>Part d’insatisfaction</target>
 			</trans-unit>
+            <trans-unit id="dissatisfactionReason">
+                <target>Raison d'insatisfaction</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

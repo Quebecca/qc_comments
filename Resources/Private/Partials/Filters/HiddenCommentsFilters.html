@@ -34,7 +34,7 @@
         </div>
         <f:if condition="{filter.useful} == '0'">
             <div class="col-md-2">
-                <label>Raison d'insatisfaction</label>
+                <label>{f:translate(key: 'dissatisfactionReason', extensionName : 'qc_comments')}</label>
                 <f:form.select property="commentReason"
                                options="{filter.commentsReasons}"
                                optionLabelField="title"

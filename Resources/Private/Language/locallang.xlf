@@ -15,6 +15,9 @@
 			<trans-unit id="stats">
 				<source>Satisfaction statistics</source>
 			</trans-unit>
+            <trans-unit id="stats-per-page">
+                <source>Statistics per page</source>
+            </trans-unit>
 			<trans-unit id="menu.stats">
 				<source>Satisfaction statistics</source>
 			</trans-unit>
@@ -91,7 +94,7 @@
 				<source>Reset</source>
 			</trans-unit>
 			<trans-unit id="links.exportCsv">
-				<source>Export to Xlsx</source>
+				<source>Export to XLSX</source>
 			</trans-unit>
 			<trans-unit id="stats.h.page_uid">
 				<source>Page id</source>
@@ -283,7 +286,7 @@
                 <source>Warning: There are fields in the form containing errors. Please correct these errors.</source>
             </trans-unit>
             <trans-unit id="stats-by-depth">
-                <source>Statistics by depth</source>
+                <source>Total statistics from selected levels</source>
             </trans-unit>
 			<trans-unit id="chooseAnOption">
 				<source>You must select an option</source>
@@ -375,6 +378,9 @@
 			<trans-unit id="dissatisfactionPart">
 				<source>Part of dissatisfaction</source>
 			</trans-unit>
+            <trans-unit id="dissatisfactionReason">
+                <source>Reason for dissatisfaction</source>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>
