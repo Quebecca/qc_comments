@@ -139,7 +139,7 @@ class CommentsController extends ActionController
             $commentType = '';
             switch ($comment->getUseful()){
                 case '0' : $commentType = 'negative_reasons';break;
-                case '1' : $commentType = 'positif_reasons';break;
+                case '1' : $commentType = 'positive_reasons';break;
                 case 'NA' : $commentType = 'reporting_problem';break;
             }
             $selectedReasonOption = $this->getSelectedReasonOption($commentType,$comment->getReasonCode());
@@ -174,6 +174,9 @@ class CommentsController extends ActionController
                 $existingComment= $this->commentsRepository->findByUid(intval($comment->getSubmittedFormUid()));
                 if($existingComment){
                     $existingComment->setComment($comment->getComment());
+                    $existingComment->setReasonShortLabel($comment->getReasonShortLabel());
+                    $existingComment->setReasonLongLabel($comment->getReasonLongLabel());
+                    $existingComment->setReasonCode($comment->getReasonCode());
                     $this->commentsRepository->update($existingComment);
                 }
                 else{

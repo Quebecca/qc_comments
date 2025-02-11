@@ -305,7 +305,7 @@
 				<target>Vous ne recevrez aucune réponse.</target>
 			</trans-unit>
 			<trans-unit id="addComment">
-				<target>Voulez-vous ajouter un commentaire?</target>
+				<target>Voulez-vous ajouter des précisions?</target>
 			</trans-unit>
 			<trans-unit id="addDetails">
 				<target>Veuillez ajouter des précisions</target>
