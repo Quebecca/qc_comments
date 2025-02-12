@@ -381,6 +381,9 @@
             <trans-unit id="dissatisfactionReason">
                 <source>Reason for dissatisfaction</source>
             </trans-unit>
+            <trans-unit id="satisfactionReason">
+				<source>Reason for satisfaction</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

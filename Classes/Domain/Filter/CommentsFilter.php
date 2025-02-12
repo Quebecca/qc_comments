@@ -73,7 +73,7 @@ class CommentsFilter extends Filter
      */
     public function getCommentsReasons(): array
     {
-        $options = $this->typoscriptConfiguration->getNegativeCommentsReasonsForBE();
+        $options = $this->typoscriptConfiguration->getReasonsForBE($this->useful);
         $filterOptions = [];
         $filterOptions[''] = '--';
         foreach ($options as $key => $values) {
@@ -165,13 +165,11 @@ class CommentsFilter extends Filter
     /**
      * @return string
      */
-    public function getUsibiltyCriteria(): string
+    public function getUsabilityCriteria(): string
     {
         $criteria =  " useful like '".$this->getUseful()."' and useful not like 'NA'";
         // we apply the reason only if the comment is negative
-        if($this->getUseful() == '0'){
-            $criteria .= "AND reason_code like '".$this->getCommentReason()."'";
-        }
+        $criteria .= "AND reason_code like '".$this->getCommentReason()."'";
         return $criteria;
     }
 

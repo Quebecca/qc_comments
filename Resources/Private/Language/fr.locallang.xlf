@@ -376,6 +376,9 @@
             <trans-unit id="dissatisfactionReason">
                 <target>Raison d'insatisfaction</target>
             </trans-unit>
+            <trans-unit id="satisfactionReason">
+				<target>Raison de satisfaction</target>
+			</trans-unit>
         </body>
     </file>
 </xliff>

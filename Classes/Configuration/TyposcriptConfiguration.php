@@ -198,16 +198,16 @@ class TyposcriptConfiguration
     }
 
 
-    public function getNegativeCommentsReasonsForBE() :array {
+    public function getReasonsForBE($useful) :array {
         $currentLang = $GLOBALS['LANG']->lang ?? 'en';
 
         $options = $this->settings['plugin.']['tx_qccomments.']['settings.']['options.'];
         $optionsByLang = [];
-
+        $reasonType = $useful == '1' ? 'positive_reasons.' : 'negative_reasons.';
         if (isset($options['negative_reasons.'])) {
 
             // Loop through each item in the negative reasons
-            foreach ($options['negative_reasons.'] as $item) {
+            foreach ($options[$reasonType] as $item) {
                 if (isset($item[$currentLang.'.'])) {
                     // Add the item for the specified language to the result
                     $optionsByLang[] = [

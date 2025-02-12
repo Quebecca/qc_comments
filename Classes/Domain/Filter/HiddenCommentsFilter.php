@@ -135,7 +135,7 @@ class HiddenCommentsFilter extends Filter
     /**
      * @return string
      */
-    public function getUsibiltyCriteria(): string
+    public function getUsabilityCriteria(): string
     {
         $criteria =  " useful like '".$this->getUseful()."'and useful not like 'NA'";
         // we apply the reason only if the comment is negative

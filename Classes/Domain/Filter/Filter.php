@@ -362,7 +362,7 @@ abstract class Filter implements Arrayable
      * This function is used to check for the useful field filter
      * @return string
      */
-    abstract public function getUsibiltyCriteria():string;
+    abstract public function getUsabilityCriteria():string;
 
     /**
      * This function is used to check if we display the deleted record or not
@@ -392,16 +392,5 @@ abstract class Filter implements Arrayable
      * @param array $values
      * @return Filter
      */
-        public static function getInstanceFromArray(array $values)
-    {
-
-      /*  return new Filter(
-            $values[self::KEY_LANG],
-            $values[self::KEY_START_DATE],
-            $values[self::KEY_END_DATE],
-            $values[self::KEY_DATE_RANGE],
-            $values[self::KEY_DEPTH],
-            $values[self::KEY_INCLUDE_FIXED_TECHNICAL_PROBLEM] ?? false
-        );*/
-    }
+     public static function getInstanceFromArray(array $values){}
 }
