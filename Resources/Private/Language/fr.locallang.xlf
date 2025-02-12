@@ -313,6 +313,9 @@
 			<trans-unit id="whyInfoNotUseful">
 				<target>Pourquoi l’information n’a pas été utile? </target>
 			</trans-unit>
+			<trans-unit id="whyInfoUseful">
+				<target>Pourquoi l’information a été utile? </target>
+			</trans-unit>
 			<trans-unit id="reportProblem">
 				<target>Signaler un problème</target>
 			</trans-unit>
