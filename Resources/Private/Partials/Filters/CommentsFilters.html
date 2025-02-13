@@ -140,6 +140,26 @@
         </f:if>
     </f:for>
     <div class="d-none" id="currentPageId" data-tr-label="{currentPageId}"></div>
+    <br>
+    <div>
+        <f:be.infobox title="Documentation" state="-1">
+            <ul>
+                <li>
+                    {f:translate(key:'documentation.selectUtilityType', extensionName : 'qc_comments')}
+                </li>
+                <f:if condition="{isRemoveButtonEnabled}">
+                    <li>
+                        {f:translate(key:'documentation.removeButtonDesc', extensionName : 'qc_comments')}
+                    </li>
+                </f:if>
+                <f:if condition="{isDeleteButtonEnabled}">
+                    <li>
+                        {f:translate(key:'documentation.deleteButtonDesc', extensionName : 'qc_comments')}
+                    </li>
+                </f:if>
+            </ul>
+        </f:be.infobox>
+    </div>
 
 </f:form>
 <f:section name="buttons">

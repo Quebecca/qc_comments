@@ -382,6 +382,15 @@
             <trans-unit id="satisfactionReason">
 				<target>Raison de satisfaction</target>
 			</trans-unit>
+			<trans-unit id="documentation.selectUtilityType">
+				<target>Si vous désirez filtrer plus finement les raisons de satisfaction ou d'insatisfaction, vous devez au préalable sélectionner "Utile" ou "Pas utile" dans le menu Utilité.</target>
+			</trans-unit>
+			<trans-unit id="documentation.removeButtonDesc">
+				<target>[texte si bouton Retirer actif]</target>
+			</trans-unit>
+			<trans-unit id="documentation.deleteButtonDesc">
+				<target>[texte si bouton Supprimer actif]</target>
+			</trans-unit>
         </body>
     </file>
 </xliff>

@@ -387,6 +387,15 @@
             <trans-unit id="satisfactionReason">
 				<source>Reason for satisfaction</source>
 			</trans-unit>
+			<trans-unit id="documentation.selectUtilityType">
+				<source>If you want to filter the reasons for satisfaction or dissatisfaction more precisely, you must first select “Useful” or “Not useful” in the "Useful" menu.</source>
+			</trans-unit>
+			<trans-unit id="documentation.removeButtonDesc">
+				<source>[texte if Remove button enabled]</source>
+			</trans-unit>
+			<trans-unit id="documentation.deleteButtonDesc">
+				<source>[texte if Delete button enabled]</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
