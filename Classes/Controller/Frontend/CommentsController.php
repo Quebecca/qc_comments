@@ -88,10 +88,15 @@ class CommentsController extends ActionController
      */
     public function showAction(array $args = []): ResponseInterface
     {
-        $commentLengthconfig = [
-            'maxCharacters' => $this->typoscriptConfiguration->getCommentsMaxCharacters(),
-            'minCharacters' => $this->typoscriptConfiguration->getCommentsMinCharacters()
-        ];
+        $commentTypes = ['positive_section', 'negative_section', 'reportProblem_section'];
+        $commentLengthconfig = [];
+
+        foreach ($commentTypes as $type) {
+            $commentLengthconfig[$type] = [
+                'maxCharacters' => $this->typoscriptConfiguration->getCommentsMaxMinLength($type, 'maxCharacters'),
+                'minCharacters' => $this->typoscriptConfiguration->getCommentsMaxMinLength($type, 'minCharacters'),
+            ];
+        }
         $recaptchaConfig = [
             'enabled' => $this->typoscriptConfiguration->isRecaptchaEnabled(),
             'sitekey' => $this->typoscriptConfiguration->getRecaptchaSitekey(),
@@ -138,9 +143,9 @@ class CommentsController extends ActionController
         if ($comment) {
             $commentType = '';
             switch ($comment->getUseful()){
-                case '0' : $commentType = 'negative_reasons';break;
-                case '1' : $commentType = 'positive_reasons';break;
-                case 'NA' : $commentType = 'reporting_problem';break;
+                case '0' : $commentType = 'negative_section';break;
+                case '1' : $commentType = 'positive_section';break;
+                case 'NA' : $commentType = 'reportProblem_section';break;
             }
             $selectedReasonOption = $this->getSelectedReasonOption($commentType,$comment->getReasonCode());
 
@@ -160,10 +165,11 @@ class CommentsController extends ActionController
                     )
                 );
             }
+
             $comment->setComment(
                 substr(
                     $comment->getComment(), 0,
-                    $this->typoscriptConfiguration->getCommentsMaxCharacters()
+                    $this->typoscriptConfiguration->getCommentsMaxMinLength($commentType, 'maxCharacters')
                 )
             );
             $formUpdated = false;

@@ -185,7 +185,8 @@ class CommentRepository extends Repository
                 $count++;
             }
             if($limit == false || $count < $limit ){
-                $item['reason_short_label'] =  $this->typoscriptConfiguration->getOptionByCodeFrBE($item['reason_code']);
+                $item['reason_short_label'] =  $this->typoscriptConfiguration
+                    ->getOptionByCodeFrBE($item['reason_code']);
                 $rows[$item['uid']]['records'][] = $item;
                 $rows[$item['uid']]['title'] = $item['title'];
             }

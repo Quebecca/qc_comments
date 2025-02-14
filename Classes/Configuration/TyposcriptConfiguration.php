@@ -115,16 +115,16 @@ class TyposcriptConfiguration
 
 
     /**
+     * This function is used to retrieve the maximum or the minimum number of characters based on the comment type ('positive_comments', 'negative_comments', 'reporting_problem')
+     * @param $section_type
+     * @param $limit
      * @return int
      */
-    public function getCommentsMaxCharacters() : int {
-        return intval($this->settings['comments']['maxCharacters']);
+    public function getCommentsMaxMinLength($section_type,  $limit): int
+    {
+        return intval($this->settings['options'][$section_type][$limit]);
     }
 
-
-    public function getCommentsMinCharacters() {
-        return $this->settings['comments']['minCharacters'];
-    }
 
     /**
      * @return bool
@@ -180,12 +180,12 @@ class TyposcriptConfiguration
     public function getReasonOptions($lang) : array {
         $options = $this->settings['options'];
         $optionsByLang = [];
-        foreach ($options as $category => $items) {
-            $optionsByLang[$category] = [];
 
-            foreach ($items as $item) {
+        foreach ($options as $sectionName => $items){
+            $optionsByLang[$sectionName] = [];
+            foreach ($items['reasons'] as $item) {
                 if (isset($item[$lang])) {
-                    $optionsByLang[$category][] = [
+                    $optionsByLang[$sectionName][] = [
                         'code' => $item['code'],
                         'short_label' => $item[$lang]['short_label'],
                         'long_label' => $item[$lang]['long_label'],
@@ -194,30 +194,35 @@ class TyposcriptConfiguration
                 }
             }
         }
+
         return $optionsByLang;
     }
 
 
+    /**
+     * This function is used to retrieve reasons based on the selected option (useful/not useful) in the BE filter
+     * @param $useful
+     * @return array
+     */
     public function getReasonsForBE($useful) :array {
         $currentLang = $GLOBALS['LANG']->lang ?? 'en';
 
         $options = $this->settings['plugin.']['tx_qccomments.']['settings.']['options.'];
         $optionsByLang = [];
-        $reasonType = $useful == '1' ? 'positive_reasons.' : 'negative_reasons.';
-        if (isset($options['negative_reasons.'])) {
+        $reasonType = $useful == '1' ? 'positive_section.' : 'negative_section.';
 
-            // Loop through each item in the negative reasons
-            foreach ($options[$reasonType] as $item) {
-                if (isset($item[$currentLang.'.'])) {
-                    // Add the item for the specified language to the result
-                    $optionsByLang[] = [
-                        'code' => $item['code'], // Keep the code for reference
-                        'short_label' => $item[$currentLang.'.']['short_label'], // Directly include short_label
-                        'long_label' => $item[$currentLang.'.']['long_label'],   // Directly include long_label
-                    ];
-                }
+        // Loop through each item in the reasons
+        foreach ($options[$reasonType]['reasons.'] as $item) {
+            if (isset($item[$currentLang.'.'])) {
+                // Add the item for the specified language to the result
+                $optionsByLang[] = [
+                    'code' => $item['code'], // Keep the code for reference
+                    'short_label' => $item[$currentLang.'.']['short_label'], // Directly include short_label
+                    'long_label' => $item[$currentLang.'.']['long_label'],   // Directly include long_label
+                ];
             }
         }
+
         return $optionsByLang;
     }
 
@@ -235,11 +240,12 @@ class TyposcriptConfiguration
         if (!empty($optionsType)) {
             // Loop through each item
             foreach ($optionsType as $options){
-                foreach ($options as $item) {
-                    if($item['code'] == $code)
-                        if($item[$currentLang.'.'] ?? false) {
-                            return $item[$currentLang.'.']['short_label'];
+                foreach ($options['reasons.'] as $items) {
+                  if($items['code'] == $code) {
+                        if($items[$currentLang.'.'] ?? false) {
+                            return $items[$currentLang.'.']['short_label'];
                         }
+                    }
                 }
             }
         }

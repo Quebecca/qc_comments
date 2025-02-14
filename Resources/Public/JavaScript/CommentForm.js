@@ -31,14 +31,19 @@ $(document).ready(function(){
     }
 
     if ($('#QcCommentForm').length > 0) {
-        let maxCharacters = document.getElementById('maxCharacters').getAttribute('data-ts') ?? '';
-        let minCharacters = document.getElementById('minCharacters').getAttribute('data-ts') ?? '';
+        let maxCharacters = 0;
+        let minCharacters =  0;
+
         let enableRecaptcha = document.getElementById('enableRecaptcha').getAttribute('data-ts') ?? '';
 
         let clickedButtonId = '1';
         $('#submitButtonYes').on('click', function () {
-            clickedButtonId = $(this).attr('id')
-        })
+            clickedButtonId = $(this).attr('id');
+            maxCharacters = document.getElementById('positiveMaxCharacters')
+              .getAttribute('data-ts') ?? 0;
+            minCharacters = document.getElementById('positiveMinCharacters')
+              .getAttribute('data-ts') ?? 0;
+        });
         let usefulBlock = $('.useful-block')
         // Show success message
         let isUsefulFormSubmitted = document.getElementById('isUsfulFormSubmitted').getAttribute('data-useful-form-submitted') ?? '';
@@ -69,14 +74,22 @@ $(document).ready(function(){
                 reportProblemSection.show()
                 $('.negative-report-options').hide();
                 $('.report-problem-options').show();
+                maxCharacters = document.getElementById('reportingProblemMaxCharacters')
+                                  .getAttribute('data-ts') ?? 0;
+                minCharacters = document.getElementById('reportingProblemMinCharacters')
+                                  .getAttribute('data-ts') ?? 0;
             }
             else {
-                let negatifReportSection = $('.negative-report-section')
-                negatifReportSection.attr('class', 'negative-report-section');
+                let negativeReportSection = $('.negative-report-section')
+                negativeReportSection.attr('class', 'negative-report-section');
                 commentType.attr('value', '0');
-                negatifReportSection.show()
+                negativeReportSection.show()
                 $('.report-problem-options').hide();
                 $('.negative-report-options').show();
+                maxCharacters = document.getElementById('negativeMaxCharacters')
+                  .getAttribute('data-ts') ?? 0;
+                minCharacters = document.getElementById('negativeMinCharacters')
+                  .getAttribute('data-ts') ?? 0;
             }
         })
 
