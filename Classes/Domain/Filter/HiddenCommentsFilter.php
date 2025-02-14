@@ -61,7 +61,7 @@ class HiddenCommentsFilter extends Filter
      */
     public function getCommentsReasons(): array
     {
-        $options = $this->typoscriptConfiguration->getNegativeCommentsReasonsForBE();
+        $options = $this->typoscriptConfiguration->getReasonsForBE($this->useful);
         $filterOptions = [];
         $filterOptions[''] = '--';
         foreach ($options as $key => $values) {
