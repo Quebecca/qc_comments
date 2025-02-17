@@ -394,10 +394,10 @@
 				<source>If you want to filter the reasons for satisfaction or dissatisfaction more precisely, you must first select “Useful” or “Not useful” in the "Useful" menu.</source>
 			</trans-unit>
 			<trans-unit id="documentation.removeButtonDesc">
-				<source>[texte if Remove button enabled]</source>
+				<source>You can remove a comment from the page satisfaction rating by clicking "Remove". The comment will be moved to the removed comments.</source>
 			</trans-unit>
 			<trans-unit id="documentation.deleteButtonDesc">
-				<source>[texte if Delete button enabled]</source>
+				<source>You can delete a comment from the page by clicking "Delete". This action deletes the comment from the comic and is irreversible.</source>
 			</trans-unit>
 			<trans-unit id="documentation.removedComments">
 				<source>This page contains user comments that have been removed. They do not count towards the page's satisfaction rating.</source>
