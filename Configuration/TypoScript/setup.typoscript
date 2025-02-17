@@ -33,7 +33,7 @@ plugin.tx_qccomments {
           2 {
             code = NEGATIG_CODE2
             fr {
-              short_label = Information confuse
+              short_label = Information confue
               long_label = L’information présentée porte à confusion
             }
             en {
@@ -46,7 +46,7 @@ plugin.tx_qccomments {
             code = NEGATIG_CODE3
             fr {
               short_label = Information erronée
-              long_label = L’information n’est plus à jour, est erronée ou est incomplète
+              long_label = L’information n’est plus à jour, est erronée ou incomplète
             }
             en {
               short_label = Wrong information
@@ -105,7 +105,7 @@ plugin.tx_qccomments {
           4 {
             code = PROBLEM_CODE4
             fr {
-              short_label = Service en ligne brisé
+              short_label = Service en ligne
               long_label = Il y a un problème avec le service en ligne
             }
             en {

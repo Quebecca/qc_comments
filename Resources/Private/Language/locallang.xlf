@@ -258,7 +258,7 @@
             <trans-unit id="pages.mode4">
                 <source>Hide for this page only</source>
             </trans-unit>
-            <trans-unit id="characters">
+            <trans-unit id="maxChars">
                 <source> characters maximum</source>
             </trans-unit>
         	<trans-unit id="empty-comment">
@@ -348,8 +348,11 @@
 			<trans-unit id="spamMessage">
 				<source>We were unable to verify that you are a human. Your feedback could not be submitted.</source>
 			</trans-unit>
-			<trans-unit id="atLeastXChars">
-				<source>Please write a message of at least %s characters</source>
+			<trans-unit id="writeAtLeast">
+				<source>Please write a message of at least</source>
+			</trans-unit>
+			<trans-unit id="chars">
+				<source>characters</source>
 			</trans-unit>
 			<trans-unit id="technical-problems">
 				<source>Technical problems</source>
@@ -395,6 +398,12 @@
 			</trans-unit>
 			<trans-unit id="documentation.deleteButtonDesc">
 				<source>[texte if Delete button enabled]</source>
+			</trans-unit>
+			<trans-unit id="documentation.removedComments">
+				<source>This page contains user comments that have been removed. They do not count towards the page's satisfaction rating.</source>
+			</trans-unit>
+			<trans-unit id="documentation.fixedTechnicalProblems">
+				<source>You can identify comments that have been resolved by clicking "Fix".</source>
 			</trans-unit>
 		</body>
 	</file>

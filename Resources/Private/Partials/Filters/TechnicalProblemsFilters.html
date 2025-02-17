@@ -115,7 +115,12 @@
         </f:if>
     </f:for>
     <div class="d-none" id="currentPageId" data-tr-label="{currentPageId}"></div>
-
+    <br>
+    <f:be.infobox title="Documentation" state="-1">
+        <p>
+            {f:translate(key:'documentation.fixedTechnicalProblems', extensionName : 'qc_comments')}
+        </p>
+    </f:be.infobox>
 </f:form>
 <f:section name="buttons">
     <f:form.submit value="{f:translate(key: 'filter.submit')}" class="btn btn-default"/>

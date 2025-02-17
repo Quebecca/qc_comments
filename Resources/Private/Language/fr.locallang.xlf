@@ -259,7 +259,7 @@
             <trans-unit id="pages.mode4">
                 <target>Masquer pour cette page seulement</target>
             </trans-unit>
-            <trans-unit id="characters">
+            <trans-unit id="maxChars">
                 <target> caractères restants</target>
             </trans-unit>
 			<trans-unit id="empty-comment">
@@ -302,7 +302,7 @@
 				<target>N’inscrivez pas de renseignements personnels (ex. : numéro d’assurance sociale (NAS), courriel, téléphone, adresse, etc.).</target>
 			</trans-unit>
 			<trans-unit id="responseNoReceived">
-				<target>Vous ne recevrez aucune réponse.</target>
+				<target>Vos commentaires serviront à bonifier Québec.ca et pourraient servir à des fins statistiques. Vous ne recevrez aucune réponse.</target>
 			</trans-unit>
 			<trans-unit id="addComment">
 				<target>Voulez-vous ajouter des précisions?</target>
@@ -343,11 +343,14 @@
 			<trans-unit id="spamMessage">
 				<target>Impossible de prouver que vous êtes un humain. Votre avis n’a pas pu être envoyé.</target>
 			</trans-unit>
-			<trans-unit id="atLeastXChars">
-				<target>Veuillez écrire un message d'au moins %s caractères</target>
+			<trans-unit id="writeAtLeast">
+				<target>Veuillez écrire un message d'au moins</target>
+			</trans-unit>
+			<trans-unit id="chars">
+				<target>caractères</target>
 			</trans-unit>
 			<trans-unit id="technical-problems">
-				<target>Les Problèmes techniques</target>
+				<target>Problèmes techniques</target>
 			</trans-unit>
 			<trans-unit id="comments.h.fixed">
 				<target>Traité</target>
@@ -383,13 +386,19 @@
 				<target>Raison de satisfaction</target>
 			</trans-unit>
 			<trans-unit id="documentation.selectUtilityType">
-				<target>Si vous désirez filtrer plus finement les raisons de satisfaction ou d'insatisfaction, vous devez au préalable sélectionner "Utile" ou "Pas utile" dans le menu Utilité.</target>
+				<target>Vous pouvez filtrer les raisons de satisfaction ou d'insatisfaction en sélectionnant "Utile" ou "Pas utile" dans le menu Utilité.</target>
 			</trans-unit>
 			<trans-unit id="documentation.removeButtonDesc">
-				<target>[texte si bouton Retirer actif]</target>
+				<target>Vous pouvez retirer un commentaire du taux de satisfaction de la page en cliquant sur "Retirer". Le commentaire sera déplacé dans les commentaires retirés.</target>
 			</trans-unit>
 			<trans-unit id="documentation.deleteButtonDesc">
-				<target>[texte si bouton Supprimer actif]</target>
+				<target>Vous pouvez supprimer un commentaire de la page en cliquant sur "Supprimer". Cette action supprime le commentaire de la BD et est irréversible.</target>
+			</trans-unit>
+			<trans-unit id="documentation.removedComments">
+				<target>Cette page contient les commentaires des utilisateurs qui ont été retirés. Ils ne comptent pas dans le taux de satisfaction de la page.</target>
+			</trans-unit>
+			<trans-unit id="documentation.fixedTechnicalProblems">
+				<target>Vous pouvez identifier les commentaires qui ont été réglés en cliquant sur "Traiter".</target>
 			</trans-unit>
         </body>
     </file>
