@@ -397,13 +397,16 @@
 				<source>You can remove a comment from the page satisfaction rating by clicking "Remove". The comment will be moved to the removed comments.</source>
 			</trans-unit>
 			<trans-unit id="documentation.deleteButtonDesc">
-				<source>You can delete a comment from the page by clicking "Delete". This action deletes the comment from the comic and is irreversible.</source>
+				<source>You can delete a comment from the page by clicking "Delete". This action deletes the comment from the database and is irreversible.</source>
 			</trans-unit>
 			<trans-unit id="documentation.removedComments">
 				<source>This page contains user comments that have been removed. They do not count towards the page's satisfaction rating.</source>
 			</trans-unit>
 			<trans-unit id="documentation.fixedTechnicalProblems">
 				<source>You can identify comments that have been resolved by clicking "Fix".</source>
+			</trans-unit>
+			<trans-unit id="documentation.showFixedTechnicalProblems">
+				<source>To see the technical problems already fixed, click on the checkbox "Show fixed problems".</source>
 			</trans-unit>
 		</body>
 	</file>

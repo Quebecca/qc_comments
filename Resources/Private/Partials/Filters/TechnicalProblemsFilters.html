@@ -117,9 +117,14 @@
     <div class="d-none" id="currentPageId" data-tr-label="{currentPageId}"></div>
     <br>
     <f:be.infobox title="Documentation" state="-1">
-        <p>
-            {f:translate(key:'documentation.fixedTechnicalProblems', extensionName : 'qc_comments')}
-        </p>
+        <ul>
+            <li>
+                {f:translate(key:'documentation.fixedTechnicalProblems', extensionName : 'qc_comments')}
+            </li>
+            <li>
+                {f:translate(key:'documentation.showFixedTechnicalProblems', extensionName : 'qc_comments')}
+            </li>
+        </ul>
     </f:be.infobox>
 </f:form>
 <f:section name="buttons">

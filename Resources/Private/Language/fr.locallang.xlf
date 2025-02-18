@@ -392,13 +392,16 @@
 				<target>Vous pouvez retirer un commentaire du taux de satisfaction de la page en cliquant sur "Retirer". Le commentaire sera déplacé dans les commentaires retirés.</target>
 			</trans-unit>
 			<trans-unit id="documentation.deleteButtonDesc">
-				<target>Vous pouvez supprimer un commentaire de la page en cliquant sur "Supprimer". Cette action supprime le commentaire de la BD et est irréversible.</target>
+				<target>Vous pouvez supprimer un commentaire de la page en cliquant sur "Supprimer". Cette action supprime le commentaire de la Base de données et est irréversible.</target>
 			</trans-unit>
 			<trans-unit id="documentation.removedComments">
 				<target>Cette page contient les commentaires des utilisateurs qui ont été retirés. Ils ne comptent pas dans le taux de satisfaction de la page.</target>
 			</trans-unit>
 			<trans-unit id="documentation.fixedTechnicalProblems">
 				<target>Vous pouvez identifier les commentaires qui ont été réglés en cliquant sur "Traiter".</target>
+			</trans-unit>
+			<trans-unit id="documentation.showFixedTechnicalProblems">
+				<target>Pour voir les problèmes techniques déjà traités, cliquer sur la case à cocher "Afficher les problèmes techniques traités".</target>
 			</trans-unit>
         </body>
     </file>
