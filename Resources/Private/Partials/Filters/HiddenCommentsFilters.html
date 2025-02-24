@@ -32,9 +32,14 @@
                            id="useful"
             />
         </div>
-        <f:if condition="{filter.useful} == '0'">
+        <f:if condition="{filter.useful} == '0' || {filter.useful} == '1'">
             <div class="col-md-2">
-                <label>{f:translate(key: 'dissatisfactionReason', extensionName : 'qc_comments')}</label>
+                <f:if condition="{filter.useful} == '0'">
+                    <label>{f:translate(key: 'dissatisfactionReason', extensionName : 'qc_comments')}</label>
+                </f:if>
+                <f:if condition="{filter.useful} == '1'">
+                    <label>{f:translate(key: 'satisfactionReason', extensionName : 'qc_comments')}</label>
+                </f:if>
                 <f:form.select property="commentReason"
                                options="{filter.commentsReasons}"
                                optionLabelField="title"
