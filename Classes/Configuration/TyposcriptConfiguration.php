@@ -143,6 +143,11 @@ class TyposcriptConfiguration
 
     }
 
+    public function getRecaptchaMode(){
+        return $this->settings['recaptcha']['recaptchaMode'] ?? '';
+
+    }
+
     /**
      * @return bool
      */

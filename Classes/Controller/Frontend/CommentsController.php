@@ -99,8 +99,9 @@ class CommentsController extends ActionController
         }
         $recaptchaConfig = [
             'enabled' => $this->typoscriptConfiguration->isRecaptchaEnabled(),
+            'recaptchaMode' => $this->typoscriptConfiguration->getRecaptchaMode(),
             'sitekey' => $this->typoscriptConfiguration->getRecaptchaSitekey(),
-            'secret' => $this->typoscriptConfiguration->getRecaptchaSecretKey()
+            'secret' => $this->typoscriptConfiguration->getRecaptchaSecretKey(),
         ];
         $reasonOptions = $this->typoscriptConfiguration->getReasonOptions($this->currentLanguage);
         $this->view->assignMultiple([
