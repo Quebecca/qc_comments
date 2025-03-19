@@ -343,6 +343,12 @@
 			<trans-unit id="spamMessage">
 				<target>Impossible de prouver que vous êtes un humain. Votre avis n’a pas pu être envoyé.</target>
 			</trans-unit>
+			<trans-unit id="error">
+				<target>erreur</target>
+			</trans-unit>
+			<trans-unit id="success">
+				<target>succes</target>
+			</trans-unit>
 			<trans-unit id="writeAtLeast">
 				<target>Veuillez écrire un message d'au moins</target>
 			</trans-unit>

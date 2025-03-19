@@ -62,18 +62,6 @@
     li {
         margin : 0;
     }
-    .icon-message {
-        margin-bottom : 0;
-        content: '';
-        display: inline-block;
-        width: 24px;
-        height: 24px;
-        background-image: url("../Icons/submittedSuccess.svg") ;
-        background-size: contain;
-        background-repeat: no-repeat;
-        vertical-align: middle;
-        margin-right : 1rem;
-    }
 }
 
 .spam-error-message {
@@ -83,18 +71,7 @@
     li {
         margin : 0;
     }
-    .icon-message {
-        margin-bottom : 0;
-        content: '';
-        display: inline-block;
-        width: 26px;
-        height: 24px;
-        background-image: url("../Icons/spamMessage.svg") ;
-        background-size: contain;
-        background-repeat: no-repeat;
-        vertical-align: middle;
-        margin-right : 1rem;
-    }
+
 }
 #maxExceeded {
     color: #CB381F;
@@ -162,18 +139,6 @@
         li {
             margin : 0;
         }
-        .icon-message {
-            margin-bottom : 0;
-            content: '';
-            display: inline-block;
-            width: 27px;
-            height: 24px;
-            background-image: url("../Icons/submittedSuccess.svg") ;
-            background-size: contain;
-            background-repeat: no-repeat;
-            vertical-align: middle;
-            margin-right : 1rem;
-        }
     }
 
     .spam-error-message {
@@ -182,18 +147,6 @@
         margin : 0;
         li {
             margin : 0;
-        }
-        .icon-message {
-            margin-bottom : 0;
-            content: '';
-            display: inline-block;
-            width: 33px;
-            height: 24px;
-            background-image: url("../Icons/spamMessage.svg") ;
-            background-size: contain;
-            background-repeat: no-repeat;
-            vertical-align: middle;
-            margin-right : 1rem;
         }
     }
 }

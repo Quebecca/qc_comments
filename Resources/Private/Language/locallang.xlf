@@ -348,6 +348,12 @@
 			<trans-unit id="spamMessage">
 				<source>We were unable to verify that you are a human. Your feedback could not be submitted.</source>
 			</trans-unit>
+			<trans-unit id="error">
+				<source>error</source>
+			</trans-unit>
+			<trans-unit id="success">
+				<source>success</source>
+			</trans-unit>
 			<trans-unit id="writeAtLeast">
 				<source>Please write a message of at least</source>
 			</trans-unit>
@@ -408,6 +414,7 @@
 			<trans-unit id="documentation.showFixedTechnicalProblems">
 				<source>To see the technical problems already fixed, click on the checkbox "Show fixed problems".</source>
 			</trans-unit>
+
 		</body>
 	</file>
 </xliff>
