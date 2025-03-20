@@ -40,5 +40,5 @@ CREATE TABLE tx_qccomments_domain_model_comment (
 );
 
 CREATE TABLE pages (
-    tx_select_comments_form_page_mode varchar(50) DEFAULT ''
+    tx_comments_form_mode varchar(50) DEFAULT ''
 );

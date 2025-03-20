@@ -237,10 +237,10 @@
             <trans-unit id="formSubmittedSuccessfully">
                 <source>Thank you for helping us improve our website. Your comments are important to us.</source>
             </trans-unit>
-            <trans-unit id="pages.tx_select_comments_form_page_mode">
+            <trans-unit id="pages.tx_comments_form_mode">
                 <source>Select comments section display mode</source>
             </trans-unit>
-            <trans-unit id="pages.tx_select_comments_form_page_mode.desc">
+            <trans-unit id="pages.tx_comments_form_mode.desc">
                 <source>By default, if the mode is not specified, the page inherits the mode from its parent page.</source>
             </trans-unit>
             <trans-unit id="pages.notSpecified">
