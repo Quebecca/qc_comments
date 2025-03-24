@@ -45,5 +45,6 @@
       "extension-key": "qc_comments",
       "web-dir": ".Build/Web"
     }
-  }
+  },
+  "minimum-stability": "beta"
 }
