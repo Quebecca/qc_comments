@@ -34,42 +34,20 @@ In the Fluid pages:
     <f:cObject typoscriptObjectPath="lib.commentForm" />
 
 ### Form Controls
-#### Recaptcha
-By default, the recaptcha control is disabled, you can enable it by using the Typoscript configuration :
+#### reCAPTCHA
+Then extension supports two modes of reCAPTCHA, Invisible reCAPTCHA and the visible reRECAPTCHA, by default the reCAPTCHA control is disabled, you can enable it by using the Typoscript configuration :
 
     plugin.tx_qccomments {
         settings {
             recaptcha {
-                // enabled = 1, disabled = 0
-                enabled = 1
-                // Your recpatcha site key
+                # '1' for enable the reCAPTCHA and '0' to disable it
+                enabled = 0
+                # visible or invisible
+                recaptchaMode =
+                # your reCAPTCHA sitekey
                 sitekey =
-            }
-        }
-    }
-
-#### Form validation
-You can also control the size of the submitted comments, by controlling the minimum and the maximum number of characters that a comment can contain.
-
-    plugin.tx_qccomments {
-        settings {
-            comments {
-                maxCharacters = 500
-                minCharacters = 2
-            }
-        }
-    }
-
-#### Anonymize sensitive information
-If you hope to hide the sensitive data from the submitted comments like email adresses or phone numbers, you can apply any patten you want by using the following configuration :
-
-    plugin.tx_qccomments {
-        settings {
-            comments {
-                 anonymizeComment {
-                    enabled = 1
-                    pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/
-                }
+                # your reCaptcha secret key
+                secret =
             }
         }
     }
@@ -96,26 +74,123 @@ By clicking the “Yes” button, the form is submitted, and a message will be d
 If the user clicks “No,” the form displays a text field and options to explain why the page was not useful.
 * Reporting a Technical Problem
 The user will also have the option to report a technical issue by clicking the “Report a Problem” link. In this case, the form displays a text field and options to select the type of problem encountered.
-Note: The options displayed in the form for the “Negative Comments” and “Report a Problem” sections can be configured in TypoScript:
+
+Note: The options displayed in the form sections should have a unique code and can be configured in TypoScript:
 
 
-    options {
-        en {
-            negative_reasons {
-                1 {
-                    code = NEGATIG_CODE1
-                    short_label = I can't find what i'm looking for
-                    long_label = I can't find what i'm looking for
+    settings {
+        options {
+        positive_section {
+        reasons {
+            1 {
+                code = POSITIVE_CODE1
+                fr {
+                    short_label = Contenu clair et complet
+                    long_label = Le contenu est clair et complet
                 }
-            }
-            reporting_problem {
-                1 {
-                    code = PROBLEM_CODE1 Eng
-                    short_label = problem with display
-                    long_label = There is a problem with the page display
+                en {
+                    short_label = Content up to date
+                    long_label = Content is clear and complete
                 }
-            }
         }
+            2 {
+              code = POSITIVE_CODE2
+              fr {
+                short_label = Renseignements à jour
+                long_label =  Les renseignements sont à jour
+              }
+              en {
+                short_label = Information is up to date
+                long_label = Information is up to date
+              }
+            }
+      }
+      maxCharacters = 200
+      #minCharacters = 0
+      anonymizeComment {
+        enabled = 1
+        pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/
+      }
+    }
+    negative_section {
+      reasons {
+        1 {
+          code = NEGATIVE_CODE1
+          fr {
+            short_label = Information introuvable
+            long_label = Je ne trouve pas ce que je cherche
+          }
+          en {
+            short_label = Information not foundable
+            long_label = I couldn’t find what I was looking for
+          }
+
+        }
+        2 {
+          code = NEGATIVE_CODE2
+          fr {
+            short_label = Information confue
+            long_label = L’information présentée porte à confusion
+          }
+          en {
+            short_label = Confusing information
+            long_label = The information is unclear
+          }
+
+        }
+      }
+      maxCharacters = 200
+      minCharacters = 0
+      anonymizeComment {
+        enabled = 1
+        pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/
+      }
+    }
+    reportProblem_section {
+      reasons {
+        1 {
+          code = PROBLEM_CODE1
+          fr {
+            short_label = Problème d’affichage
+            long_label = Il y a un problème avec l’affichage de la page
+          }
+          en {
+            short_label = Display problem
+            long_label = There is a problem with the page display
+          }
+
+        }
+        2 {
+          code = PROBLEM_CODE2
+          fr {
+            short_label = Lien brisé
+            long_label = Un lien ne fonctionne pas ou n’est plus à jour
+          }
+          en {
+            short_label = Broken link
+            long_label = There is a broken or outdated link
+          }
+
+        }
+      }
+      maxCharacters = 500
+      minCharacters = 0
+      anonymizeComment {
+        enabled = 1
+        pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/
+      }
+    }
+
+    }
+
+Notes :
+* the option maxCharacters and minCharacters are used to control the allowed number of character in a comment for each section.
+* For each comment section, If you hope to hide the sensitive data from the submitted comments like email adresses or phone numbers, you can apply any patten you want by using the following configuration :
+
+
+    anonymizeComment {
+        enabled = 1
+        pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/
     }
 
 
@@ -233,44 +308,23 @@ Dans les pages Fluid :
 
 ### Les contrôles de formulaire
 #### Recaptcha
-Par défaut, le control recaptcha est désactivé, vous pouvez l'activer et le configurer en utilisant la configuration suivante :
-
-     plugin.tx_qccomments {
-            settings {
-                recaptcha {
-                    // enabled = 1, disabled = 0
-                    enabled = 1
-                    // Your recpatcha site key
-                    sitekey =
-                }
-            }
-     }
-
-#### Partie validation de formulaire
-L'extension vous permet aussi de controller la taille des commentaires envoyés par les utilisateurs, en spécifiant le nombre minimum et maximum des caractères autorisé à chaque commentaire envoyé :
+L'extension supporte deux modes de reCAPTCHA, Invisible et le reCAPTCHA visible, par défaut le control reCAPTCHA est désactivé, vous pouvez l'activer et le configurer en utilisant la configuration suivante :
 
     plugin.tx_qccomments {
         settings {
-            comments {
-                maxCharacters = 500
-                minCharacters = 2
+            recaptcha {
+                # '1' pour activer le reCaptcha, '0' pour le desactiver
+                enabled = 0
+                # visible ou invisible
+                recaptchaMode =
+                # sitekey de reCAPTCHA
+                sitekey =
+                # secret de reCAPTCHA
+                secret =
             }
         }
     }
 
-#### Anonymiser les informations sensibles
-Si vous souhaitez cacher les informations qui sont considérées sensibles pour vous dans les commentaires envoyés par les utilisateurs, vous pouvez appliquer un pattern qui permet de filtrer le contenu des commentaires en cachant les données sensibles :
-
-    plugin.tx_qccomments {
-        settings {
-            comments {
-                 anonymizeComment {
-                    enabled = 1
-                    pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/
-                }
-            }
-        }
-    }
 
 #### Le control de Spam
 L'extension vous fournit un contrôle de spam avec trois différentes méthodes :
@@ -298,23 +352,122 @@ Le plugin des commentaires en FE porte 3 différent type de commentaires :
 Note : les options affichées dans le formulaire pour la section "Commentaires négatifs" et "Signaler un problème" peuvent être configurés
 en Typoscript :
 
+
+    settings {
         options {
-            fr {
-                negative_reasons {
-                1 {
-                    code = NEGATIG_CODE1
-                    short_label = Je ne trouve pas ce que je cherche
-                    long_label = Je ne trouve pas ce que je cherche
-                    }
+        positive_section {
+        reasons {
+            1 {
+                code = POSITIVE_CODE1
+                fr {
+                    short_label = Contenu clair et complet
+                    long_label = Le contenu est clair et complet
                 }
-                reporting_problem {
-                1 {
-                    code = PROBLEM_CODE1
-                    short_label = problème avec l’affichage
-                    long_label = Il y a un problème avec l’affichage de la page
+                en {
+                    short_label = Content up to date
+                    long_label = Content is clear and complete
                 }
-            }
         }
+            2 {
+              code = POSITIVE_CODE2
+              fr {
+                short_label = Renseignements à jour
+                long_label =  Les renseignements sont à jour
+              }
+              en {
+                short_label = Information is up to date
+                long_label = Information is up to date
+              }
+            }
+      }
+      maxCharacters = 200
+      #minCharacters = 0
+      anonymizeComment {
+        enabled = 1
+        pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/
+      }
+    }
+    negative_section {
+      reasons {
+        1 {
+          code = NEGATIVE_CODE1
+          fr {
+            short_label = Information introuvable
+            long_label = Je ne trouve pas ce que je cherche
+          }
+          en {
+            short_label = Information not foundable
+            long_label = I couldn’t find what I was looking for
+          }
+
+        }
+        2 {
+          code = NEGATIVE_CODE2
+          fr {
+            short_label = Information confue
+            long_label = L’information présentée porte à confusion
+          }
+          en {
+            short_label = Confusing information
+            long_label = The information is unclear
+          }
+
+        }
+      }
+      maxCharacters = 200
+      minCharacters = 0
+      anonymizeComment {
+        enabled = 1
+        pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/
+      }
+    }
+    reportProblem_section {
+      reasons {
+        1 {
+          code = PROBLEM_CODE1
+          fr {
+            short_label = Problème d’affichage
+            long_label = Il y a un problème avec l’affichage de la page
+          }
+          en {
+            short_label = Display problem
+            long_label = There is a problem with the page display
+          }
+
+        }
+        2 {
+          code = PROBLEM_CODE2
+          fr {
+            short_label = Lien brisé
+            long_label = Un lien ne fonctionne pas ou n’est plus à jour
+          }
+          en {
+            short_label = Broken link
+            long_label = There is a broken or outdated link
+          }
+
+        }
+      }
+      maxCharacters = 500
+      minCharacters = 0
+      anonymizeComment {
+        enabled = 1
+        pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/
+      }
+    }
+
+    }
+
+Notes :
+* l'option maxCharacters et minCharacters, sont utilisées pour configurer le nombre maximum de caractères autorisé dans un commentaire.
+* Pour chaque section, si vous souhaitez cacher les informations qui sont considérées sensibles pour vous dans les commentaires envoyés par les utilisateurs, vous pouvez appliquer un pattern qui permet de filtrer le contenu des commentaires en cachant les données sensibles :
+
+
+    anonymizeComment {
+        enabled = 1
+        pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/
+    }
+
 
 ## Backend module
 Ce module vient avec quatre tabulations, avec la possibilité d'exporter les données affichées en fichier XLS.
