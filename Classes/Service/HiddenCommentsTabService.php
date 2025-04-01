@@ -33,7 +33,7 @@ class HiddenCommentsTabService extends QcBackendModuleService
     public function __construct()
     {
         parent::__construct();
-        $this->showCommentsForHiddenPage = $this->tsConfiguration->showForHiddenPage("deletedComments");
+        $this->showCommentsForHiddenPage = $this->tsConfiguration->showForHiddenPage("hiddenComments");
     }
 
     /**
