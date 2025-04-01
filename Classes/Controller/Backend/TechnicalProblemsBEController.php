@@ -56,10 +56,16 @@ class TechnicalProblemsBEController extends QcCommentsBEController
            if($data['tooMuchResults'] === true){
                 $message = $this->localizationUtility
                     ->translate(self::QC_LANG_FILE . 'tooMuchResults',
-                        null, (array)[$data['numberOfSubPages'], $data['maxRecords']]);
+                        null, [$data['maxRecords']]);
+                $this->addFlashMessage($message, null, AbstractMessage::WARNING);
+           }
+
+            if($data['tooMuchPages'] === true){
+                $message = $this->localizationUtility
+                    ->translate(self::QC_LANG_FILE . 'tooMuchPages',
+                        null, [$data['numberOfSubPages']]);
                 $this->addFlashMessage($message, null, AbstractMessage::WARNING);
             }
-
 
             $this->moduleTemplate
              ->assignMultiple(

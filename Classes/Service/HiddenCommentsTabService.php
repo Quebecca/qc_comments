@@ -67,8 +67,7 @@ class HiddenCommentsTabService extends QcBackendModuleService
                 $this->showCommentsForHiddenPage
             );
         $comments = $records['rows'];
-        $tooMuchResults = $records['count'] > $maxRecords
-                            || $tooMuchPages;
+        $tooMuchResults = $records['count'] > $maxRecords;
         $pagesId = $pages_ids;
         $currentPageId = $this->root_id;
         $commentHeaders = $this->getHeaders();
@@ -78,6 +77,7 @@ class HiddenCommentsTabService extends QcBackendModuleService
             'pagesId',
             'currentPageId',
             'tooMuchResults',
+            'tooMuchPages',
             'numberOfSubPages',
             'maxRecords'
         );
