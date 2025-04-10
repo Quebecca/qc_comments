@@ -168,8 +168,8 @@ class CommentsFilter extends Filter
     public function getUsabilityCriteria(): string
     {
         $criteria =  " useful like '".$this->getUseful()."' and useful not like 'NA'";
-        // we apply the reason only if the comment is negative or positive
-        if($this->getUseful() == '0' || $this->getUseful() == '1'){
+        // we apply the reason only if the comment is negative or positive and the reason comment is selected
+        if($this->getCommentReason() != "%" && ($this->getUseful() == '0' || $this->getUseful() == '1')){
             $criteria .= "AND reason_code like '".$this->getCommentReason()."'";
         }
         return $criteria;
