@@ -6,16 +6,17 @@ plugin.tx_qccomments {
     }
 
     settings {
-        comments {
-            // if empty default will be 500
-            maxCharacters = 500
-            minCharacters = 2
-            anonymizeComment {
-                enabled = 1
-                pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/
-            }
-
+      comments {
+        anonymizeComment {
+          enabled = 1
+          # 0 for last 4 chars
+          # 1 for complete replace
+          anonymizeMode = 1
+          anonymizedEmailReplacement = EMAIL-REDACTED
+          anonymizedNumberReplacement = NUMBER-REDACTED
+          pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b(?:\d[\s-]?){9,15}(?=\D|$)/
         }
+      }
         options {
         negative_reasons {
           1 {
