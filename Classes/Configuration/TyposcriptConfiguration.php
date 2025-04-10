@@ -169,6 +169,30 @@ class TyposcriptConfiguration
     }
 
     /**
+     * 1 => replace the personal data by the last 4 charts
+     * 0 => replace the personal data by the given replacement string
+     * @return int
+     */
+    public function getAnonymizationMode(): int {
+        return intval($this->settings['comments']['anonymizeComment']['anonymizeMode']) ?? 0;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAnonymizedEmailReplacement() : string {
+        return $this->settings['comments']['anonymizeComment']['anonymizedEmailReplacement'] ?? '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getAnonymizedNumberReplacement() : string {
+        return $this->settings['comments']['anonymizeComment']['anonymizedNumberReplacement'] ?? '';
+    }
+
+
+    /**
      * @return bool
      */
     public function isAnonymizeCommentEnabled() : bool {

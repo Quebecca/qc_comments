@@ -258,10 +258,28 @@ class CommentsController extends ActionController
     function anonymizeComment($comment): string
     {
         $pattern = $this->typoscriptConfiguration->getAnonymizationCommentPattern();
-        return preg_replace_callback($pattern, function ($match) {
-            $anonymatInfo = substr($match[0], strlen($match[0]) - 4);
-            return '[...'.$anonymatInfo.' ]';
-        }, $comment);
+        $anonymizeMode = $this->typoscriptConfiguration->getAnonymizationMode();
+        if($anonymizeMode == 0){
+            return preg_replace_callback($pattern, function ($match) {
+                $anonymatInfo = substr($match[0], strlen($match[0]) - 4);
+                return ' '.$anonymatInfo.' ';
+            }, $comment);
+        }
+        else if($anonymizeMode == 1){
+            $emailReplacement = $this->typoscriptConfiguration->getAnonymizedEmailReplacement();
+            $numberReplacement = $this->typoscriptConfiguration->getAnonymizedNumberReplacement();
+
+            return preg_replace_callback($pattern, function ($match) use ($emailReplacement, $numberReplacement) {
+                $value = $match[0];
+                // If it's an email
+                if (filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                    return  ' '.$emailReplacement.' ';
+                }
+                // Otherwise assume it's a number
+                return ' '.$numberReplacement.' ';
+            }, $comment);
+        }
+        return $comment;
     }
 
     /**
