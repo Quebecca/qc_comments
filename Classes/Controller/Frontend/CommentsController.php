@@ -262,7 +262,7 @@ class CommentsController extends ActionController
         if($anonymizeMode == 0){
             return preg_replace_callback($pattern, function ($match) {
                 $anonymatInfo = substr($match[0], strlen($match[0]) - 4);
-                return ' '.$anonymatInfo.' ';
+                return ' [...'.$anonymatInfo.'] ';
             }, $comment);
         }
         else if($anonymizeMode == 1){
