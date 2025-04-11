@@ -107,10 +107,6 @@ Note: The options displayed in the form sections should have a unique code and c
       }
       maxCharacters = 200
       #minCharacters = 0
-      anonymizeComment {
-        enabled = 1
-        pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/
-      }
     }
     negative_section {
       reasons {
@@ -141,10 +137,6 @@ Note: The options displayed in the form sections should have a unique code and c
       }
       maxCharacters = 200
       minCharacters = 0
-      anonymizeComment {
-        enabled = 1
-        pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/
-      }
     }
     reportProblem_section {
       reasons {
@@ -175,10 +167,6 @@ Note: The options displayed in the form sections should have a unique code and c
       }
       maxCharacters = 500
       minCharacters = 0
-      anonymizeComment {
-        enabled = 1
-        pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/
-      }
     }
 
     }
@@ -186,12 +174,21 @@ Note: The options displayed in the form sections should have a unique code and c
 Notes :
 * the option maxCharacters and minCharacters are used to control the allowed number of character in a comment for each section.
 * For each comment section, If you hope to hide the sensitive data from the submitted comments like email adresses or phone numbers, you can apply any patten you want by using the following configuration :
+* The anonymize function support two mode of anonymization, the mode '0' aims to replace the sensitive data by the last four characters, the mode '1' aims to use the regex to replace the sensitive data by the given string.
 
-
-    anonymizeComment {
-        enabled = 1
-        pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/
-    }
+      comments {
+          anonymizeComment {
+            enabled = 1
+            # 0 for last 4 chars
+            # 1 for complete replace
+            anonymizeMode = 1
+            anonymizedEmailReplacement = EMAIL-REDACTED
+            anonymizedNumberReplacement = NUMBER-REDACTED
+            # This regex is used to anonymize emails and 9-15 digit numbers
+            # example 123-456-7890 => NUMBER-REDACTED
+            pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b(?:\d[\s-]?){9,15}(?=\D|$)/
+          }
+      }
 
 
 ## Backend module
@@ -382,10 +379,6 @@ en Typoscript :
       }
       maxCharacters = 200
       #minCharacters = 0
-      anonymizeComment {
-        enabled = 1
-        pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/
-      }
     }
     negative_section {
       reasons {
@@ -416,10 +409,6 @@ en Typoscript :
       }
       maxCharacters = 200
       minCharacters = 0
-      anonymizeComment {
-        enabled = 1
-        pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/
-      }
     }
     reportProblem_section {
       reasons {
@@ -450,23 +439,28 @@ en Typoscript :
       }
       maxCharacters = 500
       minCharacters = 0
-      anonymizeComment {
-        enabled = 1
-        pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/
-      }
     }
 
     }
 
 Notes :
 * l'option maxCharacters et minCharacters, sont utilisées pour configurer le nombre maximum de caractères autorisé dans un commentaire.
-* Pour chaque section, si vous souhaitez cacher les informations qui sont considérées sensibles pour vous dans les commentaires envoyés par les utilisateurs, vous pouvez appliquer un pattern qui permet de filtrer le contenu des commentaires en cachant les données sensibles :
+* La fonction d'anonymisation prend en charge deux modes d'anonymisation, le mode '0' permet de remplacer les données sensibles par les quatre derniers caractères, le mode '1' permet d'utiliser l'expression régulière pour remplacer les données sensibles par la chaîne donnée.
 
 
-    anonymizeComment {
-        enabled = 1
-        pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/
-    }
+      comments {
+          anonymizeComment {
+            enabled = 1
+            # 0 for last 4 chars
+            # 1 for complete replace
+            anonymizeMode = 1
+            anonymizedEmailReplacement = COURRIEL-ANONYME
+            anonymizedNumberReplacement = NOMBRE-ANONYME
+            # Ce regexe est utilisé pour anonymiser les courriels et les nombres de 9 à 15 chiffres
+            # exemple 123-456-7890 => NOMBRE-ANONYME
+            pattern = /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|\b(?:\d[\s-]?){9,15}(?=\D|$)/
+          }
+      }
 
 
 ## Backend module
