@@ -47,7 +47,7 @@
             <div class="panel-heading">
                 {pageUid} - {item.title}
             </div>
-            <f:render partial="Tables/TechnicalProblemsTable" arguments="{rows:'{item.records}', headers:commentHeaders, isFixButtonEnabled:isFixButtonEnabled}"/>
+            <f:render partial="Tables/TechnicalProblemsTable" arguments="{rows:'{item.records}', headers:commentHeaders, isFixButtonEnabled:isFixButtonEnabled, isDeleteButtonEnabled:isDeleteButtonEnabled}"/>
         </div>
     </f:for>
 </f:section>

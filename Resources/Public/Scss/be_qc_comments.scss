@@ -13,6 +13,11 @@
 .no-comment {
   padding: 6px;
 }
-table .comment-row {
-  width : 60%;
+table {
+    .comment-row {
+        width : 60%;
+    }
+    .technicalProblems-row {
+        width : 36%;
+    }
 }

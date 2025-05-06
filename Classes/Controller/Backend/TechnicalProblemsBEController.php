@@ -3,6 +3,7 @@
 namespace Qc\QcComments\Controller\Backend;
 
 use Qc\QcComments\Domain\Filter\TechnicalProblemsFilter;
+use Qc\QcComments\Service\CommentsTabService;
 use Qc\QcComments\Service\TechnicalProblemsTabService;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Messaging\AbstractMessage;
@@ -66,7 +67,6 @@ class TechnicalProblemsBEController extends QcCommentsBEController
                         null, [$data['numberOfSubPages']]);
                 $this->addFlashMessage($message, null, AbstractMessage::WARNING);
             }
-
             $this->moduleTemplate
              ->assignMultiple(
                  [
@@ -75,7 +75,8 @@ class TechnicalProblemsBEController extends QcCommentsBEController
                      'comments' => $data['comments'],
                      'pagesId' => $data['pagesId'],
                      'currentPageId' => $data['currentPageId'],
-                     'isFixButtonEnabled' => $this->qcBeModuleService->isFixButtonEnabled()
+                     'isFixButtonEnabled' => $this->qcBeModuleService->isFixButtonEnabled(),
+                     'isDeleteButtonEnabled' => $this->qcBeModuleService->isDeleteButtonEnabled('technicalProblems')
                  ]
              );
         }
@@ -100,6 +101,21 @@ class TechnicalProblemsBEController extends QcCommentsBEController
         return new ForwardResponse('technicalProblems');
     }
 
+    /**
+     * This function is used to delete the comment (deleted = 1)
+     * @return ForwardResponse
+     * @throws AspectNotFoundException
+     */
+    public function deleteTechnicalProblemsAction(): ForwardResponse
+    {
+        $this->qcBeModuleService
+            = GeneralUtility::makeInstance(CommentsTabService::class);
+        $recordUid = $this->request->getArguments()['commentUid'];
+        if($recordUid){
+            $this->qcBeModuleService->deleteComment($recordUid);
+        }
+        return new ForwardResponse('technicalProblems');
+    }
 
     /**
      * This function is used to export technical problems records on a csv file

@@ -18,13 +18,15 @@
                     <f:for as="header" key="col" each="{headers}" iteration="iterator">
                         <th>{header}</th>
                     </f:for>
+                    <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 <f:for as="row" each="{rows}" iteration="iterator">
                     <tr class="t3js-entity{f:if(condition:iterator.isFirst, then:' firstcol', else:'')}">
                         <td>{row.date_hour}</td>
-                        <td >
+                        <td class="technicalProblems-row">
                             <div class="text-hover">
                                 {row.comment}
                             </div>
@@ -62,6 +64,25 @@
                                             </f:form>
                                         </f:then>
                                     </f:if>
+                                </f:else>
+                            </f:if>
+                        </td>
+                        <td>
+                            <f:if condition="{row.deleted} == 1">
+                                <f:then>
+                                    <span style="color:red" class="font-weight-bold">{f:translate(key:'deleted')}</span>
+                                </f:then>
+                                <f:else>
+                                    <f:if condition="{isDeleteButtonEnabled}">
+                                        <f:then>
+                                            <f:form action="deleteTechnicalProblems">
+                                                <input type="hidden" name="commentUid" value="{row.recordUid}">
+                                                <f:form.submit value="{f:translate(key:'delete')}" class="btn btn-default"/>
+                                            </f:form>
+                                        </f:then>
+
+                                    </f:if>
+
                                 </f:else>
                             </f:if>
                         </td>

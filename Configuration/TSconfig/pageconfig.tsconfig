@@ -11,6 +11,8 @@ mod{
           showRecordsForHiddenPages = 1
           // Enable Fix button
           enableFixButton = 1
+          // Enable "Delete" Button
+          enableDeleteButton = 1
         }
         comments {
           // Sort type (by date)
