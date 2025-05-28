@@ -18,7 +18,6 @@ $(document).ready(function () {
       fail: $('#exporting-fail').data('tr-label'),
       failMessage: $('#exporting-fail-message').data('tr-label')
     };
-console.log(exportLabels);
     Modal.advanced({
       title: exportLabels.progress,
       content: exportLabels.progressMessage,
