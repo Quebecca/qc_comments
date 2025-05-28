@@ -414,7 +414,24 @@
 			<trans-unit id="documentation.showFixedTechnicalProblems">
 				<source>To see the technical problems already fixed, click on the checkbox "Show fixed problems".</source>
 			</trans-unit>
-
+			<trans-unit id="exporting-progress">
+				<source>Export in progress..</source>
+			</trans-unit>
+			<trans-unit id="exporting-progress-message">
+				<source>Please wait while we prepare your export file…</source>
+			</trans-unit>
+			<trans-unit id="exporting-success">
+				<source>Export completed</source>
+			</trans-unit>
+			<trans-unit id="exporting-success-message">
+				<source>The file has been downloaded successfully.</source>
+			</trans-unit>
+			<trans-unit id="exporting-fail">
+				<source>Error</source>
+			</trans-unit>
+			<trans-unit id="exporting-fail-message">
+				<source>The export failed.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

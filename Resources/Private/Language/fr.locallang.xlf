@@ -409,6 +409,24 @@
 			<trans-unit id="documentation.showFixedTechnicalProblems">
 				<target>Pour voir les problèmes techniques déjà traités, cliquer sur la case à cocher "Afficher les problèmes techniques traités".</target>
 			</trans-unit>
+			<trans-unit id="exporting-progress">
+                <target>Exportation en cours..</target>
+            </trans-unit>
+            <trans-unit id="exporting-progress-message">
+                <target>Veuillez patienter pendant que nous préparons votre fichier d’exportation…</target>
+            </trans-unit>
+            <trans-unit id="exporting-success">
+                <target>Exportation réussie</target>
+            </trans-unit>
+            <trans-unit id="exporting-success-message">
+                <target>Le fichier a été téléchargé</target>
+            </trans-unit>
+            <trans-unit id="exporting-fail">
+                <target>Erreur</target>
+            </trans-unit>
+            <trans-unit id="exporting-fail-message">
+                <target>L’exportation a échoué</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
