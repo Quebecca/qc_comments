@@ -419,13 +419,13 @@
                 <target>Exportation réussie</target>
             </trans-unit>
             <trans-unit id="exporting-success-message">
-                <target>Le fichier a été téléchargé</target>
+                <target>Le fichier a été téléchargé.</target>
             </trans-unit>
             <trans-unit id="exporting-fail">
                 <target>Erreur</target>
             </trans-unit>
             <trans-unit id="exporting-fail-message">
-                <target>L’exportation a échoué</target>
+                <target>L’exportation a échoué.</target>
             </trans-unit>
         </body>
     </file>
