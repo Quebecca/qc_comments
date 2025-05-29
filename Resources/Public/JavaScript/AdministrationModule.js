@@ -88,23 +88,21 @@ $(document).ready(function () {
             var link = document.createElement('a');
             link.href = response.response.url;
             link.click();
-            setTimeout(function () {
-              Modal.dismiss();
-              document.removeEventListener('keydown', escHandler);
-              Modal.show(
-                exportLabels.success,
-                exportLabels.successMessage,
-                Severity.info,
-                [
-                  {
-                    text: 'OK',
-                    active: true,
-                    btnClass: 'btn-primary',
-                    trigger: () => Modal.dismiss()
-                  }
-                ]
-              );
-            }, 2000);
+            Modal.dismiss();
+            document.removeEventListener('keydown', escHandler);
+            Modal.show(
+              exportLabels.success,
+              exportLabels.successMessage,
+              Severity.info,
+              [
+                {
+                  text: 'OK',
+                  active: true,
+                  btnClass: 'btn-primary',
+                  trigger: () => Modal.dismiss()
+                }
+              ]
+            );
           }
         });
       })
