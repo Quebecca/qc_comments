@@ -120,20 +120,9 @@
 
 </f:form>
 <f:section name="buttons">
-    <div class="d-none" id="exporting-progress" data-tr-label="{f:translate(key: 'exporting-progress')}"></div>
-    <div class="d-none" id="exporting-progress-message" data-tr-label="{f:translate(key: 'exporting-progress-message')}"></div>
-    <div class="d-none" id="exporting-success" data-tr-label="{f:translate(key: 'exporting-success')}"></div>
-    <div class="d-none" id="exporting-success-message" data-tr-label="{f:translate(key: 'exporting-success-message')}"></div>
-    <div class="d-none" id="exporting-fail" data-tr-label="{f:translate(key: 'exporting-fail')}"></div>
-    <div class="d-none" id="exporting-fail-message" data-tr-label="{f:translate(key: 'exporting-fail-message')}"></div>
-    <f:form.submit value="{f:translate(key: 'filter.submit')}" class="btn btn-default"/>
-
-    <f:form.button type="submit" name="operation" value="reset-filters" class="btn btn-default">
-        {f:translate(key:'filter.reset', extensionName : 'qc_comments')}
-    </f:form.button>
-    <button class="btn btn-default" data-action="{action}"  id="exportBtn">
-        {csvButton.icon -> f:format.raw()} {f:translate(key:'links.exportCsv', extensionName : 'qc_comments')}
-    </button>
+    <f:section name="buttons">
+        <f:render partial="Filters/FilterActionButtons" arguments="{_all}"/>
+    </f:section>
 </f:section>
 
 
