@@ -88,14 +88,20 @@ class CommentsController extends ActionController
      */
     public function showAction(array $args = []): ResponseInterface
     {
-        $commentLengthconfig = [
-            'maxCharacters' => $this->typoscriptConfiguration->getCommentsMaxCharacters(),
-            'minCharacters' => $this->typoscriptConfiguration->getCommentsMinCharacters()
-        ];
+        $commentTypes = ['positive_section', 'negative_section', 'reportProblem_section'];
+        $commentLengthconfig = [];
+
+        foreach ($commentTypes as $type) {
+            $commentLengthconfig[$type] = [
+                'maxCharacters' => $this->typoscriptConfiguration->getCommentsMaxMinLength($type, 'maxCharacters'),
+                'minCharacters' => $this->typoscriptConfiguration->getCommentsMaxMinLength($type, 'minCharacters'),
+            ];
+        }
         $recaptchaConfig = [
             'enabled' => $this->typoscriptConfiguration->isRecaptchaEnabled(),
+            'recaptchaMode' => $this->typoscriptConfiguration->getRecaptchaMode(),
             'sitekey' => $this->typoscriptConfiguration->getRecaptchaSitekey(),
-            'secret' => $this->typoscriptConfiguration->getRecaptchaSecretKey()
+            'secret' => $this->typoscriptConfiguration->getRecaptchaSecretKey(),
         ];
         $reasonOptions = $this->typoscriptConfiguration->getReasonOptions($this->currentLanguage);
         $this->view->assignMultiple([
@@ -138,9 +144,9 @@ class CommentsController extends ActionController
         if ($comment) {
             $commentType = '';
             switch ($comment->getUseful()){
-                case '0' : $commentType = 'negative_reasons';break;
-                case '1' : $commentType = 'positif_reasons';break;
-                case 'NA' : $commentType = 'reporting_problem';break;
+                case '0' : $commentType = 'negative_section';break;
+                case '1' : $commentType = 'positive_section';break;
+                case 'NA' : $commentType = 'reportProblem_section';break;
             }
             $selectedReasonOption = $this->getSelectedReasonOption($commentType,$comment->getReasonCode());
 
@@ -160,10 +166,11 @@ class CommentsController extends ActionController
                     )
                 );
             }
+
             $comment->setComment(
                 substr(
                     $comment->getComment(), 0,
-                    $this->typoscriptConfiguration->getCommentsMaxCharacters()
+                    $this->typoscriptConfiguration->getCommentsMaxMinLength($commentType, 'maxCharacters')
                 )
             );
             $formUpdated = false;
@@ -174,6 +181,9 @@ class CommentsController extends ActionController
                 $existingComment= $this->commentsRepository->findByUid(intval($comment->getSubmittedFormUid()));
                 if($existingComment){
                     $existingComment->setComment($comment->getComment());
+                    $existingComment->setReasonShortLabel($comment->getReasonShortLabel());
+                    $existingComment->setReasonLongLabel($comment->getReasonLongLabel());
+                    $existingComment->setReasonCode($comment->getReasonCode());
                     $this->commentsRepository->update($existingComment);
                 }
                 else{
@@ -248,10 +258,28 @@ class CommentsController extends ActionController
     function anonymizeComment($comment): string
     {
         $pattern = $this->typoscriptConfiguration->getAnonymizationCommentPattern();
-        return preg_replace_callback($pattern, function ($match) {
-            $anonymatInfo = substr($match[0], strlen($match[0]) - 4);
-            return '[...'.$anonymatInfo.' ]';
-        }, $comment);
+        $anonymizeMode = $this->typoscriptConfiguration->getAnonymizationMode();
+        if($anonymizeMode == 0){
+            return preg_replace_callback($pattern, function ($match) {
+                $anonymatInfo = substr($match[0], strlen($match[0]) - 4);
+                return ' [...'.$anonymatInfo.'] ';
+            }, $comment);
+        }
+        else if($anonymizeMode == 1){
+            $emailReplacement = $this->typoscriptConfiguration->getAnonymizedEmailReplacement();
+            $numberReplacement = $this->typoscriptConfiguration->getAnonymizedNumberReplacement();
+
+            return preg_replace_callback($pattern, function ($match) use ($emailReplacement, $numberReplacement) {
+                $value = $match[0];
+                // If it's an email
+                if (filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                    return  ' '.$emailReplacement.' ';
+                }
+                // Otherwise assume it's a number
+                return ' '.$numberReplacement.' ';
+            }, $comment);
+        }
+        return $comment;
     }
 
     /**

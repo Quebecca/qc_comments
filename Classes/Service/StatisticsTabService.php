@@ -36,19 +36,19 @@ class StatisticsTabService extends QcBackendModuleService
     {
         $pages_ids = $this->commentsRepository->getPageIdsList();
         $currentPageId = $this->root_id;
-        $maxRecords = $this->tsConfiguration->getMaxRecords("statistics");
+        $maxPages = $this->tsConfiguration->getNumberOfSubPages("statistics");
         $resultData = $this->commentsRepository
                         ->getStatistics(
                             $pages_ids,
-                            $maxRecords,
+                            $maxPages,
                             $this->showStatisticsForHiddenPage
                         );
         $formattedData = $this->statisticsDataFormatting($resultData);
-        $tooMuchResults = count($resultData) > $maxRecords;
+        $tooMuchResults = count($resultData) > $maxPages;
         $headers = $this->getHeaders();
         return [
             'tooMuchResults' => $tooMuchResults,
-            'maxRecords' => $maxRecords,
+            'maxRecords' => $maxPages,
             'headers' => $headers,
             'rows' => $formattedData,
             'pagesId' => $pages_ids,
@@ -214,7 +214,6 @@ class StatisticsTabService extends QcBackendModuleService
 
     /**
      * @param Filter $filter
-     * @param int $currentPageId
      * @return Response
      */
     public function exportStatisticsData(Filter  $filter): Response

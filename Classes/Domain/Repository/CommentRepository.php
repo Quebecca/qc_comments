@@ -103,8 +103,8 @@ class CommentRepository extends Repository
         $ids_csv = implode(',', $ids_list);
         $constrains['joinCond'] = " p.uid = uid_orig $this->date_criteria $this->lang_criteria";
         $constrains['whereClause'] = " p.uid in ($ids_csv)";
-        $constrains['joinCond'] .= " AND ". $this->filter->getUsibiltyCriteria();
-        if($this->filter->getUsibiltyCriteria() == " useful like 'NA'"){
+        $constrains['joinCond'] .= " AND ". $this->filter->getUsabilityCriteria();
+        if($this->filter->getUsabilityCriteria() == " useful like 'NA'"){
             $constrains['user'] = 'fixed_by_user_uid';
         }
         else {
@@ -185,7 +185,8 @@ class CommentRepository extends Repository
                 $count++;
             }
             if($limit == false || $count < $limit ){
-                $item['reason_short_label'] =  $this->typoscriptConfiguration->getOptionByCodeFrBE($item['reason_code']);
+                $item['reason_short_label'] =  $this->typoscriptConfiguration
+                    ->getOptionByCodeFrBE($item['reason_code']);
                 $rows[$item['uid']]['records'][] = $item;
                 $rows[$item['uid']]['title'] = $item['title'];
             }
@@ -201,6 +202,7 @@ class CommentRepository extends Repository
      * This function is used to get the number of records by the depth for BE rendering verification
      * @param string $constraint
      * @return int
+     * @throws \Doctrine\DBAL\Exception
      */
     public function getListCount(string $constraint  = ''): int
     {
@@ -299,6 +301,7 @@ class CommentRepository extends Repository
      * This function is used to get the number of technical problems by page
      * @param $pageUid
      * @return int|mixed
+     * @throws \Doctrine\DBAL\Exception
      */
     public function getCountTechnicalProblemsByPageUid($pageUid){
         $queryBuilder = $this->generateQueryBuilder();
@@ -320,6 +323,7 @@ class CommentRepository extends Repository
      * This function is used to get the average dissatisfaction by page
      * @param $pageUid
      * @return float
+     * @throws \Doctrine\DBAL\Exception
      */
     public function getDissatisfactionAvg($pageUid) : float{
         $queryBuilder = $this->generateQueryBuilder();

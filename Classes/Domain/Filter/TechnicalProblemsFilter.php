@@ -94,7 +94,7 @@ class TechnicalProblemsFilter extends Filter
     /**
      * @return string
      */
-    public function getUsibiltyCriteria() :string {
+    public function getUsabilityCriteria() :string {
         return " useful like 'NA'";
     }
 

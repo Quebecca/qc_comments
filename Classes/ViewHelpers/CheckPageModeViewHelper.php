@@ -40,12 +40,12 @@ class CheckPageModeViewHelper extends AbstractViewHelper
         $data = BackendUtility::getRecord(
             'pages',
             $pageUid,
-            'uid,pid,tx_select_comments_form_page_mode'
+            'uid,pid,tx_comments_form_mode'
         );
         $enabledMode = ['mode 1', 'mode 2'];
         $disabledMode = ['mode 3', 'mode 4'];
         $inheritanceMode = ['', 'not specified'];
-        $currentMode = $data['tx_select_comments_form_page_mode'];
+        $currentMode = $data['tx_comments_form_mode'];
 
         if (in_array($currentMode, $enabledMode)
             || in_array($currentMode, $disabledMode))
@@ -59,8 +59,8 @@ class CheckPageModeViewHelper extends AbstractViewHelper
             $data = BackendUtility::getRecord(
                 'pages',
                 $pageUid,
-                'uid,pid,tx_select_comments_form_page_mode');
-            $currentMode = $data['tx_select_comments_form_page_mode'];
+                'uid,pid,tx_comments_form_mode');
+            $currentMode = $data['tx_comments_form_mode'];
             $pageUid = $data['pid'];
         }
         return $currentMode == 'mode 1';

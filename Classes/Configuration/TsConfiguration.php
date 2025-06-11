@@ -45,7 +45,7 @@ class TsConfiguration
 
     public function getDateFormat(): string
     {
-        return 'YmdHi';
+        return 'Y-m-d-H:i';
     }
 
     /**
