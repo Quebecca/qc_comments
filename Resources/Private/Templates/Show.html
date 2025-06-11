@@ -57,10 +57,19 @@
                                         <div class="d-none" id="atLeastXChars" data-ts="{f:translate(key='atLeastXChars',arguments:'{0:config.minCharacters}')}"></div>
                                         <div class="d-none" id="tooManyChars" data-ts="{f:translate(key='tooManyChars')}"></div>
                                         <div class="d-none" id="sitekey" data-ts="{recaptchaConfig.sitekey}"></div>
-                                        <div class="d-none" id="maxCharacters" data-ts="{config.maxCharacters}"></div>
-                                        <div class="d-none" id="minCharacters" data-ts="{config.minCharacters}"></div>
                                         <div class="d-none" id="enableRecaptcha" data-ts="{recaptchaConfig.enabled}"></div>
                                         <div class="d-none" id="pageUid" data-ts="{pageUid}"></div>
+
+                                        <div class="d-none" id="reportingProblemMaxCharacters" data-ts="{config.reportProblem_section.maxCharacters}"></div>
+                                        <div class="d-none" id="reportingProblemMinCharacters" data-ts="{config.reportProblem_section.minCharacters}"></div>
+
+                                        <div class="d-none" id="negativeMaxCharacters" data-ts="{config.negative_section.maxCharacters}"></div>
+                                        <div class="d-none" id="negativeMinCharacters" data-ts="{config.negative_section.minCharacters}"></div>
+
+                                        <div class="d-none" id="positiveMaxCharacters" data-ts="{config.positive_section.maxCharacters}"></div>
+                                        <div class="d-none" id="positiveMinCharacters" data-ts="{config.positive_section.minCharacters}"></div>
+                                        <div class="d-none" id="max" data-ts="{f:translate(key: 'qcComments-max')}"></div>
+                                        <div class="d-none" id="maxChars" data-ts="{f:translate(key: 'qcComments-maxChars')}"></div>
 
                                         <div class="d-none" id="isUsfulFormSubmitted"
                                              data-useful-form-submitted="{submittedFormType}"></div>
@@ -153,7 +162,7 @@
                 <legend>
                     <p class="font-weight-bold options-label"><f:translate key="whyInfoNotUseful"/><span class="mandatoryMark"> *</span></p>
                 </legend>
-                <f:for each="{reasonOptions.negative_reasons}" as="option" iteration="iteration">
+                <f:for each="{reasonOptions.negative_section}" as="option" iteration="iteration">
                     <div class="option negative-report-options form-group radio">
                         <f:form.radio id="{option.code}"
                                       class="radio"
@@ -190,7 +199,7 @@
                 <legend>
                     <p class="font-weight-bold options-label"> <f:translate key="whatsTheProblem"/><span class="mandatoryMark"> *</span></p>
                 </legend>
-                <f:for each="{reasonOptions.reporting_problem}" as="option" iteration="iteration">
+                <f:for each="{reasonOptions.reportProblem_section}" as="option" iteration="iteration">
                     <div class="option report-problem-options form-group radio">
                         <f:form.radio id="{option.code}"
                                       class="radio"
@@ -219,6 +228,29 @@
     </div>
 </f:section>
 <f:section name="positif-report">
+    <div class="options-area positive-area">
+        <fieldset>
+            <legend>
+                <p class="font-weight-bold options-label">
+                    <f:translate key="qcComments-whyInfoUseful"/>
+                </p>
+            </legend>
+            <f:for each="{reasonOptions.positive_section}" as="option" iteration="iteration">
+                <div class="option positive-report-options form-group radio">
+                    <f:form.radio id="{option.code}"
+                                  class="radio"
+                                  property="reasonCode"
+                                  value="{option.code}"
+                                  aria-describedby=""
+                    />
+                    <label for="{option.code}" class="option-label">{option.long_label}</label>
+                </div>
+            </f:for>
+
+        </fieldset>
+    </div>
+
+
     <f:variable value="false" name="commentSectionMandatoryField" />
     <div class="positif-comment-section d-none">
         <f:variable value="{f:translate(key:'addComment')}" name="addComment" />

@@ -375,6 +375,15 @@
 			<trans-unit id="dissatisfactionPart">
 				<source>Part of dissatisfaction</source>
 			</trans-unit>
+            <trans-unit id="qcComments-whyInfoUseful">
+                <source>Why was the information useful?</source>
+            </trans-unit>
+            <trans-unit id="qcComments-maxChars">
+                <source> characters maximum</source>
+            </trans-unit>
+            <trans-unit id="qcComments-maxChars">
+                <source> characters maximum</source>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>

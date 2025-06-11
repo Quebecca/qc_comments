@@ -29,12 +29,11 @@ $(document).ready(function(){
             anchor.scrollIntoView()
         }
     }
+    let maxCharacters = 0;
+    let minCharacters = 0;
 
     if ($('#QcCommentForm').length > 0) {
-        let maxCharacters = document.getElementById('maxCharacters').getAttribute('data-ts') ?? '';
-        let minCharacters = document.getElementById('minCharacters').getAttribute('data-ts') ?? '';
         let enableRecaptcha = document.getElementById('enableRecaptcha').getAttribute('data-ts') ?? '';
-
         let clickedButtonId = '1';
         $('#submitButtonYes').on('click', function () {
             clickedButtonId = $(this).attr('id')
@@ -57,9 +56,10 @@ $(document).ready(function(){
             let usefulBlockClass = usefulBlock.attr('class')
             usefulBlock.attr('class',usefulBlockClass + 'd-none');
 
-            $('.form-section').show()
-            $('.comment-textarea').hide()
-            $('.positif-comment-section').hide()
+            $('.form-section').show();
+            $('.comment-textarea').hide();
+            $('.positif-comment-section').hide();
+            $('.positive-area').hide();
             isPositifCommentSubmitted = false;
             positifFormUpdate = false;
             if($(this).attr('id') === 'report-problem'){
@@ -69,6 +69,10 @@ $(document).ready(function(){
                 reportProblemSection.show()
                 $('.negative-report-options').hide();
                 $('.report-problem-options').show();
+                maxCharacters = document.getElementById('reportingProblemMaxCharacters')
+                    .getAttribute('data-ts') ?? 0;
+                minCharacters = document.getElementById('reportingProblemMinCharacters')
+                    .getAttribute('data-ts') ?? 0;
             }
             else {
                 let negatifReportSection = $('.negative-report-section')
@@ -77,7 +81,13 @@ $(document).ready(function(){
                 negatifReportSection.show()
                 $('.report-problem-options').hide();
                 $('.negative-report-options').show();
+                maxCharacters = document.getElementById('negativeMaxCharacters')
+                    .getAttribute('data-ts') ?? 0;
+                minCharacters = document.getElementById('negativeMinCharacters')
+                    .getAttribute('data-ts') ?? 0;
             }
+            addLimitMessage();
+
         })
 
 
@@ -175,12 +185,12 @@ $(document).ready(function(){
          */
         function checkMaxCommentLength(){
             let commentLength = textareaElement.val().length;
-            let charLabel = document.getElementById('charLabel').getAttribute('data-ts')
-            let tooManyChars = document.getElementById('tooManyChars').getAttribute('data-ts')
-            let currentLength = maxCharacters - commentLength
+            let charLabel = document.getElementById('maxChars').getAttribute('data-ts');
+            let tooManyChars = document.getElementById('tooManyChars').getAttribute('data-ts');
+            let currentLength = maxCharacters - commentLength;
             // Show error message "max chars exceed"
             if (currentLength >= 0){
-                document.getElementById('limitLabel').innerHTML = currentLength + charLabel
+                document.getElementById('limitLabel').innerHTML = currentLength + charLabel;
             }
             if(currentLength < 0){
                 document.getElementById('limitLabel').innerHTML =`<span id="maxExceeded">${Math.abs(currentLength)} ${tooManyChars}</span>`;
@@ -295,20 +305,35 @@ $(document).ready(function(){
     let  addInputType = function () {
         $('#comment-type').attr('value', '1')
     }
+    function addLimitMessage(){
+        // limit label message based on max characters
+        let max = document.getElementById('max')
+            .getAttribute('data-ts') ?? '';
+        let characters = document.getElementById('maxChars')
+            .getAttribute('data-ts') ?? '';
+        $('#limitLabel').text(max + ' '+ maxCharacters + ' '+ characters);
 
-
+    }
     $('#positif-button').on('click', function(event){
         event.preventDefault();
+        maxCharacters = document.getElementById('positiveMaxCharacters')
+            .getAttribute('data-ts') ?? 0;
+        minCharacters = document.getElementById('positiveMinCharacters')
+            .getAttribute('data-ts') ?? 0;
+
+        addLimitMessage();
+
         let positifCommentSection = $('.positif-comment-section');
         let useFulBlock = $('.useful-block');
-        positifCommentSection.attr('class', 'positif-comment-section')
-        positifCommentSection.show()
+        positifCommentSection.attr('class', 'positif-comment-section');
+        positifCommentSection.show();
         $('.submit-section').attr('class', 'submit-section');
         $('.text-area-comments').attr('class', 'text-area-comments');
-        let usefulBlocClass = useFulBlock.attr('class')
+
+        let usefulBlocClass = useFulBlock.attr('class');
         useFulBlock.attr('class', usefulBlocClass+ ' d-none');
         $('.form-instruction').hide()
-        $('.option').hide();
+        //$('.option').hide();
         $('.form-section').show()
         $('.submitted-form-message-section').show()
         $('.comment-textarea').hide()
@@ -341,4 +366,7 @@ $(window).on("pageshow", function() {
     }
 })
 
-
+// prevent resubmission of the form when reloading the page
+if ( window.history.replaceState ) {
+  window.history.replaceState( null, null, window.location.href );
+}
