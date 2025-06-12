@@ -15,6 +15,9 @@
             <trans-unit id="stats">
                 <target>Statistiques de satisfaction</target>
             </trans-unit>
+            <trans-unit id="stats-per-page">
+                <target>Statistiques par page</target>
+            </trans-unit>
             <trans-unit id="menu.stats">
                 <target>Statistiques de satisfaction</target>
             </trans-unit>
@@ -92,7 +95,7 @@
                 <target>Réinitialiser</target>
             </trans-unit>
             <trans-unit id="links.exportCsv">
-                <target>Exporter en Xlsx</target>
+                <target>Exporter en XLSX</target>
             </trans-unit>
             <trans-unit id="stats.h.page_uid">
                 <target>Id</target>
@@ -182,10 +185,10 @@
                 <target>Aucun résultat</target>
             </trans-unit>
             <trans-unit id="tooMuchPages">
-                <target>Il y a trop de résultats, seules les %s premières lignes sont affichées. Choisissez plutôt l'export Xlsx ou modifiez vos filtres.</target>
+                <target>Il y a trop de pages dans votre sélection. Le maximum possible est de %s pages. Choisissez plutôt l'export XLSX ou modifiez la profondeur pour sélectionner moins de sous-pages.</target>
             </trans-unit>
             <trans-unit id="tooMuchResults">
-                <target>Il y a trop de résultats: l'affichage a été limité à %s pages et %s commentaires. Choisissez plutôt l'export Xlsx ou modifiez vos filtres.</target>
+                <target>Il y a trop de résultats. L'affichage a été limité à %s commentaires. Choisissez plutôt l'export XLSX ou modifiez vos filtres.</target>
             </trans-unit>
             <trans-unit id="userDefined">
                 <target>Défini par l'utilisateur</target>
@@ -235,10 +238,10 @@
             <trans-unit id="formSubmittedSuccessfully">
                 <target>Votre message a été envoyé. Merci de nous aider à améliorer notre site. Vos commentaires sont importants pour nous.</target>
             </trans-unit>
-            <trans-unit id="pages.tx_select_comments_form_page_mode">
+            <trans-unit id="pages.tx_comments_form_mode">
                 <target>Sélectionner le mode d'affichage de la section des commentaires</target>
             </trans-unit>
-            <trans-unit id="pages.tx_select_comments_form_page_mode.desc">
+            <trans-unit id="pages.tx_comments_form_mode.desc">
                 <target>Par défaut si le mode n'est pas précisé la page hérite du mode de sa page parente.</target>
             </trans-unit>
             <trans-unit id="pages.notSpecified">
@@ -256,7 +259,7 @@
             <trans-unit id="pages.mode4">
                 <target>Masquer pour cette page seulement</target>
             </trans-unit>
-            <trans-unit id="characters">
+            <trans-unit id="maxChars">
                 <target> caractères restants</target>
             </trans-unit>
 			<trans-unit id="empty-comment">
@@ -278,7 +281,7 @@
                 <target>Avertissement : Le formulaire comporte 1 champ(s) en erreur. Veuillez s'il vous plaît les corriger.</target>
             </trans-unit>
             <trans-unit id="stats-by-depth">
-                <target>Statistique selon la profondeur</target>
+                <target>Statistiques totales selon le niveau</target>
             </trans-unit>
 			<trans-unit id="chooseAnOption">
 				<target>Vous devez sélectionner une option</target>
@@ -299,16 +302,19 @@
 				<target>N’inscrivez pas de renseignements personnels (ex. : numéro d’assurance sociale (NAS), courriel, téléphone, adresse, etc.).</target>
 			</trans-unit>
 			<trans-unit id="responseNoReceived">
-				<target>Vous ne recevrez aucune réponse.</target>
+				<target>Vos commentaires serviront à bonifier Québec.ca et pourraient servir à des fins statistiques. Vous ne recevrez aucune réponse.</target>
 			</trans-unit>
 			<trans-unit id="addComment">
-				<target>Voulez-vous ajouter un commentaire?</target>
+				<target>Voulez-vous ajouter des précisions?</target>
 			</trans-unit>
 			<trans-unit id="addDetails">
 				<target>Veuillez ajouter des précisions</target>
 			</trans-unit>
 			<trans-unit id="whyInfoNotUseful">
 				<target>Pourquoi l’information n’a pas été utile? </target>
+			</trans-unit>
+			<trans-unit id="whyInfoUseful">
+				<target>Pourquoi l’information a été utile? </target>
 			</trans-unit>
 			<trans-unit id="reportProblem">
 				<target>Signaler un problème</target>
@@ -337,11 +343,20 @@
 			<trans-unit id="spamMessage">
 				<target>Impossible de prouver que vous êtes un humain. Votre avis n’a pas pu être envoyé.</target>
 			</trans-unit>
-			<trans-unit id="atLeastXChars">
-				<target>Veuillez écrire un message d'au moins %s caractères</target>
+			<trans-unit id="error">
+				<target>erreur</target>
+			</trans-unit>
+			<trans-unit id="success">
+				<target>succes</target>
+			</trans-unit>
+			<trans-unit id="writeAtLeast">
+				<target>Veuillez écrire un message d'au moins</target>
+			</trans-unit>
+			<trans-unit id="chars">
+				<target>caractères</target>
 			</trans-unit>
 			<trans-unit id="technical-problems">
-				<target>Les Problèmes techniques</target>
+				<target>Problèmes techniques</target>
 			</trans-unit>
 			<trans-unit id="comments.h.fixed">
 				<target>Traité</target>
@@ -370,14 +385,47 @@
 			<trans-unit id="dissatisfactionPart">
 				<target>Part d’insatisfaction</target>
 			</trans-unit>
-            <trans-unit id="qcComments-whyInfoUseful">
-                <target>Pourquoi l’information a été utile? </target>
+            <trans-unit id="dissatisfactionReason">
+                <target>Raison d'insatisfaction</target>
             </trans-unit>
-            <trans-unit id="qcComments-maxChars">
-                <target> caractères restants</target>
+            <trans-unit id="satisfactionReason">
+				<target>Raison de satisfaction</target>
+			</trans-unit>
+			<trans-unit id="documentation.selectUtilityType">
+				<target>Vous pouvez filtrer les raisons de satisfaction ou d'insatisfaction en sélectionnant "Utile" ou "Pas utile" dans le menu Utilité.</target>
+			</trans-unit>
+			<trans-unit id="documentation.removeButtonDesc">
+				<target>Vous pouvez retirer un commentaire du taux de satisfaction de la page en cliquant sur "Retirer". Le commentaire sera déplacé dans les commentaires retirés.</target>
+			</trans-unit>
+			<trans-unit id="documentation.deleteButtonDesc">
+				<target>Vous pouvez supprimer un commentaire de la page en cliquant sur "Supprimer". Cette action supprime le commentaire de la Base de données et est irréversible.</target>
+			</trans-unit>
+			<trans-unit id="documentation.removedComments">
+				<target>Cette page contient les commentaires des utilisateurs qui ont été retirés. Ils ne comptent pas dans le taux de satisfaction de la page.</target>
+			</trans-unit>
+			<trans-unit id="documentation.fixedTechnicalProblems">
+				<target>Vous pouvez identifier les commentaires qui ont été réglés en cliquant sur "Traiter".</target>
+			</trans-unit>
+			<trans-unit id="documentation.showFixedTechnicalProblems">
+				<target>Pour voir les problèmes techniques déjà traités, cliquer sur la case à cocher "Afficher les problèmes techniques traités".</target>
+			</trans-unit>
+			<trans-unit id="exporting-progress">
+                <target>Exportation en cours..</target>
             </trans-unit>
-            <trans-unit id="qcComments-maxChars">
-                <target> caractères restants</target>
+            <trans-unit id="exporting-progress-message">
+                <target>Veuillez patienter pendant que nous préparons votre fichier d’exportation…</target>
+            </trans-unit>
+            <trans-unit id="exporting-success">
+                <target>Exportation réussie</target>
+            </trans-unit>
+            <trans-unit id="exporting-success-message">
+                <target>Le fichier a été téléchargé.</target>
+            </trans-unit>
+            <trans-unit id="exporting-fail">
+                <target>Erreur</target>
+            </trans-unit>
+            <trans-unit id="exporting-fail-message">
+                <target>L’exportation a échoué.</target>
             </trans-unit>
         </body>
     </file>

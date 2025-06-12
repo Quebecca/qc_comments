@@ -32,9 +32,14 @@
                            id="useful"
             />
         </div>
-        <f:if condition="{filter.useful} == '0'">
+        <f:if condition="{filter.useful} == '0' || {filter.useful} == '1'">
             <div class="col-md-2">
-                <label>Raison d'insatisfaction</label>
+                <f:if condition="{filter.useful} == '0'">
+                    <label>{f:translate(key: 'dissatisfactionReason', extensionName : 'qc_comments')}</label>
+                </f:if>
+                <f:if condition="{filter.useful} == '1'">
+                    <label>{f:translate(key: 'satisfactionReason', extensionName : 'qc_comments')}</label>
+                </f:if>
                 <f:form.select property="commentReason"
                                options="{filter.commentsReasons}"
                                optionLabelField="title"
@@ -135,17 +140,32 @@
         </f:if>
     </f:for>
     <div class="d-none" id="currentPageId" data-tr-label="{currentPageId}"></div>
+    <br>
+    <div>
+        <f:be.infobox title="Documentation" state="-1">
+            <ul>
+                <li>
+                    {f:translate(key:'documentation.selectUtilityType', extensionName : 'qc_comments')}
+                </li>
+                <f:if condition="{isRemoveButtonEnabled}">
+                    <li>
+                        {f:translate(key:'documentation.removeButtonDesc', extensionName : 'qc_comments')}
+                    </li>
+                </f:if>
+                <f:if condition="{isDeleteButtonEnabled}">
+                    <li>
+                        {f:translate(key:'documentation.deleteButtonDesc', extensionName : 'qc_comments')}
+                    </li>
+                </f:if>
+            </ul>
+        </f:be.infobox>
+    </div>
 
 </f:form>
 <f:section name="buttons">
-    <f:form.submit value="{f:translate(key: 'filter.submit')}" class="btn btn-default"/>
-
-    <f:form.button type="submit" name="operation" value="reset-filters" class="btn btn-default">
-        {f:translate(key:'filter.reset', extensionName : 'qc_comments')}
-    </f:form.button>
-   <button class="btn btn-default" data-action="{action}"  id="exportBtn">
-       {csvButton.icon -> f:format.raw()} {f:translate(key:'links.exportCsv', extensionName : 'qc_comments')}
-   </button>
+    <f:section name="buttons">
+        <f:render partial="Filters/FilterActionButtons" arguments="{_all}"/>
+    </f:section>
 </f:section>
 
 

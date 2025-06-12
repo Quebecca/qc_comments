@@ -36,7 +36,8 @@ return [
             ],
             TechnicalProblemsBEController::class => [
                 'technicalProblems',
-                'markProblemAsFixed'
+                'markProblemAsFixed',
+                'deleteTechnicalProblems'
             ]
         ]
     ],

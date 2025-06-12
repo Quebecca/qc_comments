@@ -15,6 +15,9 @@
 			<trans-unit id="stats">
 				<source>Satisfaction statistics</source>
 			</trans-unit>
+            <trans-unit id="stats-per-page">
+                <source>Statistics per page</source>
+            </trans-unit>
 			<trans-unit id="menu.stats">
 				<source>Satisfaction statistics</source>
 			</trans-unit>
@@ -91,7 +94,7 @@
 				<source>Reset</source>
 			</trans-unit>
 			<trans-unit id="links.exportCsv">
-				<source>Export to Xlsx</source>
+				<source>Export to XLSX</source>
 			</trans-unit>
 			<trans-unit id="stats.h.page_uid">
 				<source>Page id</source>
@@ -193,10 +196,10 @@
                 <source>Useful</source>
             </trans-unit>
 			<trans-unit id="tooMuchPages">
-				<source>Too much results: only the first %s rows are displayed. Please choose xlsx export, or change your filters.</source>
+				<source>There are too many pages in your selection. The maximum allowed is %s pages. Choose the XLSX export or adjust the depth to select fewer subpages.</source>
 			</trans-unit>
 			<trans-unit id="tooMuchResults">
-				<source>Too much result. Display has been limited to %s pages and %s comments. Please choose xlsx export, or change your filters.</source>
+				<source>There are too many results. The display has been limited to %s comments. Choose the XLSX export or modify your filters.</source>
 			</trans-unit>
 			<trans-unit id="userDefined">
                 <source>User defined</source>
@@ -234,10 +237,10 @@
             <trans-unit id="formSubmittedSuccessfully">
                 <source>Thank you for helping us improve our website. Your comments are important to us.</source>
             </trans-unit>
-            <trans-unit id="pages.tx_select_comments_form_page_mode">
+            <trans-unit id="pages.tx_comments_form_mode">
                 <source>Select comments section display mode</source>
             </trans-unit>
-            <trans-unit id="pages.tx_select_comments_form_page_mode.desc">
+            <trans-unit id="pages.tx_comments_form_mode.desc">
                 <source>By default, if the mode is not specified, the page inherits the mode from its parent page.</source>
             </trans-unit>
             <trans-unit id="pages.notSpecified">
@@ -255,7 +258,7 @@
             <trans-unit id="pages.mode4">
                 <source>Hide for this page only</source>
             </trans-unit>
-            <trans-unit id="characters">
+            <trans-unit id="maxChars">
                 <source> characters maximum</source>
             </trans-unit>
         	<trans-unit id="empty-comment">
@@ -283,7 +286,7 @@
                 <source>Warning: There are fields in the form containing errors. Please correct these errors.</source>
             </trans-unit>
             <trans-unit id="stats-by-depth">
-                <source>Statistics by depth</source>
+                <source>Total statistics from selected levels</source>
             </trans-unit>
 			<trans-unit id="chooseAnOption">
 				<source>You must select an option</source>
@@ -310,10 +313,13 @@
 				<source>Please provide more details</source>
 			</trans-unit>
 			<trans-unit id="addComment">
-				<source>Want to add a comment?</source>
+				<source>Would you like to add any details?</source>
 			</trans-unit>
 			<trans-unit id="whyInfoNotUseful">
 				<source>Why was this information unhelpful?</source>
+			</trans-unit>
+			<trans-unit id="whyInfoUseful">
+				<source>Why was the information useful?</source>
 			</trans-unit>
 			<trans-unit id="reportProblem">
 				<source>Report a problem</source>
@@ -342,8 +348,17 @@
 			<trans-unit id="spamMessage">
 				<source>We were unable to verify that you are a human. Your feedback could not be submitted.</source>
 			</trans-unit>
-			<trans-unit id="atLeastXChars">
-				<source>Please write a message of at least %s characters</source>
+			<trans-unit id="error">
+				<source>error</source>
+			</trans-unit>
+			<trans-unit id="success">
+				<source>success</source>
+			</trans-unit>
+			<trans-unit id="writeAtLeast">
+				<source>Please write a message of at least</source>
+			</trans-unit>
+			<trans-unit id="chars">
+				<source>characters</source>
 			</trans-unit>
 			<trans-unit id="technical-problems">
 				<source>Technical problems</source>
@@ -375,15 +390,48 @@
 			<trans-unit id="dissatisfactionPart">
 				<source>Part of dissatisfaction</source>
 			</trans-unit>
-            <trans-unit id="qcComments-whyInfoUseful">
-                <source>Why was the information useful?</source>
+            <trans-unit id="dissatisfactionReason">
+                <source>Reason for dissatisfaction</source>
             </trans-unit>
-            <trans-unit id="qcComments-maxChars">
-                <source> characters maximum</source>
-            </trans-unit>
-            <trans-unit id="qcComments-maxChars">
-                <source> characters maximum</source>
-            </trans-unit>
+            <trans-unit id="satisfactionReason">
+				<source>Reason for satisfaction</source>
+			</trans-unit>
+			<trans-unit id="documentation.selectUtilityType">
+				<source>If you want to filter the reasons for satisfaction or dissatisfaction more precisely, you must first select “Useful” or “Not useful” in the "Useful" menu.</source>
+			</trans-unit>
+			<trans-unit id="documentation.removeButtonDesc">
+				<source>You can remove a comment from the page satisfaction rating by clicking "Remove". The comment will be moved to the removed comments.</source>
+			</trans-unit>
+			<trans-unit id="documentation.deleteButtonDesc">
+				<source>You can delete a comment from the page by clicking "Delete". This action deletes the comment from the database and is irreversible.</source>
+			</trans-unit>
+			<trans-unit id="documentation.removedComments">
+				<source>This page contains user comments that have been removed. They do not count towards the page's satisfaction rating.</source>
+			</trans-unit>
+			<trans-unit id="documentation.fixedTechnicalProblems">
+				<source>You can identify comments that have been resolved by clicking "Fix".</source>
+			</trans-unit>
+			<trans-unit id="documentation.showFixedTechnicalProblems">
+				<source>To see the technical problems already fixed, click on the checkbox "Show fixed problems".</source>
+			</trans-unit>
+			<trans-unit id="exporting-progress">
+				<source>Export in progress..</source>
+			</trans-unit>
+			<trans-unit id="exporting-progress-message">
+				<source>Please wait while we prepare your export file…</source>
+			</trans-unit>
+			<trans-unit id="exporting-success">
+				<source>Export completed</source>
+			</trans-unit>
+			<trans-unit id="exporting-success-message">
+				<source>The file has been downloaded successfully.</source>
+			</trans-unit>
+			<trans-unit id="exporting-fail">
+				<source>Error</source>
+			</trans-unit>
+			<trans-unit id="exporting-fail-message">
+				<source>The export failed.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

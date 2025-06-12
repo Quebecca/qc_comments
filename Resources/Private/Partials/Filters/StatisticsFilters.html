@@ -22,15 +22,7 @@
                            id="depth"
             />
         </div>
-        <div class="col-md-2">
-            <label>Raison d'insatisfaction</label>
-            <f:form.select property="commentReason"
-                           options="{filter.commentsReasons}"
-                           optionLabelField="title"
-                           class="form-control form-select"
-                           id="commentReason"
-            />
-        </div>
+
         <div class="col-md-2">
             <label>{f:translate(key: 'filter.dateRange', extensionName : 'qc_comments')}</label>
             <f:form.select property="dateRange"
@@ -128,14 +120,9 @@
 
 </f:form>
 <f:section name="buttons">
-    <f:form.submit value="{f:translate(key: 'filter.submit')}" class="btn btn-default"/>
-
-    <f:form.button type="submit" name="operation" value="reset-filters" class="btn btn-default">
-        {f:translate(key:'filter.reset', extensionName : 'qc_comments')}
-    </f:form.button>
-    <button class="btn btn-default" data-action="{action}"  id="exportBtn">
-        {csvButton.icon -> f:format.raw()} {f:translate(key:'links.exportCsv', extensionName : 'qc_comments')}
-    </button>
+    <f:section name="buttons">
+        <f:render partial="Filters/FilterActionButtons" arguments="{_all}"/>
+    </f:section>
 </f:section>
 
 
