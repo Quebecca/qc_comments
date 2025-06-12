@@ -53,21 +53,6 @@ class StatisticsFilter extends Filter
     }
 
     /**
-     * This function is used to the options form typoscript and show them in the option field of the filter
-     * @return array
-     */
-    public function getCommentsReasons(): array
-    {
-        $options = $this->typoscriptConfiguration->getNegativeCommentsReasonsForBE();
-        $filterOptions = [];
-        $filterOptions[''] = '--';
-        foreach ($options as $key => $values) {
-            $filterOptions[$values['code']] = $values['short_label'];
-        }
-        return $filterOptions;
-    }
-
-    /**
      * @return string
      */
     public function getCommentReason(): string
