@@ -26,7 +26,7 @@
 .error-textarea {
   border : 0.3rem solid #CB381F !important;
 }
-#error-message-empty-comment, .options-error-message {
+#error-message-empty-comment, .options-error-message, .complete-recaptcha-error {
     font-size: 0.875rem;
     font-family : 'Open Sans',sans-serif;
     line-height: 1.14;
@@ -34,6 +34,9 @@
     color: #CB381F;
     padding: 0 10px 0 0;
     margin : 0.5rem 0 2rem 0;
+}
+.recaptcha-section {
+    margin-bottom: 2rem;
 }
 .options-error-message {
     margin : 0 0 2rem 0;
@@ -79,18 +82,6 @@
     li {
         margin : 0;
     }
-    .icon-message {
-        margin-bottom : 0;
-        content: '';
-        display: inline-block;
-        width: 24px;
-        height: 24px;
-        background-image: url("../Icons/submittedSuccess.svg") ;
-        background-size: contain;
-        background-repeat: no-repeat;
-        vertical-align: middle;
-        margin-right : 1rem;
-    }
 }
 
 .spam-error-message {
@@ -100,18 +91,7 @@
     li {
         margin : 0;
     }
-    .icon-message {
-        margin-bottom : 0;
-        content: '';
-        display: inline-block;
-        width: 26px;
-        height: 24px;
-        background-image: url("../Icons/spamMessage.svg") ;
-        background-size: contain;
-        background-repeat: no-repeat;
-        vertical-align: middle;
-        margin-right : 1rem;
-    }
+
 }
 #maxExceeded {
     color: #CB381F;
@@ -178,18 +158,7 @@
         li {
             margin : 0;
         }
-        .icon-message {
-            margin-bottom : 0;
-            content: '';
-            display: inline-block;
-            width: 27px;
-            height: 24px;
-            background-image: url("../Icons/submittedSuccess.svg") ;
-            background-size: contain;
-            background-repeat: no-repeat;
-            vertical-align: middle;
-            margin-right : 1rem;
-        }
+
     }
 
     .spam-error-message {
@@ -199,17 +168,6 @@
         li {
             margin : 0;
         }
-        .icon-message {
-            margin-bottom : 0;
-            content: '';
-            display: inline-block;
-            width: 33px;
-            height: 24px;
-            background-image: url("../Icons/spamMessage.svg") ;
-            background-size: contain;
-            background-repeat: no-repeat;
-            vertical-align: middle;
-            margin-right : 1rem;
-        }
+
     }
 }
