@@ -1,5 +1,3 @@
-
-
 $(document).ready(function(){
     var selectedForm;
     var submitAmount = 0;
@@ -33,7 +31,6 @@ $(document).ready(function(){
     let minCharacters = 0;
 
     if ($('#QcCommentForm').length > 0) {
-        let enableRecaptcha = document.getElementById('enableRecaptcha').getAttribute('data-ts') ?? '';
         let clickedButtonId = '1';
         $('#submitButtonYes').on('click', function () {
             clickedButtonId = $(this).attr('id')
@@ -94,7 +91,7 @@ $(document).ready(function(){
         let submitAmount = 0;
         $(textareaElement).on('keyup', function () {
             let commentLength = textareaElement.val().length;
-            checkMaxCommentLength(commentLength)
+            checkMaxCommentLength()
         });
 
         // Check if an option is selected to show/hide selecting option message error

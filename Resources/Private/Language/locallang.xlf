@@ -432,6 +432,9 @@
 			<trans-unit id="exporting-fail-message">
 				<source>The export failed.</source>
 			</trans-unit>
+            <trans-unit id="qcComments-maxChars">
+                <source> characters maximum</source>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>

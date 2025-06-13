@@ -427,6 +427,9 @@
             <trans-unit id="exporting-fail-message">
                 <target>L’exportation a échoué.</target>
             </trans-unit>
+            <trans-unit id="qcComments-maxChars">
+                <target> caractères restants</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
