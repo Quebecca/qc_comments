@@ -83,26 +83,28 @@ $(document).ready(function () {
       .get()
       .then(async function (response) {
         response.resolve().then(function (result) {
-          if (result != null) {
-            var link = document.createElement('a');
-            link.href = response.response.url;
-            link.click();
-            Modal.dismiss();
-            document.removeEventListener('keydown', escHandler);
-            Modal.show(
-              exportLabels.success,
-              exportLabels.successMessage,
-              Severity.info,
-              [
-                {
-                  text: 'OK',
-                  active: true,
-                  btnClass: 'btn-primary',
-                  trigger: () => Modal.dismiss()
-                }
-              ]
-            );
-          }
+          setTimeout(()=>{
+            if (result != null) {
+              var link = document.createElement('a');
+              link.href = response.response.url;
+              link.click();
+              Modal.dismiss();
+              document.removeEventListener('keydown', escHandler);
+              Modal.show(
+                  exportLabels.success,
+                  exportLabels.successMessage,
+                  Severity.info,
+                  [
+                    {
+                      text: 'OK',
+                      active: true,
+                      btnClass: 'btn-primary',
+                      trigger: () => Modal.dismiss()
+                    }
+                  ]
+              );
+            }
+          }, 500)
         });
       })
       .catch(function (error) {
