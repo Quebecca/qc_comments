@@ -20,6 +20,7 @@ return [
         'hidden_date' => 'hiddenDate',
         'fixed' => 'fixed',
         'fixed_by_user_uid' => 'fixedByUserUid',
-        'fixed_date' => 'fixedDate'
+        'fixed_date' => 'fixedDate',
+        'sys_language_uid' => 'languageField'
     ],
 ];

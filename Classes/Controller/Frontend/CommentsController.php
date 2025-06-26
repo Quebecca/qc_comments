@@ -184,6 +184,7 @@ class CommentsController extends ActionController
                     $existingComment->setReasonShortLabel($comment->getReasonShortLabel());
                     $existingComment->setReasonLongLabel($comment->getReasonLongLabel());
                     $existingComment->setReasonCode($comment->getReasonCode());
+                    $existingComment->setLanguageUid($comment->getLanguageUid());
                     $this->commentsRepository->update($existingComment);
                 }
                 else{

@@ -113,6 +113,25 @@ class Comment extends AbstractEntity
 
     protected int $hiddenComment = 0;
 
+
+    protected ?int $_languageUid = 0;
+
+    /**
+     * @return int
+     */
+    public function getLanguageUid(): int
+    {
+        return $this->_languageUid;
+    }
+
+    /**
+     * @param int $languageUid
+     * @return void
+     */
+    public function setLanguageUid(int $languageUid): void
+    {
+        $this->_languageUid = $languageUid;
+    }
     /**
      * @return int
      */

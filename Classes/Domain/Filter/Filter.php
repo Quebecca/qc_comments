@@ -30,6 +30,8 @@ abstract class Filter implements Arrayable
 
     protected const KEY_USEFUL = 'useful';
 
+    protected string $tableName = "tx_qccomments_domain_model_comment";
+
 
     /**
      * @var string
@@ -159,10 +161,10 @@ abstract class Filter implements Arrayable
         $criteria = '';
         switch ($this->lang) {
             case 'fr':
-                $criteria = "and url_orig not like '%/en/%'";
+                $criteria = "and ".$this->tableName.".sys_language_uid  = 0";
                 break;
             case 'en':
-                $criteria = "and url_orig like '%/en/%'";
+                $criteria = "and ".$this->tableName.".sys_language_uid  = 1";
                 break;
         }
         return $criteria;
