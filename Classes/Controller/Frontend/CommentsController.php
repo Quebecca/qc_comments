@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
+use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
@@ -123,10 +124,11 @@ class CommentsController extends ActionController
     /**
      * This function is used to save comment
      * @param Comment|null $comment
-     * @return ForwardResponse
+     * @return ResponseInterface
      * @throws IllegalObjectTypeException
+     * @throws UnknownObjectException
      */
-    public function saveCommentAction(Comment $comment = null): ForwardResponse
+    public function saveCommentAction(Comment $comment = null):ResponseInterface
     {
         if($this->isSpamShieldEnabled){
             $validator = GeneralUtility::makeInstance(SpamShieldValidator::class);
@@ -197,17 +199,17 @@ class CommentsController extends ActionController
                 $this->commentsRepository->persistenceManager->persistAll();
             }
             $submittedFormUid = strval($comment->getUid());
-            return (new ForwardResponse('show'))
-                ->withArguments([
-                    'submitted' => true,
-                    'formUid' => $submittedFormUid,
-                    'useful' => $comment->getUseful(),
-                    'formUpdated' => $formUpdated
-                ]);
+            return $this->redirect('show', null, null, [
+                'submitted' => true,
+                'formUid' => $submittedFormUid,
+                'useful' => $comment->getUseful(),
+                'formUpdated' => $formUpdated
+            ]);
         }
         else{
-            return (new ForwardResponse('show'))
-                ->withArguments(['submitted' => false]);
+            return $this->redirect('show', null, null, [
+                'submitted' => false
+            ]);
         }
 
     }
