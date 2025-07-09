@@ -345,16 +345,16 @@ abstract class Filter implements Arrayable
             if ($this->startDate != '') {
                 // delete minutes seconds
                 $formatedStartDate = explode(' ', $this->startDate);
-                $criteria = " and date_hour >= '"
+                $criteria = " and Date(date_hour) >= '"
                     . date('Y-m-d H:i:s', strtotime($formatedStartDate[0])) . "'";
             }
             if ($this->endDate != '') {
                 $formatedEndDate = explode(' ', $this->endDate);
-                $criteria .= " and date_hour <= '"
+                $criteria .= " and Date(date_hour) <= '"
                     . date('Y-m-d H:i:s', strtotime($formatedEndDate[0])) . "'";
             }
         } else {
-            $criteria = " and date_hour >= '" . $this->getDateForRange() . "'";
+            $criteria = " and Date(date_hour) >= '" . $this->getDateForRange() . "'";
         }
         return $criteria;
     }
