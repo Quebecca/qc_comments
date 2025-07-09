@@ -312,8 +312,7 @@ class CommentRepository extends Repository
             ->from($this->tableName)
 
             ->where(
-                "uid_orig = ".$pageUid . " and useful like 'NA' and fixed = 0"
-            )
+                "uid_orig = ".$pageUid . " and useful like 'NA' and fixed = 0 " . $this->date_criteria)
             ->groupBy('uid_orig');
         return $data->execute()
             ->fetchAssociative()['technicalProblemsCount'] ?? 0;
