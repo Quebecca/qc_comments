@@ -18,7 +18,7 @@ call_user_func(
                 CommentsController::class => 'show,saveComment',
             ], //With cash - prevent storing cashed data
             [
-                CommentsController::class  => 'show,saveComment',
+//                CommentsController::class  => 'show,saveComment',
             ] // storing without using cash
         );
         ExtensionUtility::configurePlugin(
@@ -28,7 +28,7 @@ call_user_func(
                 CommentsController::class => 'savePositifComment',
             ],
             [
-                CommentsController::class => 'savePositifComment',
+//                CommentsController::class => 'savePositifComment',
             ]
         );
     }
