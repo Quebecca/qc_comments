@@ -122,7 +122,7 @@ class TyposcriptConfiguration
      */
     public function getCommentsMaxMinLength($section_type,  $limit): int
     {
-        return intval($this->settings['options'][$section_type][$limit]);
+        return intval($this->settings['options'][$section_type][$limit] ?? 0);
     }
 
 
