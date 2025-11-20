@@ -35,8 +35,12 @@ CREATE TABLE tx_qccomments_domain_model_comment (
 			sys_language_uid int(11) DEFAULT '0' NOT NULL,
 			l10n_parent int(11) DEFAULT '0' NOT NULL,
 			l10n_diffsource mediumblob,
-			PRIMARY KEY (uid)
-
+			PRIMARY KEY (uid),
+            KEY parent (pid),
+            KEY l10n_parent (l10n_parent),
+            KEY uid_orig (uid_orig),
+            KEY uid_orig (uid_orig),
+            KEY uid_perms_group (uid_perms_group),
 );
 
 CREATE TABLE pages (
