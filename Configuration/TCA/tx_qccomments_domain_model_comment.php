@@ -12,6 +12,7 @@ return [
             'default' => 'qc_comments'
         ],
         'delete' => 'deleted',
+        'label' => 'comment',
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -39,14 +40,6 @@ return [
         'l10n_diffsource' => [
             'config' => [
                 'type' => 'passthrough',
-            ],
-        ],
-        't3ver_label' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.versionLabel',
-            'config' => [
-                'type' => 'input',
-                'size' => 30,
-                'max' => 255,
             ],
         ],
         'hidden' => [
@@ -127,7 +120,7 @@ return [
                 'type' => 'input',
             ],
         ],
-        'uid_Orig' => [
+        'uid_orig' => [
             'exclude' => true,
             'label' => 'uid_orig',
             'config' => [
