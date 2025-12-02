@@ -39,7 +39,6 @@ CREATE TABLE tx_qccomments_domain_model_comment (
             KEY parent (pid),
             KEY l10n_parent (l10n_parent),
             KEY uid_orig (uid_orig),
-            KEY uid_orig (uid_orig),
             KEY uid_perms_group (uid_perms_group),
 );
 
