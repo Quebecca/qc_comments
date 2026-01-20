@@ -15,11 +15,26 @@ call_user_func(function () {
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    [$lll . 'pages.notSpecified', 'not specified', ''],
-                    [$lll . 'pages.mode1', 'mode 1', ''],
-                    [$lll . 'pages.mode2', 'mode 2', ''],
-                    [$lll . 'pages.mode3', 'mode 3', ''],
-                    [$lll . 'pages.mode4', 'mode 4', ''],
+                    [
+                        'label' => $lll . 'pages.notSpecified',
+                        'value' => 'not specified',
+                    ],
+                    [
+                        'label' => $lll . 'pages.mode1',
+                        'value' => 'mode 1',
+                    ],
+                    [
+                        'label' => $lll . 'pages.mode2',
+                        'value' => 'mode 2',
+                    ],
+                    [
+                        'label' => $lll . 'pages.mode3',
+                        'value' => 'mode 3',
+                    ],
+                    [
+                        'label' => $lll . 'pages.mode4',
+                        'value' => 'mode 4',
+                    ],
                 ],
             ],
         ],
