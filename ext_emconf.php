@@ -6,11 +6,11 @@ $EM_CONF[$_EXTKEY] = [
     'category' => 'plugin',
     'author' => 'Quebec.ca',
     'author_email' => '',
-    'state' => 'alpha',
-    'version' => '1.0.0',
+    'state' => 'beta',
+    'version' => '2.0.0',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.14-12.4.0',
+            'typo3' => '12.4.0-13.4.99',
         ],
         'conflicts' => [],
         'suggests' => [],

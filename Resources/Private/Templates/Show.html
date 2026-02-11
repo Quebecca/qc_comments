@@ -1,5 +1,7 @@
-{namespace v=FluidTYPO3\Vhs\ViewHelpers}
-{namespace qcComments=Qc\QcComments\ViewHelpers}
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:v="http://typo3.org/ns/FluidTYPO3/Vhs/ViewHelpers"
+      xmlns:qcComments="http://typo3.org/ns/Qc/QcComments/ViewHelpers"
+      data-namespace-typo3-fluid="true">
 
 <f:variable name="pageUid" value="{v:page.info(field: 'uid')}"/>
 <f:variable name="checkBasPageMode" value="{modeBasPage -> qcComments:CheckPageMode(pageUid: pageUid)}"/>

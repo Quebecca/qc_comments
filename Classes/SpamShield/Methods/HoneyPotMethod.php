@@ -12,8 +12,8 @@ namespace Qc\QcComments\SpamShield\Methods;
  *  (c) 2023 <techno@quebec.ca>
  *
  ***/
+
 use Qc\QcComments\Domain\Model\Comment;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class HoneyPotMethod
@@ -27,7 +27,10 @@ class HoneyPotMethod extends AbstractMethod
      */
     public function spamCheck(Comment $comment = null): bool
     {
-        $args = (array)GeneralUtility::_GP('tx_qccomments_commentsform');
+        $request ??= $GLOBALS['TYPO3_REQUEST'] ?? null;
+        $args = (array)$request->getParsedBody()['tx_qccomments_commentsform'] ?? null;
+        if($args === null) { return false; }
+
         return !empty($args['field']['__hp']);
     }
 }

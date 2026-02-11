@@ -174,7 +174,8 @@ class TyposcriptConfiguration
      * @return int
      */
     public function getAnonymizationMode(): int {
-        return intval($this->settings['comments']['anonymizeComment']['anonymizeMode']) ?? 0;
+        $settings = $this->settings['comments']['anonymizeComment'] ?? [];
+        return (int)($settings['anonymizeMode'] ?? 0);
     }
 
     /**

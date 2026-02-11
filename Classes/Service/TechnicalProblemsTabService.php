@@ -204,7 +204,7 @@ class TechnicalProblemsTabService extends QcBackendModuleService
             $comment->setFixedDate(date('Y-m-d H:i:s'));
             $comment->setFixed(1);
             $this->updateComment($comment);
-            $this->commentsRepository->persistenceManager->persistAll();
+            $this->persistenceManager->persistAll();
         }
         return true;
     }

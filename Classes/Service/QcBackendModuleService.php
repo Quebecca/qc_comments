@@ -4,8 +4,6 @@ namespace Qc\QcComments\Service;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Configuration\TsConfiguration;
 use Qc\QcComments\Domain\Filter\Filter;
 use Qc\QcComments\Domain\Repository\CommentRepository;
@@ -15,6 +13,8 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 class QcBackendModuleService
@@ -33,6 +33,8 @@ class QcBackendModuleService
      * @var CommentRepository
      */
     protected CommentRepository $commentsRepository;
+
+    protected PersistenceManagerInterface $persistenceManager;
 
     /**
      * @var int|mixed
@@ -55,6 +57,7 @@ class QcBackendModuleService
             = GeneralUtility::makeInstance(BackendSession::class);
         $this->tsConfiguration
             = GeneralUtility::makeInstance(TsConfiguration::class);
+        $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
     }
 
     /**
@@ -197,7 +200,7 @@ class QcBackendModuleService
             $comment->setDeletingDate(date('Y-m-d H:i:s'));
             $comment->setDeleted(1);
             $this->updateComment($comment);
-            $this->commentsRepository->persistenceManager->persistAll();
+            $this->persistenceManager->persistAll();
         }
         return true;
     }
@@ -220,7 +223,7 @@ class QcBackendModuleService
             $comment->setHiddenDate(date('Y-m-d H:i:s'));
             $comment->setHiddenComment(1);
             $this->updateComment($comment);
-            $this->commentsRepository->persistenceManager->persistAll();
+            $this->persistenceManager->persistAll();
         }
         return true;
     }

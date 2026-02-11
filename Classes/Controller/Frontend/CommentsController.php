@@ -28,9 +28,10 @@ use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use Psr\Http\Message\ServerRequestInterface;
 
 // FrontEnd Controller
 class CommentsController extends ActionController
@@ -65,6 +66,8 @@ class CommentsController extends ActionController
      */
     protected bool $isSpamShieldEnabled = false;
 
+    protected PersistenceManagerInterface $persistenceManager;
+
     public function injectCommentsRepository(CommentRepository $commentsRepository)
     {
         $this->commentsRepository = $commentsRepository;
@@ -78,6 +81,7 @@ class CommentsController extends ActionController
         $this->isSpamShieldEnabled = $this->typoscriptConfiguration->isSpamShieldEnabled();
         $this->context = GeneralUtility::makeInstance(Context::class);
         $this->currentLanguage = $this->getCurrentLanguage();
+        $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
     }
 
 
@@ -89,6 +93,7 @@ class CommentsController extends ActionController
      */
     public function showAction(array $args = []): ResponseInterface
     {
+
         $commentTypes = ['positive_section', 'negative_section', 'reportProblem_section'];
         $commentLengthconfig = [];
 
@@ -117,6 +122,7 @@ class CommentsController extends ActionController
             'isSpamShieldEnabled' => $this->isSpamShieldEnabled,
             'reasonOptions' => $reasonOptions
         ]);
+
         return $this->htmlResponse();
     }
 
@@ -191,12 +197,12 @@ class CommentsController extends ActionController
                 }
                 else{
                     $this->commentsRepository->add($comment);
-                    $this->commentsRepository->persistenceManager->persistAll();
+                    $this->persistenceManager->persistAll();
                 }
                 $formUpdated = true;
             }else{
                 $this->commentsRepository->add($comment);
-                $this->commentsRepository->persistenceManager->persistAll();
+                $this->persistenceManager->persistAll();
             }
             $submittedFormUid = strval($comment->getUid());
             return $this->redirect('show', null, null, [
@@ -299,7 +305,7 @@ class CommentsController extends ActionController
         $comment->setDateHour(date('Y-m-d H:i:s'));
         $comment->setUrlOrig($this->request->getParsedBody()['pageUrl']);
         $this->commentsRepository->add($comment);
-        $this->commentsRepository->persistenceManager->persistAll();
+        $this->persistenceManager->persistAll();
         $data = [
             'status' => 'success',
             'message' => 'Comment saved',

@@ -1,18 +1,15 @@
 <?php
 namespace Qc\QcComments\Controller\Backend;
 
-use Psr\Http\Message\ResponseInterface;
 use Qc\QcComments\Service\QcBackendModuleService;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use Psr\Http\Message\ServerRequestInterface;
 
 class QcCommentsBEController extends ActionController
 {
@@ -67,7 +64,7 @@ class QcCommentsBEController extends ActionController
         $this->moduleTemplate->setTitle('QcComments');
         $this->moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
         $this->controllerName = $this->request->getControllerName();
-        $this->root_id = GeneralUtility::_GP('id') ?? 0;
+        $this->root_id = (int) ($this->request->getParsedBody()['id'] ?? $this->request->getQueryParams()['id'] ?? null ?? 0);
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 namespace Qc\QcComments\Controller\Backend;
 
 use Doctrine\DBAL\Driver\Exception;
@@ -7,8 +8,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Domain\Filter\CommentsFilter;
 use Qc\QcComments\Service\CommentsTabService;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
-use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 
@@ -16,13 +16,16 @@ class CommentsBEController extends QcCommentsBEController
 {
     /**
      * @param CommentsFilter|null $filter
-     * @param string $operation
+     * @param string              $operation
+     *
      * @return ResponseInterface
      * @throws Exception
      */
-    public function commentsAction(CommentsFilter $filter = null, string $operation = ''): ResponseInterface {
+    public function commentsAction(CommentsFilter $filter = null, string $operation = ''): ResponseInterface
+    {
+
         $this->addMainMenu('comments');
-        if($operation === 'reset-filters'){
+        if ($operation === 'reset-filters') {
             $filter = new CommentsFilter();
         }
         $this->qcBeModuleService
@@ -40,25 +43,24 @@ class CommentsBEController extends QcCommentsBEController
 
         if (!$this->root_id) {
             $this->moduleTemplate->assign('noPageSelected', true);
-        }
-        else {
+        } else {
             if ($filter) {
                 $filter = $this->qcBeModuleService->processFilter($filter);
                 $this->moduleTemplate->assign('filter', $filter);
             }
             $data = $this->qcBeModuleService->getComments();
-            if($data['tooMuchResults'] === true){
+            if ($data['tooMuchResults'] === true) {
                 $message = $this->localizationUtility
                     ->translate(self::QC_LANG_FILE . 'tooMuchResults',
-                        null,[$data['maxRecords']]);
-                $this->addFlashMessage($message, null, AbstractMessage::WARNING);
+                        null, [$data['maxRecords']]);
+                $this->addFlashMessage($message, null, ContextualFeedbackSeverity::WARNING);
             }
 
-            if($data['tooMuchPages'] === true){
+            if ($data['tooMuchPages'] === true) {
                 $message = $this->localizationUtility
                     ->translate(self::QC_LANG_FILE . 'tooMuchPages',
-                        null,[$data['numberOfSubPages']]);
-                $this->addFlashMessage($message, null, AbstractMessage::WARNING);
+                        null, [$data['numberOfSubPages']]);
+                $this->addFlashMessage($message, null, ContextualFeedbackSeverity::WARNING);
             }
 
             $this
@@ -75,6 +77,7 @@ class CommentsBEController extends QcCommentsBEController
                     ]
                 );
         }
+
         $filter = $this->qcBeModuleService->processFilter($filter);
         $this->moduleTemplate->assign('filter', $filter);
         return $this->moduleTemplate->renderResponse('Comments');
@@ -83,6 +86,7 @@ class CommentsBEController extends QcCommentsBEController
 
     /**
      * This function is used to delete the comment (deleted = 1)
+     *
      * @return ForwardResponse
      * @throws AspectNotFoundException
      */
@@ -91,7 +95,7 @@ class CommentsBEController extends QcCommentsBEController
         $this->qcBeModuleService
             = GeneralUtility::makeInstance(CommentsTabService::class);
         $recordUid = $this->request->getArguments()['commentUid'];
-        if($recordUid){
+        if ($recordUid) {
             $this->qcBeModuleService->deleteComment($recordUid);
         }
         return new ForwardResponse('comments');
@@ -99,14 +103,16 @@ class CommentsBEController extends QcCommentsBEController
 
     /**
      * This function is used to remove the comment (remove = 1)
+     *
      * @return ForwardResponse
      * @throws AspectNotFoundException
      */
-    public function hideCommentAction(){
+    public function hideCommentAction()
+    {
         $this->qcBeModuleService
             = GeneralUtility::makeInstance(CommentsTabService::class);
         $recordUid = $this->request->getArguments()['commentUid'];
-        if($recordUid){
+        if ($recordUid) {
             $this->qcBeModuleService->hideComment($recordUid);
         }
         return new ForwardResponse('comments');
@@ -114,7 +120,9 @@ class CommentsBEController extends QcCommentsBEController
 
     /**
      * This function is used to export comments records on a csv file
+     *
      * @param ServerRequestInterface $request
+     *
      * @return ResponseInterface
      */
     public function exportCommentsAction(ServerRequestInterface $request): ResponseInterface
