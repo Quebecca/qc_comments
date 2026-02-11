@@ -58,7 +58,6 @@ class StatisticsBEController extends QcCommentsBEController
             $this->moduleTemplate->assignMultiple([
                 'headers' => $data['headers'],
                 'rows' => $data['rows'],
-                'settings' => $this->settings,
                 'currentPageId' => $data['currentPageId'],
                 'totalSection_headers' => $statsByDepth['headers'],
                 'totalSection_row' => $statsByDepth['row']

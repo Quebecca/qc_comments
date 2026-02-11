@@ -105,17 +105,6 @@
     <f:for each="{pagesId}" as="id">
         <div class="d-none pageId" data-tr-label="{id}"></div>
     </f:for>
-    <div class="d-none" id="csvSettings" data-tr-label="{csvSettings}"></div>
-    <f:for each="{csvSettings}" key="key" as="prop">
-        <f:if condition="{key} == filename">
-            <f:then>
-                <div class="d-none" id="dateFormat" data-tr-label="{prop.dateFormat}"></div>
-            </f:then>
-            <f:else>
-                <div class="d-none" id="{key}" data-tr-label="{prop}"></div>
-            </f:else>
-        </f:if>
-    </f:for>
     <div class="d-none" id="currentPageId" data-tr-label="{currentPageId}"></div>
 
 </f:form>
