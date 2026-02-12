@@ -208,6 +208,11 @@ class TyposcriptConfiguration
     }
 
     public function getReasonOptions($lang) : array {
+
+        if (!isset($this->settings['options']) || !is_array($this->settings['options'])) {
+            return [];
+        }
+
         $options = $this->settings['options'];
         $optionsByLang = [];
 
