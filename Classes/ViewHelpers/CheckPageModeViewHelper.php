@@ -1,4 +1,5 @@
 <?php
+
 /***
  *
  * This file is part of Qc Comments project.
@@ -9,6 +10,7 @@
  *  (c) 2023 <techno@quebec.ca>
  *
  ***/
+
 namespace Qc\QcComments\ViewHelpers;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;

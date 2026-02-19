@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file source-language="en" target-language="fr" datatype="plaintext" original="messages" date="2026-26-09T11:47:18Z" product-name="qc_comments">
+        <header/>
+        <body>
+            <trans-unit id="plugin.comments.title" xml:space="preserve">
+                <target>QC comments</target>
+			</trans-unit>
+            <trans-unit id="plugin.comments.description" xml:space="preserve">
+                <target>Ajouter une section de commentaires à la page</target>
+			</trans-unit>
+        </body>
+    </file>
+</xliff>

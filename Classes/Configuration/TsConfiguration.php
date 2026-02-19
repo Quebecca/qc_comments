@@ -78,11 +78,10 @@ class TsConfiguration
      * @return string
      */
     public function getNumberOfSubPages($moduleName) : string {
-        if($this->tsConfig[$moduleName.'.']['numberOfSubPages'] == null
-            || !is_numeric($this->tsConfig[$moduleName.'.']['numberOfSubPages'])){
-            return '50';
-        }
-        return $this->tsConfig[$moduleName.'.']['numberOfSubPages'];
+        $value = $this->tsConfig[$moduleName . '.']['numberOfSubPages'] ?? null;
+        return (is_numeric($value) && $value !== null)
+            ? (string)$value
+            : '50';
     }
 
 

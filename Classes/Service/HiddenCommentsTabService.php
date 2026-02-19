@@ -15,7 +15,6 @@ namespace Qc\QcComments\Service;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Driver\Exception;
-use Psr\Http\Message\ResponseInterface;
 use Qc\QcComments\Domain\Filter\HiddenCommentsFilter;
 use Qc\QcComments\Domain\Filter\Filter;
 use Psr\Http\Message\ServerRequestInterface;

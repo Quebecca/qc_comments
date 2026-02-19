@@ -9,10 +9,10 @@
  *  (c) 2023 <techno@quebec.ca>
  *
  ***/
+
 namespace Qc\QcComments\Domain\Repository;
 
-use Doctrine\DBAL\Connection as ConnectionAlias;
-use Doctrine\DBAL\Driver\Exception;
+use TYPO3\CMS\Core\Database\Connection;
 use Qc\QcComments\Configuration\TyposcriptConfiguration;
 use Qc\QcComments\Domain\Filter\Filter;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
@@ -20,13 +20,14 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
 class CommentRepository extends Repository
 {
-    public $persistenceManager;
+
     /**
      * @var int
      */
@@ -174,9 +175,10 @@ class CommentRepository extends Repository
             $limit = intval($limit) + 1;
             $data = $data->setMaxResults($limit);
         }
+
         $data = $data
                 ->orderBy('date_hour', $orderType)
-                ->execute()
+                ->executeQuery()
                 ->fetchAllAssociative();
         $rows = [];
         $count = 0;
@@ -213,7 +215,7 @@ class CommentRepository extends Repository
                 'uid_orig',
                 $queryBuilder->createNamedParameter(
                     $ids_list,
-                    ConnectionAlias::PARAM_INT_ARRAY
+                    Connection::PARAM_INT_ARRAY
                 )
             );
         $constraints .= $this->date_criteria . ' ' . $this->lang_criteria . $constraint;
@@ -223,9 +225,8 @@ class CommentRepository extends Repository
             ->where(
                 $constraints
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative()['COUNT(*)'];
-
     }
 
 
@@ -283,7 +284,7 @@ class CommentRepository extends Repository
             $data = $data->setMaxResults($limit + 1);
         }
         $rows =  $data
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
         if(!empty($comments)){
             foreach ($rows as $row){
@@ -314,7 +315,7 @@ class CommentRepository extends Repository
             ->where(
                 "uid_orig = ".$pageUid . " and useful like 'NA' and fixed = 0 " . $this->date_criteria)
             ->groupBy('uid_orig');
-        return $data->execute()
+        return $data->executeQuery()
             ->fetchAssociative()['technicalProblemsCount'] ?? 0;
     }
 
@@ -339,7 +340,7 @@ class CommentRepository extends Repository
                 "uid_orig = ".$pageUid." and useful like '0'"
             );
         $total = $data
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative()[0]['total'];
 
         $queryBuilder = $this->generateQueryBuilder();
@@ -356,7 +357,7 @@ class CommentRepository extends Repository
                 "uid_orig = ".$pageUid." and useful like '0' and reason_code like '".$reason. "'"
             );
         $reasonTotal = $data
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative()[0]['total'];
         return  $total <= 0 ? 1 : $reasonTotal / $total;
 
@@ -423,7 +424,7 @@ class CommentRepository extends Repository
             $pageTree = GeneralUtility::makeInstance(PageTreeView::class);
             $pageTree->init('AND ' . $GLOBALS['BE_USER']->getPagePermsClause(1));
             $pageTree->makeHTML = 0;
-            $pageTree->fieldArray = ['uid'];
+            $pageTree->addField('uid');
             $pageTree->getTree($this->root_id, $depth);
             $page_ids = $pageTree->ids;
         }

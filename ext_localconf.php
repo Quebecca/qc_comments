@@ -1,7 +1,6 @@
 <?php
 
 use Qc\QcComments\Controller\Frontend\CommentsController;
-use Qc\QcComments\Controller\FrontendController;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
@@ -16,10 +15,9 @@ call_user_func(
             'commentsForm',
             [
                 CommentsController::class => 'show,saveComment',
-            ], //With cash - prevent storing cashed data
-            [
-//                CommentsController::class  => 'show,saveComment',
-            ] // storing without using cash
+            ],
+            [],
+            ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
         );
         ExtensionUtility::configurePlugin(
             'QcComments',
@@ -27,19 +25,12 @@ call_user_func(
             [
                 CommentsController::class => 'savePositifComment',
             ],
-            [
-//                CommentsController::class => 'savePositifComment',
-            ]
+            [],
+            ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
         );
     }
 );
 
 ExtensionManagementUtility::addUserTSConfig(
-    "@import 'EXT:qc_comments/Configuration/TSconfig/pageconfig.tsconfig'"
+    "@import 'EXT:qc_comments/Configuration/user.tsconfig'"
 );
-\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class)
-    ->registerIcon(
-        'qc_comments',
-        \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-        ['source' => 'EXT:qc_comments/Resources/Public/Icons/qc_comments.svg']
-    );

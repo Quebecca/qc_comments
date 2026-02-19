@@ -5,8 +5,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcComments\Domain\Filter\StatisticsFilter;
 use Qc\QcComments\Service\StatisticsTabService;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 
 class StatisticsBEController extends QcCommentsBEController
 {
@@ -15,7 +15,7 @@ class StatisticsBEController extends QcCommentsBEController
      * @param string $operation
      * @return ResponseInterface
      */
-    public function statisticsAction(StatisticsFilter $filter = null,  string $operation = ''): ResponseInterface
+    public function statisticsAction(?StatisticsFilter $filter = null,  string $operation = ''): ResponseInterface
     {
         if($operation === 'reset-filters'){
             $filter = new StatisticsFilter();
@@ -51,14 +51,13 @@ class StatisticsBEController extends QcCommentsBEController
                         null,
                         [$data['maxRecords']]
                     );
-                $this->addFlashMessage($message, null, AbstractMessage::WARNING);
+                $this->addFlashMessage($message, null, ContextualFeedbackSeverity::WARNING);
             }
             $statsByDepth = $this->qcBeModuleService->getStatisticsByDepth();
 
             $this->moduleTemplate->assignMultiple([
                 'headers' => $data['headers'],
                 'rows' => $data['rows'],
-                'settings',
                 'currentPageId' => $data['currentPageId'],
                 'totalSection_headers' => $statsByDepth['headers'],
                 'totalSection_row' => $statsByDepth['row']

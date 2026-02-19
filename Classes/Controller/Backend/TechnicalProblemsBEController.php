@@ -6,10 +6,10 @@ use Qc\QcComments\Domain\Filter\TechnicalProblemsFilter;
 use Qc\QcComments\Service\CommentsTabService;
 use Qc\QcComments\Service\TechnicalProblemsTabService;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Extbase\Http\ForwardResponse;
 
 class TechnicalProblemsBEController extends QcCommentsBEController
@@ -58,14 +58,14 @@ class TechnicalProblemsBEController extends QcCommentsBEController
                 $message = $this->localizationUtility
                     ->translate(self::QC_LANG_FILE . 'tooMuchResults',
                         null, [$data['maxRecords']]);
-                $this->addFlashMessage($message, null, AbstractMessage::WARNING);
+                $this->addFlashMessage($message, null, ContextualFeedbackSeverity::WARNING);
            }
 
             if($data['tooMuchPages'] === true){
                 $message = $this->localizationUtility
                     ->translate(self::QC_LANG_FILE . 'tooMuchPages',
                         null, [$data['numberOfSubPages']]);
-                $this->addFlashMessage($message, null, AbstractMessage::WARNING);
+                $this->addFlashMessage($message, null, ContextualFeedbackSeverity::WARNING);
             }
             $this->moduleTemplate
              ->assignMultiple(

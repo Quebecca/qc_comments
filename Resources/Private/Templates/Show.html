@@ -1,5 +1,7 @@
-{namespace v=FluidTYPO3\Vhs\ViewHelpers}
-{namespace qcComments=Qc\QcComments\ViewHelpers}
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:v="http://typo3.org/ns/FluidTYPO3/Vhs/ViewHelpers"
+      xmlns:qcComments="http://typo3.org/ns/Qc/QcComments/ViewHelpers"
+      data-namespace-typo3-fluid="true">
 
 <f:variable name="pageUid" value="{v:page.info(field: 'uid')}"/>
 <f:variable name="checkBasPageMode" value="{modeBasPage -> qcComments:CheckPageMode(pageUid: pageUid)}"/>
@@ -7,7 +9,7 @@
 <f:variable name="responseNoReceived" value="{f:translate(key:'responseNoReceived')}" />
 <f:variable name="commentSectionMandatoryField" value="true" />
 
-<f:if condition="{checkBasPageMode} || {settings.activeModeBasPage} = 'true'">
+<f:if condition="{checkBasPageMode}">
     <div class="d-none" id="lang"
          data-ts="{v:page.language(languages: 'fr,en', pageUid: '0', normalWhenNoLanguage: 'fr')}"></div>
     <div class="frame frame-default frame-type-list frame-layout-0" id="comments-form-section">
@@ -54,9 +56,9 @@
                                     </div>
                                     <div class="form-section">
 
-                                        <div class="d-none" id="charLabel" data-ts="{f:translate(key='characters')}"></div>
-                                        <div class="d-none" id="atLeastXChars" data-ts="{f:translate(key='atLeastXChars',arguments:'{0:config.minCharacters}')}"></div>
-                                        <div class="d-none" id="tooManyChars" data-ts="{f:translate(key='tooManyChars')}"></div>
+                                        <div class="d-none" id="charLabel" data-ts="{f:translate(key:'chars')}"></div>
+                                        <div class="d-none" id="atLeastXChars" data-ts="{f:translate(key:'atLeastXChars',arguments:'{0:config.minCharacters}')}"></div>
+                                        <div class="d-none" id="tooManyChars" data-ts="{f:translate(key:'tooManyChars')}"></div>
                                         <div class="d-none" id="sitekey" data-ts="{recaptchaConfig.sitekey}"></div>
                                         <div class="d-none" id="enableRecaptcha" data-ts="{recaptchaConfig.enabled}"></div>
                                         <div class="d-none" id="pageUid" data-ts="{pageUid}"></div>

@@ -3,11 +3,9 @@
 namespace Qc\QcComments\Controller\Backend;
 
 use Qc\QcComments\Domain\Filter\HiddenCommentsFilter;
-use Qc\QcComments\Service\CommentsTabService;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use Qc\QcComments\Service\HiddenCommentsTabService;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
-use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -53,13 +51,13 @@ class HiddenCommentsBEController extends QcCommentsBEController
                 $message = $this->localizationUtility
                     ->translate(self::QC_LANG_FILE . 'tooMuchResults',
                         null, [$data['maxRecords']]);
-                $this->addFlashMessage($message, null, AbstractMessage::WARNING);
+                $this->addFlashMessage($message, null, ContextualFeedbackSeverity::WARNING);
             }
             if($data['tooMuchPages'] === true){
                 $message = $this->localizationUtility
                     ->translate(self::QC_LANG_FILE . 'tooMuchPages',
                         null,[$data['numberOfSubPages']]);
-                $this->addFlashMessage($message, null, AbstractMessage::WARNING);
+                $this->addFlashMessage($message, null, ContextualFeedbackSeverity::WARNING);
             }
 
             $this
