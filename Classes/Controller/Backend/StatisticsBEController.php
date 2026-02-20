@@ -51,7 +51,7 @@ class StatisticsBEController extends QcCommentsBEController
                         null,
                         [$data['maxRecords']]
                     );
-                $this->addFlashMessage($message, null, ContextualFeedbackSeverity::WARNING);
+                $this->addFlashMessage($message, '', ContextualFeedbackSeverity::WARNING);
             }
             $statsByDepth = $this->qcBeModuleService->getStatisticsByDepth();
 
