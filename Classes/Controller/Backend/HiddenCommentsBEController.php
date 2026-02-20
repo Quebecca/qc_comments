@@ -51,13 +51,13 @@ class HiddenCommentsBEController extends QcCommentsBEController
                 $message = $this->localizationUtility
                     ->translate(self::QC_LANG_FILE . 'tooMuchResults',
                         null, [$data['maxRecords']]);
-                $this->addFlashMessage($message, null, ContextualFeedbackSeverity::WARNING);
+                $this->addFlashMessage($message, '', ContextualFeedbackSeverity::WARNING);
             }
             if($data['tooMuchPages'] === true){
                 $message = $this->localizationUtility
                     ->translate(self::QC_LANG_FILE . 'tooMuchPages',
                         null,[$data['numberOfSubPages']]);
-                $this->addFlashMessage($message, null, ContextualFeedbackSeverity::WARNING);
+                $this->addFlashMessage($message, '', ContextualFeedbackSeverity::WARNING);
             }
 
             $this
