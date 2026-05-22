@@ -128,4 +128,15 @@ $(document).ready(function () {
       });
 
   });
+
+  $(document).on('change', '.t3js-datetimepicker', function () {
+    const name = $(this).attr('name');
+    if (name === 'startDate' || name === 'endDate') {
+      const value = $(this).val();
+      // Copier vers le champ hidden Extbase
+      $('input[type="hidden"][name="filter[' + name + ']"]').val(
+          value ? value.substring(0, 10) : ''
+      );
+    }
+  });
 });
