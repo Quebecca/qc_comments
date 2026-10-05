@@ -152,7 +152,9 @@ class StatisticsTabService extends QcBackendModuleService
         $filter->setDateRange($request->getQueryParams()['parameters']['selectDateRange']);
         $filter->setStartDate($request->getQueryParams()['parameters']['startDate'] ?? '');
         $filter->setEndDate($request->getQueryParams()['parameters']['endDate'] ?? '');
-        $filter->setIncludeEmptyPages($request->getQueryParams()['parameters']['includeEmptyPages'] ?? false);
+        $filter->setIncludeEmptyPages(
+            ($request->getQueryParams()['parameters']['includeEmptyPages'] ?? '') === 'true'
+        );
         return $filter;
     }
 

@@ -40,7 +40,7 @@ abstract class Filter implements Arrayable
     /**
      * @var bool
      */
-    public bool $includeEmptyPages = true;
+    public bool $includeEmptyPages = false;
 
     /**
      * @var LocalizationUtility
